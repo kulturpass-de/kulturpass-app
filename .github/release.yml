@@ -1,0 +1,14 @@
+changelog:
+  exclude:
+    labels:
+      - admin
+  categories:
+    - title: New Features
+      labels:
+        - feature
+    - title: Bug Fixes
+      labels:
+        - bug
+    - title: Others / Chore
+      labels:
+        - chore

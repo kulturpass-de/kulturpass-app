@@ -1,0 +1,9 @@
+#include "General.xcconfig"
+#include "./Pods/Target Support Files/Pods-cultureapp/Pods-cultureapp.debug.xcconfig"
+
+CODE_SIGN_IDENTITY = iPhone Developer
+
+PROVISIONING_PROFILE_SPECIFIER = match Development de.bkm.kulturpass
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG_VC_ENABLED
+INCLUDED_SOURCE_FILE_NAMES = $(SRCROOT)/DebugMenu/*

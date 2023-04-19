@@ -1,0 +1,21 @@
+{
+    "collections": [
+      {
+        "collectionName": "kp-app",
+        "folders": [
+          {
+            "sourceFilters": [
+              "**/de.json"
+            ],
+            "startingFolderPath": "src/services/translation/i18n/**"
+          }
+        ]
+      }
+    ],
+    "defaultConfiguration": {
+      "oneQFolderPath": ".",
+      "pseudoLocFolderPath": ".",
+      "targetFileNamingConvention": "[langCode].[extension]",
+      "targetFolderPath": "."
+    }
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>de</string>
+	<key>CFBundleDisplayName</key>
+	<string>KulturPass DE</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NFCReaderUsageDescription</key>
+	<string>KulturPass DE needs NFC to access the ID card.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>in.appcenter.ms</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>nunito_black.ttf</string>
+		<string>nunito_blackitalic.ttf</string>
+		<string>nunito_bold.ttf</string>
+		<string>nunito_bolditalic.ttf</string>
+		<string>nunito_extrabold.ttf</string>
+		<string>nunito_extrabolditalic.ttf</string>
+		<string>nunito_extralight.ttf</string>
+		<string>nunito_extralightitalic.ttf</string>
+		<string>nunito_italic.ttf</string>
+		<string>nunito_light.ttf</string>
+		<string>nunito_lightitalic.ttf</string>
+		<string>nunito_medium.ttf</string>
+		<string>nunito_mediumitalic.ttf</string>
+		<string>nunito_regular.ttf</string>
+		<string>nunito_semibold.ttf</string>
+		<string>nunito_semibolditalic.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen.storyboard</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+	<array>
+		<string>E80704007F00070302</string>
+	</array>
+</dict>
+</plist>

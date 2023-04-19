@@ -1,0 +1,9 @@
+#include "General.xcconfig"
+#include "./Pods/Target Support Files/Pods-cultureapp/Pods-cultureapp.release.xcconfig"
+
+CODE_SIGN_IDENTITY = iPhone Distribution
+
+PROVISIONING_PROFILE_SPECIFIER = match AppStore de.bkm.kulturpass
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG_VC_DISABLED
+EXCLUDED_SOURCE_FILE_NAMES = $(SRCROOT)/DebugMenu/*

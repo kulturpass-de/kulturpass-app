@@ -1,0 +1,3 @@
+NSLocationWhenInUseUsageDescription = "To suggest more suitable cultural offers to you, we want to use your location while using the app.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "To suggest more suitable cultural offers to you, we want to use your location while using the app.";
+NFCReaderUsageDescription = "KulturPass DE needs NFC to access the ID card.";

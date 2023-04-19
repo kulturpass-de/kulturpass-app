@@ -1,0 +1,9 @@
+DEVELOPMENT_TEAM = X7KCA5S7RX
+
+APP_BUNDLE_ID_MAIN = de.bkm.kulturpass
+INFO_PLIST_LOCATION_MAIN = cultureapp/Info.plist
+
+APP_GROUP_ID = group.de.bkm.kulturpass
+
+MARKETING_VERSION = 0.7.0
+CURRENT_PROJECT_VERSION = 0

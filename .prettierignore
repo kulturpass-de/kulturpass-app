@@ -1,0 +1,10 @@
+.eslintrc.js
+.prettierrc.js
+.watchmanconfig
+README.md
+app.json
+node_modules
+ios
+android
+vendor
+coverage/

@@ -1,0 +1,7 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json" /* Recommended React Native TSConfig base */,
+  "compilerOptions": {
+    "types": ["react-native", "jest", "node"],
+    "jsx": "react-native"
+  }
+}
