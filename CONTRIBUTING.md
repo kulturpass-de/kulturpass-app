@@ -2,7 +2,7 @@
 
 ## Code of Conduct
 
-All members of the project community must abide by the [Contributor Covenant, version 2.1](CODE_OF_CONDUCT.md). Only by respecting each other we can develop a productive, collaborative community. Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting [support@kulturpass.de](support@kulturpass.de) and/or a project maintainer.
+All members of the project community must abide by the [Contributor Covenant, version 2.1](CODE_OF_CONDUCT.md). Only by respecting each other we can develop a productive, collaborative community. Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting [support@kulturpass.de](mailto:support@kulturpass.de) and/or a project maintainer.
 
 We appreciate your courtesy of avoiding political questions here. Issues which are not related to the project itself will be closed by our community managers.
 
@@ -18,7 +18,7 @@ We appreciate your courtesy of avoiding political questions here. Issues which a
 
 * Especially in the early stages of the project the code is still undergoing considerable changes. In order to ensure a timely release of the solution and to be able to concentrate on the initial requirements, the project team decided to focus on the publication of our project milestones instead of every single commit at the moment. In other words, the actual development is currently done on an internal platform. We will switch to the usual public development model as soon as the codebase and architecture is consolidated. Until then, we will take care that accepted [pull requests](#pull-request-checklist) will be merged with the internal codebase.
 
-* Feel free to reach out to us and send an [email](support@kulturpass.de) if you plan to implement something larger or if you have a topic that can't be discussed in GitHub issues.
+* Feel free to reach out to us and send an [email](mailto:support@kulturpass.de) if you plan to implement something larger or if you have a topic that can't be discussed in GitHub issues.
 
 ## Steps to Contribute
 
@@ -56,7 +56,7 @@ We appreciate your courtesy of avoiding political questions here. Issues which a
   * If you make several related fixup commits in a row, you should [squash](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) them into a single commit.
   * Use [restore](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things) operations if you want to revert a change in a commit.
 
-* If your patch is not getting reviewed or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment, or you can ask for a review by contacting us via [email](support@kulturpass.de).
+* If your patch is not getting reviewed or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment, or you can ask for a review by contacting us via [email](mailto:support@kulturpass.de).
 
 * Post review:
   * Integrate the requested changes into your submission.
