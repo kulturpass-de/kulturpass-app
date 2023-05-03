@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { useSelector } from 'react-redux'
 
 import { Button } from '../../../components/button/button'
 import { LinkText } from '../../../components/link-text/link-text'
@@ -9,7 +8,6 @@ import { ScreenContent } from '../../../components/screen/screen-content'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
-import { getCommerceBaseSiteId } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
@@ -18,10 +16,12 @@ import { textStyles } from '../../../theme/typography'
 import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
-import { ProductDetailErrorAlert } from '../components/product-detail-error-alert'
 import { ProductDetail } from '../types/product-detail'
 import { useDpsDocumentUrl } from '../../../services/environment-configuration/hooks/use-dps-document-url'
 import { ProductConfirmOverview } from '../components/product-confirm-overview'
+import { ErrorAlert } from '../../form-validation/components/error-alert'
+import { useDismissableError } from '../../../services/errors/use-dismissable-error'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export type ProductConfirmReservationScreenProps = {
   onBack: () => void
@@ -40,37 +40,38 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
 }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
+  const [loading, setLoading] = useState(false)
+
   const thumbnailImage = useThumbnailImageUrl(productDetail.images)
-  const baseSiteId = useSelector(getCommerceBaseSiteId)
   const dpsDocumentUrl = useDpsDocumentUrl()
-  const [reservationMutation, reservationMutationResult] = commerceApi.endpoints.reservation.useMutation()
+  const [reservationMutation, reservationMutationResult] = commerceApi.useCreateReservationMutation()
 
   const reserveProduct = useCallback(async () => {
     if (!selectedOffer.code) {
       return
     }
-
-    const reservation = await reservationMutation({ baseSiteId, offerCode: selectedOffer.code })
+    setLoading(true)
+    const reservation = await reservationMutation({ offerCode: selectedOffer.code })
     if (!('error' in reservation) && reservation.data.code) {
       afterReserveProduct({ orderCode: reservation.data.code })
     }
-  }, [baseSiteId, reservationMutation, selectedOffer, afterReserveProduct])
+    setLoading(false)
+  }, [reservationMutation, selectedOffer, afterReserveProduct])
+
+  const { visibleError, onDismissVisibleError } = useDismissableError(
+    !reservationMutationResult.isLoading ? reservationMutationResult.error : undefined,
+  )
 
   if (
     reservationMutationResult.isError ||
     (reservationMutationResult.isSuccess && !reservationMutationResult.data.code)
   ) {
-    return (
-      <ProductDetailErrorAlert
-        error="productDetail_reservationError_message"
-        visible={!reservationMutationResult.isLoading}
-        onClose={onClose}
-      />
-    )
+    return <ErrorAlert error={visibleError} onDismiss={onDismissVisibleError} />
   }
 
   return (
     <ModalScreen testID={buildTestId('offerSelection')}>
+      <LoadingIndicator loading={loading} />
       <OfferSelectionHeader imageUrl={thumbnailImage?.imageUrl} onClose={onClose} onBack={onBack} />
       <ScreenContent style={styles.content}>
         <View style={styles.titleContainer}>

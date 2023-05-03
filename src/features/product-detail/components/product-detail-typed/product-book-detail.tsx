@@ -2,6 +2,7 @@ import React from 'react'
 import { BookProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
 import { ProductDetailSection } from '../product-detail-section'
+import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 
 export type ProductBookDetailProps = {
   productDetail: BookProductDetail
@@ -9,8 +10,12 @@ export type ProductBookDetailProps = {
 
 export const ProductBookDetail: React.FC<ProductBookDetailProps> = ({ productDetail }) => {
   const { isbn, publisher, language, bookFormat } = productDetail
+  const { buildTestId } = useTestIdBuilder()
   return (
-    <ProductDetailSection iconSource="Book" sectionCaptioni18nKey="productDetail_book_caption">
+    <ProductDetailSection
+      testID={buildTestId('productDetail_book')}
+      iconSource="Book"
+      sectionCaptioni18nKey="productDetail_book_caption">
       <ProductDetailEntry i18nKey="productDetail_book_isbn" value={isbn} valueTestId="productDetail_book_isbn_value" />
       <ProductDetailEntry
         i18nKey="productDetail_book_publisher"

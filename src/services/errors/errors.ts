@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export class ErrorWithCode extends Error {
   errorCode: string
   detailCode?: string
@@ -89,10 +91,28 @@ export class HttpStatusTooManyRequestsError extends HttpClientError {
   }
 }
 
+const ErrorTypeSchema = z.object({
+  type: z.string(),
+  message: z.string(),
+})
+
+type ErrorType = z.infer<typeof ErrorTypeSchema>
+
+const ResponseBodySchema = z.object({
+  errors: z.array(ErrorTypeSchema),
+})
+
 export class HttpStatusUnauthorizedError extends HttpClientError {
-  constructor(errorCode: string = 'HTTP_STATUS_UNAUTHORIZED') {
-    super(401, errorCode)
+  errors: ErrorType[] = []
+
+  constructor(responseBody?: unknown) {
+    super(401, 'HTTP_STATUS_UNAUTHORIZED')
     this.detailCode = 'Network request failed with status code 401 (Unauthorized)'
+
+    const parsed = ResponseBodySchema.safeParse(responseBody)
+    if (parsed.success) {
+      this.errors = parsed.data.errors
+    }
   }
 }
 
@@ -103,12 +123,12 @@ export class UnknownError extends ErrorWithCode {
   }
 }
 
-export const createHttpErrorFromStatusCode = (statusCode: number): HttpError => {
+export const createHttpErrorFromStatusCode = (statusCode: number, responseBody?: unknown): HttpError => {
   switch (statusCode) {
     case 400:
       return new HttpStatusBadRequestError()
     case 401:
-      return new HttpStatusUnauthorizedError()
+      return new HttpStatusUnauthorizedError(responseBody)
     case 403:
       return new HttpStatusForbiddenError()
     case 404:
@@ -134,4 +154,35 @@ export const createHttpErrorFromStatusCode = (statusCode: number): HttpError => 
 
 export const createErrorFromErrorCode = (errorCode: string, detailCode?: string): ErrorWithCode => {
   return new ErrorWithCode(errorCode, detailCode)
+}
+
+export const mapAppErrorCodeToError = (errorCode: string, statusCode = -1): ErrorWithCode | null => {
+  switch (errorCode) {
+    case 'NETWORK_ERROR':
+      return new NetworkError()
+    case 'HTTP_ERROR':
+      return new HttpError(statusCode)
+    case 'HTTP_CLIENT_ERROR':
+      return new HttpClientError(statusCode)
+    case 'HTTP_SERVER_ERROR':
+      return new HttpServerError(statusCode)
+    case 'HTTP_STATUS_BAD_REQUEST':
+      return new HttpStatusBadRequestError()
+    case 'HTTP_STATUS_FORBIDDEN':
+      return new HttpStatusForbiddenError()
+    case 'HTTP_STATUS_INTERNAL_SERVER_ERROR':
+      return new HttpStatusInternalServerError()
+    case 'HTTP_STATUS_NOT_FOUND':
+      return new HttpStatusNotFoundError()
+    case 'HTTP_STATUS_SERVICE_UNAVAILABLE':
+      return new HttpStatusServiceUnavailableError()
+    case 'HTTP_STATUS_TOO_MANY_REQUESTS':
+      return new HttpStatusTooManyRequestsError()
+    case 'HTTP_STATUS_UNAUTHORIZED':
+      return new HttpStatusUnauthorizedError()
+    case 'UNKNOWN':
+      return new UnknownError()
+  }
+
+  return null
 }

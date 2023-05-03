@@ -36,6 +36,8 @@ import Boings from '../../assets/icons/boings.png'
 import HeartUnselected from '../../assets/icons/heart-unselected.png'
 import HeartSelected from '../../assets/icons/heart-selected.png'
 import Government from '../../assets/icons/government.png'
+import HumanSketch from '../../assets/icons/human-sketch.png'
+import Profile from '../../assets/icons/profile.png'
 
 const availableSources = {
   Checkmark,
@@ -73,6 +75,8 @@ const availableSources = {
   HeartUnselected,
   HeartSelected,
   Government,
+  HumanSketch,
+  Profile,
 } as const
 
 const styles = StyleSheet.create({

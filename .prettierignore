@@ -8,3 +8,6 @@ ios
 android
 vendor
 coverage/
+
+# Ignoring lottie json animations
+src/components/loading-indicator/loading-spinner.json

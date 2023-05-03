@@ -29,12 +29,23 @@ export const getCdcSessionData = createSelector(getAuthState, auth => {
   return auth.cdc
 })
 
-export const getCommerceAccessToken = createSelector(getAuthState, getIsUserLoggedIn, (auth, isUserLoggedIn) => {
-  return {
-    isUserLoggedIn,
-    commerceAccessToken: auth.commerce?.access_token,
-  }
-})
+export const getCdcSessionEmail = createSelector(getCdcSessionData, data => data?.user.email)
+
+export const getCommerceAccessToken = createSelector(
+  getAuthState,
+  getIsUserLoggedIn,
+  getIsUserLoggedInToCommerce,
+  getIsUserLoggedInToCdc,
+  (auth, isUserLoggedIn, isUserLoggedInToCommerce, isUserLoggedInToCdc) => {
+    return {
+      cdc: auth.cdc,
+      isUserLoggedInToCommerce,
+      isUserLoggedInToCdc,
+      isUserLoggedIn,
+      commerceAccessToken: auth.commerce?.access_token,
+    }
+  },
+)
 
 export const getRegistrationToken = createSelector(getAuthState, (auth): string | undefined => {
   return auth.cdc?.regToken

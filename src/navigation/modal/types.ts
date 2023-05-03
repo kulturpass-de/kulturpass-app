@@ -101,11 +101,22 @@ import {
   EidNFCNotSupportedRouteName,
   EidNFCNotSupportedRouteParams,
 } from '../../features/eid-verification/screens/eid-nfc-not-supported-route'
+import {
+  AccountDeletionConfirmRouteName,
+  AccountDeletionConfirmRouteParams,
+} from '../../features/account-deletion/screens/account-deletion-confirm-route'
+import {
+  AccountDeletionSuccessfulRouteName,
+  AccountDeletionSuccessfulRouteParams,
+} from '../../features/account-deletion/screens/account-deletion-successful-route'
+import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
 
 export type ModalParamList = {
   [LogOutRouteName]: LogOutRouteParams
   [LogInRouteName]: LogInRouteParams
   [ForgotPasswordRouteName]: ForgotPasswordRouteParams
+
+  [ForceUpdateRouteName]: ForceUpdateRouteParams
 
   [OnboardingAboutAppRouteName]: OnboardingAboutAppRouteParams
   [OnboardingLocationPermissionRouteName]: OnboardingLocationPermissionRouteParams
@@ -116,6 +127,9 @@ export type ModalParamList = {
   [RegistrationFormRouteName]: RegistrationFormRouteParams
   [RegistrationSuccessRouteName]: RegistrationSuccessRouteParams
   [RegistrationPreferencesRouteName]: RegistrationPreferencesRouteParams
+
+  [AccountDeletionConfirmRouteName]: AccountDeletionConfirmRouteParams
+  [AccountDeletionSuccessfulRouteName]: AccountDeletionSuccessfulRouteParams
 
   [ProductDetailRouteName]: ProductDetailRouteParams
   [OfferSelectionRouteName]: OfferSelectionRouteParams

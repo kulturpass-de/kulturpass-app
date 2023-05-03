@@ -68,19 +68,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[5],
   },
   title: {
-    marginTop: spacing[2],
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing[6],
     textAlign: 'center',
     color: colors.basicBlack,
   },
   hint: {
     marginTop: spacing[2],
-    paddingHorizontal: 20,
+    marginBottom: spacing[6],
+    paddingHorizontal: spacing[5],
     textAlign: 'center',
     color: colors.primaryDark,
   },
   buttonContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 })

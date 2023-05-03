@@ -1,11 +1,15 @@
-import { de, en } from './i18n'
-import { TranslationResources } from './translation'
+import { deTranslations, enTranslations } from './i18n'
+import { Language } from './types'
 
-export const resources: TranslationResources = {
-  de: {
-    translation: de,
+export const defaultNS = 'translation'
+
+export const resources = {
+  [Language.de]: {
+    [defaultNS]: deTranslations,
   },
-  en: {
-    translation: en,
+  [Language.en]: {
+    [defaultNS]: enTranslations,
   },
-}
+} as const
+
+export const fallbackLng = Language.de

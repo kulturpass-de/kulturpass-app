@@ -4,6 +4,7 @@ import { Control, Controller, ControllerProps, FieldPath } from 'react-hook-form
 export type FormFieldWithControlProps<FieldValues extends {}> = {
   name: FieldPath<FieldValues>
   control: Control<FieldValues>
+  disabled?: boolean
 }
 
 export const FormFieldWithControl = <
@@ -17,7 +18,7 @@ export const FormFieldWithControl = <
 ): React.ReactElement => {
   const render: ControllerProps<FieldValues>['render'] = useCallback(
     ({ field, fieldState }) => {
-      const { component: Component } = props
+      const { component: Component, disabled = false } = props
 
       return (
         <Component
@@ -25,6 +26,8 @@ export const FormFieldWithControl = <
           onChange={field.onChange}
           onBlur={field.onBlur}
           error={fieldState.error}
+          editable={!disabled}
+          // selectTextOnFocus={!disabled}
           {...props}
         />
       )

@@ -7,13 +7,14 @@ import { getSimulateCard, getSimulatedCardName } from '../redux/simulated-card-s
 import { useCancelFlow } from './use-cancel-flow'
 import { useStartAA2ChangePin } from './use-start-change-pin'
 import { Flow } from '../types'
+import { Platform } from 'react-native'
 
 type StartCardScanningParams = {
   flow: Flow
   onPinRetry: (retryCounter?: number) => void
   onCanRetry: () => void
   onPukRetry: () => void
-  pin: string
+  pin?: string
   newPin?: string
   can?: string
   onAuthSuccess: (url: string) => void
@@ -78,36 +79,32 @@ export const useStartCardScanning = ({
     }
   }, [simulateCard, simulatedCardName])
 
-  const handleCanRetry = useCallback(async () => {
-    await aa2Module.interruptFlow()
-    onCanRetry()
-  }, [onCanRetry])
-
-  const handlePukRetry = useCallback(async () => {
-    await aa2Module.interruptFlow()
-    onPukRetry()
-  }, [onPukRetry])
-
   const handleRetry = useCallback(
     async (msg: string, retryCounter?: number) => {
-      if (msg === Messages.enterPin) {
+      if (
+        [Messages.enterPin, Messages.enterCan, Messages.enterPuk].includes(msg as Messages) &&
+        Platform.OS === 'ios' &&
+        !simulateCard
+      ) {
         await aa2Module.interruptFlow()
+      }
+      if (msg === Messages.enterPin) {
         onPinRetry(retryCounter)
       } else if (msg === Messages.enterCan) {
-        await handleCanRetry()
+        onCanRetry()
       } else if (msg === Messages.enterPuk) {
-        await handlePukRetry()
+        onPukRetry()
       }
     },
-    [handleCanRetry, handlePukRetry, onPinRetry],
+    [onCanRetry, onPinRetry, onPukRetry, simulateCard],
   )
 
   const enterNewPin = useCallback(async () => {
     if (newPin === undefined) {
       throw new Error('No new PIN provided')
     }
-    // TODO: Add undefined to setNewPin function param type
-    const changePinResult = await aa2Module.setNewPin(simulateCard ? (undefined as any) : newPin)
+
+    const changePinResult = await aa2Module.setNewPin(simulateCard ? undefined : newPin)
     if (changePinResult.success === true) {
       onChangePinSuccess()
     }
@@ -134,14 +131,15 @@ export const useStartCardScanning = ({
   }, [can, enterPin])
 
   const handleInitialScan = useCallback(async () => {
-    const message = await aa2Module.acceptAuthRequest()
-    const msg: any = message.msg
-    if (msg === Messages.enterPin) {
+    const result = await aa2Module.acceptAuthRequest()
+    const msg: any = result.msg
+    if (msg === Messages.enterPin && pin !== undefined) {
       await enterPin()
     } else {
-      handleRetry(msg)
+      const retryCounter = (result as any).reader?.card?.retryCounter
+      handleRetry(msg, retryCounter)
     }
-  }, [enterPin, handleRetry])
+  }, [enterPin, handleRetry, pin])
 
   const startScanning = useCallback(async () => {
     setIsLoading(true)

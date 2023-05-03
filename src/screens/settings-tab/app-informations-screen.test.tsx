@@ -4,16 +4,12 @@ import React from 'react'
 import { render, screen } from '@testing-library/react-native'
 
 import { buildTestId } from '../../services/test-id/test-id'
-import { AppProviders, I18nProvider, StoreProvider } from '../../services/testing/test-utils'
+import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
 import { AppInformationsScreen } from './app-informations-screen'
 import { ViewProfileScreen } from './view-profile-screen'
 
 const renderScreen = (children: React.ReactNode) => {
-  render(
-    <AppProviders>
-      <I18nProvider>{children}</I18nProvider>
-    </AppProviders>,
-  )
+  render(<AppProviders>{children}</AppProviders>)
 }
 
 test('Should render app informations screen', async () => {
@@ -28,11 +24,13 @@ test('Should render menu item in settings page', async () => {
     <StoreProvider>
       <ViewProfileScreen
         onPressAppInformations={() => {}}
+        onPressDeleteAccount={() => {}}
         onPressLogin={() => {}}
         onPressLogout={() => {}}
         onPressDeveloperMenu={() => {}}
         onPressChangeLanguage={() => {}}
         onPressEditPreferences={() => {}}
+        onPressUpdateProfile={() => {}}
       />
     </StoreProvider>,
   )

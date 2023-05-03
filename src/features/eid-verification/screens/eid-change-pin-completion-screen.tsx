@@ -27,9 +27,9 @@ export const EidChangePinCompletionScreen: React.FC<EidChangePinCompletionScreen
       />
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
         <Illustration
-          i18nKey="eid_changePinCompletion_image_alt"
+          i18nKey="success_image_alt"
           testID={buildTestId('eid_changePinCompletion_image')}
-          type="eid-pin-changed"
+          type="success"
         />
         <View style={styles.contentTitleContainer}>
           <TranslatedText

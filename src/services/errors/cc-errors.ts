@@ -73,3 +73,23 @@ export const createCcErrorFromStatusCode = (statusCode: number): CcError => {
 
   return new CcError()
 }
+
+export const mapCcErrorCodeToError = (errorCode: string): CcError | null => {
+  switch (errorCode) {
+    case 'CC_ERROR':
+      return new CcError()
+    case 'CC_OAUTH_ERROR':
+      return new CcOAuthError()
+    case 'CC_OAUTH_INVALID_JSON':
+      return new CcOAuthInvalidJsonError()
+    case 'CC_OAUTH_CLIENT_ERROR':
+      return new CcOAuthClientError(-1)
+    case 'CC_OAUTH_STATUS_FORBIDDEN':
+      return new CcOAuthStatusForbiddenError()
+    case 'CC_OAUTH_STATUS_UNAUTHORIZED':
+      return new CcOAuthStatusUnauthorizedError()
+    case 'CC_OAUTH_SERVER_ERROR':
+      return new CcOAuthServerError(-1)
+  }
+  return null
+}

@@ -40,7 +40,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigat
     })
   }, [navigation, route.key])
 
-  const routeName = route.name.toLowerCase()
+  const routeName = route.name.toLowerCase() as Lowercase<(typeof route)['name']>
 
   return (
     <Pressable

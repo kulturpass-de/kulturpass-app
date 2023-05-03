@@ -1,5 +1,6 @@
 export const colors = {
   moonDarkest: '#0C0016',
+  moonDarkest10: '#0C00161A',
   moonDarker: '#202325',
   moonDark: '#333333',
   moonBase: '#4D4D4D',
@@ -47,6 +48,9 @@ export const colors = {
   transparentBlack80: '#0C0016CC',
   transparentBlack70: '#0C0016B3',
   transparentBlack45: '#0C00162D',
+  transparentBlack40: '#0C001666',
+  transparentBlack60: '#0C00163C',
   transparentWhite100: '#FFFFFF00',
   transparentWhite45: '#FFFFFF2D',
+  transparentWhite50: '#FFFFFF80',
 } as const

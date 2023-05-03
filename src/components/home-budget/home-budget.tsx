@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { type GetProfileResponseBody } from '../../services/api/types/commerce/commerce-profile'
+import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
 import { TranslatedText } from '../translated-text/translated-text'
 import { buildTestId } from '../../services/test-id/test-id'
 import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'

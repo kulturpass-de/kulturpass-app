@@ -35,7 +35,10 @@ ${selectedOffer.shopAddress?.postalCode} ${selectedOffer.shopAddress?.city}`)
 
   return (
     <>
-      <ProductDetailSection iconSource="Coupon" sectionCaptioni18nKey="productDetail_offer_caption">
+      <ProductDetailSection
+        testID={buildTestId('productDetail_offer')}
+        iconSource="Coupon"
+        sectionCaptioni18nKey="productDetail_offer_caption">
         <View style={styles.shopName}>
           <Text
             testID={buildTestId('productDetail_offer_name')}

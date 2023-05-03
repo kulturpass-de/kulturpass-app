@@ -4,12 +4,14 @@ import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { Offer, Product } from '../../../services/api/types/commerce/api-types'
+import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../../theme/utils'
+import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
-import { ProductDetailErrorAlert } from '../components/product-detail-error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductConfirmReservationScreen } from './product-confirm-reservation-screen'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const ProductConfirmReservationRouteName = 'ProductConfirmReservation'
 
@@ -42,24 +44,23 @@ export const ProductConfirmReservationRoute: React.FC<ProfileScreenProps> = ({ r
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
   const selectedOffer = useSelectedOrClosestOffer(productDetail, offerId)
 
+  const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
+
   if (!productDetail || !selectedOffer) {
-    return (
-      <ProductDetailErrorAlert
-        error="productDetail_getProductDetailError_message"
-        visible={!isLoading && !!error}
-        onClose={onClose}
-      />
-    )
+    return <ErrorAlert error={visibleError} onDismiss={onDismissVisibleError} />
   }
 
   return (
-    <ProductConfirmReservationScreen
-      onBack={onBack}
-      onClose={onClose}
-      afterReserveProduct={afterReserveProduct}
-      productDetail={productDetail}
-      selectedOffer={selectedOffer}
-    />
+    <>
+      <LoadingIndicator loading={isLoading} />
+      <ProductConfirmReservationScreen
+        onBack={onBack}
+        onClose={onClose}
+        afterReserveProduct={afterReserveProduct}
+        productDetail={productDetail}
+        selectedOffer={selectedOffer}
+      />
+    </>
   )
 }
 

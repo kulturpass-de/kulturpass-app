@@ -1,5 +1,5 @@
 import { CdcSessionData } from '../../session/types'
-import { CdcApiLoginSuccessResponse } from '../../api/types'
+import { AccountsLoginResponse } from '../../api/types'
 import { cdcLoginResponseToSessionData, isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'
 
 describe('cdcLoginResponseToSessionData', () => {
@@ -8,10 +8,10 @@ describe('cdcLoginResponseToSessionData', () => {
     id_token: 'my_id_token',
     UID: 'uid',
     UIDSignature: 'uid_signature',
-    profile: { firstName: 'my_first_name' },
+    profile: { firstName: 'my_first_name', email: 'test@test.test' },
     sessionInfo: { sessionToken: 'my_session_token', sessionSecret: 'my_session_secret' },
     isVerified: true,
-  } as CdcApiLoginSuccessResponse
+  } as AccountsLoginResponse
 
   const output: CdcSessionData = {
     idToken: 'my_id_token',
@@ -21,7 +21,7 @@ describe('cdcLoginResponseToSessionData', () => {
     sessionValidity: -2,
     uid: 'uid',
     uidSignature: 'uid_signature',
-    user: { firstName: 'my_first_name' },
+    user: { firstName: 'my_first_name', email: 'test@test.test' },
     isVerified: true,
     regToken: undefined,
   }

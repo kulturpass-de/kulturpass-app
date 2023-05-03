@@ -28,7 +28,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
   return <EidVerificationCompletionScreen onNext={onNext} />
 }
 
-export const EidVerificationCompletionAppRouteConfig = createRouteConfig({
+export const EidVerificationCompletionRouteConfig = createRouteConfig({
   name: EidVerificationCompletionRouteName,
   component: EidVerificationCompletionRoute,
   options: { cardStyle: modalCardStyle },

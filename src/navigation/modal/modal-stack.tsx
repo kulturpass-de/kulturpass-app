@@ -20,20 +20,23 @@ import { OfferSelectionRouteConfig } from '../../features/product-detail/screens
 import { RegistrationSuccessRouteConfig } from '../../screens/registration-success/registration-success-route'
 import { RegistrationConsentRouteConfig } from '../../screens/registration/registration-consent-route'
 import { RegistrationDataPrivacyRouteConfig } from '../../screens/registration/registration-data-privacy-route'
-import { EidAboutVerificationAppRouteConfig } from '../../features/eid-verification/screens/eid-about-verification-route'
-import { EidAboutServiceProviderAppRouteConfig } from '../../features/eid-verification/screens/eid-about-service-provider-route'
-import { EidInsertCardAppRouteConfig } from '../../features/eid-verification/screens/eid-insert-card-route'
-import { EidPinAppRouteConfig } from '../../features/eid-verification/screens/eid-pin-route'
-import { EidVerificationCompletionAppRouteConfig } from '../../features/eid-verification/screens/eid-verification-completion-route'
-import { EidCanAppRouteConfig } from '../../features/eid-verification/screens/eid-can-route'
+import { EidAboutVerificationRouteConfig } from '../../features/eid-verification/screens/eid-about-verification-route'
+import { EidAboutServiceProviderRouteConfig } from '../../features/eid-verification/screens/eid-about-service-provider-route'
+import { EidInsertCardRouteConfig } from '../../features/eid-verification/screens/eid-insert-card-route'
+import { EidPinRouteConfig } from '../../features/eid-verification/screens/eid-pin-route'
+import { EidVerificationCompletionRouteConfig } from '../../features/eid-verification/screens/eid-verification-completion-route'
+import { EidCanRouteConfig } from '../../features/eid-verification/screens/eid-can-route'
 import { ReservationDetailRouteConfig } from '../../features/reservations/screens/reservation-detail-route'
 import { ProductConfirmReservationRouteConfig } from '../../features/product-detail/screens/product-confirm-reservation-route'
 import { SimulationCardConfigRouteConfig } from '../../screens/developer-settings/simulation-card-config-route'
-import { EidTransportPinAppRouteConfig } from '../../features/eid-verification/screens/eid-transport-pin-route'
-import { EidNewPinAppRouteConfig } from '../../features/eid-verification/screens/eid-new-pin-route'
-import { EidChangePinCompletionAppRouteConfig } from '../../features/eid-verification/screens/eid-change-pin-completion-route'
-import { EidServiceProviderDetailsAppRouteConfig } from '../../features/eid-verification/screens/eid-service-provider-details-route'
-import { EidNFCNotSupportedAppRouteConfig } from '../../features/eid-verification/screens/eid-nfc-not-supported-route'
+import { EidTransportPinRouteConfig } from '../../features/eid-verification/screens/eid-transport-pin-route'
+import { EidNewPinRouteConfig } from '../../features/eid-verification/screens/eid-new-pin-route'
+import { EidChangePinCompletionRouteConfig } from '../../features/eid-verification/screens/eid-change-pin-completion-route'
+import { EidServiceProviderDetailsRouteConfig } from '../../features/eid-verification/screens/eid-service-provider-details-route'
+import { EidNFCNotSupportedRouteConfig } from '../../features/eid-verification/screens/eid-nfc-not-supported-route'
+import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
+import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
+import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
 
 const Stack = createStackNavigator<ModalParamList>()
 
@@ -50,6 +53,9 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...LogInRouteConfig} />
         <Stack.Screen {...ForgotPasswordRouteConfig} />
 
+        {/* Force Update Routes */}
+        <Stack.Screen options={{ gestureEnabled: false }} {...ForceUpdateRouteConfig} />
+
         {/* Onboarding Routes */}
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen {...OnboardingAboutAppRouteConfig} />
@@ -64,23 +70,29 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...RegistrationSuccessRouteConfig} />
         <Stack.Screen {...RegistrationPreferencesRouteConfig} />
 
+        {/* Account Deletion Routes */}
+        <Stack.Screen {...AccountDeletionConfirmRouteConfig} />
+        <Stack.Screen {...AccountDeletionSuccessfulRouteConfig} />
+
         {/* Product Detail Routes */}
         <Stack.Screen {...ProductDetailRouteConfig} />
         <Stack.Screen {...OfferSelectionRouteConfig} />
         <Stack.Screen {...ProductConfirmReservationRouteConfig} />
 
         {/* eID Verification */}
-        <Stack.Screen {...EidAboutVerificationAppRouteConfig} />
-        <Stack.Screen {...EidAboutServiceProviderAppRouteConfig} />
-        <Stack.Screen {...EidServiceProviderDetailsAppRouteConfig} />
-        <Stack.Screen {...EidInsertCardAppRouteConfig} />
-        <Stack.Screen {...EidPinAppRouteConfig} />
-        <Stack.Screen {...EidCanAppRouteConfig} />
-        <Stack.Screen {...EidTransportPinAppRouteConfig} />
-        <Stack.Screen {...EidNewPinAppRouteConfig} />
-        <Stack.Screen {...EidVerificationCompletionAppRouteConfig} />
-        <Stack.Screen {...EidChangePinCompletionAppRouteConfig} />
-        <Stack.Screen {...EidNFCNotSupportedAppRouteConfig} />
+        <Stack.Group screenOptions={{ gestureEnabled: false, detachPreviousScreen: true }}>
+          <Stack.Screen {...EidAboutVerificationRouteConfig} />
+          <Stack.Screen {...EidAboutServiceProviderRouteConfig} />
+          <Stack.Screen {...EidInsertCardRouteConfig} />
+          <Stack.Screen {...EidPinRouteConfig} />
+          <Stack.Screen {...EidCanRouteConfig} />
+          <Stack.Screen {...EidTransportPinRouteConfig} />
+          <Stack.Screen {...EidNewPinRouteConfig} />
+          <Stack.Screen {...EidVerificationCompletionRouteConfig} />
+          <Stack.Screen {...EidChangePinCompletionRouteConfig} />
+          <Stack.Screen {...EidNFCNotSupportedRouteConfig} />
+        </Stack.Group>
+        <Stack.Screen {...EidServiceProviderDetailsRouteConfig} />
 
         {/* Reservation Detail Routes */}
         <Stack.Screen {...ReservationDetailRouteConfig} />

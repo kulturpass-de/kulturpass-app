@@ -14,7 +14,7 @@ export type ForgotPasswordRouteParams = undefined
 export const ForgotPasswordRoute: React.FC = () => {
   const modalNavigation = useModalNavigation()
   const [showSuccess, setShowSuccess] = useState(false)
-  const [accountsResetPasswordQuery] = cdcApi.endpoints.accountsResetPassword.useLazyQuery()
+  const [accountsResetPasswordQuery] = cdcApi.endpoints.accountsResetPassword.useMutation()
 
   const onHeaderPressClose = useCallback(() => {
     modalNavigation.closeModal()
@@ -25,8 +25,8 @@ export const ForgotPasswordRoute: React.FC = () => {
   }, [modalNavigation])
 
   const onFormSubmit = useCallback(
-    async (email: string) => {
-      await accountsResetPasswordQuery({ email }).unwrap()
+    async (loginID: string) => {
+      await accountsResetPasswordQuery({ loginID }).unwrap()
       setShowSuccess(true)
     },
     [accountsResetPasswordQuery],

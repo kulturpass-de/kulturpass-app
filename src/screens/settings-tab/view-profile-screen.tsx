@@ -12,11 +12,14 @@ import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useUserInfo } from '../../services/user/use-user-info'
 import { spacing } from '../../theme/spacing'
+import { SvgImage } from '../../components/svg-image/svg-image'
 
 export type ViewProfileScreenProps = {
   onPressChangeLanguage: () => void
   onPressEditPreferences: () => void
+  onPressUpdateProfile: () => void
   onPressAppInformations: () => void
+  onPressDeleteAccount: () => void
   onPressDeveloperMenu: () => void
   onPressLogin: () => void
   onPressLogout: () => void
@@ -25,7 +28,9 @@ export type ViewProfileScreenProps = {
 export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   onPressChangeLanguage,
   onPressEditPreferences,
+  onPressUpdateProfile,
   onPressAppInformations,
+  onPressDeleteAccount,
   onPressDeveloperMenu,
   onPressLogin,
   onPressLogout,
@@ -59,13 +64,22 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
           chevron
         />
         {isLoggedIn ? (
-          <ListItem
-            icon={<Icon source="Preferences" width={29} height={24} />}
-            title={t('editPreferences_title')}
-            testID={buildTestId('settings_editPreferences_button')}
-            onPress={onPressEditPreferences}
-            chevron
-          />
+          <>
+            <ListItem
+              icon={<Icon source="Preferences" width={29} height={24} />}
+              title={t('editPreferences_title')}
+              testID={buildTestId('settings_editPreferences_button')}
+              onPress={onPressEditPreferences}
+              chevron
+            />
+            <ListItem
+              icon={<Icon source="Profile" width={29} height={24} />}
+              title={t('editProfile_title')}
+              testID={buildTestId('settings_editProfile_button')}
+              onPress={onPressUpdateProfile}
+              chevron
+            />
+          </>
         ) : null}
         <ListItem
           icon={<Icon source="Info" width={29} height={24} />}
@@ -73,8 +87,18 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
           testID={buildTestId('settings_app_informations_button')}
           onPress={onPressAppInformations}
           chevron
-          noBorderBottom
+          noBorderBottom={!isLoggedIn}
         />
+        {isLoggedIn ? (
+          <ListItem
+            icon={<SvgImage testID="deleteAccount_icon" type="delete-account" width={29} height={24} />}
+            title={t('deleteAccount_title')}
+            testID={buildTestId('settings_deleteAccount_button')}
+            onPress={onPressDeleteAccount}
+            chevron
+            noBorderBottom
+          />
+        ) : null}
         <View style={styles.buttonContainer}>
           {!isLoggedIn ? (
             <Button

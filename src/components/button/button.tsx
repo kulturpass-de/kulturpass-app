@@ -104,7 +104,7 @@ export const Button: FC<ButtonProps> = ({
     [buttonVariant, disabled, modifier],
   )
 
-  const buttonText = t(i18nKey, i18nParams)
+  const buttonText = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
   const iconSize = modifier === 'small' ? 20 : 24
 
   return (

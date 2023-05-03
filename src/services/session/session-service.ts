@@ -6,7 +6,7 @@ export const sessionSecureStorage = createSecureStorage<{
   commerceSessionData: CommerceSessionData | null
 }>()
 
-export const persistCdcSesssion = async (cdcSessionData: CdcSessionData) => {
+export const persistCdcSession = async (cdcSessionData: CdcSessionData) => {
   await sessionSecureStorage.setItem('cdcSessionData', cdcSessionData)
 }
 
@@ -18,7 +18,7 @@ export const getCdcSession = async () => {
   return await sessionSecureStorage.getItem('cdcSessionData')
 }
 
-export const persistCommerceSesssion = async (commerceSessionData: CommerceSessionData) => {
+export const persistCommerceSession = async (commerceSessionData: CommerceSessionData) => {
   await sessionSecureStorage.setItem('commerceSessionData', commerceSessionData)
 }
 

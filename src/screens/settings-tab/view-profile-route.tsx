@@ -24,8 +24,16 @@ export const ViewProfileRoute: React.FC = () => {
     tabsNavigation.navigate('Settings', { screen: 'Preferences' })
   }, [tabsNavigation])
 
+  const onPressUpdateProfile = useCallback(() => {
+    tabsNavigation.navigate('Settings', { screen: 'UpdateProfile', params: {} }) // TODO: params
+  }, [tabsNavigation])
+
   const onPressAppInformations = useCallback(() => {
     tabsNavigation.navigate('Settings', { screen: 'AppInformations' })
+  }, [tabsNavigation])
+
+  const onPressDeleteAccount = useCallback(() => {
+    tabsNavigation.navigate('Settings', { screen: 'DeleteAccount' })
   }, [tabsNavigation])
 
   const onPressDeveloperMenu = useCallback(() => {
@@ -48,7 +56,9 @@ export const ViewProfileRoute: React.FC = () => {
     <ViewProfileScreen
       onPressChangeLanguage={onPressChangeLanguage}
       onPressEditPreferences={onPressEditPreferences}
+      onPressUpdateProfile={onPressUpdateProfile}
       onPressAppInformations={onPressAppInformations}
+      onPressDeleteAccount={onPressDeleteAccount}
       onPressDeveloperMenu={onPressDeveloperMenu}
       onPressLogin={onPressLogin}
       onPressLogout={onPressLogout}

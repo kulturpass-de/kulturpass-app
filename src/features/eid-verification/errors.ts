@@ -37,14 +37,6 @@ export class AA2AuthError extends AA2Error {
   }
 }
 
-export class AA2IDCardConnectionLost extends AA2Error {
-  constructor(detailCode?: string, message?: string, type?: string) {
-    super(AA2ErrorCode.AA2_ID_CARD_CONNECTION_LOST, detailCode)
-    this.message = message ?? this.message
-    this.type = type
-  }
-}
-
 export class AA2BadState extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
     super(AA2ErrorCode.AA2_BAD_STATE, detailCode)

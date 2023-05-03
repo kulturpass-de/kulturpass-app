@@ -24,7 +24,7 @@ export const EMAIL_SCHEMA = (t: TranslationFunction, isRequired?: boolean) => {
 export const DATE_PATTERN = /\d\d\d\d-\d\d-\d\d/
 
 export const DATE_SCHEMA = (t: TranslationFunction) => {
-  return z.literal('').or(z.string().regex(DATE_PATTERN, { message: t('form_error_date') }))
+  return z.undefined().or(z.string().regex(DATE_PATTERN, { message: t('form_error_date') }))
 }
 
 export const POSTAL_CODE_PATTERN = /^[0-9]{5}$/
@@ -67,7 +67,7 @@ export const getErrorTranslationKeyFromValidationError = (
 }
 
 export const getErrorDescriptionTranslationFromErrorWithCode = (
-  error: ErrorWithCode | null,
+  error: ErrorWithCode | undefined,
 ): {
   title: TranslationArgs
   message: TranslationArgs

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
-import { Pressable, StyleSheet, type TextInputProps, type ViewStyle } from 'react-native'
+import { Pressable, StyleSheet, View, type TextInputProps, type ViewStyle } from 'react-native'
 import DatePicker, { type DatePickerProps } from 'react-native-date-picker'
 
 import { type TestId, useTestIdBuilder } from '../../services/test-id/test-id'
@@ -10,6 +10,7 @@ import { Icon } from '../icon/icon'
 import { AvailableTranslations } from '../translated-text/types'
 import { dateToDotDate, dotDateToIsoDate, isoDateToDate, isoDateToDotDate } from './date-utils'
 import { useTranslation } from '../../services/translation/translation'
+import { colors } from '../../theme/colors'
 
 export type DateFormFieldProps = {
   testID: TestId
@@ -18,9 +19,10 @@ export type DateFormFieldProps = {
   containerStyle?: ViewStyle
   isRequired?: boolean
 
-  onChange?: (text: string) => void
+  onChange?: (text: string | undefined) => void
   onBlur?: TextInputProps['onBlur']
   value?: TextInputProps['value']
+  editable?: boolean
 }
 
 export const DateFormField: React.FC<DateFormFieldProps> = ({
@@ -32,6 +34,7 @@ export const DateFormField: React.FC<DateFormFieldProps> = ({
   onChange,
   onBlur,
   value: isoDate,
+  editable = true,
 }) => {
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
@@ -43,6 +46,13 @@ export const DateFormField: React.FC<DateFormFieldProps> = ({
   const [isDatePickerShown, setDatePickerShown] = useState<boolean>(false)
   const [dotDate, setDotDate] = useState<TextInputProps['value']>(isoDateToDotDate(isoDate))
 
+  useEffect(() => {
+    const value = isoDateToDotDate(isoDate)
+    if (value !== '') {
+      setDotDate(value)
+    }
+  }, [isoDate])
+
   /**
    * We need a Date object from the provided date prop for the DatePicker
    */
@@ -51,7 +61,7 @@ export const DateFormField: React.FC<DateFormFieldProps> = ({
   useEffect(() => {
     // Empty values are considered as valid
     if (dotDate === '') {
-      onChange?.('')
+      onChange?.(undefined)
       return
     }
 
@@ -63,7 +73,7 @@ export const DateFormField: React.FC<DateFormFieldProps> = ({
     }
 
     // If dotDate is not a valid date just emit the current value
-    onChange?.(dotDate ?? '')
+    onChange?.(dotDate ?? undefined)
   }, [dotDate, onChange])
 
   const toggleDatePicker = useCallback(() => {
@@ -95,23 +105,32 @@ export const DateFormField: React.FC<DateFormFieldProps> = ({
       value={dotDate}
       autoComplete="birthdate-full"
       autoCapitalize="none"
-      autoCorrect={false}>
-      <Pressable
-        style={styles.inputIcon}
-        onPress={toggleDatePicker}
-        testID={addTestIdModifier(testID, 'showDatePickerButton')}>
-        <Icon source="Calendar" width={24} height={24} />
-      </Pressable>
-      <DatePicker
-        modal
-        mode="date"
-        open={isDatePickerShown}
-        date={date}
-        onConfirm={onDatePickerConfirm}
-        onCancel={onDatePickerCancel}
-        minimumDate={new Date('1900-01-01')}
-        maximumDate={new Date()}
-      />
+      autoCorrect={false}
+      editable={editable}>
+      {editable ? (
+        <>
+          <Pressable
+            style={styles.inputIcon}
+            onPress={toggleDatePicker}
+            testID={addTestIdModifier(testID, 'showDatePickerButton')}>
+            <Icon source="Calendar" width={24} height={24} />
+          </Pressable>
+          <DatePicker
+            modal
+            mode="date"
+            open={isDatePickerShown}
+            date={date}
+            onConfirm={onDatePickerConfirm}
+            onCancel={onDatePickerCancel}
+            minimumDate={new Date('1900-01-01')}
+            maximumDate={new Date()}
+          />
+        </>
+      ) : (
+        <View style={styles.inputIcon}>
+          <Icon source="Calendar" width={24} height={24} tintColor={colors.transparentBlack40} />
+        </View>
+      )}
     </TextFormField>
   )
 }

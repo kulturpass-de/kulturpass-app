@@ -1,180 +1,112 @@
 import { createApi as createRtkApi } from '@reduxjs/toolkit/query/react'
-import type {
-  CommerceAuthResponse,
-  CommerceAuthParams,
-  GetFavoritesResponse,
-  GetFavoritesRequestParams,
-  GetPreferenceCategoriesResponse,
-  GetPreferenceCategoriesRequestParams,
-  GetProductDetailResponse,
-  GetProductDetailParams,
-} from './types'
-import { getEnvironmentConfigurationCommerce } from '../environment-configuration/redux/environment-configuration-selectors'
-import type { RootState } from '../redux/configure-store'
-import { type ExtraOptions, type FetchArgs } from './api'
-import { axiosBaseQuery } from './api-base-query'
-import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-reservations'
-import { ReservationParams } from './types/commerce/commerce-reservation'
-import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-profile'
-import { Order } from './types/commerce/api-types'
+
+import { getEnvironmentConfigurationState } from '../environment-configuration/redux/environment-configuration-selectors'
+import { RootState } from '../redux/configure-store'
+import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
+import { sendCommerceGetRequest } from './commerce/send-commerce-get-request'
+import { sendCommerceOauthTokenRequest } from './commerce/send-commerce-oauth-token-request'
+import { sendCommercePostRequest } from './commerce/send-commerce-post-request'
+import { axiosBaseQuery } from './common/base-query'
 import {
-  CancelReservationParams,
-  GetOrderDetailParams,
-  GetOrderDetailResponse,
-} from './types/commerce/commerce-order-detail'
+  GetFavoritesRequestParams,
+  GetFavoritesResponse,
+  GetPreferenceCategoriesRequestParams,
+  GetPreferenceCategoriesResponse,
+  GetProductDetailParams,
+  GetProductDetailResponse,
+  PostAuthTokenParams,
+  PostAuthTokenResponse,
+} from './types'
+import { Order } from './types/commerce/api-types'
+import { CancelReservationParams } from './types/commerce/commerce-cancel-reservation'
+import { CreateReservationParams } from './types/commerce/commerce-create-reservation'
+import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
+import { GetOrderDetailParams, GetOrderDetailResponse } from './types/commerce/commerce-get-order-detail'
+import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-get-profile'
+import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
 
 export const commerceApi = createRtkApi({
   reducerPath: 'commerceApi',
-  /**
-   * @see {@link https://redux-toolkit.js.org/rtk-query/usage/customizing-queries}
-   **/
-  baseQuery: (args: FetchArgs, api, extraOptions: ExtraOptions = {}) => {
-    const rootState = api.getState() as RootState
-    const commerce = getEnvironmentConfigurationCommerce(rootState)
-    const rawBaseQuery = axiosBaseQuery({ baseUrl: commerce.baseUrl })
-
-    args.headers = args.headers || {}
-
-    if (extraOptions.skipAuth !== true) {
-      if (rootState.auth.commerce === null) {
-        throw new Error('Missing auth')
-      }
-
-      args.headers.Authorization = `Bearer ${rootState.auth.commerce.access_token}`
-    }
-
-    if (args.method === 'POST') {
-      args.headers['Content-Type'] = 'application/json'
-
-      const urlParams = new URLSearchParams(args.params || {})
-      args.url += `?${urlParams}`
-      args.params = null
-    }
-
-    return rawBaseQuery(args, api, extraOptions)
-  },
+  baseQuery: repeatRequestIfInvalidToken<unknown>(axiosBaseQuery),
   tagTypes: ['profile', 'reservations', 'reservation-detail'],
   endpoints: builder => ({
-    postAuthToken: builder.mutation<CommerceAuthResponse, CommerceAuthParams>({
-      query: ({ url, ...params }) => ({
-        url,
-        method: 'POST',
-        params,
-      }),
-      extraOptions: {
-        skipAuth: true,
-      },
+    postAuthToken: builder.mutation<PostAuthTokenResponse, PostAuthTokenParams>({
+      queryFn: sendCommerceOauthTokenRequest(params => ({
+        queryParams: params,
+      })),
     }),
     getFavorites: builder.query<GetFavoritesResponse, GetFavoritesRequestParams>({
-      query: ({ baseSiteId }) => {
-        return {
-          url: `/${baseSiteId}/users/current/carts`,
-          method: 'GET',
-          params: {
-            fields: 'FULL',
-          },
-        }
-      },
+      queryFn: sendCommerceGetRequest(() => ({
+        path: 'users/current/carts',
+        queryParams: { fields: 'FULL' },
+      })),
     }),
     getProductDetail: builder.query<GetProductDetailResponse, GetProductDetailParams>({
-      query: ({ baseSiteId, productCode, language, location, preferredPostalCode }) => {
-        let userLocation: string | undefined
-        if (location) {
-          userLocation = `${location.coords.latitude},${location.coords.longitude}`
-        }
+      queryFn: sendCommerceGetRequest(params => {
         return {
-          url: `/${baseSiteId}/products/geospatial/${productCode}`,
-          method: 'GET',
-          params: {
-            lang: language,
-            userLocation,
-            postalCode: userLocation ? undefined : preferredPostalCode,
-          },
+          path: `products/geospatial/${params.productCode}`,
+          appendLanguageQueryParams: true,
+          appendLocationQueryParams: true,
         }
-      },
-      extraOptions: {
-        skipAuth: true,
-      },
+      }),
     }),
     getOrderDetail: builder.query<GetOrderDetailResponse, GetOrderDetailParams>({
       providesTags: ['reservation-detail'],
-      query: ({ baseSiteId, userId, orderCode }) => {
-        return {
-          url: `/${baseSiteId}/users/${userId}/orders/${orderCode}`,
-          method: 'GET',
-          params: {},
-        }
-      },
+      queryFn: sendCommerceGetRequest(params => ({
+        path: `users/current/orders/${params.orderCode}`,
+      })),
     }),
-    cancelReservation: builder.mutation<null, CancelReservationParams>({
+    cancelReservation: builder.mutation<void, CancelReservationParams>({
       invalidatesTags: ['profile', 'reservations', 'reservation-detail'],
-      query: ({ baseSiteId, userId, order }) => {
-        if (!order.code) {
+      queryFn: sendCommercePostRequest(params => {
+        if (!params.order.code) {
           throw new Error("Can't cancel the reservation due of missing a code in order.")
         }
-        const firstEntry = order.entries?.[0]
+        const firstEntry = params.order.entries?.[0]
         if (!firstEntry) {
           throw new Error("Can't cancel the reservation due of missing an entry in order.")
         }
         return {
-          url: `/${baseSiteId}/users/${userId}/orders/${order.code}/cancellation`,
-          method: 'POST',
-          data: {
+          path: `users/current/orders/${params.order.code}/cancellation`,
+          bodyPayload: {
             cancellationRequestEntryInputs: [
-              {
-                orderEntryNumber: firstEntry.entryNumber,
-                quantity: firstEntry.quantity,
-              },
+              { orderEntryNumber: firstEntry.entryNumber, quantity: firstEntry.quantity },
             ],
           },
         }
-      },
+      }),
     }),
     getReservations: builder.query<GetReservationsResponse, GetReservationsParams>({
       providesTags: ['reservations'],
-      query: ({ baseSiteId, statuses }) => {
-        return {
-          url: `/${baseSiteId}/users/current/reservations`,
-          method: 'GET',
-          params: {
-            statuses,
-          },
-        }
-      },
+      queryFn: sendCommerceGetRequest(() => ({
+        path: 'users/current/reservations',
+      })),
     }),
     getPreferenceCategories: builder.query<GetPreferenceCategoriesResponse, GetPreferenceCategoriesRequestParams>({
-      query: ({ baseSiteId, lang }) => {
-        return {
-          url: `/${baseSiteId}/categories/availablePreferences`,
-          method: 'GET',
-          params: {
-            lang: lang === 'de' ? 'de' : 'en',
-          },
-        }
-      },
-      extraOptions: {
-        skipAuth: true,
-      },
+      queryFn: sendCommerceGetRequest(() => ({
+        path: 'categories/availablePreferences',
+        appendLanguageQueryParams: true,
+      })),
     }),
-    reservation: builder.mutation<Order, ReservationParams>({
-      query: ({ baseSiteId, offerCode }) => {
-        return {
-          url: `/${baseSiteId}/users/current/reservations`,
-          method: 'POST',
-          params: {
-            offerCode,
-          },
-        }
-      },
+    createReservation: builder.mutation<Order, CreateReservationParams>({
+      queryFn: sendCommercePostRequest(params => ({
+        path: 'users/current/reservations',
+        queryParams: params,
+      })),
     }),
-    profile: builder.query<GetProfileResponseBody, GetProfileRequestParams>({
+    getProfile: builder.query<GetProfileResponseBody, GetProfileRequestParams>({
       providesTags: ['profile'],
-      query: ({ baseSiteId, force }) => ({
-        url: `/${baseSiteId}/users/current`,
-        params: { force },
+      queryFn: sendCommerceGetRequest(() => ({
+        path: 'users/current',
+      })),
+    }),
+    getAppConfig: builder.query<GetAppConfigResponseBody, GetAppConfigRequestParams>({
+      queryFn: sendCommerceGetRequest((params, api) => {
+        const rootState = api.getState() as RootState
+        const environmentConfiguration = getEnvironmentConfigurationState(rootState)
+        const url: string = environmentConfiguration.currentEnvironment.appConfig.url
+        return { url }
       }),
     }),
   }),
 })
-
-export type CommerceApiType = typeof commerceApi

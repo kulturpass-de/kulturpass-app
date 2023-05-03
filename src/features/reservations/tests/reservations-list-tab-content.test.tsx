@@ -5,16 +5,14 @@ import { setupServer } from 'msw/lib/node'
 import React from 'react'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { buildTestId, addTestIdModifier } from '../../../services/test-id/test-id'
-import { AppProviders, I18nProvider, StoreProvider } from '../../../services/testing/test-utils'
+import { AppProviders, StoreProvider } from '../../../services/testing/test-utils'
 import { ReservationsListTabContent } from '../components/reservations-list-tab-content'
 
 const renderScreen = (children: React.ReactNode) => {
   render(
     <AppProviders>
       <StoreProvider withLoginSession>
-        <I18nProvider>
-          <NavigationContainer>{children}</NavigationContainer>
-        </I18nProvider>
+        <NavigationContainer>{children}</NavigationContainer>
       </StoreProvider>
     </AppProviders>,
   )

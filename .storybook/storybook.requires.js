@@ -38,6 +38,7 @@ const getStories = () => {
     require("../src/components/icon/icon.stories.tsx"),
     require("../src/components/link-text/link-text.stories.tsx"),
     require("../src/components/list-item/list-item.stories.tsx"),
+    require("../src/components/loading-indicator/loading-indicator-overlay.stories.tsx"),
     require("../src/components/modal-screen/modal-screen-header.stories.tsx"),
     require("../src/components/screen/screen.stories.tsx"),
     require("../src/components/svg-image/svg-image.stories.tsx"),
@@ -54,6 +55,8 @@ const getStories = () => {
     require("../src/features/reservations/screens/reservation-detail-screen.stories.tsx"),
     require("../src/features/reservations/stories/reservations-list-empty.stories.tsx"),
     require("../src/features/reservations/stories/reservations-list-item.stories.tsx"),
+    require("../src/features/spartacus-webview/components/webview-error-view.stories.tsx"),
+    require("../src/features/spartacus-webview/components/webview-loading-indicator.stories.tsx"),
     require("../src/screens/favorites/favorites-list-item.stories.tsx"),
     require("../src/theme/typography.stories.tsx"),
   ];

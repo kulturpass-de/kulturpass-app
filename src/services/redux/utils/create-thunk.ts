@@ -6,7 +6,12 @@ import { AppDispatch, RootState } from '../configure-store'
 /**
  * Extended from https://github.com/reduxjs/redux-toolkit/blob/master/packages/toolkit/src/createAsyncThunk.ts#L108
  */
-export type AsyncThunkConfig = { state: RootState; dispatch: AppDispatch; rejectValue: ErrorWithCode }
+export type AsyncThunkConfig = {
+  state: RootState
+  dispatch: AppDispatch
+  rejectValue: ErrorWithCode
+  serializedErrorType: ErrorWithCode
+}
 
 /**
  * A convinience wrapper function for `@reduxjs/toolkit/createAsyncThunk`, mostly for DRY-ness, that adds the following:

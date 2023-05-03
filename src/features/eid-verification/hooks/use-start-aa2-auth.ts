@@ -3,13 +3,13 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { env } from '../../../env'
-import { cdcApi } from '../../../services/api/cdc-api'
 import { getCdcSessionData } from '../../../services/auth/store/auth-selectors'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { RootState } from '../../../services/redux/configure-store'
 import { useTranslation } from '../../../services/translation/translation'
 import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { getSimulateCard } from '../redux/simulated-card-selectors'
+import { useGetAccountInfoLazyQuery } from '../../../services/user/use-get-account-info-lazy-query'
 
 /**
  * Hook that returns a callback for starting the AA2 Auth flow.
@@ -27,47 +27,43 @@ export const useStartAA2Auth = (
   )
 
   const sessionData = useSelector(getCdcSessionData)
-
-  const [getAccountInfo] = cdcApi.endpoints.accountsGetAccountInfo.useLazyQuery()
+  const getAccountInfoLazyQuery = useGetAccountInfoLazyQuery()
 
   const [isLoading, setIsLoading] = useState(false)
   const startAuth = useCallback(async () => {
     setIsLoading(true)
-
-    const readerList = await aa2Module.getReaderList()
-    if (!simulateCard) {
-      if (!readerList.readers.some(reader => reader.name === 'NFC')) {
-        return onNFCNotSupported()
+    try {
+      const readerList = await aa2Module.getReaderList()
+      if (!simulateCard) {
+        if (!readerList.readers.some(reader => reader.name === 'NFC')) {
+          return onNFCNotSupported()
+        }
+      } else if (simulateCard) {
+        if (!readerList.readers.some(reader => reader.name === 'Simulator')) {
+          return onError(new UnknownError())
+        }
       }
-    } else if (simulateCard) {
-      if (!readerList.readers.some(reader => reader.name === 'Simulator')) {
+
+      if (sessionData === null) {
         return onError(new UnknownError())
       }
-    }
 
-    if (sessionData === null) {
-      return onError(new UnknownError())
-    }
+      const { data, error } = await getAccountInfoLazyQuery(sessionData.regToken)
 
-    const { regToken } = sessionData
+      if (error !== undefined) {
+        return onError(error)
+      }
 
-    const { data, error } = await getAccountInfo({ regToken }, false)
+      if (data?.id_token === undefined) {
+        return onError(new UnknownError())
+      }
 
-    if (error !== undefined) {
-      return onError(error)
-    }
-
-    if (data?.id_token === undefined) {
-      return onError(new UnknownError())
-    }
-
-    const messages = {
-      sessionStarted: t('eid_iosScanDialog_sessionStarted'),
-      sessionFailed: t('eid_iosScanDialog_sessionFailed'),
-      sessionSucceeded: t('eid_iosScanDialog_sessionSucceeded'),
-      sessionInProgress: t('eid_iosScanDialog_sessionInProgress'),
-    }
-    try {
+      const messages = {
+        sessionStarted: t('eid_iosScanDialog_sessionStarted'),
+        sessionFailed: t('eid_iosScanDialog_sessionFailed'),
+        sessionSucceeded: t('eid_iosScanDialog_sessionSucceeded'),
+        sessionInProgress: t('eid_iosScanDialog_sessionInProgress'),
+      }
       const tokenUrl = `${tcTokenUrl}?idToken=${data.id_token}`
       const accessRights = await aa2Module.startAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages)
       const certificate = await aa2Module.getCertificate()
@@ -77,7 +73,7 @@ export const useStartAA2Auth = (
     } finally {
       setIsLoading(false)
     }
-  }, [simulateCard, sessionData, getAccountInfo, t, onNFCNotSupported, onError, tcTokenUrl, onSuccess])
+  }, [simulateCard, sessionData, getAccountInfoLazyQuery, t, onNFCNotSupported, onError, tcTokenUrl, onSuccess])
 
   return { startAuth, isLoading }
 }

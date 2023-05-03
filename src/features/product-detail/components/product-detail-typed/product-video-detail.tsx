@@ -3,6 +3,7 @@ import { useTranslation } from '../../../../services/translation/translation'
 import { VideoProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
 import { ProductDetailSection } from '../product-detail-section'
+import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 
 type ProductVideoDetailProps = {
   productDetail: VideoProductDetail
@@ -26,6 +27,8 @@ const ageForAgeRating = (ageRating: VideoProductDetail['ageRating']): number => 
 export const ProductVideoDetail: React.FC<ProductVideoDetailProps> = ({ productDetail }) => {
   const { videoFormat, ageRating, durationInMins } = productDetail
   const { t } = useTranslation()
+  const { buildTestId } = useTestIdBuilder()
+  const testID = buildTestId('productDetail_video')
 
   let i18nKeyAgeRating: string
   if (ageRating === 'NO_RESTRICTION') {
@@ -35,7 +38,7 @@ export const ProductVideoDetail: React.FC<ProductVideoDetailProps> = ({ productD
   }
 
   return videoFormat || ageRating || durationInMins ? (
-    <ProductDetailSection iconSource="Video" sectionCaptioni18nKey="productDetail_video_caption">
+    <ProductDetailSection testID={testID} iconSource="Video" sectionCaptioni18nKey="productDetail_video_caption">
       {videoFormat ? (
         <ProductDetailEntry
           i18nKey="productDetail_video_videoFormat"

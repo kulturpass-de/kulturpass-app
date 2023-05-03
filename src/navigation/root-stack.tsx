@@ -13,6 +13,7 @@ const Stack = createStackNavigator<RootStackParams>()
 
 export const RootStackScreen: React.FC = () => {
   const showOnboardingOnStartup = useSelector((state: RootState) => state.persisted.onboarding.showOnboardingOnStartup)
+
   return (
     <>
       <StatusBar backgroundColor="#ffffff" barStyle={'dark-content'} />

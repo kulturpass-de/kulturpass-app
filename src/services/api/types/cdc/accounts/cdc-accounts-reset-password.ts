@@ -1,7 +1,7 @@
 import { CdcApiBaseSuccessResponse } from '../cdc-api-base-success-response'
 
 export type AccountsResetPasswordRequestParams = {
-  email: string
+  loginID: string
 }
 
 export type AccountsResetPasswordResponse = CdcApiBaseSuccessResponse

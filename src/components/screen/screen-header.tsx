@@ -38,6 +38,7 @@ export type ScreenHeaderProps = {
   onPressClose?: () => void
   borderBottom?: boolean
   onPress?: PressableProps['onPress']
+  screenType?: 'screen' | 'subscreen'
 }
 
 export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
@@ -46,12 +47,15 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   onPressBack,
   onPressClose,
   borderBottom,
+  screenType = 'screen',
   onPress,
 }) => {
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
 
   const containerBorderBottomStyle = borderBottom ? styles.containerBorderBottom : {}
+
+  const titleFont = screenType === 'screen' ? textStyles.HeadlineH3Extrabold : textStyles.SubtitleExtrabold
 
   const screenHeaderContent = (
     <SafeAreaView edges={['top']} style={[styles.container, containerBorderBottomStyle]} testID={testID}>
@@ -66,7 +70,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         </Pressable>
       )}
       <Text
-        style={[textStyles.HeadlineH3Extrabold, styles.title]}
+        style={[titleFont, styles.title]}
         testID={addTestIdModifier(testID, 'titleText')}
         accessibilityLabel={title}
         accessible>

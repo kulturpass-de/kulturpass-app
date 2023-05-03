@@ -20,7 +20,7 @@ type ReservationsListTabContentProps = {
   illustrationType: IllustrationType
   completedReservations: boolean
   onOrderPressed: (order: Order) => void
-  setVisibleError: (error: ErrorWithCode | null) => void
+  setVisibleError: (error: ErrorWithCode | undefined) => void
 }
 
 export const ReservationsListTabContent: React.FC<ReservationsListTabContentProps> = ({
@@ -39,7 +39,7 @@ export const ReservationsListTabContent: React.FC<ReservationsListTabContentProp
 
   useEffect(() => {
     if (error === undefined) {
-      setVisibleError(null)
+      setVisibleError(undefined)
     } else if (error instanceof ErrorWithCode) {
       setVisibleError(error)
     } else {

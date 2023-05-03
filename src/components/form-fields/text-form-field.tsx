@@ -32,6 +32,7 @@ export type TextFormFieldProps = React.PropsWithChildren<
     | 'placeholder'
     | 'secureTextEntry'
     | 'value'
+    | 'editable'
   >
 >
 
@@ -44,6 +45,7 @@ export const TextFormField: React.FC<TextFormFieldProps> = ({
   onChange,
   onBlur,
   children,
+  editable = true,
   ...textInputProps
 }) => {
   const { t } = useTranslation()
@@ -82,12 +84,13 @@ export const TextFormField: React.FC<TextFormFieldProps> = ({
       <TextInput
         placeholderTextColor={colors.moonBase}
         onChangeText={onChange}
-        style={[textStyles.BodyRegular, styles.textInput, borderColor]}
+        style={[textStyles.BodyRegular, styles.textInput, borderColor, !editable ? styles.textInputDisabled : {}]}
         testID={addTestIdModifier(testID, 'input')}
         accessibilityLabel={t(labelI18nKey)}
         accessible
         onBlur={handleBlur}
         onFocus={handleFocus}
+        editable={editable}
         {...textInputProps}
       />
       {children}
@@ -104,5 +107,10 @@ const styles = StyleSheet.create({
     borderRadius: spacing[2],
     color: colors.moonDarkest,
     backgroundColor: colors.basicWhite,
+  },
+  textInputDisabled: {
+    color: colors.transparentBlack40,
+    borderColor: colors.transparentBlack40,
+    backgroundColor: colors.transparentWhite50,
   },
 })

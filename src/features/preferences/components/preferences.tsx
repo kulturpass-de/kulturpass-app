@@ -22,6 +22,7 @@ import { POSTAL_CODE_SCHEMA } from '../../form-validation/utils/form-validation'
 import { useTranslation } from '../../../services/translation/translation'
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export type PreferencesFormData = {
   postalCode: string
@@ -48,11 +49,13 @@ export const Preferences: React.FC<PreferencesProps> = ({
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
+  const [loading, setLoading] = useState(false)
+
   const form = useForm<PreferencesFormData>({
     resolver: zodResolver(
       z.object({
-        postalCode: POSTAL_CODE_SCHEMA(t, true),
-        categories: z.array(z.string()),
+        postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, true)),
+        categories: z.string().array().min(0),
       }),
     ),
     defaultValues: {
@@ -63,6 +66,8 @@ export const Preferences: React.FC<PreferencesProps> = ({
 
   useEffect(() => {
     if (!userPreferences) {
+      // trigger the validation once as it does `reset` to make sure the submit button is enabled
+      form.trigger()
       return
     }
 
@@ -83,9 +88,10 @@ export const Preferences: React.FC<PreferencesProps> = ({
   }, [userPreferences, availableCategories, form])
 
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async formValues => {
+    setLoading(true)
     const selectedCategoryIds = sanitizeSelectedCategories({
       availableCategories,
       selectedCategoryIds: formValues.categories,
@@ -108,11 +114,14 @@ export const Preferences: React.FC<PreferencesProps> = ({
       } else {
         setVisibleError(new UnknownError())
       }
+    } finally {
+      setLoading(false)
     }
   })
 
   return (
     <>
+      <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent>
         <View style={withGreeting ? styles.contentWithGreeting : styles.contentWihoutGreeting}>
@@ -170,7 +179,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
       </ScreenContent>
       <View style={styles.submitButtonView}>
         <Button
-          disabled={!form.formState.isDirty}
+          disabled={!form.formState.isValid}
           testID={buildTestId('preferences_form_submit')}
           i18nKey={submitButtonI18nKey}
           onPress={onSubmit}

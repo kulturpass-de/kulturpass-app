@@ -2,6 +2,7 @@ import React from 'react'
 import { SheetMusicProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
 import { ProductDetailSection } from '../product-detail-section'
+import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 
 export type ProductSheetMusicDetailProps = {
   productDetail: SheetMusicProductDetail
@@ -9,8 +10,12 @@ export type ProductSheetMusicDetailProps = {
 
 export const ProductSheetMusicDetail: React.FC<ProductSheetMusicDetailProps> = ({ productDetail }) => {
   const { isbn, publisher, arrangement } = productDetail
+  const { buildTestId } = useTestIdBuilder()
   return (
-    <ProductDetailSection iconSource="Music" sectionCaptioni18nKey="productDetail_sheetMusic_caption">
+    <ProductDetailSection
+      testID={buildTestId('productDetail_sheetMusic')}
+      iconSource="Music"
+      sectionCaptioni18nKey="productDetail_sheetMusic_caption">
       <ProductDetailEntry
         i18nKey="productDetail_sheetMusic_isbn"
         value={isbn}

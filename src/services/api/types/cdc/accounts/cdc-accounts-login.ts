@@ -1,12 +1,12 @@
 import { CdcApiBaseSuccessResponse } from '../cdc-api-base-success-response'
 import { AccountInfoData, AccountInfoProfile } from './cdc-accounts-account-info'
 
-export type LoginRequest = {
-  loginId: string
+export type AccountsLoginRequestParams = {
+  loginID: string
   password: string
 }
 
-export type CdcApiLoginSuccessResponse = CdcApiBaseSuccessResponse & {
+export type AccountsLoginResponse = CdcApiBaseSuccessResponse & {
   registeredTimestamp: number
   UID: string
   UIDSignature: string

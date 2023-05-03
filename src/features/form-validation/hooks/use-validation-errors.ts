@@ -18,7 +18,9 @@ export const useValidationErrors = <T extends FieldValues>(form: UseFormReturn<T
         if (isKeyOfObject(fieldError.fieldName, values)) {
           const errorTranslation = getErrorTranslationKeyFromValidationError(fieldError)
           form.setError(fieldError.fieldName as FieldPath<T>, {
-            message: t(errorTranslation.key, errorTranslation.values),
+            message: errorTranslation.values
+              ? t(errorTranslation.key, errorTranslation.values)
+              : t(errorTranslation.key),
             type: 'value',
           })
         }

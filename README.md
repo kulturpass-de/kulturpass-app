@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/kulturpass-de/.github/blob/main/images/kulturpass-de-logo.jpg?raw=true"">
+    <img src="https://github.tools.sap/kulturpass/.github/blob/main/images/kulturpass-de-logo.jpg?raw=true">
 <p>
 <h1 align="center">
 Culture App

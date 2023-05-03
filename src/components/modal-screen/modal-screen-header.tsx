@@ -4,21 +4,21 @@ import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
 import { Icon } from '../icon/icon'
 import { TranslatedText } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
+import { spacing } from '../../theme/spacing'
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingVertical: spacing[5],
+    alignItems: 'center',
+    paddingHorizontal: spacing[3],
+    height: 56,
     backgroundColor: colors.basicWhite,
   },
   titleContainer: { marginLeft: 6 },
-  arrowBackButton: { marginBottom: 32 },
   closeButton: { marginRight: 6 },
 })
 
@@ -40,25 +40,22 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      <View>
-        {onPressBack && (
-          <Pressable
-            style={styles.arrowBackButton}
-            onPress={onPressBack}
-            testID={addTestIdModifier(testID, 'backButton')}
-            accessibilityLabel={t('back_button')}
-            accessible>
-            <Icon source="ArrowBack" width={24} height={24} />
-          </Pressable>
-        )}
-        <View style={styles.titleContainer}>
-          <TranslatedText
-            testID={addTestIdModifier(testID, 'title')}
-            i18nKey={titleI18nKey}
-            textStyle="SubtitleExtrabold"
-            textStyleOverrides={{ color: colors.moonDarkest }}
-          />
-        </View>
+      {onPressBack && (
+        <Pressable
+          onPress={onPressBack}
+          testID={addTestIdModifier(testID, 'backButton')}
+          accessibilityLabel={t('back_button')}
+          accessible>
+          <Icon source="ArrowBack" width={24} height={24} />
+        </Pressable>
+      )}
+      <View style={styles.titleContainer}>
+        <TranslatedText
+          testID={addTestIdModifier(testID, 'title')}
+          i18nKey={titleI18nKey}
+          textStyle="SubtitleExtrabold"
+          textStyleOverrides={{ color: colors.moonDarkest }}
+        />
       </View>
       {onPressClose && (
         <Pressable

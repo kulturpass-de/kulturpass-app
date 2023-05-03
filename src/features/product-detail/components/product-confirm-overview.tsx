@@ -9,11 +9,16 @@ import { useTranslation } from '../../../services/translation/translation'
 import { Category, Price } from '../../../services/api/types/commerce/api-types'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { spacing } from '../../../theme/spacing'
-import { svgForCategory } from '../utils'
+import { svgForProductType } from '../utils'
 
 export type ProductConfirmOverviewProps = {
   productDetail: ProductDetail
   price: Price | undefined
+}
+
+const PRODUCT_TYPE_ICON_SIZE = {
+  width: 84,
+  height: 68,
 }
 
 export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ productDetail, price }) => {
@@ -22,7 +27,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
   const formattedPrice = useFormattedPrice(price)
 
   const category: Category | undefined = productDetail.categories[0]
-  const svgImageType = category.code !== undefined ? svgForCategory[category.code] : undefined
+  const svgImageType = svgForProductType[productDetail.productType]
 
   return (
     <View style={styles.container}>
@@ -47,7 +52,8 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
         {svgImageType !== undefined ? (
           <SvgImage
             type={svgImageType}
-            screenWidthRelativeSize={0.17}
+            width={PRODUCT_TYPE_ICON_SIZE.width}
+            height={PRODUCT_TYPE_ICON_SIZE.height}
             testID={buildTestId('productDetail_confirmReservation_overview')}
           />
         ) : null}

@@ -54,7 +54,7 @@ export const EidCanRoute: React.FC<EidCanRouteProps> = ({ route }) => {
   )
 }
 
-export const EidCanAppRouteConfig = createRouteConfig({
+export const EidCanRouteConfig = createRouteConfig({
   name: EidCanRouteName,
   component: EidCanRoute,
   options: { cardStyle: modalCardStyle },

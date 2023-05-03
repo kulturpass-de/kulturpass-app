@@ -1,1 +1,4 @@
-export type Language = 'de' | 'en'
+export enum Language {
+  de = 'de',
+  en = 'en',
+}

@@ -4,11 +4,13 @@ import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { Offer } from '../../../services/api/types/commerce/api-types'
+import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../../theme/utils'
-import { ProductDetailErrorAlert } from '../components/product-detail-error-alert'
+import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductDetailScreen } from './product-detail-screen'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const ProductDetailRouteName = 'ProductDetail'
 
@@ -46,24 +48,28 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
     })
   }, [productCode, selectedOffer, modalNavigation])
 
+  const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
+
+  const handleDismissErrorAndClose = useCallback(() => {
+    onDismissVisibleError()
+    onClose()
+  }, [onClose, onDismissVisibleError])
+
   if (!productDetail) {
-    return (
-      <ProductDetailErrorAlert
-        error="productDetail_getProductDetailError_message"
-        visible={!isLoading && !!error}
-        onClose={onClose}
-      />
-    )
+    return <ErrorAlert error={visibleError} onDismiss={handleDismissErrorAndClose} />
   }
 
   return (
-    <ProductDetailScreen
-      onClose={onClose}
-      onOfferSelection={onOfferSelection}
-      productDetail={productDetail}
-      selectedOffer={selectedOffer}
-      reserveProduct={reserveProduct}
-    />
+    <>
+      <LoadingIndicator loading={isLoading} />
+      <ProductDetailScreen
+        onClose={onClose}
+        onOfferSelection={onOfferSelection}
+        productDetail={productDetail}
+        selectedOffer={selectedOffer}
+        reserveProduct={reserveProduct}
+      />
+    </>
   )
 }
 

@@ -2,20 +2,12 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { resources } from '../../services/translation/setup'
-import { TranslationProvider } from '../../services/translation/translation'
 import { buildTestId } from '../../services/test-id/test-id'
 import { LogInScreen } from './log-in-screen'
-import t from '../../services/translation/i18n/en.json'
+import t from '../../services/translation/i18n/de.json'
 
 const renderScreen = (children: React.ReactNode) => {
-  render(
-    <SafeAreaProvider>
-      <TranslationProvider fallbackLng="en" debug={false} resources={resources}>
-        {children}
-      </TranslationProvider>
-    </SafeAreaProvider>,
-  )
+  render(<SafeAreaProvider>{children}</SafeAreaProvider>)
 }
 
 const renderLoginScreen = ({ afterLogin }: { afterLogin?: () => Promise<void> } = {}) => {

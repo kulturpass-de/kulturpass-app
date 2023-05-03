@@ -9,19 +9,15 @@ import { Icon } from '../../components/icon/icon'
 import { StyleSheet } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 
-/* eslint-disable react/jsx-no-bind */
-
 export type ChangeLanguageScreenProps = {
   onHeaderPressClose: () => void
 }
 
 export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHeaderPressClose }) => {
-  const { t, l, cl, languages } = useTranslation()
+  const { t, l, cl, ls } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
-  const availableLanguages = languages().languages
-
-  const onLanguageSelection = (newLanguage: Language) => {
+  const onLanguageSelection = (newLanguage: Language) => () => {
     cl(newLanguage)
   }
 
@@ -33,9 +29,10 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
           testID={buildTestId('changeLanguage_title')}
           title={t('changeLanguage_title')}
           onPressBack={onHeaderPressClose}
+          screenType="subscreen"
         />
       }>
-      {availableLanguages.map(language => (
+      {ls.map(language => (
         <ListItem
           key={language}
           icon={
@@ -48,7 +45,7 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
           }
           title={t(`language_${language}`)}
           testID={buildTestId(`changeLanguage_${language}_button`)}
-          onPress={() => onLanguageSelection(language)}
+          onPress={onLanguageSelection(language)}
         />
       ))}
     </Screen>

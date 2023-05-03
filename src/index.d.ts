@@ -4,4 +4,5 @@ declare module '@env' {
   export const DEV_MENU: string | undefined
   export const AA2_DEVELOPER_MODE: string | undefined
   export const ENVIRONMENTS: string | undefined
+  export const DEBUG_TRANSLATION: string | undefined
 }

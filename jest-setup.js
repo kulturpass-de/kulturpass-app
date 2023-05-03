@@ -37,6 +37,7 @@ jest.mock('./src/env', () => {
       BRIDGE_FC_DEFAULT_TIMEOUT_MS: 1000,
       DEV_MENU: true,
       AA2_DEVELOPER_MODE: true,
+      DEBUG_TRANSLATION: true,
       ENVIRONMENTS: JSON.stringify({
         $schema: 'https://kulturpass.sap.com/json-schema/environment-config.yml',
         data: [
@@ -65,6 +66,12 @@ jest.mock('./src/env', () => {
             },
             eid: {
               tcTokenUrl: 'http://localhost/eid',
+            },
+            appConfig: {
+              url: 'http://localhost/appConfig/url',
+              initialValue: 'initialValue',
+              publicKey: 'publicKey',
+              backupPublicKey: 'backupPublicKey',
             },
           },
         ],

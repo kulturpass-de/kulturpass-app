@@ -24,7 +24,10 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
   const { buildTestId } = useTestIdBuilder()
   const { exhibitStartDate, exhibitEndDate } = productDetail
   return exhibitStartDate || exhibitEndDate ? (
-    <ProductDetailSection iconSource="Calendar" sectionCaptioni18nKey="productDetail_exhibit_duration_caption">
+    <ProductDetailSection
+      testID={buildTestId('productDetail_exhibit_duration')}
+      iconSource="Calendar"
+      sectionCaptioni18nKey="productDetail_exhibit_duration_caption">
       <Text
         testID={buildTestId('productDetail_exhibit_duration_content')}
         style={[textStyles.BodyBlack, { color: colors.moonDarkest }]}>

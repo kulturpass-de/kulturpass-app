@@ -13,12 +13,13 @@ import { getRegistrationToken } from '../../../../services/auth/store/auth-selec
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
 import { ErrorAlert } from '../../../form-validation/components/error-alert'
 import { spacing } from '../../../../theme/spacing'
+import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
 
 export const AccountVerificationHero: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
   const userData = useSelector(selectUserProfile)
   const regToken = useSelector(getRegistrationToken)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const [accountsResendVerificationCode, result] = cdcApi.endpoints.accountsResendVerificationCode.useLazyQuery()
 
   const onPressResendVerificationCode = useCallback(async () => {
@@ -39,6 +40,7 @@ export const AccountVerificationHero: React.FC = () => {
 
   return (
     <>
+      <LoadingIndicator loading={result.isLoading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <View style={styles.container}>
         <TranslatedText

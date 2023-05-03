@@ -23,7 +23,10 @@ export const environmentConfigurationSlice = createSlice({
       }
       state.currentEnvironment = environment
     },
+    setAppConfig: (state, action: PayloadAction<string>) => {
+      state.currentEnvironment.appConfig.initialValue = action.payload
+    },
   },
 })
 
-export const { setEnvironmentConfiguration } = environmentConfigurationSlice.actions
+export const { setEnvironmentConfiguration, setAppConfig } = environmentConfigurationSlice.actions

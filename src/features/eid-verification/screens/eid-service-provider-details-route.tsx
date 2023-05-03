@@ -39,7 +39,7 @@ export const EidServiceProviderDetailsRoute: React.FC<EidServiceProviderDetailsR
   )
 }
 
-export const EidServiceProviderDetailsAppRouteConfig = createRouteConfig({
+export const EidServiceProviderDetailsRouteConfig = createRouteConfig({
   name: EidServiceProviderDetailsRouteName,
   component: EidServiceProviderDetailsRoute,
   options: { cardStyle: modalCardStyle },

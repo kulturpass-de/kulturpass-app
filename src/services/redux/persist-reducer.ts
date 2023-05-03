@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { onboardingSlice } from '../../features/onboarding/redux/onboarding'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
-import { installationSlice } from './slices/installation'
+import { appCoreSlice } from './slices/app-core'
 import { locationSlice } from '../location/redux/location-slice'
 import { cardSimulationSlice } from '../../features/eid-verification/redux/simulated-card'
 
@@ -15,7 +15,7 @@ const persistedReducer = combineReducers({
   [environmentConfigurationSlice.name]: environmentConfigurationSlice.reducer,
   [onboardingSlice.name]: onboardingSlice.reducer,
   [locationSlice.name]: locationSlice.reducer,
-  [installationSlice.name]: installationSlice.reducer,
+  [appCoreSlice.name]: appCoreSlice.reducer,
   [cardSimulationSlice.name]: cardSimulationSlice.reducer,
 })
 

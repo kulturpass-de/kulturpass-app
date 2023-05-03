@@ -40,11 +40,21 @@ export const EidSchema = z.object({
 
 export type Eid = z.infer<typeof EidSchema>
 
+export const AppConfigSchema = z.object({
+  initialValue: z.string(),
+  publicKey: z.string(),
+  backupPublicKey: z.string(),
+  url: z.string(),
+})
+
+export type AppConfig = z.infer<typeof AppConfigSchema>
+
 export const EnvironmentConfigurationSchema = z.object({
   name: z.string(),
   commerce: CommerceApiSchema,
   cdc: CustomerDataCloudSchema,
   eid: EidSchema,
+  appConfig: AppConfigSchema,
 })
 
 export type EnvironmentConfiguration = z.infer<typeof EnvironmentConfigurationSchema>

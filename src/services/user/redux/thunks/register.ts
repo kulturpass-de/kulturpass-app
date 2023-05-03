@@ -15,7 +15,6 @@ export const register = createThunk<AccountsRegisterResponse, RegistrationFormDa
       password: payload.password,
       profile: {
         firstName: payload.firstName,
-        lastName: payload.lastName,
       },
       data: {
         dateOfBirth: payload.dateOfBirth,

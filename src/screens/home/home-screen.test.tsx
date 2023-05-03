@@ -6,9 +6,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { buildTestId } from '../../services/test-id/test-id'
-import { AppProviders, I18nProvider, StoreProvider } from '../../services/testing/test-utils'
+import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
 import { HomeScreen } from './home-screen'
-import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-profile'
+import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
 
 export const server = setupServer()
 
@@ -21,13 +21,11 @@ const renderScreen = () => {
   render(
     <AppProviders>
       <StoreProvider withLoginSession>
-        <I18nProvider>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </I18nProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={HomeScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </StoreProvider>
     </AppProviders>,
   )

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -12,6 +12,8 @@ import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { FavoriteButton } from '../../../components/favorite-button/favorite-button'
+import { commerceApi } from '../../../services/api/commerce-api'
+import { TranslatedText } from '../../../components/translated-text/translated-text'
 
 type ProductDetailFooterProps = {
   onReserve: () => void
@@ -30,9 +32,20 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
+  const { data } = commerceApi.useGetProfileQuery({ force: false }, { skip: !isLoggedIn })
+
+  const availableBalanceFormatted = useFormattedPrice(data?.balance?.availableBalance)
+
+  const canAfford = useMemo(() => {
+    const availableBalance = data?.balance?.availableBalance?.value
+    const offerPrice = selectedOffer?.price?.value
+    const shouldValidateBalance = availableBalance !== undefined && offerPrice !== undefined
+    return shouldValidateBalance ? availableBalance >= offerPrice : true
+  }, [data, selectedOffer])
+
   return (
     <View style={styles.container} testID={buildTestId('productDetail_footer')}>
-      {formattedPrice ? (
+      {canAfford && formattedPrice ? (
         <View style={styles.row}>
           <Text
             testID={buildTestId('productDetail_footer_priceTitle')}
@@ -46,7 +59,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           </Text>
         </View>
       ) : null}
-      {isLoggedIn ? (
+      {isLoggedIn && canAfford ? (
         <View style={[styles.row, styles.rowSpacing]}>
           <Button
             widthOption="grow"
@@ -62,6 +75,27 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
             testID={buildTestId('productDetail_footer_favorite_button')}
             onPress={handleFavoritePress}
           />
+        </View>
+      ) : null}
+      {isLoggedIn && !canAfford ? (
+        <View style={[styles.row, styles.rowCentered]}>
+          <View style={styles.cannotAffordContainer}>
+            <TranslatedText
+              textStyle="CaptionSemibold"
+              textStyleOverrides={styles.discount}
+              testID={buildTestId('productDetail_footer_cannot_afford_text')}
+              i18nKey="productDetail_footer_cannot_afford"
+              i18nParams={{ availableBalance: availableBalanceFormatted }}
+              customComponents={{
+                mark: <Text style={[styles.cannotAffordMarkedBalance, styles.discountAvailableBalance]} />,
+              }}
+            />
+          </View>
+          <Text
+            testID={buildTestId('productDetail_footer_price')}
+            style={[textStyles.HeadlineH3Extrabold, { color: colors.moonDarkest }]}>
+            {formattedPrice}
+          </Text>
         </View>
       ) : null}
     </View>
@@ -80,6 +114,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  rowCentered: {
+    alignItems: 'center',
+  },
   rowSpacing: {
     marginTop: spacing[4],
   },
@@ -90,5 +127,20 @@ const styles = StyleSheet.create({
     height: 26,
     alignSelf: 'center',
     color: colors.moonDarkest,
+  },
+  cannotAffordContainer: {
+    flex: 1,
+    paddingRight: spacing[6],
+  },
+  cannotAffordMarkedBalance: {
+    color: colors.basicWhite,
+    backgroundColor: colors.primaryDarkest,
+  },
+  discount: {
+    lineHeight: 19,
+  },
+  discountAvailableBalance: {
+    lineHeight: 19,
+    fontWeight: '700',
   },
 })

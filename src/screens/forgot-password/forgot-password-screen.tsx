@@ -20,6 +20,7 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 
 export type ForgotPasswordFormData = {
   email: string
@@ -32,6 +33,8 @@ export type ForgotPasswordScreenProps = {
 export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHeaderPressClose, onFormSubmit }) => {
   const { buildTestId } = useTestIdBuilder()
   const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
+
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(
       z.object({
@@ -41,9 +44,10 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
   })
 
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
+    setLoading(true)
     try {
       await onFormSubmit(data.email)
     } catch (error: unknown) {
@@ -54,11 +58,14 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
       } else {
         setVisibleError(new UnknownError())
       }
+    } finally {
+      setLoading(false)
     }
   })
 
   return (
     <ModalScreen testID={buildTestId('forgotPassword')}>
+      <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="forgotPassword_headline"

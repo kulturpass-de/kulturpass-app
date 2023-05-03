@@ -6,6 +6,7 @@ import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
+import { ReservationsTabsParamList } from './reservations-screen'
 
 type ReservationsTabItemProps = {
   route: MaterialTopTabBarProps['state']['routes'][0]
@@ -43,18 +44,20 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
     })
   }, [navigation, route.key])
 
+  const routeNameLowerCase = route.name.toLowerCase() as Lowercase<keyof ReservationsTabsParamList>
+
   return (
     <Pressable
       style={isNotLastElement ? styles.tabBarGap : undefined}
-      testID={buildTestId(`reservations_${route.name.toLowerCase()}_navigation_button`)}
+      testID={buildTestId(`reservations_${routeNameLowerCase}_navigation_button`)}
       onPress={onPress}
       onLongPress={onLongPress}
       accessibilityState={isFocused ? { selected: true } : {}}>
       <Text
         accessible
-        testID={buildTestId(`reservations_${route.name.toLowerCase()}_navigation_title`)}
+        testID={buildTestId(`reservations_${routeNameLowerCase}_navigation_title`)}
         style={[styles.tabBarLabel, isFocused ? textStyles.BodyExtrabold : textStyles.BodyMedium]}>
-        {t(`reservations_${route.name.toLowerCase()}_navigation_title`)}
+        {t(`reservations_${routeNameLowerCase}_navigation_title`)}
       </Text>
       {isFocused ? <View style={styles.tabBarIndicatorStyle} /> : null}
     </Pressable>

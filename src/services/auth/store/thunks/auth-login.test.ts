@@ -13,7 +13,7 @@ import { authLogin } from './auth-login'
 const server = setupServer()
 
 describe('authLogin', () => {
-  const cdcLoginArg = { loginId: 'MyLoginId', password: 'MyPassword' }
+  const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
   const cdcLoginResult = { profile: { firstName: 'Tester' }, sessionInfo: {} }
   const commerceLoginResult = { auth_something: 'token' }
 

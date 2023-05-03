@@ -137,6 +137,15 @@ export const createCdcErrorFromSchema = (errorBody: CdcApiErrorResponseBody) => 
   switch (appErrorCode) {
     case 'CDC_STATUS_VALIDATION_ERROR':
       return new CdcStatusValidationError(errorBody.validationErrors ?? [])
+  }
+
+  return mapCdcErrorCodeToError(appErrorCode) ?? new CdcError()
+}
+
+export const mapCdcErrorCodeToError = (errorCode: string): CdcError | null => {
+  switch (errorCode) {
+    case 'CDC_STATUS_VALIDATION_ERROR':
+      return new CdcStatusValidationError([])
     case 'CDC_EMAIL_NOT_VERIFIED':
       return new CdcEmailNotVerifiedError()
     case 'CDC_ACCOUNT_DISABLED':
@@ -159,5 +168,5 @@ export const createCdcErrorFromSchema = (errorBody: CdcApiErrorResponseBody) => 
       return new CdcServerError()
   }
 
-  return new CdcError()
+  return null
 }

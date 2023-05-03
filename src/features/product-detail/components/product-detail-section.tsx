@@ -3,28 +3,29 @@ import { StyleSheet, View } from 'react-native'
 import { Icon, IconProps } from '../../../components/icon/icon'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { TestId } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export type ProductDetailSectionProps = PropsWithChildren<{
+  testID: TestId
   iconSource: IconProps['source']
   sectionCaptioni18nKey: AvailableTranslations
 }>
 
 export const ProductDetailSection: React.FC<ProductDetailSectionProps> = ({
   children,
+  testID,
   iconSource,
   sectionCaptioni18nKey,
 }) => {
-  const { buildTestId } = useTestIdBuilder()
   return (
     <View style={styles.section}>
       <Icon source={iconSource} width={24} height={23} />
       <View style={styles.content}>
         <TranslatedText
           i18nKey={sectionCaptioni18nKey}
-          testID={buildTestId(sectionCaptioni18nKey)}
+          testID={testID}
           textStyle="CaptionSemibold"
           textStyleOverrides={{ color: colors.moonDarkest }}
         />

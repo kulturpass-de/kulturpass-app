@@ -17,7 +17,7 @@ export const StorybookScreen: React.FC<StorybookScreenProps> = ({ onHeaderPressB
   }, [])
 
   return (
-    <ModalScreen testID={buildTestId('storybook')}>
+    <ModalScreen whiteBottom testID={buildTestId('storybook')}>
       <ModalScreenHeader
         testID={buildTestId('storybook_headline_title')}
         titleI18nKey="storybook_headline_title"

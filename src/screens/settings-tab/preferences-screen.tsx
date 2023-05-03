@@ -5,10 +5,10 @@ import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
 import { useTranslation } from '../../services/translation/translation'
 import { useUserInfo } from '../../services/user/use-user-info'
-import { usePreferenceCategories } from '../../features/preferences/hooks/use-preference-categories'
+import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
 import { Preferences } from '../../features/preferences/components/preferences'
-import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 
 export type PreferencesScreenProps = {
   afterSubmitTriggered: () => void
@@ -18,20 +18,20 @@ export type PreferencesScreenProps = {
 export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmitTriggered, onPressClose }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
-  const preferenceCategories = usePreferenceCategories()
-  const { firstName, updateAccountInfo, accountInfo } = useUserInfo()
+  const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
+  const { firstName, setAccountInfo, accountInfo } = useUserInfo()
 
   const onSubmit = useCallback(
-    async (preferences: AccountInfoData) => {
-      await updateAccountInfo(preferences)
+    async (data: AccountInfoData) => {
+      await setAccountInfo({ data })
       afterSubmitTriggered()
     },
-    [updateAccountInfo, afterSubmitTriggered],
+    [setAccountInfo, afterSubmitTriggered],
   )
 
   return (
     <>
-      <LoadingSpinner isEnabled={preferenceCategories.isLoading || accountInfo.isLoading} />
+      <LoadingIndicator loading={preferenceCategories.isLoading || accountInfo.isLoading} />
       <Screen
         testID={buildTestId('preferences')}
         header={
@@ -39,6 +39,7 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
             title={t('editPreferences_title')}
             testID={buildTestId('preferences_headline')}
             onPressClose={onPressClose}
+            screenType="subscreen"
             borderBottom
           />
         }>

@@ -12,12 +12,12 @@ import { authCdcLogin } from './auth-cdc-login'
 const server = setupServer()
 
 describe('authCdcLogin', () => {
-  const cdcLoginArg = { loginId: 'MyLoginId', password: 'MyPassword' }
+  const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
   const cdcLoginResult = { profile: { firstName: 'Tester' }, sessionInfo: {}, id_token: 'my_token' }
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware] })
 
-  const persistCdcSesssion = jest.spyOn(sessionService, 'persistCdcSesssion')
+  const persistCdcSession = jest.spyOn(sessionService, 'persistCdcSession')
 
   beforeAll(() => server.listen())
   afterEach(() => {
@@ -33,22 +33,22 @@ describe('authCdcLogin', () => {
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
     // find postLogin pending, and check that it was called with correct args
-    const postLoginPending = store.findAction(cdcApi.endpoints.postLogin.matchPending)
+    const postLoginPending = store.findAction(cdcApi.endpoints.accountsLogin.matchPending)
     expect(postLoginPending?.meta.arg.originalArgs).toEqual(cdcLoginArg)
   })
 
-  it('should call persistCdcSesssion with sessionData generated from postLogin', async () => {
+  it('should call persistCdcSession with sessionData generated from postLogin', async () => {
     server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
     // find postLogin fulfilled, and create the expected sessionData from it
-    const postLoginFulfilled = store.findAction(cdcApi.endpoints.postLogin.matchFulfilled)
+    const postLoginFulfilled = store.findAction(cdcApi.endpoints.accountsLogin.matchFulfilled)
     const sessionData = cdcLoginResponseToSessionData(postLoginFulfilled!.payload)
 
-    // check that persistCdcSesssion was called with sessionData
-    expect(persistCdcSesssion).toHaveBeenCalledTimes(1)
-    expect(persistCdcSesssion).toHaveBeenCalledWith(sessionData)
+    // check that persistCdcSession was called with sessionData
+    expect(persistCdcSession).toHaveBeenCalledTimes(1)
+    expect(persistCdcSession).toHaveBeenCalledWith(sessionData)
   })
 
   it('should call setCdcSession with sessionData generated from postLogin', async () => {
@@ -57,7 +57,7 @@ describe('authCdcLogin', () => {
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
     // find postLogin fulfilled, and create the expected sessionData from it
-    const postLoginFulfilled = store.findAction(cdcApi.endpoints.postLogin.matchFulfilled)
+    const postLoginFulfilled = store.findAction(cdcApi.endpoints.accountsLogin.matchFulfilled)
     const sessionData = cdcLoginResponseToSessionData(postLoginFulfilled!.payload)
 
     // check that setCdcSession was called with sessionData
@@ -70,14 +70,14 @@ describe('authCdcLogin', () => {
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
     // find postLogin fulfilled, and create the expected sessionData from it
-    const postLoginFulfilled = store.findAction(cdcApi.endpoints.postLogin.matchFulfilled)
+    const postLoginFulfilled = store.findAction(cdcApi.endpoints.accountsLogin.matchFulfilled)
     const sessionData = cdcLoginResponseToSessionData(postLoginFulfilled!.payload)
 
     // check that authCdcLogin fulfilled was emitted with sessionData
     store.expectActions([{ type: authCdcLogin.fulfilled.type, payload: sessionData }])
   })
 
-  it('should reject and not call persistCdcSesssion and setCdcSession, if postLogin rejects', async () => {
+  it('should reject and not call persistCdcSession and setCdcSession, if postLogin rejects', async () => {
     server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
@@ -87,11 +87,11 @@ describe('authCdcLogin', () => {
     expect(authCdcLoginRejected?.payload).toBeInstanceOf(ErrorWithCode)
 
     // find postLogin rejection, and check that it is the same as authCdcLogin rejection
-    const postLoginRejected = store.findAction(cdcApi.endpoints.postLogin.matchRejected)
+    const postLoginRejected = store.findAction(cdcApi.endpoints.accountsLogin.matchRejected)
     expect(authCdcLoginRejected?.payload).toEqual(postLoginRejected?.payload)
 
-    // check that persistCdcSesssion did not run
-    expect(persistCdcSesssion).toHaveBeenCalledTimes(0)
+    // check that persistCdcSession did not run
+    expect(persistCdcSession).toHaveBeenCalledTimes(0)
 
     // check that setCdcSession did not run
     store.expectActionNotDispatched(authSlice.actions.setCdcSession.match)

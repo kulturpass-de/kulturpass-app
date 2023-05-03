@@ -87,6 +87,7 @@ export type ButtonTypeStyle = StyleSheet.NamedStyles<{
   disabledText: TextStyle
 }>
 
+// TODO: Cleanup empty styles
 export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
   primary: StyleSheet.create({
     baseContainer: {
@@ -219,5 +220,30 @@ export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
     disabledText: {
       color: colors.transparentBlack45,
     },
+  }),
+  error: StyleSheet.create({
+    baseContainer: {
+      backgroundColor: colors.redDarkest,
+      borderColor: colors.redDarkest,
+    },
+    baseShadow: {
+      display: 'none',
+    },
+    baseText: {
+      color: colors.basicWhite,
+    },
+    pressedContainer: {
+      backgroundColor: colors.redDarkest,
+      opacity: 0.6,
+    },
+    pressedShadow: {},
+    pressedText: {},
+    disabledContainer: {
+      backgroundColor: colors.redDarkest,
+      opacity: 0.55,
+      borderColor: 'transparent',
+    },
+    disabledShadow: {},
+    disabledText: {},
   }),
 }

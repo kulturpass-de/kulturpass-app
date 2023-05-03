@@ -1064,6 +1064,11 @@ export interface Offer {
   totalPrice?: Price
   volumeOriginPrices?: Price[]
   volumePrices?: Price[]
+  /** Shop accessibility */
+  accessibilityWheelchairShop?: boolean
+  accessibilityToiletShop?: boolean
+  accessibilityOffer?: string
+  accessibilityOfferOthers?: string // label (de): Sonstige Angaben
 }
 
 /** OfferList */

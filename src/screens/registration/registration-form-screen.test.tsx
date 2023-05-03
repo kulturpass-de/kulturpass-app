@@ -2,11 +2,9 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved, act } from '@testing-library/react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { resources } from '../../services/translation/setup'
-import { TranslationProvider } from '../../services/translation/translation'
 import { buildTestId, addTestIdModifier } from '../../services/test-id/test-id'
 import { RegistrationFormScreen } from './registration-form-screen'
-import t from '../../services/translation/i18n/en.json'
+import t from '../../services/translation/i18n/de.json'
 import { setupServer } from 'msw/lib/node'
 import { rest } from 'msw'
 import { configureMockStore } from '../../services/testing/configure-mock-store'
@@ -21,11 +19,7 @@ describe('registration-form-screen', () => {
   const renderScreen = (children: React.ReactNode) => {
     render(
       <SafeAreaProvider>
-        <Provider store={store}>
-          <TranslationProvider fallbackLng="en" debug={false} resources={resources}>
-            {children}
-          </TranslationProvider>
-        </Provider>
+        <Provider store={store}>{children}</Provider>
       </SafeAreaProvider>,
     )
   }
@@ -38,7 +32,6 @@ describe('registration-form-screen', () => {
   const passwordInput = buildTestId('registration_form_password')
   const passwordConfirmInput = buildTestId('registration_form_confirmPassword')
   const firstNameInput = buildTestId('registration_form_firstName')
-  const lastNameInput = buildTestId('registration_form_lastName')
   const dateOfBirthInput = buildTestId('registration_form_dateOfBirth')
   const formSubmitBtn = buildTestId('registration_form_submit')
 
@@ -81,7 +74,6 @@ describe('registration-form-screen', () => {
     expect(screen.getByTestId(`${passwordConfirmInput}_error`)).toBeOnTheScreen()
 
     expect(screen.queryByTestId(`${firstNameInput}_error`)).not.toBeOnTheScreen()
-    expect(screen.queryByTestId(`${lastNameInput}_error`)).not.toBeOnTheScreen()
     expect(screen.queryByTestId(`${dateOfBirthInput}_error`)).not.toBeOnTheScreen()
 
     expect(screen.getAllByText(t.form_error_not_valid_email)).toHaveLength(1)
@@ -144,8 +136,10 @@ describe('registration-form-screen', () => {
 
   it('Should be able to submit registration form successfully with only mandatory fields', async () => {
     server.use(
-      rest.get('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.get('*/accounts.register', (_req, res, ctx) => res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' }))),
+      rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.post('*/accounts.register', (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' })),
+      ),
     )
 
     const afterRegister = jest.fn()
@@ -172,8 +166,10 @@ describe('registration-form-screen', () => {
 
   it('Should be able to submit registration form successfully with all fields', async () => {
     server.use(
-      rest.get('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.get('*/accounts.register', (_req, res, ctx) => res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' }))),
+      rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.post('*/accounts.register', (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' })),
+      ),
     )
 
     const afterRegister = jest.fn()
@@ -184,7 +180,6 @@ describe('registration-form-screen', () => {
     fireEvent.changeText(screen.getByTestId(`${passwordInput}_input`), 'S3cr3t')
     fireEvent.changeText(screen.getByTestId(`${passwordConfirmInput}_input`), 'S3cr3t')
     fireEvent.changeText(screen.getByTestId(`${firstNameInput}_input`), 'Nice')
-    fireEvent.changeText(screen.getByTestId(`${lastNameInput}_input`), 'People')
     fireEvent.changeText(screen.getByTestId(`${dateOfBirthInput}_input`), '01.01.1993')
 
     await waitFor(() => expect(screen.getByTestId(formSubmitBtn)).toBeEnabled())
@@ -199,7 +194,6 @@ describe('registration-form-screen', () => {
             password: 'S3cr3t',
             confirmPassword: 'S3cr3t',
             firstName: 'Nice',
-            lastName: 'People',
             dateOfBirth: '1993-01-01',
           },
         },

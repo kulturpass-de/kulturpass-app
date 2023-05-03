@@ -50,15 +50,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginTop: spacing[8],
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing[6],
     textAlign: 'center',
     color: colors.basicBlack,
   },
   hint: {
     marginTop: spacing[2],
-    paddingHorizontal: 20,
-    marginBottom: spacing[9],
+    paddingHorizontal: spacing[5],
+    marginBottom: spacing[6],
     textAlign: 'center',
     color: colors.primaryDark,
   },

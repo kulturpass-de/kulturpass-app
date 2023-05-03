@@ -19,7 +19,7 @@ describe('authCommerceLogin', () => {
   }
   const commerceLoginResult = { auth_something: 'token' }
 
-  const persistCommerceSesssion = jest.spyOn(sessionService, 'persistCommerceSesssion')
+  const persistCommerceSession = jest.spyOn(sessionService, 'persistCommerceSession')
 
   const store = configureMockStore({ middlewares: [commerceApi.middleware] })
 
@@ -46,15 +46,15 @@ describe('authCommerceLogin', () => {
     })
   })
 
-  it('should call persistCommerceSesssion with data returned from postAuthToken', async () => {
+  it('should call persistCommerceSession with data returned from postAuthToken', async () => {
     server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
-    // find postAuthToken fulfilled, and check that persistCommerceSesssion was called with the results
+    // find postAuthToken fulfilled, and check that persistCommerceSession was called with the results
     const postAuthTokenFulfilled = store.findAction(commerceApi.endpoints.postAuthToken.matchFulfilled)
-    expect(persistCommerceSesssion).toHaveBeenCalledTimes(1)
-    expect(persistCommerceSesssion).toHaveBeenCalledWith(postAuthTokenFulfilled?.payload)
+    expect(persistCommerceSession).toHaveBeenCalledTimes(1)
+    expect(persistCommerceSession).toHaveBeenCalledWith(postAuthTokenFulfilled?.payload)
   })
 
   it('should call setCommerceSession with data returned from postAuthToken', async () => {
@@ -77,7 +77,7 @@ describe('authCommerceLogin', () => {
     store.expectActions([{ type: authCommerceLogin.fulfilled.type, payload: postAuthTokenFulfilled?.payload }])
   })
 
-  it('should reject and not call persistCommerceSesssion and setCommerceSession, if postAuthToken rejects', async () => {
+  it('should reject and not call persistCommerceSession and setCommerceSession, if postAuthToken rejects', async () => {
     server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))))
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
@@ -90,8 +90,8 @@ describe('authCommerceLogin', () => {
     const postAuthTokenRejected = store.findAction(commerceApi.endpoints.postAuthToken.matchRejected)
     expect(authCommerceLoginRejected?.payload).toEqual(postAuthTokenRejected?.payload)
 
-    // check that persistCommerceSesssion did not run
-    expect(persistCommerceSesssion).toHaveBeenCalledTimes(0)
+    // check that persistCommerceSession did not run
+    expect(persistCommerceSession).toHaveBeenCalledTimes(0)
 
     // check that setCommerceSession did not run
     store.expectActionNotDispatched(authSlice.actions.setCommerceSession.match)

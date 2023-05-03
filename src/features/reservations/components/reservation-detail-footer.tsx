@@ -40,7 +40,7 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   const formattedRefundAmount = useFormattedPrice(refunds?.refundAmount)
   const formattedTotalWithoutRefunds = useFormattedPrice(refunds?.totalWithoutRefunds)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const hasRefunds = (refunds?.refundAmount.value ?? 0) > 0
+  const hasRefunds = (refunds?.refundAmount?.value ?? 0) > 0
 
   return (
     <View testID={buildTestId('reservationDetail_footer')} style={styles.container}>

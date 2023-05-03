@@ -26,6 +26,7 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
           testID={buildTestId('app_informations_screen_title')}
           title={t('app_informations_title')}
           onPressBack={onPressBackButton}
+          screenType="subscreen"
         />
       }>
       <TranslatedText

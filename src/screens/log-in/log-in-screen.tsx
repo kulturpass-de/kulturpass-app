@@ -20,6 +20,7 @@ import { EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validati
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { colors } from '../../theme/colors'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 
 export type LoginFormData = {
   email: string
@@ -41,6 +42,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   afterLogin,
 }) => {
   const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(
@@ -52,10 +54,11 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   })
   const { setErrors } = useValidationErrors(form)
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const { buildTestId } = useTestIdBuilder()
 
   const onPressLoginButton = form.handleSubmit(async data => {
+    setLoading(true)
     try {
       await afterLogin(data)
     } catch (error: unknown) {
@@ -66,11 +69,14 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
       } else {
         setVisibleError(new UnknownError())
       }
+    } finally {
+      setLoading(false)
     }
   })
 
   return (
     <ModalScreen testID={buildTestId('login')}>
+      <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="login_headline"

@@ -9,10 +9,7 @@ import { SpartacusWebView } from '../../features/spartacus-webview/components/we
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import {
-  getCommerceBaseSiteId,
-  getCommerceHomeUrl,
-} from '../../services/environment-configuration/redux/environment-configuration-selectors'
+import { getCommerceHomeUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
 import { ErrorWithCode } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { HomeHeader } from './home-header'
@@ -27,14 +24,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const offset = useRef(new Animated.Value(0)).current
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const baseSiteId = useSelector(getCommerceBaseSiteId)
 
-  const { data, refetch, error } = commerceApi.useProfileQuery(
-    { baseSiteId, force: false },
-    {
-      skip: !isLoggedIn,
-    },
-  )
+  const { data, refetch, error } = commerceApi.useGetProfileQuery({ force: false }, { skip: !isLoggedIn })
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   useEffect(() => {
@@ -54,7 +45,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   return (
     <Screen withBasicBackground testID={buildTestId('home')}>
-      <ErrorAlert error={visibleError ?? null} onDismiss={clearVisibleError} />
+      <ErrorAlert error={visibleError} onDismiss={clearVisibleError} />
       <HomeHeaderShrinkable offset={offset}>{isLoggedIn && data && <HomeHeader profile={data} />}</HomeHeaderShrinkable>
       <SpartacusWebView
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}

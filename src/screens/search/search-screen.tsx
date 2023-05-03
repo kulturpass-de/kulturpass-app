@@ -15,7 +15,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = () => {
   const searchUrl = useSelector(getCommerceSearchUrl)
 
   return (
-    <Screen testID={buildTestId('search')}>
+    <Screen withBasicBackground testID={buildTestId('search')}>
       <SpartacusWebView webViewId={WebViewId.Search} url={searchUrl} testID={buildTestId('screens_search_webview')} />
     </Screen>
   )

@@ -43,9 +43,12 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
     await aa2Module.cancelFlow()
     modalNavigation.navigate({
       screen: EidTransportPinRouteName,
-      params: {},
+      params: {
+        retryCounter: route.params.retryCounter,
+        can: route.params.can,
+      },
     })
-  }, [modalNavigation])
+  }, [modalNavigation, route.params.can, route.params.retryCounter])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)
@@ -67,7 +70,7 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
   )
 }
 
-export const EidPinAppRouteConfig = createRouteConfig({
+export const EidPinRouteConfig = createRouteConfig({
   name: EidPinRouteName,
   component: EidPinRoute,
   options: { cardStyle: modalCardStyle },

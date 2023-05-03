@@ -54,7 +54,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
               />
             </View>
             <View style={styles.content}>
-              <Text style={textStyles.CaptionExtrabold}>{category.name}</Text>
+              <Text style={[textStyles.CaptionExtrabold, styles.text]}>{category.name}</Text>
             </View>
           </View>
         </>
@@ -92,6 +92,9 @@ const styles = StyleSheet.create({
   image: {
     zIndex: 2,
     left: -7,
+  },
+  text: {
+    color: colors.moonDarkest,
   },
   content: {
     zIndex: 20,

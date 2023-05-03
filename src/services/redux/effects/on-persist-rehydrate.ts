@@ -1,13 +1,13 @@
 import { REHYDRATE } from 'redux-persist'
 
 import { AppStartListening, ListenerEffect } from '../listener-middleware'
-import { isAppInstalled } from '../slices/installation'
+import { selectIsBootstrapped } from '../slices/app-core'
 import { startup } from '../thunks/startup'
 
 export const onPersistRehydrateEffect: ListenerEffect = async (action, listenerApi) => {
-  const isAppAlreadyInstalled = isAppInstalled(listenerApi.getState())
+  const isAppAlreadyBootstrapped = selectIsBootstrapped(listenerApi.getState())
 
-  await listenerApi.dispatch(startup({ appFirstRun: !isAppAlreadyInstalled })).unwrap()
+  await listenerApi.dispatch(startup({ appFirstRun: !isAppAlreadyBootstrapped })).unwrap()
 }
 
 export const onPersistRehydrate = (startListening: AppStartListening) =>

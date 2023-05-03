@@ -23,12 +23,16 @@ const formatDate = (language: Language, dateStr: string): string => {
 
 export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> = ({ productDetail }) => {
   const { t, l: language } = useTranslation()
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('productDetail_stagedEvent')
   const { venue, eventDateTime, durationInMins } = productDetail
   return (
     <>
       {venue ? (
-        <ProductDetailSection iconSource="MapPin" sectionCaptioni18nKey="productDetail_stagedEvent_location_caption">
+        <ProductDetailSection
+          testID={addTestIdModifier(testID, 'location_caption')}
+          iconSource="MapPin"
+          sectionCaptioni18nKey="productDetail_stagedEvent_location_caption">
           {venue.name ? <Text style={[textStyles.BodyBlack, { color: colors.moonDarkest }]}>{venue.name}</Text> : null}
           <Text
             testID={buildTestId('productDetail_stagedEvent_location_street')}
@@ -42,17 +46,20 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
           </Text>
         </ProductDetailSection>
       ) : null}
-      <ProductDetailSection iconSource="Calendar" sectionCaptioni18nKey="productDetail_stagedEvent_time_caption">
+      <ProductDetailSection
+        testID={addTestIdModifier(testID, 'stagedEvent_time')}
+        iconSource="Calendar"
+        sectionCaptioni18nKey="productDetail_stagedEvent_time_caption">
         {eventDateTime ? (
           <Text
-            testID={buildTestId('productDetail_stagedEvent_time_date')}
+            testID={addTestIdModifier(testID, 'stagedEvent_time_date')}
             style={[textStyles.BodyBlack, { color: colors.moonDarkest }]}>
             {formatDate(language, eventDateTime)}
           </Text>
         ) : null}
         {durationInMins ? (
           <Text
-            testID={buildTestId('productDetail_stagedEvent_time_duration')}
+            testID={addTestIdModifier(testID, 'stagedEvent_time_duration')}
             style={[textStyles.CaptionSemibold, { color: colors.moonDarkest }]}>
             {t('productDetail_stagedEvent_time_duration', { duration: durationInMins })}
           </Text>

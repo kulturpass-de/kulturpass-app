@@ -13,7 +13,12 @@ import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { Order } from '../../services/api/types/commerce/api-types'
 import { ReservationsTabBar } from './reservations-tab-bar'
 
-const Tab = createMaterialTopTabNavigator()
+export type ReservationsTabsParamList = {
+  PendingReservations: undefined
+  CompletedReservations: undefined
+}
+
+const Tab = createMaterialTopTabNavigator<ReservationsTabsParamList>()
 
 export type ReservationsScreenProps = {
   onReservationPressed: (orderCode: NonNullable<Order['code']>) => void
@@ -23,7 +28,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
   const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onOrderPressed = useCallback(
     (order: Order) => {

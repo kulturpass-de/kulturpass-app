@@ -30,13 +30,16 @@ export const TranslatedText: FC<TranslatedTextProps> = ({
       testID={testID}
       accessibilityLabel={t(i18nKey)}
       accessible
-      style={[textStyles[textStyle], textStyleOverrides]}>
-      <Trans i18nKey={i18nKey as string} values={i18nParams} components={{ ...components, ...customComponents }} />
+      style={[styles.base, textStyles[textStyle], textStyleOverrides]}>
+      <Trans i18nKey={i18nKey as any} values={i18nParams} components={{ ...components, ...customComponents }} />
     </Text>
   )
 }
 
 const styles = StyleSheet.create({
+  base: {
+    flexShrink: 1, // wraps the text automatically
+  },
   extralight: { fontWeight: '200' },
   extralightitalic: { fontWeight: '200', fontStyle: 'italic' },
   light: { fontWeight: '300' },

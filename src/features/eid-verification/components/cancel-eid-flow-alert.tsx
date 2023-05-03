@@ -11,6 +11,8 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { useCancelFlow } from '../hooks/use-cancel-flow'
+import { LoadingIndicatorOverlay } from '../../../components/loading-indicator/loading-indicator-overlay'
+import { useDebouncedLoading } from '../../../components/loading-indicator/use-debounced-loading'
 
 export type CancelEidFlowAlertProps = {
   visible: boolean
@@ -22,6 +24,8 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
   const modalNavigation = useModalNavigation()
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const debouncedLoading = useDebouncedLoading(isLoading)
 
   const cancelFlow = useCancelFlow()
 
@@ -70,6 +74,7 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
           onPress={handleCancel}
         />
       </AlertContent>
+      {debouncedLoading ? <LoadingIndicatorOverlay /> : null}
     </Alert>
   )
 }

@@ -29,6 +29,11 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
 
+  let errorMessage: string | undefined
+  if (error) {
+    errorMessage = error.message ?? t(`form_error_${error.type}`, t('form_error_fallback'))
+  }
+
   return (
     <View style={[styles.container, containerStyle]}>
       {labelI18nKey && (
@@ -41,18 +46,18 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
         </Text>
       )}
       <View style={styles.textInputContainer}>{children}</View>
-      {error && (
+      {errorMessage ? (
         <View style={styles.errorContainer}>
           <Icon source="InputError" width={20} height={20} />
           <Text
             testID={addTestIdModifier(testID, 'error')}
-            accessibilityLabel={t(`form_error_${error.type}`)}
+            accessibilityLabel={errorMessage}
             accessible
             style={[textStyles.CaptionSemibold, styles.errorText]}>
-            {error.message ?? t(`form_error_${error.type}`)}
+            {errorMessage}
           </Text>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }

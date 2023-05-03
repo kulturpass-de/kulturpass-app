@@ -5,10 +5,11 @@ import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { modalCardStyle } from '../../../theme/utils'
-import { useOrderDetail } from '../hooks/use-order-detail'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { ReservationDetailScreen } from './reservation-detail-screen'
 import { useQueryProductDetail } from '../../product-detail/hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../../product-detail/hooks/use-selected-or-closest-offer'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const ReservationDetailRouteName = 'ReservationDetail'
 
@@ -22,11 +23,11 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   const modalNavigation = useModalNavigation()
 
   const { orderCode } = route.params
-  const orderDetailResponse = useOrderDetail(orderCode)
+  const orderDetailResponse = commerceApi.useGetOrderDetailQuery({ orderCode }, { refetchOnMountOrArgChange: true })
   const order = orderDetailResponse.data
   const orderEntry = order?.entries?.[0]
 
-  const { data: productDetail } = useQueryProductDetail(orderEntry?.product?.code)
+  const { data: productDetail, isLoading } = useQueryProductDetail(orderEntry?.product?.code)
   const selectedOffer = useSelectedOrClosestOffer(productDetail, orderEntry?.offerId)
 
   const onClose = useCallback(() => {
@@ -42,13 +43,16 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   }
 
   return (
-    <ReservationDetailScreen
-      productDetail={productDetail}
-      selectedOffer={selectedOffer}
-      order={order}
-      onClose={onClose}
-      afterCancelReservationTriggered={afterCancelReservationTriggered}
-    />
+    <>
+      <LoadingIndicator loading={isLoading || orderDetailResponse.isLoading} />
+      <ReservationDetailScreen
+        productDetail={productDetail}
+        selectedOffer={selectedOffer}
+        order={order}
+        onClose={onClose}
+        afterCancelReservationTriggered={afterCancelReservationTriggered}
+      />
+    </>
   )
 }
 

@@ -16,7 +16,7 @@ import { ReservationDetailHeader } from '../components/reservation-detail-header
 import { ProductDetailTyped } from '../../product-detail/components/product-detail-typed'
 import { colors } from '../../../theme/colors'
 import { ConfirmCancellationAlert } from '../components/confirm-cancellation-alert'
-import { useCancelReservation } from '../hooks/use-cancel-reservation'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { getReservationOrderTranslations } from '../reservation-i18n'
@@ -26,6 +26,7 @@ import { ReservationDetailStatusImage } from '../components/reservation-detail-s
 import { ReservationDetailStatusInfo } from '../components/reservation-detail-status-info'
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export type ReservationDetailScreenProps = {
   productDetail?: ProductDetail
@@ -43,9 +44,10 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   order,
 }) => {
   const { buildTestId } = useTestIdBuilder()
-  const cancelReservation = useCancelReservation(order)
+  const [loading, setLoading] = useState(false)
+  const [cancelReservation] = commerceApi.useCancelReservationMutation()
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const [visibleCancellationConfirmationAlert, setVisibleCancellationConfirmationAlert] = useState(false)
 
   const onFavorite = useCallback(() => {
@@ -58,9 +60,10 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
   const onCancelReservation = useCallback(async () => {
     setVisibleCancellationConfirmationAlert(false)
+    setLoading(true)
 
     try {
-      await cancelReservation().unwrap()
+      await cancelReservation({ order }).unwrap()
       afterCancelReservationTriggered()
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
@@ -68,8 +71,10 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
       } else {
         setVisibleError(new UnknownError())
       }
+    } finally {
+      setLoading(false)
     }
-  }, [afterCancelReservationTriggered, cancelReservation])
+  }, [afterCancelReservationTriggered, cancelReservation, order])
 
   const onDismissCancellation = useCallback(() => {
     setVisibleCancellationConfirmationAlert(false)
@@ -86,6 +91,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('pickupReservationDetail')}>
+      <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ConfirmCancellationAlert
         visible={visibleCancellationConfirmationAlert}

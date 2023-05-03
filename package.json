@@ -1,6 +1,6 @@
 {
   "name": "cultureapp",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@craftzdog/react-native-buffer": "^6.0.5",
     "@hookform/resolvers": "^2.9.11",
-    "@jolocom/react-native-ausweis": "https://github.com/milanpro/react-native-ausweis.git",
+    "@jolocom/react-native-ausweis": "https://github.com/milanpro/react-native-ausweis.git#prebuilt-js",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-navigation/bottom-tabs": "^6.5.3",
@@ -59,6 +59,8 @@
     "js-yaml": "^4.1.0",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
+    "lottie-react-native": "^5.1.5",
+    "node-jose": "^2.2.0",
     "react": "18.1.0",
     "react-hook-form": "^7.43.0",
     "react-i18next": "^12.1.4",
@@ -85,6 +87,7 @@
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.2.2",
+    "semver": "^7.5.0",
     "stream-browserify": "^3.0.0",
     "swagger-typescript-api": "^12.0.3",
     "uuid": "^9.0.0",
@@ -108,6 +111,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/lodash.isequal": "^4.5.6",
     "@types/lodash.throttle": "^4.1.7",
+    "@types/node-jose": "^1.1.10",
     "@types/react": "^18.0.21",
     "@types/react-native": "^0.70.6",
     "@types/react-test-renderer": "^18.0.0",

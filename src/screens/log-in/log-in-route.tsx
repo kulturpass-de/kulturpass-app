@@ -25,7 +25,7 @@ export const LogInRoute: React.FC = () => {
   const afterLogin = useCallback(
     async (loginData: { email: string; password: string }) => {
       const { email, password } = loginData
-      await auth.login({ loginId: email, password })
+      await auth.login({ loginID: email, password })
       onLoginSuccess()
     },
     [auth, onLoginSuccess],

@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react-native'
-import { resources } from '../../services/translation/setup'
-import { TranslationProvider } from '../../services/translation/translation'
+
 import { FavoritesList } from './favorites-list'
 import { Cart } from '../../services/api/types/commerce/api-types'
 import { StoreProvider } from '../../services/testing/test-utils'
@@ -50,13 +49,7 @@ test('Should display list of favorites', async () => {
     ],
   }
 
-  render(
-    <StoreProvider>
-      <TranslationProvider fallbackLng="de" debug={false} resources={resources}>
-        {cart.entries ? <FavoritesList orderEntries={cart.entries} /> : null}
-      </TranslationProvider>
-    </StoreProvider>,
-  )
+  render(<StoreProvider>{cart.entries ? <FavoritesList orderEntries={cart.entries} /> : null}</StoreProvider>)
 
   const results = await screen.findAllByText('NP-FV 70')
   expect(results.length > 0).toBeTruthy()

@@ -19,7 +19,7 @@ export const EidInsertCardRouteName = 'EidInsertCard'
 
 export type EidInsertCardRouteParams = {
   flow: Flow
-  pin: string
+  pin?: string
   newPin?: string
   can?: string
 }
@@ -32,20 +32,20 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   const flow = route.params.flow
 
   const onAuthSuccess = useCallback(() => {
-    modalNavigation.navigate({
+    modalNavigation.replace({
       screen: EidVerificationCompletionRouteName,
     })
   }, [modalNavigation])
 
   const onChangePinSuccess = useCallback(() => {
-    modalNavigation.navigate({
+    modalNavigation.replace({
       screen: EidChangePinCompletionRouteName,
     })
   }, [modalNavigation])
 
   const onPinRetry = useCallback(
     (retryCounter?: number) => {
-      modalNavigation.navigate({
+      modalNavigation.replace({
         screen: flow === 'Auth' ? EidPinRouteName : EidTransportPinRouteName,
         params: {
           can: undefined,
@@ -57,7 +57,7 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   )
 
   const onCanRetry = useCallback(() => {
-    modalNavigation.navigate({
+    modalNavigation.replace({
       screen: EidCanRouteName,
       params: {
         flow,
@@ -98,7 +98,7 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   )
 }
 
-export const EidInsertCardAppRouteConfig = createRouteConfig({
+export const EidInsertCardRouteConfig = createRouteConfig({
   name: EidInsertCardRouteName,
   component: EidInsertCardRoute,
   options: { cardStyle: modalCardStyle },

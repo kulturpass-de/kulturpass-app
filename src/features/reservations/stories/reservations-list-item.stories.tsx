@@ -10,7 +10,7 @@ import {
   ORDER_STATUS_READY_FOR_PICKUP,
   ORDER_STATUS_RECEIVED,
   ORDER_STATUS_SHIPPING,
-} from '../../../services/api/types/commerce/commerce-reservations'
+} from '../../../services/api/types/commerce/commerce-get-reservations'
 
 const componentMeta: ComponentMeta<typeof ReservationsListItem> = {
   title: 'Reservation List Item',

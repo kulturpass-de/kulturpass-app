@@ -30,8 +30,8 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
         <Illustration
           testID={addTestIdModifier(screenTestId, 'image_alt')}
-          i18nKey="eid_nfcNotSupported_image_alt"
-          type="nfc-not-supported"
+          i18nKey="stopSign_image_alt"
+          type="stop-sign"
         />
         <View style={styles.contentContainer}>
           <TranslatedText

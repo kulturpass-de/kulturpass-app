@@ -9,7 +9,7 @@ import { HomeBudget } from '../../components/home-budget/home-budget'
 import { AccountVerificationHero } from '../../features/registration/components/account-verificaton-pending/account-verification-pending-hero'
 import { NotYetEntitledHeader } from '../../features/eid-verification/components/not-yet-entitled-header'
 import { VerificationDuplicateHeader } from '../../features/eid-verification/components/verification-duplicate-header'
-import { Profile } from '../../services/api/types/commerce/commerce-profile'
+import { Profile } from '../../services/api/types/commerce/commerce-get-profile'
 
 export type HomeHeaderProps = {
   profile: Profile

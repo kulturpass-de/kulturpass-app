@@ -22,7 +22,7 @@ export const Checkbox: FC<CheckboxProps> = props => {
   const { i18nKey, selected = false, textStyle = DEFAULT_CHECKBOX_FONT, i18nParams, onChange } = props
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { t } = useTranslation()
-  const text = t(i18nKey, i18nParams)
+  const text = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
 
   const toggleSelected = useCallback(() => {
     onChange(!selected)

@@ -40,6 +40,9 @@ import {
   PlaceholderRectange,
   TicketCheckmark,
   TransperatentSquare,
+  DeleteAccount,
+  WebviewSkeleton,
+  InformationCircle,
 } from './svgs'
 
 export type SvgImageType =
@@ -84,10 +87,12 @@ export type SvgImageType =
   | 'placeholder-circle'
   | 'placeholder-rectangle'
   | 'pic-unknown'
-  | 'registration-finished'
   | 'ticket-checkmark'
   | 'verify-email'
   | 'backdrop-large'
+  | 'delete-account'
+  | 'webview-skeleton'
+  | 'information-circle'
 
 export type SvgImageProps = {
   type: SvgImageType
@@ -205,6 +210,12 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       return <PlaceholderCircle {...svgProps} />
     case 'ticket-checkmark':
       return <TicketCheckmark {...svgProps} />
+    case 'delete-account':
+      return <DeleteAccount {...svgProps} />
+    case 'webview-skeleton':
+      return <WebviewSkeleton {...svgProps} />
+    case 'information-circle':
+      return <InformationCircle {...svgProps} />
     case 'placeholder-rectangle':
     default:
       return <PlaceholderRectange {...svgProps} />

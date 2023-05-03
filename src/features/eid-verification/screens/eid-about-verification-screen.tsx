@@ -16,6 +16,7 @@ import { spacing } from '../../../theme/spacing'
 import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
 import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRightsMessage, certificate: CertificateMessage) => void
@@ -40,6 +41,7 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
 
   return (
     <ModalScreen whiteBottom testID={screenTestId}>
+      <LoadingIndicator loading={initLoading || startAuthLoading} />
       <ModalScreenHeader
         testID={addTestIdModifier(screenTestId, 'title')}
         titleI18nKey="eid_aboutVerification_title"

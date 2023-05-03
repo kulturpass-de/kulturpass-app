@@ -69,7 +69,7 @@ export const EidAboutVerificationRoute: React.FC = () => {
   )
 }
 
-export const EidAboutVerificationAppRouteConfig = createRouteConfig({
+export const EidAboutVerificationRouteConfig = createRouteConfig({
   name: EidAboutVerificationRouteName,
   component: EidAboutVerificationRoute,
   options: { cardStyle: modalCardStyle },

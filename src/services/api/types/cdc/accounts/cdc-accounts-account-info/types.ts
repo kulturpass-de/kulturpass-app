@@ -1,15 +1,25 @@
 export type AccountInfoProfile = {
   email: string
   firstName: string
-  lastName: string
+}
+
+export type AccountInfoDataEid = {
+  dateOfBirth: string // format YYYY-MM-DD
 }
 
 export type AccountInfoData = {
-  preferredPostalCode: string
+  preferredPostalCode?: string
   preferredProductCategoryId1?: string
   preferredProductCategoryId2?: string
   preferredProductCategoryId3?: string
   preferredProductCategoryId4?: string
+  eid?: AccountInfoDataEid
+  idVerified?: 'true'
+  dateOfBirth?: string // format YYYY-MM-DD
+}
+
+export type AccountInfoDeletionData = {
+  deletionRequested: boolean
 }
 
 export type AccountInfo = {

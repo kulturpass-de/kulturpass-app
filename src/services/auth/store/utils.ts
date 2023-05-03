@@ -1,5 +1,5 @@
 import { CdcSessionData } from '../../session/types'
-import { CdcApiLoginSuccessResponse } from '../../api/types'
+import { AccountsLoginResponse } from '../../api/types'
 
 export const isNotEmptyString = (s?: string) => {
   return s && typeof s === 'string' && s.length > 0 ? true : false
@@ -29,8 +29,8 @@ export const isExpiresInValid = (n: number | undefined) => {
   return n > 0
 }
 
-export const cdcLoginResponseToSessionData = (cdcLoginResponse: CdcApiLoginSuccessResponse) => {
-  const firstName = cdcLoginResponse.profile.firstName
+export const cdcLoginResponseToSessionData = (cdcLoginResponse: AccountsLoginResponse) => {
+  const { firstName, email } = cdcLoginResponse.profile
   const sessionValidity =
     cdcLoginResponse.sessionInfo.expires_in !== undefined ? cdcLoginResponse.sessionInfo.expires_in : -2
 
@@ -41,7 +41,7 @@ export const cdcLoginResponseToSessionData = (cdcLoginResponse: CdcApiLoginSucce
     sessionStartTimestamp: cdcLoginResponse.signatureTimestamp,
     idToken: cdcLoginResponse.id_token,
     sessionValidity,
-    user: { firstName },
+    user: { firstName, email },
     uid: cdcLoginResponse.UID,
     uidSignature: cdcLoginResponse.UIDSignature,
     regToken: cdcLoginResponse.regToken,

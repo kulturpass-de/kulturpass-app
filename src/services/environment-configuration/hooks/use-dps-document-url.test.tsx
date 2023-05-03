@@ -1,22 +1,18 @@
 import { renderHook } from '@testing-library/react-native'
-import i18next from 'i18next'
 import { useDpsDocumentUrl } from './use-dps-document-url'
 import React, { PropsWithChildren } from 'react'
-import { I18nProvider, StoreProvider } from '../../testing/test-utils'
+import { StoreProvider } from '../../testing/test-utils'
 import { act } from 'react-test-renderer'
-import { useTranslation } from '../../translation/translation'
+import { translation, useTranslation } from '../../translation/translation'
+import { Language } from '../../translation/types'
 
 const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <StoreProvider>
-      <I18nProvider>{children}</I18nProvider>
-    </StoreProvider>
-  )
+  return <StoreProvider>{children}</StoreProvider>
 }
 
 describe('useDpsDocumentUrl', () => {
   test('Should return the DE url', async () => {
-    i18next.language = 'de'
+    translation.changeLanguage('de')
     const { result } = renderHook(() => useDpsDocumentUrl(), {
       wrapper: Wrapper,
     })
@@ -27,7 +23,7 @@ describe('useDpsDocumentUrl', () => {
   })
 
   test('Should return the EN url', async () => {
-    i18next.language = 'en'
+    translation.changeLanguage('de')
     const { result } = renderHook(
       () => {
         const url = useDpsDocumentUrl()
@@ -42,7 +38,7 @@ describe('useDpsDocumentUrl', () => {
     await act(() => {})
 
     await act(() => {
-      result.current.cl('en')
+      result.current.cl(Language.en)
     })
 
     expect(result.current.url).toBe('http://localhost/consents/enDpsDocumentUrl')

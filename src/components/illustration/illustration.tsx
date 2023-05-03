@@ -12,12 +12,14 @@ export type IllustrationType =
   | 'registration-finished'
   | 'eid'
   | 'eid-scan'
-  | 'eid-pin-changed'
+  | 'success'
   | 'budget-received'
   | 'empty-state-reservations'
   | 'empty-state-reservations-closed'
   | 'favorites-empty-state'
-  | 'nfc-not-supported'
+  | 'stop-sign'
+  | 'delete-account'
+  | 'no-network'
 
 export type IllustrationProps = {
   type: IllustrationType
@@ -60,13 +62,13 @@ function requireImage(type: IllustrationType): ImageSourcePropType {
     case 'verify-mail':
       return require('./imgs/verify-mail.png')
     case 'registration-finished':
-      return require('./imgs/verify-mail.png')
+      return require('./imgs/registration-finished.png')
     case 'eid':
       return require('./imgs/eid.png')
     case 'eid-scan':
       return require('./imgs/eid-scan.png')
-    case 'eid-pin-changed':
-      return require('./imgs/eid-pin-changed.png')
+    case 'success':
+      return require('./imgs/success.png')
     case 'budget-received':
       return require('./imgs/budget-received.png')
     case 'empty-state-reservations':
@@ -75,7 +77,11 @@ function requireImage(type: IllustrationType): ImageSourcePropType {
       return require('./imgs/empty-state-reservations-closed.png')
     case 'favorites-empty-state':
       return require('./imgs/favorites-empty-state.png')
-    case 'nfc-not-supported':
-      return require('./imgs/nfc-not-supported.png')
+    case 'stop-sign':
+      return require('./imgs/stop-sign.png')
+    case 'delete-account':
+      return require('./imgs/delete-account.png')
+    case 'no-network':
+      return require('./imgs/no-network.png')
   }
 }

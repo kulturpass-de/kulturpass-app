@@ -51,7 +51,7 @@ export const EidTransportPinRoute: React.FC<EidTransportPinRouteProps> = ({ rout
   )
 }
 
-export const EidTransportPinAppRouteConfig = createRouteConfig({
+export const EidTransportPinRouteConfig = createRouteConfig({
   name: EidTransportPinRouteName,
   component: EidTransportPinRoute,
   options: { cardStyle: modalCardStyle },

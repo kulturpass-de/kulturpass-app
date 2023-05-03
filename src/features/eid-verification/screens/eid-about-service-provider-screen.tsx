@@ -34,13 +34,20 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
 
   const renderItem = useCallback(
     (item: AccessRightsFields) => {
-      const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${item.toLowerCase()}`
+      const type = item.toLowerCase() as Lowercase<AccessRightsFields>
+      const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${type}` as const
+      const accessRightText = t(accessRightI18NKey, '')
+
+      if (!accessRightText) {
+        return null
+      }
+
       return (
         <Text
           key={item}
           accessible
           testID={buildTestId(accessRightI18NKey)}
-          style={[textStyles.BodyRegular, styles.text]}>{`\u2022 ${t(accessRightI18NKey)}`}</Text>
+          style={[textStyles.BodyRegular, styles.text]}>{`\u2022 ${accessRightText}`}</Text>
       )
     },
     [t, buildTestId],

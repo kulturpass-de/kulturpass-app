@@ -2,12 +2,12 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import isEqual from 'lodash.isequal'
 
-import { cdcApi } from '../api/cdc-api'
-import { AccountsSetAccountInfoRequestParams } from '../api/types'
 import { getCdcSessionData, getIsUserLoggedIn } from '../auth/store/auth-selectors'
 import { AppDispatch } from '../redux/configure-store'
 import { selectUserPreferences, selectUserProfile } from './redux/user-selectors'
 import { userSlice } from './redux/user-slice'
+import { useGetAccountInfo } from './use-get-account-info'
+import { useSetAccountInfo } from './use-set-account-info'
 
 export const useUserInfo = (regToken?: string) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -16,15 +16,8 @@ export const useUserInfo = (regToken?: string) => {
   const userPreferences = useSelector(selectUserPreferences)
   const cdcSessionData = useSelector(getCdcSessionData)
   regToken = cdcSessionData?.regToken || regToken
-  const accountInfo = cdcApi.endpoints.accountsGetAccountInfo.useQuery(
-    { regToken },
-    { skip: !isLoggedIn && !cdcSessionData?.regToken },
-  )
-  const [setAccountInfoMutation] = cdcApi.endpoints.accountsSetAccountInfo.useMutation()
-
-  const updateAccountInfo = async (data: AccountsSetAccountInfoRequestParams['data']) => {
-    await setAccountInfoMutation({ data, regToken }).unwrap()
-  }
+  const accountInfo = useGetAccountInfo(regToken)
+  const setAccountInfo = useSetAccountInfo(regToken)
 
   useEffect(() => {
     if (!isLoggedIn && !regToken) {
@@ -46,5 +39,5 @@ export const useUserInfo = (regToken?: string) => {
     [isLoggedIn, regToken, userProfile],
   )
 
-  return { firstName, userPreferences, updateAccountInfo, accountInfo }
+  return { firstName, userPreferences, setAccountInfo, accountInfo }
 }

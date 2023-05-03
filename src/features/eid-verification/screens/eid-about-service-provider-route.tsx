@@ -6,11 +6,11 @@ import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidAboutServiceProviderScreen } from './eid-about-service-provider-screen'
-import { EidPinRouteName } from './eid-pin-route'
 import { EidErrorAlert } from '../components/eid-error-alert'
 import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { EidServiceProviderDetailsRouteName } from './eid-service-provider-details-route'
+import { EidInsertCardRouteName } from './eid-insert-card-route'
 
 export const EidAboutServiceProviderRouteName = 'EidAboutServiceProvider'
 
@@ -27,9 +27,9 @@ export const EidAboutServiceProviderRoute: React.FC<EidAboutServiceProviderRoute
 
   const onNext = useCallback(() => {
     modalNavigation.navigate({
-      screen: EidPinRouteName,
+      screen: EidInsertCardRouteName,
       params: {
-        can: undefined,
+        flow: 'Auth',
       },
     })
   }, [modalNavigation])
@@ -64,7 +64,7 @@ export const EidAboutServiceProviderRoute: React.FC<EidAboutServiceProviderRoute
   )
 }
 
-export const EidAboutServiceProviderAppRouteConfig = createRouteConfig({
+export const EidAboutServiceProviderRouteConfig = createRouteConfig({
   name: EidAboutServiceProviderRouteName,
   component: EidAboutServiceProviderRoute,
   options: { cardStyle: modalCardStyle },

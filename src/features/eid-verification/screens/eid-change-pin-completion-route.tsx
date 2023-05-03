@@ -16,8 +16,16 @@ export const EidChangePinCompletionRoute: React.FC = () => {
   const modalNavigation = useModalNavigation()
 
   const onNext = useCallback(() => {
-    modalNavigation.navigate({
-      screen: EidAboutVerificationRouteName,
+    modalNavigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Modal',
+          state: {
+            routes: [{ name: EidAboutVerificationRouteName }],
+          },
+        },
+      ],
     })
   }, [modalNavigation])
 
@@ -35,7 +43,7 @@ export const EidChangePinCompletionRoute: React.FC = () => {
   return <EidChangePinCompletionScreen onNext={onNext} onClose={onClose} />
 }
 
-export const EidChangePinCompletionAppRouteConfig = createRouteConfig({
+export const EidChangePinCompletionRouteConfig = createRouteConfig({
   name: EidChangePinCompletionRouteName,
   component: EidChangePinCompletionRoute,
   options: { cardStyle: modalCardStyle },

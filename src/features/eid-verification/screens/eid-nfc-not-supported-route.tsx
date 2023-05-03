@@ -31,7 +31,7 @@ export const EidNFCNotSupportedRoute: React.FC = () => {
   )
 }
 
-export const EidNFCNotSupportedAppRouteConfig = createRouteConfig({
+export const EidNFCNotSupportedRouteConfig = createRouteConfig({
   name: EidNFCNotSupportedRouteName,
   component: EidNFCNotSupportedRoute,
   options: { cardStyle: modalCardStyle },

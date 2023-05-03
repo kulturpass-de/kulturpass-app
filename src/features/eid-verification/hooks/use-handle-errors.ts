@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { aa2Module } from '@jolocom/react-native-ausweis'
-import { AuthMessage, Messages } from '@jolocom/react-native-ausweis/js/messageTypes'
-import { AA2AuthError, AA2AuthErrorResultError, AA2IDCardConnectionLost, createAA2ErrorFromMessage } from '../errors'
+import { AuthMessage, ChangePinMessage, Messages } from '@jolocom/react-native-ausweis/js/messageTypes'
+import { AA2AuthError, AA2AuthErrorResultError, createAA2ErrorFromMessage } from '../errors'
 import { useIsFocused } from '@react-navigation/native'
+import { FailureCodes } from '@jolocom/react-native-ausweis/js/failure_codes'
 
 const AA2_ERROR_MESSAGES = [Messages.badState, Messages.internalError, Messages.invalid, Messages.unknownCommand]
 
@@ -36,30 +37,46 @@ export const useHandleErrors = (onError: (error: ErrorWithCode) => void) => {
       return
     }
 
-    const callback = (authMsg: AuthMessage) => {
+    const authMsgHandler = (authMsg: AuthMessage) => {
       const majorRes = authMsg.result?.major
       if (majorRes?.endsWith('#error') === true) {
-        // Handle User Cancellation Errors
-        if (authMsg.result?.minor?.endsWith('#cancellationByUser') === true) {
-          if (authMsg.result.reason === 'User_Cancelled') {
-            return
-          } else {
-            return onError(new AA2IDCardConnectionLost())
-          }
+        if (
+          authMsg.result?.minor?.endsWith('#cancellationByUser') === true &&
+          authMsg.result.reason === FailureCodes.User_Cancelled
+        ) {
+          return
         }
 
+        const reason = authMsg.result?.reason
         const detailCodeSplit = authMsg.result?.minor?.split('#')
         const detailCode = detailCodeSplit && detailCodeSplit[detailCodeSplit?.length - 1]
-        onError(new AA2AuthErrorResultError(detailCode ?? authMsg.error))
+        onError(
+          new AA2AuthErrorResultError(
+            reason ?? detailCode ?? authMsg.error,
+            authMsg.result?.message ?? authMsg.result?.description,
+          ),
+        )
       } else if (authMsg.error !== undefined) {
         onError(new AA2AuthError(authMsg.error))
       }
     }
 
-    aa2Module.messageEmitter.addListener(Messages.auth, callback)
+    const changePinMsgHandler = (changePinMsg: ChangePinMessage) => {
+      if (changePinMsg.success === false) {
+        if (changePinMsg.reason === FailureCodes.User_Cancelled) {
+          return
+        }
+
+        onError(new AA2AuthErrorResultError(changePinMsg.reason))
+      }
+    }
+
+    aa2Module.messageEmitter.addListener(Messages.auth, authMsgHandler)
+    aa2Module.messageEmitter.addListener(Messages.changePin, changePinMsgHandler)
 
     return () => {
-      aa2Module.messageEmitter.removeListener(Messages.auth, callback)
+      aa2Module.messageEmitter.removeListener(Messages.auth, authMsgHandler)
+      aa2Module.messageEmitter.removeListener(Messages.changePin, changePinMsgHandler)
     }
   }, [isFocused, onError])
 }

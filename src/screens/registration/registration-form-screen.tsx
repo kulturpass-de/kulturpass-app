@@ -24,13 +24,13 @@ import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { register } from '../../services/user/redux/thunks/register'
 import { AppDispatch } from '../../services/redux/configure-store'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 
 export type RegistrationFormData = {
   email: string
   password: string
   confirmPassword: string
   firstName: string
-  lastName: string
   dateOfBirth: string
 }
 
@@ -46,6 +46,8 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
   afterRegister,
 }) => {
   const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch<AppDispatch>()
 
   const { buildTestId } = useTestIdBuilder()
@@ -57,8 +59,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           password: z.string().trim().nonempty(),
           confirmPassword: z.string().trim().nonempty(),
           firstName: z.string().optional(),
-          lastName: z.string().optional(),
-          dateOfBirth: DATE_SCHEMA(t),
+          dateOfBirth: DATE_SCHEMA(t).optional(),
         })
         .refine(data => data.password === data.confirmPassword, {
           path: ['confirmPassword'],
@@ -68,9 +69,10 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
   })
 
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
+    setLoading(true)
     try {
       const accountsRegisterResponse = await dispatch(register(data)).unwrap()
       afterRegister(accountsRegisterResponse.regToken)
@@ -82,11 +84,14 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
       } else {
         setVisibleError(new UnknownError())
       }
+    } finally {
+      setLoading(false)
     }
   })
 
   return (
     <ModalScreen testID={buildTestId('registration_form')}>
+      <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="registration_form_headline"
@@ -127,13 +132,6 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           component={TextFormField}
           labelI18nKey="registration_form_firstName"
           testID={buildTestId('registration_form_firstName')}
-          control={form.control}
-        />
-        <FormFieldWithControl
-          name={'lastName'}
-          component={TextFormField}
-          labelI18nKey="registration_form_lastName"
-          testID={buildTestId('registration_form_lastName')}
           control={form.control}
         />
         <FormFieldWithControl

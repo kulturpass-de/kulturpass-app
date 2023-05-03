@@ -15,7 +15,7 @@ import { Flow } from '../types'
 
 export type EidInsertCardScreenProps = {
   flow: Flow
-  pin: string
+  pin?: string
   newPin?: string
   can?: string
   onAuthSuccess: () => void

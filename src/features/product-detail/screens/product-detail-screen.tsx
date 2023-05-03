@@ -19,6 +19,8 @@ import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
 import { ProductDetailTyped } from '../components/product-detail-typed'
 import { colors } from '../../../theme/colors'
+import { ShopAccessibilityInfo } from '../components/shop-accessibility-info'
+import { Divider } from '../../../components/divider/divider'
 
 export type ProductDetailScreenProps = {
   productDetail: ProductDetail
@@ -35,7 +37,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   onOfferSelection,
   reserveProduct,
 }) => {
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const scrollY = useRef(new Animated.Value(0)).current
 
   const onFavorite = useCallback(() => {
@@ -43,13 +45,14 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   }, [])
 
   const thumbnailImage = useThumbnailImageUrl(productDetail.images)
+  const testID = buildTestId('productDetail')
 
   return (
-    <ModalScreen whiteBottom testID={buildTestId('productDetail')}>
+    <ModalScreen whiteBottom testID={testID}>
       <View style={styles.scrollContainer}>
         <ProductDetailHeader scrollY={scrollY} onClose={onClose} imageUrl={thumbnailImage?.imageUrl} />
         <Animated.ScrollView
-          testID={buildTestId('productDetail_content')}
+          testID={addTestIdModifier(testID, 'content')}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
             useNativeDriver: true,
           })}
@@ -62,9 +65,18 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
             <ProductDetailAllOffersButton onPress={onOfferSelection} offers={productDetail.offers} />
           ) : null}
           <ProductDetailTyped productDetail={productDetail} />
-          <Text testID={buildTestId('productDetail_description')} style={[textStyles.BodyRegular, styles.description]}>
+          <Text testID={addTestIdModifier(testID, 'description')} style={[textStyles.BodyRegular, styles.description]}>
             {productDetail.description}
           </Text>
+          {selectedOffer ? (
+            <>
+              <Divider marginBottom={0} />
+              <ShopAccessibilityInfo
+                testID={addTestIdModifier(testID, 'accessibility')}
+                selectedOffer={selectedOffer}
+              />
+            </>
+          ) : null}
         </Animated.ScrollView>
         <ProductDetailFooter selectedOffer={selectedOffer} onFavorite={onFavorite} onReserve={reserveProduct} />
       </View>

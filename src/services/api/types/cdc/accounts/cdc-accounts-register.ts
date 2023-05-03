@@ -6,7 +6,6 @@ export type AccountsRegisterRequestParams = {
   password: string
   profile: {
     firstName: string
-    lastName: string
   }
   data: {
     dateOfBirth: string
@@ -35,7 +34,6 @@ export type AccountsRegisterResponse = CdcApiBaseSuccessResponse & {
     birthYear: number
     email: string
     firstName: string
-    lastName: string
   }
   regToken: string
   socialProviders: string

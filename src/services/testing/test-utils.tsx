@@ -8,8 +8,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { RootStackScreen } from '../../navigation/root-stack'
 import { setupStore } from '../redux/configure-store'
-import { TranslationProvider } from '../translation/translation'
-import { resources } from '../translation/setup'
 import { WebViewBridgeAdapterContext } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter-provider'
 import { WebViewBridgeAdapter } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { authSlice } from '../auth/store/auth-slice'
@@ -20,9 +18,7 @@ export const renderApp = () => {
   const component = (
     <AppProviders>
       <StoreProvider>
-        <I18nProvider>
-          <NavigationProvider />
-        </I18nProvider>
+        <NavigationProvider />
       </StoreProvider>
     </AppProviders>
   )
@@ -50,7 +46,7 @@ export const StoreProvider: React.FC<
       reduxStore.store.dispatch(
         authSlice.actions.setCdcSession({
           uid: '0',
-          user: { firstName: 'Max' },
+          user: { firstName: 'Max', email: 'max@test.test' },
           idToken: 'dummy',
           sessionToken: 'dummy',
           uidSignature: 'dummy',
@@ -78,14 +74,6 @@ export const StoreProvider: React.FC<
         {children}
       </PersistGate>
     </Provider>
-  )
-}
-
-export const I18nProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <TranslationProvider fallbackLng="de" debug={true} resources={resources}>
-      {children}
-    </TranslationProvider>
   )
 }
 

@@ -15,7 +15,7 @@ import {
   ORDER_STATUS_READY_FOR_PICKUP,
   ORDER_STATUS_RECEIVED,
   ORDER_STATUS_SHIPPING,
-} from '../../../services/api/types/commerce/commerce-reservations'
+} from '../../../services/api/types/commerce/commerce-get-reservations'
 
 export type ReservationListStatusTextProps = {
   status: string
@@ -44,18 +44,25 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
 
   const i18nKey = useMemo(() => {
     if (status === ORDER_STATUS_CREATED || status === ORDER_STATUS_SHIPPING || status === ORDER_STATUS_CANCELLED) {
-      return `reservations_list_state_${status.toLowerCase()}`
+      const statusLowerCase = status.toLowerCase() as Lowercase<typeof status>
+      return `reservations_list_state_${statusLowerCase}` as const
     } else if (
       (deliveryScenario === DELIVERY_SCENARIO_PICKUP || deliveryScenario === DELIVERY_SCENARIO_IN_APP_VOUCHER) &&
       (status === ORDER_STATUS_READY_FOR_PICKUP ||
         status === ORDER_STATUS_RECEIVED ||
         status === ORDER_STATUS_COMPLETED)
     ) {
-      return `reservations_list_state_${status.toLowerCase()}_${deliveryScenario.toLowerCase()}`
+      const statusLowerCase = status.toLowerCase() as Lowercase<typeof status>
+      const deliveryScenarioLowerCase = deliveryScenario.toLowerCase() as Lowercase<typeof deliveryScenario>
+      return `reservations_list_state_${statusLowerCase}_${deliveryScenarioLowerCase}` as const
     } else {
-      return status
+      return undefined
     }
   }, [status, deliveryScenario])
+
+  if (!i18nKey) {
+    return null
+  }
 
   return (
     <View style={styles.container}>
