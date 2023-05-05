@@ -1,14 +1,10 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { z } from 'zod'
 
 import { RootState } from '../configure-store'
+import { AppConfigSchema } from '../utils/app-config-schema'
 
-export type AppConfig = {
-  appVersions: { min: string }
-  certificates: {
-    cdc: [{ fingerprint256: string }]
-    commerce: [{ fingerprint256: string }]
-  }
-}
+export type AppConfig = z.infer<typeof AppConfigSchema>
 
 export type AppCoreState = {
   appConfig?: AppConfig

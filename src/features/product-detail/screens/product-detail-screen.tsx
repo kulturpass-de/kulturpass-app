@@ -16,7 +16,7 @@ import {
 import { ProductDetailTitle } from '../components/product-detail-title'
 import { ProductDetailAllOffersButton } from '../components/product-detail-all-offers-button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
-import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
+import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ProductDetailTyped } from '../components/product-detail-typed'
 import { colors } from '../../../theme/colors'
 import { ShopAccessibilityInfo } from '../components/shop-accessibility-info'
@@ -44,13 +44,13 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
     console.log('Favorited!')
   }, [])
 
-  const thumbnailImage = useThumbnailImageUrl(productDetail.images)
+  const productImage = useProductImageUrl(productDetail.images, 'zoom')
   const testID = buildTestId('productDetail')
 
   return (
     <ModalScreen whiteBottom testID={testID}>
       <View style={styles.scrollContainer}>
-        <ProductDetailHeader scrollY={scrollY} onClose={onClose} imageUrl={thumbnailImage?.imageUrl} />
+        <ProductDetailHeader scrollY={scrollY} onClose={onClose} imageUrl={productImage?.imageUrl} />
         <Animated.ScrollView
           testID={addTestIdModifier(testID, 'content')}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {

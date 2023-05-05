@@ -5,7 +5,7 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { FavoritesListItem, ITEM_HEIGHT } from './favorites-list-item'
 import { FavoritesListItemSeparator } from './favorites-list-item-separator'
 import { OrderEntry } from '../../services/api/types/commerce/api-types'
-import { useThumbnailImageUrl } from '../../utils/image/hooks/use-thumbnail-image-url'
+import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
 
 export type FavoritesListProps = {
   orderEntries: OrderEntry[]
@@ -17,7 +17,7 @@ type ListItemProps = {
 }
 
 const ListItem: React.FC<ListItemProps> = ({ item, onPressAddFavorite }) => {
-  const thumbnailImage = useThumbnailImageUrl(item.product?.images)
+  const productImage = useProductImageUrl(item.product?.images, 'product')
 
   const handleAddFavorite = useCallback(() => {
     onPressAddFavorite(item.product?.code)
@@ -28,8 +28,8 @@ const ListItem: React.FC<ListItemProps> = ({ item, onPressAddFavorite }) => {
       onPressAddFavorite={handleAddFavorite}
       title={item.product?.name ?? ''}
       price={item.totalPrice}
-      imageUrl={thumbnailImage.imageUrl}
-      imageAlt={thumbnailImage.image?.altText}
+      imageUrl={productImage.imageUrl}
+      imageAlt={productImage.image?.altText}
     />
   )
 }

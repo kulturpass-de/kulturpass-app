@@ -13,7 +13,7 @@ import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
+import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
 import { ProductDetail } from '../types/product-detail'
@@ -42,7 +42,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
 
-  const thumbnailImage = useThumbnailImageUrl(productDetail.images)
+  const productImage = useProductImageUrl(productDetail.images, 'zoom')
   const dpsDocumentUrl = useDpsDocumentUrl()
   const [reservationMutation, reservationMutationResult] = commerceApi.useCreateReservationMutation()
 
@@ -72,7 +72,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   return (
     <ModalScreen testID={buildTestId('offerSelection')}>
       <LoadingIndicator loading={loading} />
-      <OfferSelectionHeader imageUrl={thumbnailImage?.imageUrl} onClose={onClose} onBack={onBack} />
+      <OfferSelectionHeader imageUrl={productImage?.imageUrl} onClose={onClose} onBack={onBack} />
       <ScreenContent style={styles.content}>
         <View style={styles.titleContainer}>
           <TranslatedText

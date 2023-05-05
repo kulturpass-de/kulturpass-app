@@ -1,33 +1,49 @@
 import { Image } from '../../services/api/types/commerce/api-types'
-import { getThumbnailImageUrl } from './utils'
+import { getProductImageUrl } from './utils'
 
-const thumbnail: Image = {
+const productHighQualityImageUrl: Image = {
   imageType: 'PRIMARY',
-  format: 'thumbnail',
-  altText: 'test',
+  format: 'zoom',
+  altText: 'zoom',
   galleryIndex: 0,
-  url: '/test.png',
+  url: '/zoom.png',
 }
 
-const notThumbnail: Image = {
+const productMediumQualityImageUrl: Image = {
+  imageType: 'PRIMARY',
+  format: 'product',
+  altText: 'product',
+  galleryIndex: 0,
+  url: '/product.png',
+}
+
+const notProductImageUrl: Image = {
   imageType: 'GALLERY',
   format: 'icon',
-  altText: 'test',
+  altText: 'noImg',
   galleryIndex: 0,
-  url: '/test.png',
+  url: '/noImg.png',
 }
 
 describe('Image Utils', () => {
-  describe('getThumbnailImageUrl', () => {
-    test('should return the correct thumbnail', () => {
-      const images = [notThumbnail, thumbnail]
-      const result = getThumbnailImageUrl(images)
+  describe('getProductImageUrl', () => {
+    test('should return the zoom format image url', () => {
+      const images = [notProductImageUrl, productMediumQualityImageUrl, productHighQualityImageUrl]
+      const result = getProductImageUrl(images, 'zoom')
 
-      expect(result?.url).toEqual(thumbnail.url)
+      expect(result?.url).toEqual(productHighQualityImageUrl.url)
     })
+
+    test('should return the product format image url', () => {
+      const images = [notProductImageUrl, productMediumQualityImageUrl, productHighQualityImageUrl]
+      const result = getProductImageUrl(images, 'product')
+
+      expect(result?.url).toEqual(productMediumQualityImageUrl.url)
+    })
+
     test('should return undefined', () => {
-      const images = [notThumbnail]
-      const result = getThumbnailImageUrl(images)
+      const images = [notProductImageUrl]
+      const result = getProductImageUrl(images)
 
       expect(result).toBeUndefined()
     })

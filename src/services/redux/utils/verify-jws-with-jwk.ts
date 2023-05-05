@@ -5,5 +5,5 @@ export const verifyJwsWithJwk = async (jws: string, publicKey: string) => {
   const key = await jose.JWK.asKey(pem, 'pem')
   const res = await jose.JWS.createVerify(key).verify(jws)
 
-  return JSON.parse(Buffer.from(res.payload).toString())
+  return Buffer.from(res.payload).toString()
 }

@@ -24,5 +24,5 @@ export default componentMeta
 export const Basic: ComponentStory<typeof OfferSelectionScreen> = args => {
   const productDetail: ProductDetail = require('./mocked-audio.json')
   const offers = productDetail.offers ?? []
-  return <OfferSelectionScreen {...args} thumbnailImageUrl="/medias/test.png" offers={offers} />
+  return <OfferSelectionScreen {...args} productImageUrl="/medias/test.png" offers={offers} />
 }

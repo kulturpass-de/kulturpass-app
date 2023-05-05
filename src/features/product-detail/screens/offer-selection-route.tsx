@@ -5,7 +5,7 @@ import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../../theme/utils'
-import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
+import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { OfferSelectionScreen } from './offer-selection-screen'
@@ -46,7 +46,7 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
 
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
 
-  const thumbnailImage = useThumbnailImageUrl(productDetail?.images)
+  const productImage = useProductImageUrl(productDetail?.images, 'zoom')
 
   const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
 
@@ -62,7 +62,7 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
         onBack={onBack}
         selectOffer={selectOffer}
         offers={productDetail.offers}
-        thumbnailImageUrl={thumbnailImage?.imageUrl}
+        productImageUrl={productImage?.imageUrl}
       />
     </>
   )

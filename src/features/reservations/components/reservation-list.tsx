@@ -3,7 +3,7 @@ import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
 import { Order } from '../../../services/api/types/commerce/api-types'
 
 import { spacing } from '../../../theme/spacing'
-import { useThumbnailImageUrl } from '../../../utils/image/hooks/use-thumbnail-image-url'
+import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationsListItem } from './reservations-list-item'
 
 type ReservationListProps = {
@@ -23,7 +23,7 @@ type ListItemProps = {
 
 const ListItem: React.FC<ListItemProps> = ({ item, onOrderPressed, completedReservations }) => {
   const entry = item.entries?.[0]
-  const thumbnailImage = useThumbnailImageUrl(entry?.product?.images)
+  const productImage = useProductImageUrl(entry?.product?.images, 'product')
   const onPress = useCallback(() => onOrderPressed(item), [item, onOrderPressed])
 
   return (
@@ -34,7 +34,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, onOrderPressed, completedRese
         price={item.total}
         shopName={entry?.shopName}
         completed={completedReservations}
-        imageUrl={thumbnailImage?.imageUrl}
+        imageUrl={productImage?.imageUrl}
         status={item.status}
         deliveryScenario={entry?.deliveryScenario}
       />

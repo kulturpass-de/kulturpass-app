@@ -14,7 +14,7 @@ import { isOfferWithId } from '../utils'
 
 export type OfferSelectionScreenProps = {
   offers: Offer[]
-  thumbnailImageUrl?: string
+  productImageUrl?: string
   onClose: () => void
   onBack: () => void
   selectOffer: (offerId: Offer['id']) => void
@@ -25,7 +25,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   onClose,
   onBack,
   selectOffer,
-  thumbnailImageUrl,
+  productImageUrl,
 }) => {
   const { buildTestId } = useTestIdBuilder()
 
@@ -39,7 +39,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   return (
     <ModalScreen testID={buildTestId('offerSelection')}>
       <View style={styles.scrollContainer}>
-        <OfferSelectionHeader imageUrl={thumbnailImageUrl} onClose={onClose} onBack={onBack} />
+        <OfferSelectionHeader imageUrl={productImageUrl} onClose={onClose} onBack={onBack} />
         <FlatList
           style={styles.container}
           ListHeaderComponent={
