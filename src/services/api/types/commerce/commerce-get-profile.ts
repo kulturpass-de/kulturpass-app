@@ -11,7 +11,7 @@ export type Profile = {
 }
 
 export type GetProfileRequestParams = {
-  force?: boolean
+  forceUpdate?: boolean
 }
 
 export type GetProfileResponseBody = Profile

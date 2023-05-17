@@ -1,4 +1,4 @@
-import { createApi as createRtkApi } from '@reduxjs/toolkit/query/react'
+import { createApi as createRtkApi, defaultSerializeQueryArgs } from '@reduxjs/toolkit/query/react'
 
 import { getEnvironmentConfigurationState } from '../environment-configuration/redux/environment-configuration-selectors'
 import { RootState } from '../redux/configure-store'
@@ -96,8 +96,15 @@ export const commerceApi = createRtkApi({
     }),
     getProfile: builder.query<GetProfileResponseBody, GetProfileRequestParams>({
       providesTags: ['profile'],
-      queryFn: sendCommerceGetRequest(() => ({
+      serializeQueryArgs: args => {
+        // Don't cache the `forceUpdate`
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { forceUpdate, ...otherQueryParams } = args.queryArgs
+        return defaultSerializeQueryArgs({ ...args, queryArgs: otherQueryParams })
+      },
+      queryFn: sendCommerceGetRequest(queryParams => ({
         path: 'users/current',
+        queryParams,
       })),
     }),
     getAppConfig: builder.query<GetAppConfigResponseBody, GetAppConfigRequestParams>({

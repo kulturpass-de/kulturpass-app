@@ -25,7 +25,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
-  const { data, refetch, error } = commerceApi.useGetProfileQuery({ force: false }, { skip: !isLoggedIn })
+  const { data, refetch, error } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   useEffect(() => {

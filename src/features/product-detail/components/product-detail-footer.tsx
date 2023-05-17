@@ -32,7 +32,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
-  const { data } = commerceApi.useGetProfileQuery({ force: false }, { skip: !isLoggedIn })
+  const { data } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
 
   const availableBalanceFormatted = useFormattedPrice(data?.balance?.availableBalance)
 

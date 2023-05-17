@@ -1,8 +1,9 @@
 import { aa2Module } from '@jolocom/react-native-ausweis'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { modalCardStyle } from '../../../theme/utils'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidVerificationCompletionScreen } from './eid-verification-completion-screen'
@@ -13,6 +14,11 @@ export type EidVerificationCompletionRouteParams = undefined
 
 export const EidVerificationCompletionRoute: React.FC = () => {
   const modalNavigation = useModalNavigation()
+  const [getProfile] = commerceApi.endpoints.getProfile.useLazyQuery()
+
+  useEffect(() => {
+    getProfile({ forceUpdate: true }, false)
+  }, [getProfile])
 
   const onNext = useCallback(() => {
     modalNavigation.closeModal()
