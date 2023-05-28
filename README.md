@@ -35,6 +35,8 @@ This project uses:
 ## Requirements
 These instructions presume a macOS installation.
 
+**Important: It is not yet possible to test the UI of the app locally, for more information take a look at [this GitHub issue](https://github.com/kulturpass-de/kulturpass-app/issues/2).**
+
 Check required dependencies and versions using
 
     $ yarn solidarity --verbose
