@@ -10,8 +10,12 @@ export const useWebViewLocationSync = (
   userLocationState: ReturnType<typeof getCurrentUserLocation>,
 ) => {
   useEffect(() => {
-    if (userLocationState && bridgeAdapterState.isReady) {
-      bridgeAdapterApi.geolocationSetLocation(userLocationState.coords.latitude, userLocationState.coords.longitude)
+    if (bridgeAdapterState.isReady) {
+      if (userLocationState) {
+        bridgeAdapterApi.geolocationSetLocation(userLocationState.coords.latitude, userLocationState.coords.longitude)
+      } else {
+        bridgeAdapterApi.geolocationSetLocation()
+      }
     }
   }, [userLocationState, bridgeAdapterApi, bridgeAdapterState])
 }

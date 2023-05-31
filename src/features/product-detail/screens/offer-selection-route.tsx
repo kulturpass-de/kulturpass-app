@@ -15,6 +15,7 @@ export const OfferSelectionRouteName = 'OfferSelection'
 
 export type OfferSelectionRouteParams = {
   productCode: string
+  randomMode: boolean
 }
 
 type OfferSelectionProps = ModalScreenProps<'OfferSelection'>
@@ -38,10 +39,11 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
         params: {
           productCode,
           offerId,
+          randomMode: route.params.randomMode,
         },
       })
     },
-    [modalNavigation, productCode],
+    [modalNavigation, productCode, route.params.randomMode],
   )
 
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)

@@ -16,6 +16,7 @@ import { FormFieldWithControl } from '../../../components/form-fields/form-field
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
 import { useTranslation } from '../../../services/translation/translation'
+import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 
 export type EidNewPinScreenProps = {
   onNext: (newPin: string) => void
@@ -27,6 +28,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
   const { t } = useTranslation()
 
   const form = useForm<{ newPin: string; confirmNewPin: string }>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z
         .object({
@@ -41,6 +43,8 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
   })
+
+  useFocusErrors(form)
 
   useEffect(() => {
     const sub = form.watch(({ newPin, confirmNewPin }) => {

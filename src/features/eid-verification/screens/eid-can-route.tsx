@@ -7,15 +7,15 @@ import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidCanScreen } from './eid-can-screen'
-import { EidPinRouteName } from './eid-pin-route'
 import { EidErrorAlert } from '../components/eid-error-alert'
-import { EidTransportPinRouteName } from './eid-transport-pin-route'
 import { Flow } from '../types'
+import { EidInsertCardRouteName } from './eid-insert-card-route'
 
 export const EidCanRouteName = 'EidCan'
 
 export type EidCanRouteParams = {
   flow: Flow
+  retry: boolean
 }
 
 export type EidCanRouteProps = ModalScreenProps<'EidCan'>
@@ -28,10 +28,9 @@ export const EidCanRoute: React.FC<EidCanRouteProps> = ({ route }) => {
   const onNext = useCallback(
     (can: string) => {
       modalNavigation.navigate({
-        screen: flow === 'Auth' ? EidPinRouteName : EidTransportPinRouteName,
+        screen: EidInsertCardRouteName,
         params: {
-          // coming from the can screen, the user has only one more try
-          retryCounter: 1,
+          flow,
           can,
         },
       })
@@ -49,7 +48,7 @@ export const EidCanRoute: React.FC<EidCanRouteProps> = ({ route }) => {
     <>
       <EidErrorAlert error={null} />
       <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
-      <EidCanScreen onClose={onClose} onNext={onNext} />
+      <EidCanScreen onClose={onClose} onNext={onNext} retry={route.params.retry} />
     </>
   )
 }

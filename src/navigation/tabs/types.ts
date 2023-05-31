@@ -13,7 +13,7 @@ export type TabsParamList = {
   [SearchRouteName]: SearchRouteParams
   [ReservationsRouteName]: ReservationsRouteParams
   [FavoritesRouteName]: FavoritesRouteParams
-  Settings: NavigatorScreenParams<SettingsParamList>
+  Settings: NavigatorScreenParams<SettingsParamList> | undefined
 }
 
 export type TabsScreenProps<RouteName extends keyof TabsParamList> = CompositeScreenProps<

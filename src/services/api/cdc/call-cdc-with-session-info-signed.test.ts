@@ -2,7 +2,6 @@ import { getEnvironmentConfigurationCdc } from '../../environment-configuration/
 import { ErrorWithCode } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { jestFn } from '../../testing/jest-fn'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { callCdcWithSessionInfoSigned } from './call-cdc-with-session-info-signed'
 import { sendCdcPostRequest } from './send-cdc-post-request'
@@ -38,7 +37,7 @@ describe('call-cdc-with-session-info-signed', () => {
   const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
 
   it('should call given prepare with arg and api', async () => {
-    const prepare = jestFn()
+    const prepare = jest.fn(() => ({ path: '' }))
 
     callCdcWithSessionInfoSigned<Result, Params>(prepare)(arg, api, extraOptions, baseQuery)
 

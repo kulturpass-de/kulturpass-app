@@ -21,6 +21,7 @@ import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 
 export type ForgotPasswordFormData = {
   email: string
@@ -36,6 +37,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
   const [loading, setLoading] = useState(false)
 
   const form = useForm<ForgotPasswordFormData>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z.object({
         email: EMAIL_SCHEMA(t),
@@ -43,6 +45,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
     ),
   })
 
+  useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
@@ -50,6 +53,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
     setLoading(true)
     try {
       await onFormSubmit(data.email)
+      form.reset()
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)

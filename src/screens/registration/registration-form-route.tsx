@@ -29,8 +29,8 @@ export const RegistrationFormRoute: React.FC = () => {
   }, [modalNavigation])
 
   const afterRegister = useCallback(
-    (regToken: string) => {
-      modalNavigation.replace({ screen: RegistrationPreferencesRouteConfig.name, params: { regToken } })
+    (regToken: string, firstName: string) => {
+      modalNavigation.replace({ screen: RegistrationPreferencesRouteConfig.name, params: { regToken, firstName } })
     },
     [modalNavigation],
   )

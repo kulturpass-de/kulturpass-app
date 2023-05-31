@@ -21,6 +21,23 @@ export const Basic: ComponentStory<typeof EidCanScreen> = () => {
         onClose={() => {
           console.log('onClose')
         }}
+        retry={false}
+      />
+    </View>
+  )
+}
+
+export const Error: ComponentStory<typeof EidCanScreen> = () => {
+  return (
+    <View style={styles.container}>
+      <EidCanScreen
+        onNext={can => {
+          console.log({ can })
+        }}
+        onClose={() => {
+          console.log('onClose')
+        }}
+        retry={true}
       />
     </View>
   )

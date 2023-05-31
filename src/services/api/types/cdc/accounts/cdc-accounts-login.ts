@@ -10,7 +10,7 @@ export type AccountsLoginResponse = CdcApiBaseSuccessResponse & {
   registeredTimestamp: number
   UID: string
   UIDSignature: string
-  signatureTimestamp: number
+  signatureTimestamp: string
   created: string
   createdTimestamp: number
   isActive: boolean
@@ -31,9 +31,9 @@ export type AccountsLoginResponse = CdcApiBaseSuccessResponse & {
   verifiedTimestamp: number
   newUser: false
   sessionInfo: {
-    sessionToken: string
-    sessionSecret: string
-    expires_in?: number
+    sessionToken?: string
+    sessionSecret?: string
+    expires_in?: string
   }
   id_token: string
   regToken?: string

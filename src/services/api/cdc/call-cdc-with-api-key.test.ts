@@ -1,6 +1,5 @@
 import { getEnvironmentConfigurationCdc } from '../../environment-configuration/redux/environment-configuration-selectors'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { jestFn } from '../../testing/jest-fn'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { callCdcWithApiKey } from './call-cdc-with-api-key'
 import { sendCdcPostRequest } from './send-cdc-post-request'
@@ -29,7 +28,7 @@ describe('call-cdc-with-api-key', () => {
   const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
 
   it('should call given prepare with arg and api', async () => {
-    const prepare = jestFn()
+    const prepare = jest.fn(() => ({ path: '' }))
 
     callCdcWithApiKey<Result, Params>(prepare)(arg, api, extraOptions, baseQuery)
 

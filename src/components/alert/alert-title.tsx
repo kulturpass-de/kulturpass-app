@@ -20,5 +20,6 @@ export const styles = StyleSheet.create({
   container: {
     marginBottom: spacing[5],
     color: colors.moonDarkest,
+    textAlign: 'center',
   },
 })

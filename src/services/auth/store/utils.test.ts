@@ -11,12 +11,12 @@ describe('cdcLoginResponseToSessionData', () => {
     profile: { firstName: 'my_first_name', email: 'test@test.test' },
     sessionInfo: { sessionToken: 'my_session_token', sessionSecret: 'my_session_secret' },
     isVerified: true,
-  } as AccountsLoginResponse
+  } as any as AccountsLoginResponse
 
   const output: CdcSessionData = {
     idToken: 'my_id_token',
     sessionSecret: 'my_session_secret',
-    sessionStartTimestamp: 12345,
+    sessionStartTimestamp: 12345000,
     sessionToken: 'my_session_token',
     sessionValidity: -2,
     uid: 'uid',
@@ -32,8 +32,8 @@ describe('cdcLoginResponseToSessionData', () => {
   })
 
   it('transform input data as expected with sessionInfo.expires_in being defined', () => {
-    let result = cdcLoginResponseToSessionData({ ...input, sessionInfo: { ...input.sessionInfo, expires_in: 67890 } })
-    expect(result).toEqual({ ...output, sessionValidity: 67890 })
+    let result = cdcLoginResponseToSessionData({ ...input, sessionInfo: { ...input.sessionInfo, expires_in: '67890' } })
+    expect(result).toEqual({ ...output, sessionValidity: 67890000 })
   })
 })
 

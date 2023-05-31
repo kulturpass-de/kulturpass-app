@@ -16,10 +16,7 @@ export type AccountInfoData = {
   eid?: AccountInfoDataEid
   idVerified?: 'true'
   dateOfBirth?: string // format YYYY-MM-DD
-}
-
-export type AccountInfoDeletionData = {
-  deletionRequested: boolean
+  deletionRequested?: boolean
 }
 
 export type AccountInfo = {

@@ -8,19 +8,14 @@ import { LogInRoute } from './log-in-route'
 import t from '../../services/translation/i18n/de.json'
 import { NavigationContainer } from '@react-navigation/native'
 import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
-import { setupStore } from '../../services/redux/configure-store'
 import { createStackNavigator } from '@react-navigation/stack'
-import { setEnvironmentConfiguration } from '../../services/environment-configuration/redux/environment-configuration-slice'
 
 const renderScreen = () => {
-  const reduxStore = setupStore({})
   const Stack = createStackNavigator()
-
-  reduxStore.store.dispatch(setEnvironmentConfiguration('test'))
 
   render(
     <AppProviders>
-      <StoreProvider reduxStore={reduxStore}>
+      <StoreProvider>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Register" component={LogInRoute} />

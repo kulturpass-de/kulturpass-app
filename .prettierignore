@@ -10,4 +10,6 @@ vendor
 coverage/
 
 # Ignoring lottie json animations
-src/components/loading-indicator/loading-spinner.json
+src/components/loading-animation/loading-animation-lottie.json
+# Ignoring simulated card jsons
+src/screens/developer-settings/simulation-cards/*.json

@@ -4,11 +4,15 @@ import { simulationCards } from '../../../screens/developer-settings/simulation-
 export type CardSimulationState = {
   simulateCard: boolean
   simulatedCardName?: keyof typeof simulationCards
+  simulatedCardDate?: string
+  randomLastName?: boolean
 }
 
 export const cardSimulationInitialState: CardSimulationState = {
   simulateCard: false,
   simulatedCardName: undefined,
+  simulatedCardDate: undefined,
+  randomLastName: undefined,
 }
 
 export const cardSimulationSlice = createSlice({
@@ -21,7 +25,14 @@ export const cardSimulationSlice = createSlice({
     setSimulatedCardName: (state, action: PayloadAction<keyof typeof simulationCards>) => {
       state.simulatedCardName = action.payload
     },
+    setSimulatedCardDate: (state, action: PayloadAction<string | undefined>) => {
+      state.simulatedCardDate = action.payload
+    },
+    setRandomLastName: (state, action: PayloadAction<boolean>) => {
+      state.randomLastName = action.payload
+    },
   },
 })
 
-export const { setSimulateCard, setSimulatedCardName } = cardSimulationSlice.actions
+export const { setSimulateCard, setSimulatedCardName, setSimulatedCardDate, setRandomLastName } =
+  cardSimulationSlice.actions

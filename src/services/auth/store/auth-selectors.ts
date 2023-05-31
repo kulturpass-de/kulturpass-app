@@ -1,17 +1,57 @@
 import { createSelector } from '@reduxjs/toolkit'
 
 import { RootState } from '../../redux/configure-store'
+import { CdcSessionData } from '../../session/types'
 import { isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'
 
 export const getAuthState = (state: RootState) => state.auth
 
-export const getIsUserLoggedInToCdc = createSelector(getAuthState, auth => {
-  return (
-    isNotEmptyString(auth.cdc?.sessionToken) &&
-    isNotEmptyString(auth.cdc?.sessionSecret) &&
-    isSessionTimestampValid(auth.cdc?.sessionValidity)
-  )
-})
+export const isUserPending = (cdc: CdcSessionData | null) => {
+  return cdc?.isVerified === false && typeof cdc?.regToken === 'string'
+}
+
+export const getAccountVerificationStatus = createSelector(
+  getAuthState,
+  (auth): 'pending' | 'completed' | undefined => {
+    if (auth.cdc === null) {
+      return undefined
+    }
+
+    if (isUserPending(auth.cdc)) {
+      return 'pending'
+    }
+
+    if (auth.cdc.isVerified === true) {
+      return 'completed'
+    }
+
+    return undefined
+  },
+)
+
+export const getIsUserVerificationPending = createSelector(getAccountVerificationStatus, status => status === 'pending')
+
+export const getIsUserLoggedInToCdc = createSelector(
+  getAuthState,
+  getIsUserVerificationPending,
+  (auth, isUserPendingVerification) => {
+    if (!auth.cdc) {
+      return false
+    }
+
+    if (isUserPendingVerification) {
+      const pendingTimestamp = auth.cdc.sessionStartTimestamp + auth.cdc.sessionValidity
+
+      return isSessionTimestampValid(pendingTimestamp)
+    }
+
+    return (
+      isNotEmptyString(auth.cdc?.sessionToken) &&
+      isNotEmptyString(auth.cdc?.sessionSecret) &&
+      isSessionTimestampValid(auth.cdc?.sessionValidity)
+    )
+  },
+)
 
 export const getIsUserLoggedInToCommerce = createSelector(getAuthState, auth => {
   return isNotEmptyString(auth.commerce?.access_token) && isExpiresInValid(auth.commerce?.expires_in)
@@ -25,47 +65,12 @@ export const getIsUserLoggedIn = createSelector(
   },
 )
 
-export const getCdcSessionData = createSelector(getAuthState, auth => {
-  return auth.cdc
-})
+export const getCdcSessionData = createSelector(getAuthState, auth => auth.cdc)
 
 export const getCdcSessionEmail = createSelector(getCdcSessionData, data => data?.user.email)
 
-export const getCommerceAccessToken = createSelector(
-  getAuthState,
-  getIsUserLoggedIn,
-  getIsUserLoggedInToCommerce,
-  getIsUserLoggedInToCdc,
-  (auth, isUserLoggedIn, isUserLoggedInToCommerce, isUserLoggedInToCdc) => {
-    return {
-      cdc: auth.cdc,
-      isUserLoggedInToCommerce,
-      isUserLoggedInToCdc,
-      isUserLoggedIn,
-      commerceAccessToken: auth.commerce?.access_token,
-    }
-  },
-)
+export const getRegistrationToken = createSelector(getCdcSessionData, data => data?.regToken)
 
-export const getRegistrationToken = createSelector(getAuthState, (auth): string | undefined => {
-  return auth.cdc?.regToken
-})
+export const getCommerceSessionData = createSelector(getAuthState, auth => auth.commerce)
 
-export const getAccountVerificationStatus = createSelector(
-  getAuthState,
-  (auth): 'pending' | 'completed' | undefined => {
-    if (auth.cdc === null) {
-      return undefined
-    }
-
-    if (auth.cdc.isVerified === false && typeof auth.cdc.regToken === 'string') {
-      return 'pending'
-    }
-
-    if (auth.cdc.isVerified === true) {
-      return 'completed'
-    }
-
-    return undefined
-  },
-)
+export const getCommerceAccessToken = createSelector(getCommerceSessionData, data => data?.access_token)

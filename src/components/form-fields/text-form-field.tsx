@@ -20,6 +20,7 @@ export type TextFormFieldProps = React.PropsWithChildren<
     error?: FieldError
     containerStyle?: FormFieldContainerProps['containerStyle']
     isRequired?: boolean
+    disableAccessibilityForLabel?: boolean
 
     onChange?: TextInputProps['onChangeText']
   } & Pick<
@@ -33,74 +34,85 @@ export type TextFormFieldProps = React.PropsWithChildren<
     | 'secureTextEntry'
     | 'value'
     | 'editable'
+    | 'maxLength'
   >
 >
 
-export const TextFormField: React.FC<TextFormFieldProps> = ({
-  testID,
-  labelI18nKey,
-  error,
-  containerStyle,
-  isRequired,
-  onChange,
-  onBlur,
-  children,
-  editable = true,
-  ...textInputProps
-}) => {
-  const { t } = useTranslation()
-  const { addTestIdModifier } = useTestIdBuilder()
-  const [state, setState] = useState<{ isFocused?: boolean }>({})
-
-  const handleBlur: NonNullable<TextInputProps['onBlur']> = useCallback(
-    event => {
-      setState(currentState => ({ ...currentState, isFocused: false }))
-      onBlur?.(event)
+export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
+  (
+    {
+      testID,
+      labelI18nKey,
+      error,
+      containerStyle,
+      isRequired,
+      disableAccessibilityForLabel,
+      onChange,
+      onBlur,
+      children,
+      editable = true,
+      ...textInputProps
     },
-    [onBlur],
-  )
+    ref,
+  ) => {
+    const { t } = useTranslation()
+    const { addTestIdModifier } = useTestIdBuilder()
+    const [state, setState] = useState<{ isFocused?: boolean }>({})
+    const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
 
-  const handleFocus: NonNullable<TextInputProps['onFocus']> = useCallback(() => {
-    setState(currentState => ({ ...currentState, isFocused: true }))
-  }, [])
+    const handleBlur: NonNullable<TextInputProps['onBlur']> = useCallback(
+      event => {
+        setState(currentState => ({ ...currentState, isFocused: false }))
+        onBlur?.(event)
+      },
+      [onBlur],
+    )
 
-  const borderColor: StyleProp<TextStyle> = useMemo(() => {
-    if (error) {
-      return { borderColor: colors.redBase }
-    } else if (state.isFocused) {
-      return { borderColor: colors.primaryLight }
-    } else {
-      return { borderColor: colors.moonDarkest }
-    }
-  }, [state.isFocused, error])
+    const handleFocus: NonNullable<TextInputProps['onFocus']> = useCallback(() => {
+      setState(currentState => ({ ...currentState, isFocused: true }))
+    }, [])
 
-  return (
-    <FormFieldContainer
-      testID={testID}
-      labelI18nKey={labelI18nKey}
-      error={error}
-      containerStyle={containerStyle}
-      isRequired={isRequired}>
-      <TextInput
-        placeholderTextColor={colors.moonBase}
-        onChangeText={onChange}
-        style={[textStyles.BodyRegular, styles.textInput, borderColor, !editable ? styles.textInputDisabled : {}]}
-        testID={addTestIdModifier(testID, 'input')}
-        accessibilityLabel={t(labelI18nKey)}
-        accessible
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        editable={editable}
-        {...textInputProps}
-      />
-      {children}
-    </FormFieldContainer>
-  )
-}
+    const borderColor: StyleProp<TextStyle> = useMemo(() => {
+      if (error) {
+        return { borderColor: colors.redBase }
+      } else if (state.isFocused) {
+        return { borderColor: colors.primaryLight }
+      } else {
+        return { borderColor: colors.moonDarkest }
+      }
+    }, [state.isFocused, error])
+
+    return (
+      <FormFieldContainer
+        testID={testID}
+        labelI18nKey={labelI18nKey}
+        error={error}
+        containerStyle={containerStyle}
+        disableAccessibilityForLabel={disableAccessibilityForLabel}
+        isRequired={isRequired}>
+        <TextInput
+          ref={ref}
+          placeholderTextColor={colors.moonBase}
+          onChangeText={onChange}
+          style={[textStyles.BodyRegular, styles.textInput, borderColor, !editable ? styles.textInputDisabled : {}]}
+          testID={addTestIdModifier(testID, 'input')}
+          accessibilityLabel={t(labelI18nKey)}
+          accessibilityHint={accessibilityHint}
+          accessible
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          editable={editable}
+          {...textInputProps}
+        />
+        {children}
+      </FormFieldContainer>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   textInput: {
-    height: spacing[9],
+    minHeight: spacing[9],
     paddingLeft: spacing[4],
     paddingRight: spacing[4],
     borderWidth: spacing[0],

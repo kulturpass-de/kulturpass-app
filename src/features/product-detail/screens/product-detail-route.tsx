@@ -11,27 +11,39 @@ import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductDetailScreen } from './product-detail-screen'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { commerceApi } from '../../../services/api/commerce-api'
 
 export const ProductDetailRouteName = 'ProductDetail'
 
 export type ProductDetailRouteParams = {
   productCode: string
+  randomMode: boolean
   offerId?: Offer['id']
 }
 
 type ProfileScreenProps = ModalScreenProps<'ProductDetail'>
 
-export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
+export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, navigation }) => {
   const modalNavigation = useModalNavigation()
-  const { productCode, offerId } = route.params
+  const { productCode, offerId, randomMode } = route.params
+
+  const [randomProductQueryTrigger, randomProductResult] = commerceApi.useLazyGetRandomProductQuery()
 
   const onClose = useCallback(() => {
     modalNavigation.closeModal()
   }, [modalNavigation])
 
+  const onRandomReroll = useCallback(async () => {
+    const randomProduct = await randomProductQueryTrigger({}).unwrap()
+    navigation.setParams({
+      productCode: randomProduct.code,
+      randomMode: true,
+    })
+  }, [navigation, randomProductQueryTrigger])
+
   const onOfferSelection = useCallback(() => {
-    modalNavigation.navigate({ screen: 'OfferSelection', params: { productCode } })
-  }, [modalNavigation, productCode])
+    modalNavigation.navigate({ screen: 'OfferSelection', params: { productCode, randomMode } })
+  }, [modalNavigation, productCode, randomMode])
 
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
 
@@ -48,27 +60,30 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
     })
   }, [productCode, selectedOffer, modalNavigation])
 
-  const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
+  const { visibleError, onDismissVisibleError } = useDismissableError(
+    !isLoading ? error ?? randomProductResult.error : undefined,
+  )
 
   const handleDismissErrorAndClose = useCallback(() => {
     onDismissVisibleError()
     onClose()
   }, [onClose, onDismissVisibleError])
 
-  if (!productDetail) {
-    return <ErrorAlert error={visibleError} onDismiss={handleDismissErrorAndClose} />
-  }
-
   return (
     <>
-      <LoadingIndicator loading={isLoading} />
-      <ProductDetailScreen
-        onClose={onClose}
-        onOfferSelection={onOfferSelection}
-        productDetail={productDetail}
-        selectedOffer={selectedOffer}
-        reserveProduct={reserveProduct}
-      />
+      <LoadingIndicator loading={isLoading || randomProductResult.isLoading} />
+      <ErrorAlert error={visibleError} onDismiss={handleDismissErrorAndClose} />
+      {productDetail ? (
+        <ProductDetailScreen
+          onClose={onClose}
+          onOfferSelection={onOfferSelection}
+          onRandomReroll={onRandomReroll}
+          productDetail={productDetail}
+          selectedOffer={selectedOffer}
+          randomMode={randomMode}
+          reserveProduct={reserveProduct}
+        />
+      ) : null}
     </>
   )
 }

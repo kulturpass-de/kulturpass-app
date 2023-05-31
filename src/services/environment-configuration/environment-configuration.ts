@@ -2,6 +2,7 @@ import { z } from 'zod'
 import yaml from 'js-yaml'
 import environmentConfigurationFileContent from './environment-configuration.yaml'
 import { env } from '../../env'
+import { LocalizedLinkSchema } from '../../utils/links/hooks/use-localized-environment-url'
 
 export const AuthSchema = z.object({
   tokenEndpoint: z.string(),
@@ -10,6 +11,13 @@ export const AuthSchema = z.object({
 })
 
 export type Auth = z.infer<typeof AuthSchema>
+
+export const AppInformationSchema = z.object({
+  imprintUrl: LocalizedLinkSchema,
+  openSourceLegalNoticeUrl: LocalizedLinkSchema,
+})
+
+export type AppInformation = z.infer<typeof AppInformationSchema>
 
 export const CommerceApiSchema = z.object({
   baseUrl: z.string(),
@@ -25,10 +33,8 @@ export const CustomerDataCloudSchema = z.object({
   baseUrl: z.string(),
   apiKey: z.string(),
   consents: z.object({
-    dpsDocumentUrl: z.object({
-      de: z.string(),
-      en: z.string(),
-    }),
+    dpsDocumentUrl: LocalizedLinkSchema,
+    eulaDocumentUrl: LocalizedLinkSchema,
   }),
 })
 
@@ -39,6 +45,12 @@ export const EidSchema = z.object({
 })
 
 export type Eid = z.infer<typeof EidSchema>
+
+export const FaqSchema = z.object({
+  homeUrl: LocalizedLinkSchema,
+})
+
+export type Faq = z.infer<typeof FaqSchema>
 
 export const AppConfigSchema = z.object({
   initialValue: z.string(),
@@ -51,9 +63,11 @@ export type AppConfig = z.infer<typeof AppConfigSchema>
 
 export const EnvironmentConfigurationSchema = z.object({
   name: z.string(),
+  appInformation: AppInformationSchema,
   commerce: CommerceApiSchema,
   cdc: CustomerDataCloudSchema,
   eid: EidSchema,
+  faq: FaqSchema,
   appConfig: AppConfigSchema,
 })
 

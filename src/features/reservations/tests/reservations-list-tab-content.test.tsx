@@ -1,22 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { render, screen, within } from '@testing-library/react-native'
+import { screen, within } from '@testing-library/react-native'
 import { rest } from 'msw'
-import { setupServer } from 'msw/lib/node'
 import React from 'react'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { buildTestId, addTestIdModifier } from '../../../services/test-id/test-id'
-import { AppProviders, StoreProvider } from '../../../services/testing/test-utils'
+import { renderScreen, serverHandlersLoggedIn, setupServer } from '../../../services/testing/test-utils'
 import { ReservationsListTabContent } from '../components/reservations-list-tab-content'
 
-const renderScreen = (children: React.ReactNode) => {
-  render(
-    <AppProviders>
-      <StoreProvider withLoginSession>
-        <NavigationContainer>{children}</NavigationContainer>
-      </StoreProvider>
-    </AppProviders>,
-  )
-}
 const componentTestID = buildTestId('reservations_test')
 
 const renderReservationsList = (completedReservations: boolean) => {
@@ -40,19 +29,18 @@ const renderReservationsList = (completedReservations: boolean) => {
 const reservationsScreenTestId = addTestIdModifier(componentTestID, 'tab')
 
 describe('ReservationsListTabContent', () => {
-  const server = setupServer()
+  const server = setupServer(...serverHandlersLoggedIn)
 
   beforeAll(() => server.listen())
   afterEach(() => server.resetHandlers())
   afterAll(() => server.close())
 
-  test.skip('Should render order list', async () => {
+  test('Should render order list', async () => {
     const orders: Order[] = [
       {
         status: 'CREATED',
-        entries: [
-          { shopName: 'Test', product: { name: 'Test' }, images: [], totalPrice: { value: 23, currencyIso: 'EUR' } },
-        ],
+        entries: [{ shopName: 'Test', product: { name: 'Test' }, images: [] }],
+        total: { value: 23, currencyIso: 'EUR' },
       } as any,
     ]
     server.use(
@@ -68,7 +56,7 @@ describe('ReservationsListTabContent', () => {
 
     renderReservationsList(false)
     expect(await screen.findByTestId(reservationsScreenTestId)).toBeOnTheScreen()
-    const amountText = screen.getByTestId(buildTestId('reservations_listItem_price'))
+    const amountText = await screen.findByTestId(buildTestId('reservations_listItem_price'))
     expect(amountText).toBeOnTheScreen()
     expect(within(amountText).getByText('23,00 €', { exact: false })).toBeOnTheScreen()
   })

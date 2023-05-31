@@ -28,7 +28,10 @@ import { CdcApiBaseSuccessResponse } from './types/cdc/cdc-api-base-success-resp
 // TODO: extract cdc constant
 export const CDC_SESSION_EXPIRATION_INIFINITE = -2
 
+const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
+
 export const cdcApi = createApi({
+  ...dontRemoveOtherwiseJestTestsWillNotClose,
   reducerPath: 'cdcApi',
   baseQuery: axiosBaseQuery<CdcApiBaseSuccessResponse>(),
   tagTypes: ['AccountInfo', 'AccountInfo.initRegistration'],
@@ -44,7 +47,7 @@ export const cdcApi = createApi({
         },
       })),
     }),
-    postLogout: builder.mutation<AccountsLogoutResponse, AccountsLogoutRequestParams>({
+    accountsLogoutSigned: builder.mutation<AccountsLogoutResponse, AccountsLogoutRequestParams>({
       queryFn: callCdcWithSessionInfoSigned(() => ({
         path: 'accounts.logout',
       })),
@@ -53,7 +56,6 @@ export const cdcApi = createApi({
       queryFn: callCdcWithApiKey(() => ({
         path: 'accounts.initRegistration',
       })),
-      providesTags: ['AccountInfo.initRegistration'],
     }),
     accountsRegister: builder.mutation<AccountsRegisterResponse, AccountsRegisterRequestParams>({
       queryFn: callCdcWithApiKey(params => ({
@@ -69,7 +71,6 @@ export const cdcApi = createApi({
           },
         },
       })),
-      invalidatesTags: ['AccountInfo.initRegistration'],
     }),
     accountsGetAccountInfoWithRegTokenUnsigned: builder.query<AccountsGetAccountInfoResponse, { regToken: string }>({
       queryFn: callCdcWithApiKey(params => ({

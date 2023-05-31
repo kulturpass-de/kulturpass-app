@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import { setupServer } from 'msw/lib/node'
+import { setupServer } from 'msw/node'
 
 import { clearSecurePersistedSession } from '../../session/redux/thunks/clear-secure-persisted-session'
 import { restoreSession } from '../../session/redux/thunks/restore-session'

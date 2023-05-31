@@ -1,38 +1,50 @@
-import React, { useCallback, useMemo } from 'react'
-import { Platform, StyleSheet, ViewProps } from 'react-native'
+import React, { useCallback } from 'react'
+import { Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getCommerceAccessToken } from '../../../services/auth/store/auth-selectors'
-import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
-import { useOpenProductDetail } from '../hooks/use-open-product-detail'
-import { useWebViewScrollToTop } from '../hooks/use-webview-scroll-to-top'
-import { WebViewId } from '../services/webview-bridge-adapter/types'
-import { AuthApi, useWebViewAuthSync } from '../services/webview-bridge-adapter/use-webview-auth-sync'
-import { useWebViewBridgeAdapter } from '../services/webview-bridge-adapter/use-webview-bridge-adapter'
-import { useWebViewLocationSync } from '../services/webview-bridge-adapter/use-webview-location-sync'
-import { useOrigin } from '../hooks/use-origin'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
-import { WebviewLoadingIndicator } from './webview-loading-indicator'
-import { WebviewErrorView } from './webview-error-view'
-import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
+import { getCommerceAccessToken, getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
+import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
+import { AppDispatch } from '../../../services/redux/configure-store'
 import { colors } from '../../../theme/colors'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
-import { AppDispatch } from '../../../services/redux/configure-store'
-import { authCommerceLogin } from '../../../services/auth/store/thunks/auth-commerce-login'
-import { authLogout } from '../../../services/auth/store/thunks/auth-logout'
+import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
+import { useOpenProductDetail } from '../hooks/use-open-product-detail'
+import { useOrigin } from '../hooks/use-origin'
+import { useWebViewScrollToTop } from '../hooks/use-webview-scroll-to-top'
+import { WebViewId } from '../services/webview-bridge-adapter/types'
+import { useWebViewAuthSync } from '../services/webview-bridge-adapter/use-webview-auth-sync'
+import { useWebViewBridgeAdapter } from '../services/webview-bridge-adapter/use-webview-bridge-adapter'
+import { useWebViewLocationSync } from '../services/webview-bridge-adapter/use-webview-location-sync'
+import { WebviewErrorView } from './webview-error-view'
+import { WebviewLoadingIndicator } from './webview-loading-indicator'
+import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
+import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
+import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapter/use-webview-android-pull-to-refresh'
+import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
 
 type SpartacusWebViewProps = {
   webViewId: WebViewId
   commands?: string[]
   url: string
   onScroll?: WebViewProps['onScroll']
-} & Omit<ViewProps, 'ref'>
+  language: string
+  contentOffset?: number
+} & Omit<WebViewProps, 'ref' | 'onLoadEnd'>
 
 /**
  * SpartacusWebView wraps the WebView component and connects it to WebViewBridgeAdapter.
  */
-export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({ webViewId, url, commands, ...props }) => {
+export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
+  webViewId,
+  url,
+  commands,
+  language,
+  style,
+  contentOffset,
+  ...props
+}) => {
   const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState } = useWebViewBridgeAdapter(webViewId)
 
   const origin = useOrigin(url)
@@ -59,20 +71,9 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({ webViewId, u
   }, [resetError, webViewRef])
 
   const dispatch = useDispatch<AppDispatch>()
+  const isUserLoggedIn = useSelector(getIsUserLoggedIn)
   const commerceAccessToken = useSelector(getCommerceAccessToken)
-
-  const authApi: AuthApi = useMemo(() => {
-    return {
-      login: () => {
-        return dispatch(authCommerceLogin(commerceAccessToken.cdc!)).unwrap()
-      },
-      logout: () => {
-        return dispatch(authLogout()).unwrap()
-      },
-    }
-  }, [dispatch, commerceAccessToken])
-
-  useWebViewAuthSync(bridgeAdapterApi, bridgeAdapterState, commerceAccessToken, authApi)
+  useWebViewAuthSync(bridgeAdapterApi, bridgeAdapterState, dispatch, isUserLoggedIn, commerceAccessToken)
 
   const currentUserLocation = useSelector(getCurrentUserLocation)
   useWebViewLocationSync(bridgeAdapterApi, bridgeAdapterState, currentUserLocation)
@@ -83,6 +84,15 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({ webViewId, u
 
   useWebViewScrollToTop(webViewRef)
 
+  useWebViewLanguageSync(webViewRef, language)
+
+  const { setContentOffset } = useWebViewContentOffset(webViewRef, contentOffset)
+
+  const { onScroll, onTouchEnd, onTouchStart } = useWebviewAndroidPullToRefresh({
+    onScroll: props.onScroll,
+    webViewRef,
+  })
+
   let uri = url
   if (commands) {
     uri += '/' + commands.join('/')
@@ -90,8 +100,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({ webViewId, u
 
   return (
     <>
+      <AccountVerifiedWebViewHandler bridgeAdapterApi={bridgeAdapterApi} />
       <WebView
-        style={styles.webview}
         onShouldStartLoadWithRequest={handleShouldLoadRequest}
         startInLoadingState
         pullToRefreshEnabled
@@ -102,6 +112,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({ webViewId, u
         ref={webViewRef}
         onMessage={onMessage}
         {...props}
+        onLoadEnd={setContentOffset}
+        style={[styles.webview, style]}
+        onScroll={onScroll}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       />
       {errorCode !== undefined ? <WebviewErrorView onRefresh={reload} errorCode={errorCode} /> : null}
     </>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -20,11 +20,12 @@ import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
-import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { register } from '../../services/user/redux/thunks/register'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
+import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 
 export type RegistrationFormData = {
   email: string
@@ -38,7 +39,7 @@ export type RegistrationFormDataKeys = keyof RegistrationFormData
 
 export type RegistrationFormScreenProps = {
   onHeaderPressClose: () => void
-  afterRegister: (regToken: string) => void
+  afterRegister: (regToken: string, firstName: string) => void
 }
 
 export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
@@ -52,6 +53,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
 
   const { buildTestId } = useTestIdBuilder()
   const form = useForm<RegistrationFormData>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z
         .object({
@@ -68,6 +70,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
     ),
   })
 
+  useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
@@ -75,7 +78,8 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
     setLoading(true)
     try {
       const accountsRegisterResponse = await dispatch(register(data)).unwrap()
-      afterRegister(accountsRegisterResponse.regToken)
+      afterRegister(accountsRegisterResponse.regToken, accountsRegisterResponse.profile.firstName)
+      form.reset()
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
@@ -110,6 +114,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           autoCorrect={false}
           keyboardType="email-address"
           isRequired
+          disableAccessibilityForLabel
         />
         <FormFieldWithControl
           name={'password'}
@@ -118,6 +123,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           testID={buildTestId('registration_form_password')}
           control={form.control}
           isRequired
+          disableAccessibilityForLabel
         />
         <FormFieldWithControl
           name={'confirmPassword'}
@@ -126,6 +132,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           testID={buildTestId('registration_form_confirmPassword')}
           control={form.control}
           isRequired
+          disableAccessibilityForLabel
         />
         <FormFieldWithControl
           name={'firstName'}
@@ -133,6 +140,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           labelI18nKey="registration_form_firstName"
           testID={buildTestId('registration_form_firstName')}
           control={form.control}
+          disableAccessibilityForLabel
         />
         <FormFieldWithControl
           name={'dateOfBirth'}
@@ -140,16 +148,17 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           labelI18nKey="registration_form_dateOfBirth"
           testID={buildTestId('registration_form_dateOfBirth')}
           control={form.control}
+          disableAccessibilityForLabel
         />
       </ScreenContent>
-      <View style={styles.submitButtonView}>
+      <ModalScreenFooter>
         <Button
           disabled={!form.formState.isDirty}
           testID={buildTestId('registration_form_submit')}
           i18nKey="registration_form_submit"
           onPress={onSubmit}
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -158,12 +167,5 @@ const styles = StyleSheet.create({
   screenContent: {
     marginTop: spacing[6],
     paddingHorizontal: spacing[5],
-  },
-  submitButtonView: {
-    paddingTop: spacing[5],
-    paddingHorizontal: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
 })

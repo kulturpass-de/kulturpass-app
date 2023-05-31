@@ -9,6 +9,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type AccountDeletionSuccessfulScreenProps = {
   onClose: () => void
@@ -47,14 +48,14 @@ export const AccountDeletionSuccessfulScreen: React.FC<AccountDeletionSuccessful
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onClose}
           variant="primary"
           testID={addTestIdModifier(screenTestId, 'done_button')}
           i18nKey="accountDeletion_successful_done_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -84,15 +85,5 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
     textAlign: 'center',
     color: colors.moonDarkest,
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

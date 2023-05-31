@@ -28,6 +28,7 @@ const mockedRouterHomeEvent: WebViewEvents['router.events'] = {
 
 jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn(),
+  useNavigation: jest.fn(),
 }))
 
 const mockUseRoute = useRoute as jest.Mock

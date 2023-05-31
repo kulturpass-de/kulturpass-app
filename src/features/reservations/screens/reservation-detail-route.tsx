@@ -8,7 +8,6 @@ import { modalCardStyle } from '../../../theme/utils'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { ReservationDetailScreen } from './reservation-detail-screen'
 import { useQueryProductDetail } from '../../product-detail/hooks/use-query-product-detail'
-import { useSelectedOrClosestOffer } from '../../product-detail/hooks/use-selected-or-closest-offer'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const ReservationDetailRouteName = 'ReservationDetail'
@@ -28,7 +27,6 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   const orderEntry = order?.entries?.[0]
 
   const { data: productDetail, isLoading } = useQueryProductDetail(orderEntry?.product?.code)
-  const selectedOffer = useSelectedOrClosestOffer(productDetail, orderEntry?.offerId)
 
   const onClose = useCallback(() => {
     modalNavigation.closeModal()
@@ -47,7 +45,6 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
       <LoadingIndicator loading={isLoading || orderDetailResponse.isLoading} />
       <ReservationDetailScreen
         productDetail={productDetail}
-        selectedOffer={selectedOffer}
         order={order}
         onClose={onClose}
         afterCancelReservationTriggered={afterCancelReservationTriggered}

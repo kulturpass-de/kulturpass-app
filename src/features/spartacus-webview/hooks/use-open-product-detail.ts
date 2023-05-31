@@ -14,12 +14,16 @@ export const useOpenProductDetail = (bridgeAdapterApi: BridgeAdapterAPI) => {
       (data: SpartacusBridge.EventForwarding.RouterEvent['data']) => {
         const url = data.url
 
-        if (url.startsWith('/product/')) {
-          const productCode = url.split('/')[2]
+        const productCode = url.match(/\/product\/([^?/]+)/)?.[1]
+
+        const isRandomMode = url.includes('randomMode=true')
+
+        if (productCode) {
           modalNavigation.navigate({
             screen: ProductDetailRouteConfig.name,
             params: {
               productCode: productCode,
+              randomMode: isRandomMode,
             },
           })
         }

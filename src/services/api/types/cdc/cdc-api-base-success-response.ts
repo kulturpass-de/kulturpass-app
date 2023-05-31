@@ -4,5 +4,5 @@ export type CdcApiBaseSuccessResponse = {
   errorCode: number
   statusCode: number
   statusReason: string
-  time: Date
+  time: string
 }

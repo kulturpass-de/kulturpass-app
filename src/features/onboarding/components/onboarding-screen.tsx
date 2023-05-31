@@ -10,8 +10,10 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { LinkText } from '../../../components/link-text/link-text'
-import { useDpsDocumentUrl } from '../../../services/environment-configuration/hooks/use-dps-document-url'
+import { useLocalizedEnvironmentUrl } from '../../../utils/links/hooks/use-localized-environment-url'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 type OnboardingScreenProps = {
   testID: string
@@ -44,7 +46,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
 
   const screenTestID = buildTestId(testID)
 
-  const dpsDocumentUrl = useDpsDocumentUrl()
+  const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
   const modalNavigation = useModalNavigation()
 
@@ -81,12 +83,12 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
           />
           {dataprivacyI18nKey ? (
             <View style={styles.linkContainer}>
-              <LinkText i18nKey={dataprivacyI18nKey} link={dpsDocumentUrl} />
+              <LinkText testID={buildTestId(dataprivacyI18nKey)} i18nKey={dataprivacyI18nKey} link={dpsDocumentUrl} />
             </View>
           ) : null}
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onAccept}
           variant="primary"
@@ -100,7 +102,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
         ) : (
           <View style={styles.buttonSpacer} />
         )}
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -134,15 +136,6 @@ export const styles = StyleSheet.create({
   },
   linkContainer: {
     paddingTop: spacing[6],
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    backgroundColor: colors.basicWhite,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
   },
   denyButton: {
     paddingTop: spacing[5],

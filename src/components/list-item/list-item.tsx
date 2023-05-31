@@ -1,16 +1,65 @@
-import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { TestId } from '../../services/test-id/test-id'
+import React, { ReactNode, useMemo } from 'react'
+import { AccessibilityState, Pressable, StyleSheet, Text, View } from 'react-native'
+import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
+import { SvgImage } from '../svg-image/svg-image'
 import { Icon } from '../icon/icon'
+
+export type ListItemProps = {
+  title: string
+  testID: TestId
+  icon?: JSX.Element
+  type?: 'navigation' | 'link'
+  onPress?: () => void
+  noBorderBottom?: boolean
+  accessibilityState?: AccessibilityState
+}
+
+export const ListItem: React.FC<ListItemProps> = ({
+  title,
+  testID,
+  icon,
+  onPress,
+  type,
+  noBorderBottom,
+  accessibilityState,
+}) => {
+  const { addTestIdModifier } = useTestIdBuilder()
+  const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.basicBlack }
+
+  const iconElement: ReactNode = useMemo(() => {
+    if (type === 'navigation') {
+      return <Icon source="Chevron" height={24} width={24} />
+    } else if (type === 'link') {
+      return <SvgImage testID={addTestIdModifier(testID, 'icon')} type="list-link" height={24} width={24} />
+    } else {
+      return null
+    }
+  }, [addTestIdModifier, testID, type])
+
+  return (
+    <Pressable
+      style={[styles.container, borderBottomStyle]}
+      onPress={onPress}
+      testID={testID}
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityState={accessibilityState}
+      accessible>
+      {icon && <View style={styles.icon}>{icon}</View>}
+      <Text style={[textStyles.BodyRegular, styles.text]}>{title}</Text>
+      {iconElement}
+    </Pressable>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     paddingLeft: spacing[6],
-    paddingRight: spacing[2],
-    height: spacing[10],
+    paddingRight: spacing[4],
+    minHeight: spacing[10],
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -24,29 +73,3 @@ const styles = StyleSheet.create({
     color: colors.moonDarkest,
   },
 })
-
-export type ListItemProps = {
-  title: string
-  testID: TestId
-  icon?: JSX.Element
-  chevron?: boolean
-  onPress?: () => void
-  noBorderBottom?: boolean
-}
-
-export const ListItem: React.FC<ListItemProps> = ({ title, testID, icon, onPress, chevron, noBorderBottom }) => {
-  const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.basicBlack }
-
-  return (
-    <Pressable
-      style={[styles.container, borderBottomStyle]}
-      onPress={onPress}
-      testID={testID}
-      accessibilityLabel={title}
-      accessible>
-      {icon && <View style={styles.icon}>{icon}</View>}
-      <Text style={[textStyles.BodyRegular, styles.text]}>{title}</Text>
-      {chevron && <Icon source="Chevron" height={24} />}
-    </Pressable>
-  )
-}

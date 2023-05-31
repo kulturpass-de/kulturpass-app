@@ -5,7 +5,7 @@ import { useModalNavigation } from '../../navigation/modal/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { LogInRouteConfig } from '../log-in/log-in-route'
-import { FavoritesScreen } from './favorites-screen'
+import { FavoritesScreen, FavoritesScreenProps } from './favorites-screen'
 import { FavoritesUnauthorizedScreen, type FavoritesUnauthorizedScreenProps } from './favorites-unauthorized-screen'
 
 export const FavoritesRouteName = 'Favorites'
@@ -21,7 +21,18 @@ export const FavoritesRoute: React.FC = () => {
     })
   }, [modalNavigation])
 
-  return isLoggedIn ? <FavoritesScreen /> : <FavoritesUnauthorizedScreen onSignInRequested={onSignInRequested} />
+  const onFavoritePressed: FavoritesScreenProps['onFavoritePressed'] = useCallback(
+    (productCode: string) => {
+      modalNavigation.navigate({ screen: 'ProductDetail', params: { productCode, randomMode: false } })
+    },
+    [modalNavigation],
+  )
+
+  return isLoggedIn ? (
+    <FavoritesScreen onFavoritePressed={onFavoritePressed} />
+  ) : (
+    <FavoritesUnauthorizedScreen onSignInRequested={onSignInRequested} />
+  )
 }
 
 export const FavoritesRouteConfig = createRouteConfig({

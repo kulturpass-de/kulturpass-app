@@ -13,6 +13,9 @@ import { addTestIdModifier, buildTestId, TestId } from '../../services/test-id/t
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { RegistrationDataPrivacyCancelAlert } from './registration-data-privacy-cancel-alert'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
+import { getCdcDpsDocumentUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
+import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
 
 export type RegistrationDataPrivacyScreenProps = {
   onHeaderClose: () => void
@@ -47,9 +50,8 @@ const bulletStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginHorizontal: spacing[6],
-    height: 24,
-    // backgroundColor: 'red'
+    marginLeft: spacing[6],
+    minHeight: 24,
   },
   bulletPoint: {
     width: 4,
@@ -60,7 +62,6 @@ const bulletStyles = StyleSheet.create({
     marginHorizontal: spacing[1],
   },
   text: {
-    // paddingTop: spacing[5],
     color: colors.moonDarkest,
   },
 })
@@ -70,6 +71,8 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
   onCancelRegistration,
 }) => {
   const [showCancelAlert, setShowCancelAlert] = useState(false)
+  const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
+
   const onPressCancelRegistration = useCallback(() => {
     setShowCancelAlert(true)
   }, [])
@@ -133,30 +136,31 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
         <TranslatedText
           i18nKey="registration_data_privacy_copytext"
           textStyle={'BodyRegular'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'dataPrivacy_copytext')}
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext')}
           textStyleOverrides={styles.dataPrivacyCopyText}
         />
         <LinkText
-          link="https://www.sap.de"
+          link={dpsDocumentUrl}
           i18nKey="registration_data_privacy_linktext"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'linktext')}
           textStyle="BodyMedium"
           style={styles.dataPrivacyLinkText}
         />
       </ScreenContent>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
-          testID={buildTestId('registration_dataPrivacy_submit')}
+          testID={buildTestId('registration_data_privacy_submit')}
           i18nKey="registration_data_privacy_submit"
           onPress={onContinue}
         />
         <View style={styles.cancelButtonView}>
           <Button
-            testID={buildTestId('registration_dataPrivacy_cancel')}
+            testID={buildTestId('registration_data_privacy_cancel')}
             i18nKey="registration_data_privacy_cancel"
             onPress={onPressCancelRegistration}
           />
         </View>
-      </View>
+      </ModalScreenFooter>
       {showCancelAlert ? (
         <RegistrationDataPrivacyCancelAlert
           onCancelRegistration={modalOnCancelPressed}
@@ -171,13 +175,6 @@ const styles = StyleSheet.create({
   screenContent: {
     marginTop: spacing[6],
     paddingHorizontal: spacing[5],
-  },
-  buttonFooter: {
-    paddingTop: spacing[5],
-    paddingHorizontal: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
   cancelButtonView: {
     paddingTop: spacing[5],

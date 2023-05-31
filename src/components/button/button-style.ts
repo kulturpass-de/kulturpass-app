@@ -23,6 +23,9 @@ export const baseButtonStyle = StyleSheet.create({
   buttonIconRight: {
     marginLeft: spacing[2],
   },
+  buttonIconDisabled: {
+    opacity: 0.6,
+  },
 })
 
 export type ButtonWidthOptionStyle = StyleSheet.NamedStyles<{
@@ -54,7 +57,7 @@ export const buttonModifierStyle: Record<ButtonModifier, ButtonModifierStyle> = 
   default: StyleSheet.create({
     size: {
       paddingHorizontal: spacing[5],
-      height: 48,
+      minHeight: 48,
       borderRadius: spacing[6],
     },
     text: {
@@ -64,7 +67,7 @@ export const buttonModifierStyle: Record<ButtonModifier, ButtonModifierStyle> = 
   small: StyleSheet.create({
     size: {
       paddingHorizontal: spacing[5],
-      height: 36,
+      minHeight: 36,
       borderRadius: spacing[6],
     },
     text: {

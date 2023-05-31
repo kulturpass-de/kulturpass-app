@@ -14,12 +14,19 @@ export const createTranslation = (params?: { debug?: boolean }) => {
 
   instance = i18n.createInstance()
 
-  instance.use(AsyncStoragePlugin()).use(initReactI18next).init({
-    debug: params?.debug,
-    resources,
-    defaultNS,
-    fallbackLng,
-  })
+  instance
+    .use(AsyncStoragePlugin())
+    .use(initReactI18next)
+    .init({
+      debug: params?.debug,
+      resources,
+      defaultNS,
+      fallbackLng,
+
+      // the official docs states that this is not required for react:
+      // https://react.i18next.com/misc/using-with-icu-format
+      interpolation: { escapeValue: false },
+    })
 
   setupErrorMap(instance)
 

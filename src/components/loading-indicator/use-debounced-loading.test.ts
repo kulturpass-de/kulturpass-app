@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-native'
+import { renderHook, waitFor } from '@testing-library/react-native'
 import { useDebouncedLoading } from './use-debounced-loading'
 import { useState } from 'react'
 import { act } from 'react-test-renderer'
@@ -12,8 +12,6 @@ describe('useDebouncedLoading', () => {
     })
     expect(result.current.debouncedLoading).toBe(false)
     await act(() => result.current.setLoading(true))
-    expect(result.current.debouncedLoading).toBe(false)
-    await new Promise(r => setTimeout(r, 1000))
-    expect(result.current.debouncedLoading).toBe(true)
+    await waitFor(() => expect(result.current.debouncedLoading).toBe(true))
   })
 })

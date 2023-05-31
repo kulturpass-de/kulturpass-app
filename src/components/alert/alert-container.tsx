@@ -15,5 +15,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: spacing[5],
+    paddingVertical: spacing[5],
   },
 })

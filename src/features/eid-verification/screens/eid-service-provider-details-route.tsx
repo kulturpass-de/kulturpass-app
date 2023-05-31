@@ -6,13 +6,13 @@ import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidServiceProviderDetailsScreen } from './eid-service-provider-details-screen'
-import { CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { ModalScreenProps } from '../../../navigation/modal/types'
+import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export const EidServiceProviderDetailsRouteName = 'EidServiceProviderDetails'
 
 export type EidServiceProviderDetailsRouteParams = {
-  certificate: CertificateMessage
+  certificate: Certificate
 }
 
 export type EidServiceProviderDetailsRouteProps = ModalScreenProps<'EidServiceProviderDetails'>

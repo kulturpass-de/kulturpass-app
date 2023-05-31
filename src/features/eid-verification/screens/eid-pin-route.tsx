@@ -8,14 +8,14 @@ import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
 import { EidPinScreen } from './eid-pin-screen'
-import { EidErrorAlert } from '../components/eid-error-alert'
-import { aa2Module } from '@jolocom/react-native-ausweis'
 import { EidTransportPinRouteName } from './eid-transport-pin-route'
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { EidErrorAlert } from '../components/eid-error-alert'
 
 export const EidPinRouteName = 'EidPin'
 
 export type EidPinRouteParams = {
-  can?: string
   retryCounter?: number
 }
 
@@ -24,6 +24,7 @@ export type EidPinRouteProps = ModalScreenProps<'EidPin'>
 export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
   const modalNavigation = useModalNavigation()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onNext = useCallback(
     (pin: string) => {
@@ -32,23 +33,28 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
         params: {
           flow: 'Auth',
           pin,
-          can: route.params.can,
         },
       })
     },
-    [modalNavigation, route.params.can],
+    [modalNavigation],
   )
 
   const onChangePin = useCallback(async () => {
-    await aa2Module.cancelFlow()
+    setIsLoading(true)
+    try {
+      await AA2CommandService.cancel()
+    } catch {
+      // Will be handled by error EidErrorAlert
+    } finally {
+      setIsLoading(false)
+    }
     modalNavigation.navigate({
       screen: EidTransportPinRouteName,
       params: {
         retryCounter: route.params.retryCounter,
-        can: route.params.can,
       },
     })
-  }, [modalNavigation, route.params.can, route.params.retryCounter])
+  }, [modalNavigation, route.params.retryCounter])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)
@@ -59,6 +65,7 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
   return (
     <>
       <EidErrorAlert error={null} />
+      <LoadingIndicator loading={isLoading} />
       <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
       <EidPinScreen
         retryCounter={route.params.retryCounter}

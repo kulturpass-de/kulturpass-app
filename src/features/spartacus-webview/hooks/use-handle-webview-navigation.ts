@@ -5,6 +5,7 @@ import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-br
 import { useRoute } from '@react-navigation/native'
 import { HomeRouteName } from '../../../screens/home/home-route'
 import { SearchRouteName } from '../../../screens/search/search-route'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 
 /**
  * home tab: if the web view encounters a navigation to the search tab,
@@ -14,6 +15,7 @@ import { SearchRouteName } from '../../../screens/search/search-route'
  * a navigation to the search tab is triggered instead via the bridge
  */
 export const useHandleWebviewNavigation = (bridgeAdapterApi: BridgeAdapterAPI) => {
+  const modalnavigation = useModalNavigation()
   const route = useRoute()
 
   useEffect(() => {
@@ -26,8 +28,9 @@ export const useHandleWebviewNavigation = (bridgeAdapterApi: BridgeAdapterAPI) =
         bridgeAdapterApi.routerNavigate(['/search'])
       }
     }
+
     const subscription = bridgeAdapterApi.onRouterEvents(event => navigationHandler(event.data))
 
     return () => subscription.unsubscribe()
-  }, [bridgeAdapterApi, route.name])
+  }, [bridgeAdapterApi, route.name, modalnavigation])
 }

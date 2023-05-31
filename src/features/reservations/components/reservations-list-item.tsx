@@ -9,8 +9,7 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ReservationListStatusText } from './reservation-list-status-text'
-import { default as CutoutTop } from './cutout-top.svg'
-import { default as CutoutBottom } from './cutout-bottom.svg'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 
 type ReservationsListItemProps = {
   onPress: () => void
@@ -38,11 +37,8 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
   const formattedPrice = useFormattedPrice(price)
 
   return (
-    <Pressable
-      style={completed ? styles.completed : undefined}
-      testID={buildTestId('reservations_listItem_button')}
-      onPress={onPress}>
-      <View style={styles.shadow} />
+    <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>
+      <View style={[styles.shadow, completed && styles.shadowColorSharpGrey]} />
       <View style={styles.container}>
         <FastImage
           testID={buildTestId('reservations_listItem_image')}
@@ -87,9 +83,13 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
           </View>
         </View>
       </View>
-      <CutoutTop preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
-      <CutoutBottom
+      <SvgImage width={20} height={5} type="cutout-top" preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
+      <SvgImage
+        width={20}
+        height={8}
+        type="cutout-bottom"
         preserveAspectRatio="xMaxYMax"
+        color={completed ? colors.moonDarkest70 : colors.basicBlack}
         style={[
           styles.cutoutBottom,
           Platform.select({
@@ -120,9 +120,6 @@ const styles = StyleSheet.create({
   androidOffset: {
     bottom: -3.05,
   },
-  completed: {
-    opacity: 0.75,
-  },
   container: {
     height: 124,
     borderRadius: 16,
@@ -140,6 +137,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 0,
+  },
+  shadowColorSharpGrey: {
+    backgroundColor: colors.moonDarkest70,
   },
   contentContainer: {
     flex: 1,

@@ -1,23 +1,21 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import { Button } from '../../../components/button/button'
 import { Price, Refunds } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
-import { FavoriteButton } from '../../../components/favorite-button/favorite-button'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 
 export type ReservationDetailFooterProps = {
   cancellable?: boolean
   onCancelReservation: () => void
-  onFavorite: () => void
   price?: Price
   refunds?: Refunds
 }
@@ -25,16 +23,10 @@ export type ReservationDetailFooterProps = {
 export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = ({
   cancellable,
   onCancelReservation,
-  onFavorite,
   price,
   refunds,
 }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { t } = useTranslation()
-
-  const handleFavoritePress = useCallback(() => {
-    onFavorite()
-  }, [onFavorite])
 
   const formattedPrice = useFormattedPrice(price)
   const formattedRefundAmount = useFormattedPrice(refunds?.refundAmount)
@@ -87,16 +79,9 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
               bodyStyleOverrides={styles.reserveButton}
             />
           )}
-          {cancellable && (
-            <FavoriteButton
-              active={false} // TODO: Add favorite functionality
-              accessibilityLabel={t('reservationDetail_footer_favorite_button')}
-              testID={buildTestId('reservationDetail_footer_favorite_button')}
-              onPress={handleFavoritePress}
-            />
-          )}
         </View>
       ) : null}
+      <ModalScreenFooterPadding fallbackPadding={spacing[4]} />
     </View>
   )
 }

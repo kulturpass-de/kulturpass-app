@@ -13,7 +13,6 @@ import { EidErrorAlert } from '../components/eid-error-alert'
 export const EidTransportPinRouteName = 'EidTransportPin'
 
 export type EidTransportPinRouteParams = {
-  can?: string
   retryCounter?: number
 }
 
@@ -29,11 +28,10 @@ export const EidTransportPinRoute: React.FC<EidTransportPinRouteProps> = ({ rout
         screen: EidNewPinRouteName,
         params: {
           pin,
-          can: route.params.can,
         },
       })
     },
-    [modalNavigation, route.params.can],
+    [modalNavigation],
   )
 
   const onClose = useCallback(() => {

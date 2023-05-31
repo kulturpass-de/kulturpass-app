@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type EidButtonFooterProps = {
   onNext: () => void
@@ -15,7 +15,7 @@ export const EidButtonFooter: React.FC<EidButtonFooterProps> = ({ onNext, nextDi
   const { buildTestId } = useTestIdBuilder()
 
   return (
-    <View style={styles.buttonFooter}>
+    <ModalScreenFooter>
       <View style={styles.buttonPadding}>
         <Button
           onPress={onNext}
@@ -31,21 +31,11 @@ export const EidButtonFooter: React.FC<EidButtonFooterProps> = ({ onNext, nextDi
         testID={buildTestId('eid_cancel_button')}
         i18nKey="eid_cancel_button"
       />
-    </View>
+    </ModalScreenFooter>
   )
 }
 
 const styles = StyleSheet.create({
-  buttonFooter: {
-    backgroundColor: colors.basicWhite,
-    padding: spacing[5],
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 134,
-  },
   buttonPadding: {
     paddingBottom: spacing[5],
   },

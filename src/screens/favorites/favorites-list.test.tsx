@@ -2,56 +2,88 @@ import React from 'react'
 import { render, screen } from '@testing-library/react-native'
 
 import { FavoritesList } from './favorites-list'
-import { Cart } from '../../services/api/types/commerce/api-types'
+import { FavouritesItem } from '../../services/api/types/commerce/api-types'
 import { StoreProvider } from '../../services/testing/test-utils'
 
 test('Should display list of favorites', async () => {
-  const cart: Cart = {
-    entries: [
-      {
-        product: {
-          code: 'npfv70',
-          images: [
-            {
-              altText: 'NP-FV 70',
-              format: 'zoom',
-              imageType: 'PRIMARY',
-              url: '/medias/?context=bWFzdGVyfGltYWdlc3wyMjg4MXxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJobE15OW9NREF2T0RjNU56UTROemMxT1RNNU1DNXFjR2N8ZGNlMjMxY2RlNjRlM2E0MDIwZWZiZWMxMjdjYWNlZTIyNDhiNzk1YzI2YzZhZWFiNWQ3YzRkNGMzYzY5NDhmNw',
+  const favourites: FavouritesItem[] = [
+    {
+      cartId: 'cart1',
+      entryNumber: 0,
+      product: {
+        code: 'AudioProduct-167159963977',
+        description: 'Lively Chorus DE',
+        images: [
+          {
+            format: 'thumbnail',
+            imageType: 'PRIMARY',
+            url: '/medias/96Wx96H-null?context=bWFzdGVyfHJvb3R8NDIwMHxpbWFnZS9qcGVnfGFHWTNMMmd3T0M4NE56azRNelk1TmpjM016UXlMemsyVjNnNU5raGZiblZzYkF8ZTRhM2FlMjAyNTRiZGFhYzA4N2ZmMWNhZTMwNTI2MzFhMGNjOTFiNzBlZDkyMTAwYmQ4NGRmOGNkMmNmN2NlMQ',
+          },
+          {
+            format: 'product',
+            imageType: 'PRIMARY',
+            url: '/medias/300Wx300H-null?context=bWFzdGVyfHJvb3R8Mjc1NjR8aW1hZ2UvanBlZ3xhREpsTDJnMllpODROems0TXpZNE16WTJOakl5THpNd01GZDRNekF3U0Y5dWRXeHN8MDcyOTZmZTM4MmVkYWIwM2E2MGMyZDExNjc4Yjg4MmY1YjY5YWE4YmVlNGUzZDQzMTI4ZDNlYjdiZTJkZmMwOQ',
+          },
+        ],
+        itemType: 'AudioProduct',
+        leafCategoryName: 'soulAudio',
+        lowestOfferPrice: 35.01,
+        name: 'Lively Chorus DE',
+        offerCount: 2,
+        offersSummary: {
+          bestOffer: {
+            allOfferPricingsJSON:
+              '[{"price":35.01,"unit_origin_price":35.01,"volume_prices":[{"price":35.01,"unit_origin_price":35.01,"quantity_threshold":1}]}]',
+            code: 'offer_20575',
+            minPurchasableQty: 1,
+            minShippingPrice: {
+              currencyIso: 'EUR',
+              value: 0.0,
             },
-            {
-              altText: 'NP-FV 70',
-              format: 'product',
-              imageType: 'PRIMARY',
-              url: '/medias/?context=bWFzdGVyfGltYWdlc3w5MTQxfGltYWdlL2pwZWd8YVcxaFoyVnpMMmd3WkM5b1pEWXZPRGM1TnpVeE16Y3hNVFkwTmk1cWNHY3w4ODdhNmZhODllMzA3MzA5ZjBhYzkyZGY5MWQzYjYxZTdhNGMyNzFhMzM3ZTZhMTgwYmM5Y2ZjMTkzMzRkMjdj',
+            originPrice: {
+              currencyIso: 'EUR',
+              value: 35.01,
             },
-            {
-              altText: 'NP-FV 70',
-              format: 'thumbnail',
-              imageType: 'PRIMARY',
-              url: '/medias/?context=bWFzdGVyfGltYWdlc3wyMjI2fGltYWdlL2pwZWd8YVcxaFoyVnpMMmcyTXk5b1lUZ3ZPRGM1TnpVek9UazVNVFU0TWk1cWNHY3w4ZjdiMDY1ZmUwMDc0YzkzMWJmMGJiOGQ4OTM0OTA2YzBmNjViZjgwOTlkZjQ3N2JjNzU2NTk4YmM3NDA5YTYy',
+            price: {
+              currencyIso: 'EUR',
+              value: 35.01,
             },
+            quantity: 449,
+            shopId: '2008',
+            shopName: 'Stuttgart Seller Shop',
+            stateCode: '11',
+            totalPrice: {
+              currencyIso: 'EUR',
+              value: 35.01,
+            },
+          },
+          offerCount: 2,
+          states: [
             {
-              altText: 'NP-FV 70',
-              format: 'cartIcon',
-              imageType: 'PRIMARY',
-              url: '/medias/?context=bWFzdGVyfGltYWdlc3wxNTY5fGltYWdlL2pwZWd8YVcxaFoyVnpMMmd4TWk5b05HUXZPRGM1TnpVMk5qWXpNVGsyTmk1cWNHY3w1NzA4ZDJmZDYyZDdlNDg2Njg2MTkyNTYyNjljYjE3ZGY5NGExMWJlN2M4YTVkZTFkOWU0NWQ2ZTNmOTgzMGZi',
+              minPrice: {
+                currencyIso: 'EUR',
+                value: 35.01,
+              },
+              offerCount: 2,
+              stateCode: '11',
+              stateLabel: 'Neu',
             },
           ],
-          name: 'NP-FV 70',
         },
-        totalPrice: {
-          currencyIso: 'USD',
-          formattedValue: '$204.75',
-          priceType: 'BUY',
-          value: 204.75,
-        },
+        shopDistance: 11.4,
+        topCategoryName: 'Tonträger',
+        url: '/Katalog-%C3%B6ffnen/Marktplatz/Tontr%C3%A4ger/R%26B-%26-Soul/Lively-Chorus-DE/p/AudioProduct-167159963977',
       },
-    ],
-  }
+    },
+  ]
 
-  render(<StoreProvider>{cart.entries ? <FavoritesList orderEntries={cart.entries} /> : null}</StoreProvider>)
+  render(
+    <StoreProvider>
+      <FavoritesList favourites={favourites} />
+    </StoreProvider>,
+  )
 
-  const results = await screen.findAllByText('NP-FV 70')
+  const results = await screen.findAllByText('Lively Chorus DE')
   expect(results.length > 0).toBeTruthy()
 
   expect(results[0]).toBeOnTheScreen()

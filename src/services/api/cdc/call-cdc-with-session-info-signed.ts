@@ -17,7 +17,7 @@ export const callCdcWithSessionInfoSigned: CreateQueryFn<{
   const cdcEnvConfig = getEnvironmentConfigurationCdc(rootState)
   const cdcSessionData = getCdcSessionData(rootState)
 
-  if (!cdcSessionData) {
+  if (!cdcSessionData?.sessionSecret || !cdcSessionData.sessionToken) {
     return { error: new ErrorWithCode('CdcSessionData is required for this request', api.endpoint) }
   }
 

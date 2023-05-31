@@ -1,16 +1,15 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react-native'
 import { rest } from 'msw'
-import { setupServer } from 'msw/node'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { buildTestId } from '../../services/test-id/test-id'
-import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
+import { AppProviders, serverHandlersLoggedIn, setupServer, StoreProvider } from '../../services/testing/test-utils'
 import { HomeScreen } from './home-screen'
 import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
 
-export const server = setupServer()
+export const server = setupServer(...serverHandlersLoggedIn)
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
@@ -33,10 +32,11 @@ const renderScreen = () => {
 
 test('Should render home screen with hint to identify', async () => {
   server.use(
-    rest.get('http://localhost/cc/kulturapp/users/current', (_req, res, ctx) => {
+    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
       return res(
         ctx.status(200),
         ctx.json({
+          firstName: 'Max',
           identificationStatus: 'NOT_VERIFIED',
           balanceStatus: 'NOT_ENTITLED',
           balance: {
@@ -44,22 +44,23 @@ test('Should render home screen with hint to identify', async () => {
             grantedBalance: { value: 0, currencyIso: 'EUR' },
             reservedBalance: { value: 0, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
+        } satisfies GetProfileResponseBody),
       )
     }),
   )
 
   renderScreen()
   expect(await screen.findByTestId(buildTestId('screens_home_webview'))).toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('eid_startVerify_button_title'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('eid_startVerify_button_title'))).toBeOnTheScreen()
 })
 
 test('Should render home screen with budget', async () => {
   server.use(
-    rest.get('http://localhost/cc/kulturapp/users/current', (_req, res, ctx) => {
+    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
       return res(
         ctx.status(200),
         ctx.json({
+          firstName: 'Max',
           identificationStatus: 'VERIFIED',
           balanceStatus: 'ENTITLED',
           balance: {
@@ -67,7 +68,7 @@ test('Should render home screen with budget', async () => {
             grantedBalance: { value: 200.0, currencyIso: 'EUR' },
             reservedBalance: { value: 42.5, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
+        } satisfies GetProfileResponseBody),
       )
     }),
   )
@@ -87,10 +88,11 @@ test('Should render home screen with budget', async () => {
 
 test('Should render home screen with hint of identified as duplicate', async () => {
   server.use(
-    rest.get('http://localhost/cc/kulturapp/users/current', (_req, res, ctx) => {
+    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
       return res(
         ctx.status(200),
         ctx.json({
+          firstName: 'Max',
           identificationStatus: 'DUPLICATE',
           balanceStatus: 'NOT_ENTITLED',
           balance: {
@@ -98,22 +100,23 @@ test('Should render home screen with hint of identified as duplicate', async () 
             grantedBalance: { value: 0, currencyIso: 'EUR' },
             reservedBalance: { value: 0, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
+        } satisfies GetProfileResponseBody),
       )
     }),
   )
 
   renderScreen()
   expect(await screen.findByTestId(buildTestId('screens_home_webview'))).toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('verification_duplicate_title'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('verification_duplicate_title'))).toBeOnTheScreen()
 })
 
 test('Should render home screen with hint of not yet entitled', async () => {
   server.use(
-    rest.get('http://localhost/cc/kulturapp/users/current', (_req, res, ctx) => {
+    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
       return res(
         ctx.status(200),
         ctx.json({
+          firstName: 'Max',
           identificationStatus: 'VERIFIED',
           balanceStatus: 'NOT_YET_ENTITLED',
           balance: {
@@ -121,12 +124,12 @@ test('Should render home screen with hint of not yet entitled', async () => {
             grantedBalance: { value: 0, currencyIso: 'EUR' },
             reservedBalance: { value: 0, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
+        } satisfies GetProfileResponseBody),
       )
     }),
   )
 
   renderScreen()
   expect(await screen.findByTestId(buildTestId('screens_home_webview'))).toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('not_yet_entitled_title'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('not_yet_entitled_title'))).toBeOnTheScreen()
 })

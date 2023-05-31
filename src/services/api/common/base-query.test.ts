@@ -12,7 +12,7 @@ jest.mock('axios', () => ({
 
 describe('base-query', () => {
   it('should return a function that will execute axios with given args', async () => {
-    const args = { url: 'http://my_url', params: { my: 'params' }, data: { my: 'data' } }
+    const args = { url: 'http://my_url', params: { my: 'params' }, data: { my: 'data' }, timeout: 15000 }
     const api = {} as RtkBaseQueryApi
     const extraOptions = {}
 

@@ -14,6 +14,7 @@ import { EidErrorAlert } from '../components/eid-error-alert'
 import { EidTransportPinRouteName } from './eid-transport-pin-route'
 import { Flow } from '../types'
 import { EidChangePinCompletionRouteName } from './eid-change-pin-completion-route'
+import { ErrorWithCode } from '../../../services/errors/errors'
 
 export const EidInsertCardRouteName = 'EidInsertCard'
 
@@ -29,6 +30,8 @@ export type ProfileScreenProps = ModalScreenProps<'EidInsertCard'>
 export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   const modalNavigation = useModalNavigation()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
+  const [errorModalVisible, setErrorModalVisible] = useState(false)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
   const flow = route.params.flow
 
   const onAuthSuccess = useCallback(() => {
@@ -48,7 +51,6 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
       modalNavigation.replace({
         screen: flow === 'Auth' ? EidPinRouteName : EidTransportPinRouteName,
         params: {
-          can: undefined,
           retryCounter,
         },
       })
@@ -56,19 +58,27 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
     [flow, modalNavigation],
   )
 
-  const onCanRetry = useCallback(() => {
-    modalNavigation.replace({
-      screen: EidCanRouteName,
-      params: {
-        flow,
-      },
-    })
-  }, [flow, modalNavigation])
+  const onCanRetry = useCallback(
+    (retry: boolean) => {
+      modalNavigation.replace({
+        screen: EidCanRouteName,
+        params: {
+          flow,
+          retry,
+        },
+      })
+    },
+    [flow, modalNavigation],
+  )
 
-  const onPukRetry = useCallback(() => {
+  const onPukRetry = useCallback((_retry: boolean) => {
     // TODO: Add Puk Route
     // modalNavigation.navigate({
     //   screen: EidPukRouteName,
+    // params: {
+    //   flow,
+    //   retry,
+    // },
     // })
   }, [])
 
@@ -80,19 +90,26 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
 
   return (
     <>
-      <EidErrorAlert error={null} />
+      <EidErrorAlert
+        error={visibleError}
+        onModalIsVisible={setErrorModalVisible}
+        cancelEidFlowAlertVisible={cancelAlertVisible}
+        handleUserCancellation={true}
+      />
       <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
       <EidInsertCardScreen
         flow={flow}
         pin={route.params.pin}
         newPin={route.params.newPin}
         can={route.params.can}
+        errorModalVisible={errorModalVisible}
         onAuthSuccess={onAuthSuccess}
         onPinRetry={onPinRetry}
         onChangePinSuccess={onChangePinSuccess}
         onCanRetry={onCanRetry}
         onPukRetry={onPukRetry}
         onClose={onClose}
+        onError={setVisibleError}
       />
     </>
   )

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '~> 3.0'
-gem 'cocoapods', '~> 1.12', '>= 1.12.0'
+gem 'cocoapods','>= 1.12.1'
 gem 'fastlane', '> 0'
 gem 'slather', '> 0'
 

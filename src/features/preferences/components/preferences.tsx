@@ -23,6 +23,8 @@ import { useTranslation } from '../../../services/translation/translation'
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 
 export type PreferencesFormData = {
   postalCode: string
@@ -30,18 +32,18 @@ export type PreferencesFormData = {
 }
 
 export type PreferencesProps = {
-  withGreeting?: boolean
+  withCategoriesLabel?: boolean
+  inModal: boolean
   availableCategories?: PreferenceCategory[]
-  firstName: string
   userPreferences?: AccountInfoData | null
   onPressSubmit: (preferences: AccountInfoData) => Promise<void>
   submitButtonI18nKey: AvailableTranslations
 }
 
 export const Preferences: React.FC<PreferencesProps> = ({
-  withGreeting,
+  withCategoriesLabel,
+  inModal,
   availableCategories,
-  firstName,
   userPreferences,
   onPressSubmit,
   submitButtonI18nKey,
@@ -52,6 +54,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
   const [loading, setLoading] = useState(false)
 
   const form = useForm<PreferencesFormData>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z.object({
         postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, true)),
@@ -87,6 +90,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
     form.reset(defaultValues, { keepDefaultValues: true })
   }, [userPreferences, availableCategories, form])
 
+  useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
@@ -124,31 +128,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
       <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent>
-        <View style={withGreeting ? styles.contentWithGreeting : styles.contentWihoutGreeting}>
-          {withGreeting && (
-            <TranslatedText
-              textStyle="HeadlineH3Extrabold"
-              textStyleOverrides={styles.greeting}
-              i18nKey="preferences_welcome"
-              i18nParams={{ firstName }}
-              testID={buildTestId('preferences_welcome_title')}
-            />
-          )}
-          <TranslatedText
-            textStyle="BodyRegular"
-            textStyleOverrides={styles.description}
-            i18nKey="preferences_location"
-            testID={buildTestId('preferences_location_text')}
-          />
-          <FormFieldWithControl
-            name="postalCode"
-            component={TextFormField}
-            labelI18nKey="preferences_postal_code_input"
-            testID={buildTestId('preferences_form_postal_code')}
-            control={form.control}
-            keyboardType="number-pad"
-          />
-
+        <View style={styles.content}>
           <TranslatedText
             textStyle="HeadlineH4Bold"
             textStyleOverrides={styles.yourPreferencesTitle}
@@ -157,17 +137,18 @@ export const Preferences: React.FC<PreferencesProps> = ({
           />
           <TranslatedText
             textStyle="BodyRegular"
-            textStyleOverrides={{ color: colors.moonDarkest }}
+            textStyleOverrides={styles.yourPreferencesDescription}
             i18nKey="preferences_your_preferences_description"
             testID={buildTestId('preferences_your_preferences_description')}
           />
-          <TranslatedText
-            textStyle="CaptionSemibold"
-            textStyleOverrides={styles.yourPreferencesSelectionTitle}
-            i18nKey="preferences_your_preferences_selection_title"
-            testID={buildTestId('preferences_your_preferences_selection_title')}
-          />
-
+          {withCategoriesLabel ? (
+            <TranslatedText
+              textStyle="CaptionSemibold"
+              textStyleOverrides={styles.yourPreferencesSelectionTitle}
+              i18nKey="preferences_your_preferences_selection_title"
+              testID={buildTestId('preferences_your_preferences_selection_title')}
+            />
+          ) : null}
           <FormFieldWithControl
             name="categories"
             control={form.control}
@@ -175,58 +156,73 @@ export const Preferences: React.FC<PreferencesProps> = ({
             availableCategories={availableCategories}
             testID={buildTestId('preferences_select_categories')}
           />
+          <View style={styles.postalCodeContainer}>
+            <TranslatedText
+              textStyle="HeadlineH4Bold"
+              textStyleOverrides={styles.postalCodeTitle}
+              i18nKey="preferences_postal_code_title"
+              testID={buildTestId('preferences_your_preferences_title')}
+            />
+            <View>
+              <FormFieldWithControl
+                name="postalCode"
+                component={TextFormField}
+                labelI18nKey="preferences_postal_code_input"
+                testID={buildTestId('preferences_form_postal_code')}
+                control={form.control}
+                keyboardType="number-pad"
+              />
+              <TranslatedText
+                textStyle="BodyRegular"
+                textStyleOverrides={styles.description}
+                i18nKey="preferences_location"
+                testID={buildTestId('preferences_location_text')}
+              />
+            </View>
+          </View>
         </View>
       </ScreenContent>
-      <View style={styles.submitButtonView}>
+      <ModalScreenFooter ignorePaddingWithSafeArea={inModal}>
         <Button
           disabled={!form.formState.isValid}
           testID={buildTestId('preferences_form_submit')}
           i18nKey={submitButtonI18nKey}
           onPress={onSubmit}
         />
-      </View>
+      </ModalScreenFooter>
     </>
   )
 }
 
 const styles = StyleSheet.create({
-  contentWithGreeting: {
+  content: {
     paddingHorizontal: spacing[5],
-    paddingBottom: spacing[7],
-    paddingTop: spacing[8],
-  },
-  contentWihoutGreeting: {
-    paddingHorizontal: spacing[5],
-    paddingBottom: spacing[7],
-    paddingTop: spacing[7],
-  },
-  greeting: {
-    textAlign: 'center',
-    marginTop: 0,
-    marginBottom: spacing[6],
-    color: colors.basicBlack,
+    paddingVertical: spacing[7],
   },
   description: {
     marginBottom: spacing[6],
     color: colors.moonDarkest,
   },
   yourPreferencesTitle: {
-    marginTop: spacing[7],
     marginBottom: spacing[2],
     color: colors.moonDarkest,
   },
+  yourPreferencesDescription: {
+    color: colors.moonDarkest,
+    marginBottom: spacing[5],
+  },
   yourPreferencesSelectionTitle: {
-    marginTop: spacing[5],
     marginBottom: spacing[5],
     fontWeight: '400',
     fontSize: spacing[6] / 2,
     lineHeight: spacing[5],
     color: colors.moonDarkest,
   },
-  submitButtonView: {
-    padding: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
+  postalCodeContainer: {
+    marginTop: spacing[5],
+  },
+  postalCodeTitle: {
+    marginBottom: spacing[5],
+    color: colors.moonDarkest,
   },
 })

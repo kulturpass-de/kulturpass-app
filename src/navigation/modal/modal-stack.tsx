@@ -1,5 +1,4 @@
 import React from 'react'
-import { StatusBar } from 'react-native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 
 import { LogInRouteConfig } from '../../screens/log-in/log-in-route'
@@ -37,17 +36,20 @@ import { EidNFCNotSupportedRouteConfig } from '../../features/eid-verification/s
 import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
+import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
 
 const Stack = createStackNavigator<ModalParamList>()
 
 export const ModalStack: React.FC = () => {
   return (
     <ModalStackWrapper>
-      <StatusBar backgroundColor="#ffffff61" barStyle={'dark-content'} />
       <Stack.Navigator
         initialRouteName="OnboardingAboutApp"
         detachInactiveScreens
-        screenOptions={{ headerShown: false, ...TransitionPresets.SlideFromRightIOS }}>
+        screenOptions={{
+          headerShown: false,
+          ...TransitionPresets.SlideFromRightIOS,
+        }}>
         {/* Auth Routes */}
         <Stack.Screen {...LogOutRouteConfig} />
         <Stack.Screen {...LogInRouteConfig} />
@@ -100,6 +102,7 @@ export const ModalStack: React.FC = () => {
         {/* Developer Settings Routes */}
         <Stack.Screen {...DeveloperMenuRouteConfig} />
         <Stack.Screen {...EnvironmentConfigRouteConfig} />
+        <Stack.Screen {...AppConfigRouteConfig} />
         <Stack.Screen {...SimulationCardConfigRouteConfig} />
         <Stack.Screen {...StorybookRouteConfig} />
       </Stack.Navigator>

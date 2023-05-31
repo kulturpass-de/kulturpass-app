@@ -21,7 +21,7 @@ type AccessibilityFeatureCheckableProps = {
 
 const AccessibilityFeatureCheckable: React.FC<AccessibilityFeatureCheckableProps> = ({ testID, checked, ...props }) => {
   const { t } = useTranslation()
-  const { addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId } = useTestIdBuilder()
   const labelI18nKey = checked ? props.enabledLabel_i18nKey : props.disabledLabel_i18nKey
   const iconSource: IconProps['source'] = checked ? 'Check' : 'Close'
   const iconLabel = checked
@@ -38,7 +38,7 @@ const AccessibilityFeatureCheckable: React.FC<AccessibilityFeatureCheckableProps
         accessibilityLabel={iconLabel}
       />
       <TranslatedText
-        testID={addTestIdModifier(testID, 'caption')}
+        testID={buildTestId(labelI18nKey)}
         i18nKey={labelI18nKey}
         textStyle="BodyBold"
         textStyleOverrides={styles.textBase}
@@ -54,13 +54,13 @@ type AccessibilityFeatureTextProps = {
 }
 
 const AccessibilityFeatureText: React.FC<AccessibilityFeatureTextProps> = ({ testID, label_i18nKey, text }) => {
-  const { addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
 
   return (
     <View testID={testID} style={styles.featureText}>
       {label_i18nKey ? (
         <TranslatedText
-          testID={addTestIdModifier(testID, 'caption')}
+          testID={buildTestId(label_i18nKey)}
           i18nKey={label_i18nKey}
           textStyle="BodyBold"
           textStyleOverrides={styles.textBase}

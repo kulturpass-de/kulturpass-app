@@ -2,9 +2,11 @@ import { act, renderHook, waitFor } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 
+import * as authLogoutModule from '../../../../services/auth/store/thunks/auth-logout'
+import { AppDispatch } from '../../../../services/redux/configure-store'
 import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
 import { SpartacusBridge } from './spartacus-bridge'
-import { AuthApi, useWebViewAuthSync } from './use-webview-auth-sync'
+import { useWebViewAuthSync } from './use-webview-auth-sync'
 import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 
 export const server = setupServer(
@@ -33,32 +35,29 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 describe('useWebViewAuthSync', () => {
+  const dispatch = (() => ({ unwrap: () => Promise.resolve() })) as AppDispatch
+
   afterEach(() => {
     jest.clearAllMocks()
   })
 
   describe('webViewAuthState.isLoggedIn', () => {
-    const authApi: AuthApi = {
-      login: jest.fn(),
-      logout: jest.fn(),
-    }
-    const authApiState: Parameters<typeof useWebViewAuthSync>[2] = {
-      isUserLoggedIn: false,
-      isUserLoggedInToCdc: false,
-      isUserLoggedInToCommerce: false,
-      commerceAccessToken: undefined,
-      cdc: null,
-    }
+    const isUserLoggedIn = false
+    const commerceAccessToken = undefined
 
     it('should be falsy initially', async () => {
-      const { result } = renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, authApiState, authApi))
+      const { result } = renderHook(() =>
+        useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, commerceAccessToken),
+      )
       await waitFor(() => expect(result.current.isLoggedIn).toBeFalsy())
     })
 
     it('should be set to true after receiveing AuthIsUserLoggedIn StateForwarding', async () => {
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
-      const { result } = renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, authApiState, authApi))
+      const { result } = renderHook(() =>
+        useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, commerceAccessToken),
+      )
       await waitFor(() => expect(result.current).toBeDefined())
       await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
 
@@ -74,23 +73,15 @@ describe('useWebViewAuthSync', () => {
   })
 
   describe('authApiState is not logged in', () => {
-    const authApi: AuthApi = {
-      login: jest.fn(),
-      logout: jest.fn(),
-    }
-
-    const authApiState: Parameters<typeof useWebViewAuthSync>[2] = {
-      isUserLoggedIn: false,
-      isUserLoggedInToCdc: false,
-      isUserLoggedInToCommerce: false,
-      commerceAccessToken: undefined,
-      cdc: null,
-    }
+    const isUserLoggedIn = false
+    const commerceAccessToken = undefined
 
     it('should authLogout when bridge is ready', async () => {
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
-      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, authApiState, authApi))
+      renderHook(() =>
+        useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, dispatch, isUserLoggedIn, commerceAccessToken),
+      )
       await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
 
       await act(() => {
@@ -106,7 +97,7 @@ describe('useWebViewAuthSync', () => {
     it('should not authLogout when bridge is not ready', async () => {
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
-      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, authApiState, authApi))
+      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, commerceAccessToken))
       await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
 
       await act(() => {
@@ -121,56 +112,37 @@ describe('useWebViewAuthSync', () => {
   })
 
   describe('authApiState is logged in', () => {
-    const testTimestamp = new Date(2032, 1, 1).getTime()
-    const authApiState: Parameters<typeof useWebViewAuthSync>[2] = {
-      isUserLoggedIn: true,
-      isUserLoggedInToCommerce: true,
-      isUserLoggedInToCdc: true,
-      cdc: {
-        uid: '0',
-        user: { firstName: 'Max', email: 'max@test.test' },
-        idToken: 'dummy',
-        sessionToken: 'dummy',
-        uidSignature: 'dummy',
-        sessionSecret: 'dummy',
-        sessionValidity: testTimestamp,
-        sessionStartTimestamp: testTimestamp,
-        isVerified: true,
-      },
-      commerceAccessToken: 'my_access_token',
-    }
+    const isUserLoggedIn = true
+    const commerceAccessToken = 'my_access_token'
 
     it('should authLogin when bridge is ready', async () => {
-      const authApi: AuthApi = {
-        login: jest.fn(),
-        logout: jest.fn(),
-      }
-      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, authApiState, authApi))
+      renderHook(() =>
+        useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, dispatch, isUserLoggedIn, commerceAccessToken),
+      )
 
       await waitFor(() => expect(mockedBridgeAdapterApi.authLogin).toBeCalledTimes(1))
       expect(mockedBridgeAdapterApi.authLogin).toBeCalledWith('my_access_token')
     })
 
     it('should not authLogin when bridge is not ready', async () => {
-      const authApi: AuthApi = {
-        login: jest.fn(),
-        logout: jest.fn(),
-      }
-      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, authApiState, authApi))
+      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, commerceAccessToken))
 
       await waitFor(() => expect(mockedBridgeAdapterApi.authLogin).toBeCalledTimes(0))
     })
 
     it('Should force logout if isLoggedIn changes to false within 5 seconds', async () => {
-      const authApi: AuthApi = {
-        login: jest.fn(),
-        logout: jest.fn(),
-      }
+      const authLogout = jest.spyOn(authLogoutModule, 'authLogout').mockImplementation((() => {}) as any)
 
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
       renderHook(() => {
-        return useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, authApiState, authApi)
+        return useWebViewAuthSync(
+          mockedBridgeAdapterApi,
+          { isReady: true },
+          dispatch,
+          isUserLoggedIn,
+          commerceAccessToken,
+        )
       })
       await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
 
@@ -183,7 +155,7 @@ describe('useWebViewAuthSync', () => {
         value: false,
       })
 
-      await waitFor(() => expect(authApi.logout).toHaveBeenCalledTimes(1))
+      await waitFor(() => expect(authLogout).toHaveBeenCalledTimes(1))
     })
   })
 })

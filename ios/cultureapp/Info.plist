@@ -27,16 +27,10 @@
 	<key>NFCReaderUsageDescription</key>
 	<string>KulturPass DE needs NFC to access the ID card.</string>
 	<key>NSAppTransportSecurity</key>
+	<!-- build v0.9.5 -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>in.appcenter.ms</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -45,7 +39,115 @@
 		</dict>
 		<key>NSPinnedDomains</key>
 		<dict>
-			<key>cop6ymzsg9-bundesrep1-d1-public.model-t.cc.commerce.ondemand.com</key>
+			<key>commerce.qa.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>TaUiArx6CmGD2JNQ9D0ZeWBAKpmGZnwKLJpQsPRZdaw=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>accounts.eu1.gigya.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>t5B9+w1LA5jfc/g+pOHlRDgJr1yN0vpGL0neRSQRiSw=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.dev.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>1fNn4vCSUZGIDPqwGcx8YxPrJAoeN6bPvlEwf4tYN14=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.staging.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>ODeLbphuP+i4bREDls44f9k0pomUunbcuBTmHrBJqUE=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>users.staging.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>aqds+XzPzRMpk6umA9P0wNY5h4kseGUZgrQBkobetmY=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.perf.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>wY59k9m5gu2i71HWLp1XwRYTL57bD3BvGSYHU7+9Um8=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.prod.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>Lf3OQ78SvZ4/LxwO2+Z4BoSPLEpSVQzstrkE7wuEOxI=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>users.prod.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>av/AaUDHAADOeFOOH43qMwnpD6gC33te4r8rAcrd1sM=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>kp-mockserver.cfapps.eu10-004.hana.ondemand.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>2clfDj1TmOYxzoOEnriKY6PcoXhaVUDDR8D6mK84RN8=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>api.cop6ymzsg9-bundesrep1-d1-public.model-t.cc.commerce.ondemand.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
@@ -88,6 +190,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -98,6 +202,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>

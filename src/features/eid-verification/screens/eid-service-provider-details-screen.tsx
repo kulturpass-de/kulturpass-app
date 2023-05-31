@@ -5,14 +5,14 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { spacing } from '../../../theme/spacing'
-import { CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
 import { textStyles } from '../../../theme/typography'
+import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export type EidServiceProviderDetailsScreenProps = {
-  certificate: CertificateMessage
+  certificate: Certificate
   onBack: () => void
   onClose: () => void
 }

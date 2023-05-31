@@ -21,7 +21,7 @@ export type EidNewPinRouteProps = ModalScreenProps<'EidNewPin'>
 
 export const EidNewPinRoute: React.FC<EidNewPinRouteProps> = ({ route }) => {
   const modalNavigation = useModalNavigation()
-  const [cancelAlertVisible, setNewCancelAlertVisible] = useState(false)
+  const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(
     (newPin: string) => {
@@ -39,7 +39,7 @@ export const EidNewPinRoute: React.FC<EidNewPinRouteProps> = ({ route }) => {
   )
 
   const onClose = useCallback(() => {
-    setNewCancelAlertVisible(true)
+    setCancelAlertVisible(true)
   }, [])
 
   useHandleGestures(onClose)
@@ -47,7 +47,7 @@ export const EidNewPinRoute: React.FC<EidNewPinRouteProps> = ({ route }) => {
   return (
     <>
       <EidErrorAlert error={null} />
-      <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setNewCancelAlertVisible} />
+      <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
       <EidNewPinScreen onClose={onClose} onNext={onNext} />
     </>
   )

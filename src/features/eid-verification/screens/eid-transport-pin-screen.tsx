@@ -12,7 +12,7 @@ import { PinInput } from '../components/pin-input'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
-import { usePinFormValidation } from '../components/use-pin-form-validation'
+import { usePinFormValidation } from '../hooks/use-pin-form-validation'
 
 export type EidTransportPinScreenProps = {
   onNext: (transportPin: string) => void

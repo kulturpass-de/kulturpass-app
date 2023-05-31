@@ -7,6 +7,7 @@
             @android:color/transparent
         </item>
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:colorControlHighlight">@color/kulturpass_accessibility_focus</item>
     </style>
 
     <!-- Splash screen theme. -->
@@ -15,6 +16,9 @@
             @android:color/transparent
         </item>
         <item name="android:windowBackground">@drawable/splashscreen</item>
+        <!-- Explicitly disable dark mode -->
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:textColor">@color/kulturpass_basic_black</item>
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">

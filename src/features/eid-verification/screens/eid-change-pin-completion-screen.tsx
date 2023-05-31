@@ -9,6 +9,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type EidChangePinCompletionScreenProps = {
   onNext: () => void
@@ -46,14 +47,14 @@ export const EidChangePinCompletionScreen: React.FC<EidChangePinCompletionScreen
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onNext}
           variant="primary"
           testID={buildTestId('eid_changePinCompletion_accept_button')}
           i18nKey="eid_changePinCompletion_accept_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -83,15 +84,5 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
     textAlign: 'center',
     color: colors.moonDarkest,
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

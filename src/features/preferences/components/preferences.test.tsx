@@ -14,7 +14,7 @@ const renderScreen = (children: React.ReactNode) => {
 const renderPreferences = () => {
   renderScreen(
     <Preferences
-      firstName="Max"
+      inModal={false}
       onPressSubmit={async () => {}}
       submitButtonI18nKey="preferences_form_profile_edit_submit"
     />,

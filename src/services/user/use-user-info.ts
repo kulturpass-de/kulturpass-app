@@ -4,15 +4,16 @@ import isEqual from 'lodash.isequal'
 
 import { getCdcSessionData, getIsUserLoggedIn } from '../auth/store/auth-selectors'
 import { AppDispatch } from '../redux/configure-store'
-import { selectUserPreferences, selectUserProfile } from './redux/user-selectors'
+import { selectUserPreferences } from './redux/user-selectors'
 import { userSlice } from './redux/user-slice'
 import { useGetAccountInfo } from './use-get-account-info'
 import { useSetAccountInfo } from './use-set-account-info'
+import { commerceApi } from '../api/commerce-api'
 
 export const useUserInfo = (regToken?: string) => {
   const dispatch = useDispatch<AppDispatch>()
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const userProfile = useSelector(selectUserProfile)
+  const { data: userProfile } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
   const userPreferences = useSelector(selectUserPreferences)
   const cdcSessionData = useSelector(getCdcSessionData)
   regToken = cdcSessionData?.regToken || regToken

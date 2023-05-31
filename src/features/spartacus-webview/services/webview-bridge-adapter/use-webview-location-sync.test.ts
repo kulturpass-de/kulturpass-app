@@ -13,7 +13,7 @@ describe('useWebViewLocationSync', () => {
   describe('userLocationState is undefined', () => {
     const userLocationState: Parameters<typeof useWebViewLocationSync>[2] = undefined
 
-    it('should not geolocationSetLocation when bridge is ready', () => {
+    it('should geolocationSetLocation when bridge is ready', () => {
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
       renderHook(() => useWebViewLocationSync(mockedBridgeAdapterApi, { isReady: true }, userLocationState))
@@ -25,10 +25,10 @@ describe('useWebViewLocationSync', () => {
         })
       })
 
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(0)
+      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(1)
     })
 
-    it('should not geolocationSetLocation when is not ready', () => {
+    it('should not geolocationSetLocation when bridge is not ready', () => {
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 
       renderHook(() => useWebViewLocationSync(mockedBridgeAdapterApi, {}, userLocationState))

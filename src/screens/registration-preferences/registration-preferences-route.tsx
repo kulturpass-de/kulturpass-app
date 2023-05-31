@@ -11,6 +11,7 @@ export const RegistrationPreferencesRouteName = 'RegistrationPreferences'
 
 export type RegistrationPreferencesRouteParams = {
   regToken: string
+  firstName: string
 }
 
 export type RegistrationPreferencesRouteProps = ModalScreenProps<'RegistrationPreferences'>

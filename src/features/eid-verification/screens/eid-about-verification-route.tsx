@@ -10,8 +10,8 @@ import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidAboutServiceProviderRouteName } from './eid-about-service-provider-route'
 import { EidAboutVerificationScreen } from './eid-about-verification-screen'
 import { EidErrorAlert } from '../components/eid-error-alert'
-import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { EidNFCNotSupportedRouteName } from './eid-nfc-not-supported-route'
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export const EidAboutVerificationRouteName = 'EidAboutVerification'
 
@@ -23,7 +23,7 @@ export const EidAboutVerificationRoute: React.FC = () => {
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(
-    (accessRights: AccessRightsMessage, certificate: CertificateMessage) => {
+    (accessRights: AccessRights, certificate: Certificate) => {
       modalNavigation.navigate({
         screen: EidAboutServiceProviderRouteName,
         params: {

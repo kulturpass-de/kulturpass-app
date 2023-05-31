@@ -1,6 +1,6 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query'
 import { rest } from 'msw'
-import { setupServer } from 'msw/lib/node'
+import { setupServer } from 'msw/node'
 import { HttpStatusUnauthorizedError } from '../../errors/errors'
 
 import { RootState } from '../../redux/configure-store'
@@ -44,35 +44,21 @@ describe('repeatRequestIfInvalidToken', () => {
         success = true
         return res(
           ctx.status(401),
-          ctx.json({
-            errors: [
-              {
-                type: 'InvalidTokenError',
-                message: 'Invalid access token',
-              },
-            ],
-          }),
+          ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
         )
       }),
       rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
         obtainedNewToken = true
         return res(
           ctx.status(200),
-          ctx.json({
-            access_token: 'forreal',
-            token_type: 'bearer',
-            expires_in: 43189,
-            scope: 'basic openid',
-          }),
+          ctx.json({ access_token: 'forreal', token_type: 'bearer', expires_in: 43189, scope: 'basic openid' }),
         )
       }),
     )
 
     const queryWithHandlingInvalidToken = repeatRequestIfInvalidToken(axiosBaseQuery)
     const response = await queryWithHandlingInvalidToken(
-      {
-        url: 'http://localhost/current/profile',
-      },
+      { url: 'http://localhost/current/profile' },
       {
         getState: store.getState,
         dispatch: store.dispatch,
@@ -95,40 +81,21 @@ describe('repeatRequestIfInvalidToken', () => {
         requestProfileCounter++
         return res(
           ctx.status(401),
-          ctx.json({
-            errors: [
-              {
-                type: 'InvalidTokenError',
-                message: 'Invalid access token',
-              },
-            ],
-          }),
+          ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
         )
       }),
       rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-            ok: false,
-          }),
-        )
+        return res(ctx.status(401), ctx.json({ ok: false }))
       }),
       rest.post('*/accounts.logout', (_req, res, ctx) => {
         requestLogout = true
-        return res(
-          ctx.status(200),
-          ctx.json({
-            ok: true,
-          }),
-        )
+        return res(ctx.status(200), ctx.json({ ok: true }))
       }),
     )
 
     const queryWithHandlingInvalidToken = repeatRequestIfInvalidToken(axiosBaseQuery)
     const response = await queryWithHandlingInvalidToken(
-      {
-        url: 'http://localhost/current/profile',
-      },
+      { url: 'http://localhost/current/profile' },
       {
         getState: store.getState,
         dispatch: store.dispatch,

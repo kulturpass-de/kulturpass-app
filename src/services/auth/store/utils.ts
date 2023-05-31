@@ -1,12 +1,13 @@
 import { CdcSessionData } from '../../session/types'
 import { AccountsLoginResponse } from '../../api/types'
+import { CDC_SESSION_EXPIRATION_INIFINITE } from '../../api/cdc-api'
 
 export const isNotEmptyString = (s?: string) => {
   return s && typeof s === 'string' && s.length > 0 ? true : false
 }
 
 export const isSessionTimestampValid = (s?: string | number) => {
-  if (s === -2) {
+  if (s === CDC_SESSION_EXPIRATION_INIFINITE) {
     return true
   }
   let sessionExpiryDate: number = 0
@@ -32,13 +33,18 @@ export const isExpiresInValid = (n: number | undefined) => {
 export const cdcLoginResponseToSessionData = (cdcLoginResponse: AccountsLoginResponse) => {
   const { firstName, email } = cdcLoginResponse.profile
   const sessionValidity =
-    cdcLoginResponse.sessionInfo.expires_in !== undefined ? cdcLoginResponse.sessionInfo.expires_in : -2
+    cdcLoginResponse.sessionInfo.expires_in !== undefined
+      ? parseInt(cdcLoginResponse.sessionInfo.expires_in, 10) * 1000
+      : CDC_SESSION_EXPIRATION_INIFINITE
 
   const { sessionToken, sessionSecret } = cdcLoginResponse.sessionInfo
+  // NOTE: cdc sends signatureTimestamp as the number of seconds
+  //       converting it to milliseconds as expected by Date constructor
+  const sessionStartTimestamp = parseInt(cdcLoginResponse.signatureTimestamp, 10) * 1000
   const sessionData: CdcSessionData = {
     sessionToken,
     sessionSecret,
-    sessionStartTimestamp: cdcLoginResponse.signatureTimestamp,
+    sessionStartTimestamp,
     idToken: cdcLoginResponse.id_token,
     sessionValidity,
     user: { firstName, email },

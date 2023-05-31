@@ -18,6 +18,9 @@ describe('DateFormField date utils', () => {
     expect(dateToIsoDate(new Date('1950-01-01'))).toBe('1950-01-01')
     expect(dateToIsoDate(new Date('2000-12-01'))).toBe('2000-12-01')
     expect(dateToIsoDate(new Date('2021-05-20'))).toBe('2021-05-20')
+    expect(dateToIsoDate(new Date('2014-25-23'))).toBe(undefined)
+    expect(dateToIsoDate(NaN)).toBe(undefined)
+    expect(dateToIsoDate(null)).toBe(undefined)
   })
 
   test('dotDateToDate', () => {

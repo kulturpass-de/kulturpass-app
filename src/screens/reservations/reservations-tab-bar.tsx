@@ -1,18 +1,20 @@
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs'
 import React, { useCallback } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { ReservationsTabsParamList } from './reservations-screen'
+import { isDeviceTextScaled } from '../../theme/utils'
 
 type ReservationsTabItemProps = {
   route: MaterialTopTabBarProps['state']['routes'][0]
   navigation: MaterialTopTabBarProps['navigation']
   isFocused: boolean
   isNotLastElement: boolean
+  accessibilityHint: AccessibilityProps['accessibilityHint']
 }
 
 const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
@@ -20,6 +22,7 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
   route,
   isFocused,
   navigation,
+  accessibilityHint,
 }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
@@ -48,13 +51,16 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
 
   return (
     <Pressable
-      style={isNotLastElement ? styles.tabBarGap : undefined}
+      style={[isDeviceTextScaled() ? styles.flexibleButton : {}, isNotLastElement ? styles.tabBarGap : {}]}
       testID={buildTestId(`reservations_${routeNameLowerCase}_navigation_button`)}
       onPress={onPress}
       onLongPress={onLongPress}
-      accessibilityState={isFocused ? { selected: true } : {}}>
+      accessibilityState={{ selected: isFocused }}
+      accessibilityLabel={t(`reservations_${routeNameLowerCase}_navigation_title`)}
+      accessibilityRole="tab"
+      accessibilityHint={accessibilityHint}
+      accessible>
       <Text
-        accessible
         testID={buildTestId(`reservations_${routeNameLowerCase}_navigation_title`)}
         style={[styles.tabBarLabel, isFocused ? textStyles.BodyExtrabold : textStyles.BodyMedium]}>
         {t(`reservations_${routeNameLowerCase}_navigation_title`)}
@@ -65,6 +71,8 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
 }
 
 export const ReservationsTabBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+  const { t } = useTranslation()
+
   return (
     <View style={styles.tabBarStyle}>
       {state.routes.map((route, index) => (
@@ -74,6 +82,10 @@ export const ReservationsTabBar: React.FC<MaterialTopTabBarProps> = ({ state, na
           navigation={navigation}
           isFocused={state.index === index}
           isNotLastElement={index < state.routes.length - 1}
+          accessibilityHint={t('tabNavigation_accessibilityHint_count', {
+            current: index + 1,
+            total: state.routes.length,
+          })}
         />
       ))}
     </View>
@@ -89,6 +101,9 @@ const styles = StyleSheet.create({
   },
   tabBarGap: {
     marginRight: spacing[4],
+  },
+  flexibleButton: {
+    flex: 1,
   },
   tabBarLabel: {
     paddingHorizontal: spacing[4],

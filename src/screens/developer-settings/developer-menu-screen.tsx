@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { aa2Module } from '@jolocom/react-native-ausweis'
 
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
@@ -19,10 +18,12 @@ import { ProductDetailRouteConfig } from '../../features/product-detail/screens/
 import { colors } from '../../theme/colors'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { ScreenContent } from '../../components/screen/screen-content'
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 
 export type DeveloperMenuScreenProps = {
   onHeaderPressClose: () => void
   onPressEnvironmentConfiguration: () => void
+  onPressAppConfig: () => void
   onPressCardSimulationConfiguration: () => void
   onPressStorybookConfiguration: () => void
 }
@@ -41,6 +42,7 @@ const useOnboardingConfig = () => {
 export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onHeaderPressClose,
   onPressEnvironmentConfiguration,
+  onPressAppConfig,
   onPressCardSimulationConfiguration,
   onPressStorybookConfiguration,
 }) => {
@@ -56,13 +58,14 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
       screen: ProductDetailRouteConfig.name,
       params: {
         productCode: productCode,
+        randomMode: false,
       },
     })
   }, [productCode, modalNavigation])
 
   const cancelEidFlow = useCallback(async () => {
     try {
-      await aa2Module.cancelFlow()
+      await AA2CommandService.cancel()
     } catch (e) {
       console.log(`Could not cancel AA2 Flow: ${e}`)
     }
@@ -86,13 +89,20 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           icon={<Icon source="Cog" width={29} height={24} />}
           title="Environment Configuration"
           testID={buildTestId('developerMenu_environmentConfiguration_button')}
-          chevron
+          type="navigation"
           onPress={onPressEnvironmentConfiguration}
+        />
+        <ListItem
+          icon={<Icon source="Cog" width={29} height={24} />}
+          title="App Config"
+          testID={buildTestId('developerMenu_appConfig_button')}
+          type="navigation"
+          onPress={onPressAppConfig}
         />
         <ListItem
           title="Show Storybook"
           testID={buildTestId('developerMenu_storybook_button')}
-          chevron
+          type="navigation"
           onPress={onPressStorybookConfiguration}
         />
         <View style={styles.toggleListItem}>
@@ -127,7 +137,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           icon={<Icon source="Cog" width={29} height={24} />}
           title="Card Simulation"
           testID={buildTestId('developerMenu_cardSimulation_button')}
-          chevron
+          type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
         {isLoggedIn ? (

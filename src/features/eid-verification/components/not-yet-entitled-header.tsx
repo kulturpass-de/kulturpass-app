@@ -1,15 +1,14 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import { Icon } from '../../../components/icon/icon'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { buildTestId } from '../../../services/test-id/test-id'
-import { selectUserProfile } from '../../../services/user/redux/user-selectors'
+import { useUserInfo } from '../../../services/user/use-user-info'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export const NotYetEntitledHeader: React.FC = () => {
-  const userData = useSelector(selectUserProfile)
+  const { firstName } = useUserInfo()
 
   return (
     <View style={styles.container}>
@@ -19,7 +18,7 @@ export const NotYetEntitledHeader: React.FC = () => {
           <TranslatedText
             testID={buildTestId('not_yet_entitled_title')}
             i18nKey="not_yet_entitled_title"
-            i18nParams={{ name: userData?.firstName ?? '' }}
+            i18nParams={{ name: firstName }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.moonDarkest }}
           />
@@ -40,7 +39,6 @@ export const NotYetEntitledHeader: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: spacing[5],
     marginBottom: spacing[1],
   },
   shadow: {

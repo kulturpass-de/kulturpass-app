@@ -13,7 +13,7 @@ export type ReservationDetailStatusInfoProps = {
 
 export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoProps> = ({ order }) => {
   const validUntil = order.entries?.[0].voucherValidTo ? new Date(order.entries[0].voucherValidTo) : undefined
-  const orderCode = order.consignments?.find(() => true)?.code
+  const orderCode = order.consignments?.find(() => true)?.code || `${order.code}-A`
   const reservationDate = order.created ? new Date(order.created) : undefined
 
   if (!validUntil && !orderCode && !reservationDate) {

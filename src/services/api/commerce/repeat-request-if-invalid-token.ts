@@ -8,26 +8,28 @@ export const repeatRequestIfInvalidToken = <T>(baseQuery: () => AxiosBaseQueryFn
   return async (args, api, extraOptions) => {
     const response = await baseQuery()(args, api, extraOptions)
 
-    if (response.error instanceof HttpStatusUnauthorizedError) {
-      const { error } = response
-      const isTokenInvalid = error.errors.find(errorItem => errorItem.type === 'InvalidTokenError')
-      if (isTokenInvalid) {
-        const rootState = api.getState() as RootState
-        const dispatch = api.dispatch as AppDispatch
-        try {
-          await dispatch(authCommerceLogin(rootState.auth.cdc!)).unwrap()
-          const response2 = await baseQuery()(args, api, extraOptions)
-          if (response2.error) {
-            throw response2.error
-          }
-          return response2
-        } catch (_: unknown) {
-          await dispatch(authLogout())
-          return response
-        }
-      }
+    if (!(response.error instanceof HttpStatusUnauthorizedError)) {
+      return response
     }
 
-    return response
+    const isTokenInvalid = response.error.errors.find(errorItem => errorItem.type === 'InvalidTokenError')
+    if (!isTokenInvalid) {
+      return response
+    }
+
+    const rootState = api.getState() as RootState
+    const dispatch = api.dispatch as AppDispatch
+
+    try {
+      await dispatch(authCommerceLogin(rootState.auth.cdc!)).unwrap()
+      const response2 = await baseQuery()(args, api, extraOptions)
+      if (response2.error) {
+        throw response2.error
+      }
+      return response2
+    } catch (error: any) {
+      await dispatch(authLogout())
+      return { error }
+    }
   }
 }

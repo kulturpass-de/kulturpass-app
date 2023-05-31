@@ -10,6 +10,8 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type EidNFCNotSupportedScreenProps = {
   onClose: () => void
@@ -17,6 +19,7 @@ export type EidNFCNotSupportedScreenProps = {
 
 export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> = ({ onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
 
   const screenTestId = buildTestId('eid_nfcNotSupported')
 
@@ -28,11 +31,7 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
         onPressClose={onClose}
       />
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
-        <Illustration
-          testID={addTestIdModifier(screenTestId, 'image_alt')}
-          i18nKey="stopSign_image_alt"
-          type="stop-sign"
-        />
+        <Illustration testID={buildTestId('stopSign_image_alt')} i18nKey="stopSign_image_alt" type="stop-sign" />
         <View style={styles.contentContainer}>
           <TranslatedText
             textStyleOverrides={styles.contentTitle}
@@ -47,18 +46,22 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
             textStyle="BodyRegular"
           />
           <View style={styles.linkContainer}>
-            <LinkText i18nKey="eid_nfcNotSupported_content_link" link="https://www.sap.de" />
+            <LinkText
+              testID={addTestIdModifier(screenTestId, 'content_link')}
+              i18nKey="eid_nfcNotSupported_content_link"
+              link={eidGeneralFaqLink}
+            />
           </View>
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onClose}
           variant="primary"
           testID={buildTestId('eid_nfcNotSupported_ok_button')}
           i18nKey="eid_nfcNotSupported_ok_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -87,15 +90,5 @@ export const styles = StyleSheet.create({
   },
   linkContainer: {
     paddingTop: spacing[9],
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

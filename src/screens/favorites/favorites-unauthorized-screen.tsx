@@ -23,16 +23,10 @@ export const FavoritesUnauthorizedScreen: React.FC<FavoritesUnauthorizedScreenPr
   return (
     <Screen
       testID={buildTestId('favorites_unauthorized')}
-      header={
-        <ScreenHeader
-          testID={buildTestId('favorites_unauthorized_headline')}
-          title={t('favorites_headline')}
-          borderBottom
-        />
-      }>
+      header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />}>
       <ScreenContent style={styles.content}>
         <Illustration
-          testID={buildTestId('favorites_empty_hero_image')}
+          testID={buildTestId('favorites_empty_hero_image_alt')}
           i18nKey="favorites_empty_hero_image_alt"
           type="favorites-empty-state"
         />
@@ -51,7 +45,7 @@ export const FavoritesUnauthorizedScreen: React.FC<FavoritesUnauthorizedScreenPr
         <View style={styles.buttonContainer}>
           <Button
             onPress={onSignInRequested}
-            testID={buildTestId('favorites_unauthorized_sign_in')}
+            testID={buildTestId('login_button')}
             i18nKey="login_button"
             widthOption="content"
           />

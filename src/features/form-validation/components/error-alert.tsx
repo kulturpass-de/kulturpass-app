@@ -11,8 +11,10 @@ import { toErrorWithCode } from '../../../services/errors/serialized-error'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { getErrorDescriptionTranslationFromErrorWithCode } from '../utils/form-validation'
 
+export type ErrorAlertError = ErrorWithCode | SerializedError
+
 export type ErrorAlertProps = {
-  error: ErrorWithCode | SerializedError | undefined
+  error: ErrorAlertError | undefined
   onDismiss: (error: undefined) => void
 }
 

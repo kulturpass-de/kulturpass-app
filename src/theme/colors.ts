@@ -1,6 +1,7 @@
 export const colors = {
   moonDarkest: '#0C0016',
   moonDarkest10: '#0C00161A',
+  moonDarkest70: '#7A7481',
   moonDarker: '#202325',
   moonDark: '#333333',
   moonBase: '#4D4D4D',

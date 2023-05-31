@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { ReactNode, useMemo } from 'react'
+import { Platform, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
@@ -12,17 +12,24 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { useStartCardScanning } from '../hooks/use-start-card-scanning'
 import { Flow } from '../types'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { ScanInProgressModal } from '../components/scan-in-progress-modal'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
+import { ErrorWithCode } from '../../../services/errors/errors'
 
 export type EidInsertCardScreenProps = {
   flow: Flow
   pin?: string
   newPin?: string
   can?: string
+  errorModalVisible: boolean
   onAuthSuccess: () => void
   onChangePinSuccess: () => void
-  onPinRetry: () => void
-  onCanRetry: () => void
-  onPukRetry: () => void
+  onPinRetry: (retryCounter?: number | undefined) => void
+  onCanRetry: (canRetry: boolean) => void
+  onPukRetry: (pukRetry: boolean) => void
+  onError: (error: ErrorWithCode) => void
   onClose: () => void
 }
 
@@ -32,13 +39,16 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   onPinRetry,
   onCanRetry,
   onPukRetry,
+  onError,
   onClose,
   flow,
   pin,
   newPin,
   can,
+  errorModalVisible,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
 
   const { isLoading, startScanning } = useStartCardScanning({
     flow,
@@ -50,10 +60,24 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
     onPinRetry,
     onCanRetry,
     onPukRetry,
+    onError,
   })
+
+  const loadingModal: ReactNode = useMemo(() => {
+    if (!errorModalVisible && isLoading) {
+      return Platform.OS === 'android' ? (
+        <ScanInProgressModal scanning={isLoading} />
+      ) : (
+        <LoadingIndicator loading={isLoading} />
+      )
+    } else {
+      return null
+    }
+  }, [errorModalVisible, isLoading])
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_insertCard')}>
+      {loadingModal}
       <ModalScreenHeader
         testID={buildTestId('eid_insertCard_title')}
         titleI18nKey="eid_insertCard_title"
@@ -71,13 +95,18 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
           <TranslatedText
             textStyleOverrides={styles.contentText}
             testID={buildTestId('eid_insertCard_content_text')}
-            i18nKey="eid_insertCard_content_text"
+            i18nKey={Platform.OS === 'ios' ? 'eid_insertCard_content_text_ios' : 'eid_insertCard_content_text_android'}
             textStyle="BodyRegular"
           />
-          <LinkText link="https://www.sap.de" i18nKey="eid_insertCard_faq_link" textStyle="BodyRegular" />
+          <LinkText
+            link={eidGeneralFaqLink}
+            testID={buildTestId('eid_insertCard_faq_link')}
+            i18nKey="eid_insertCard_faq_link"
+            textStyle="BodyRegular"
+          />
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={startScanning}
           variant="primary"
@@ -85,7 +114,7 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
           testID={buildTestId('eid_insertCard_start_button')}
           i18nKey="eid_insertCard_start_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -112,15 +141,5 @@ export const styles = StyleSheet.create({
     paddingVertical: spacing[6],
     flexWrap: 'wrap',
     color: colors.moonDarkest,
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

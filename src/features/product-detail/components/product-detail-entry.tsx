@@ -21,10 +21,10 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
         i18nKey={i18nKey}
         testID={buildTestId(i18nKey)}
         textStyle="BodyExtrabold"
-        textStyleOverrides={{ color: colors.moonDarkest }}
+        textStyleOverrides={styles.entryTitle}
       />
       <Text style={textStyles.BodyRegular}> </Text>
-      <Text style={[textStyles.BodyRegular, { color: colors.moonDarkest }]} testID={buildTestId(valueTestId)}>
+      <Text style={styles.entryContent} testID={buildTestId(valueTestId)}>
         {value}
       </Text>
     </View>
@@ -34,5 +34,14 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+  },
+  entryTitle: {
+    color: colors.moonDarkest,
+    flexShrink: 0,
+  },
+  entryContent: {
+    ...textStyles.BodyRegular,
+    flexShrink: 1,
+    color: colors.moonDarkest,
   },
 })

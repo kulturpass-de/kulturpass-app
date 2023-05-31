@@ -1,0 +1,599 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HtmlText doesnt throw an error and still renders something if html invalid 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+  testID="some-test-ID"
+>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    Hello 
+  </Text>
+  <Text>
+    <Text
+      style={
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        }
+      }
+    >
+      rld
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#0C0016",
+            "fontFamily": "Nunito",
+            "fontSize": 17,
+            "fontStyle": "normal",
+            "fontWeight": "400",
+            "lineHeight": 23,
+          },
+          {
+            "fontStyle": "italic",
+          },
+        ]
+      }
+    />
+  </Text>
+</Text>
+`;
+
+exports[`HtmlText filters out any other html 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+  testID="some-test-ID"
+>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    hack attack: 
+  </Text>
+</Text>
+`;
+
+exports[`HtmlText ignores simple unclosed tags 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  Hello 
+</Text>
+`;
+
+exports[`HtmlText keeps 
+ linkebreaks 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  line 1
+line2
+</Text>
+`;
+
+exports[`HtmlText replaces &lgt; &gt; with < and > 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  Bigger &gt; smaller &lt;
+</Text>
+`;
+
+exports[`HtmlText replaces a <b> tag 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      },
+      {
+        "fontWeight": "700",
+      },
+    ]
+  }
+>
+  bold
+</Text>
+`;
+
+exports[`HtmlText replaces a <b> tag with preluding text 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+  testID="some-test-ID"
+>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    hello 
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontWeight": "700",
+        },
+      ]
+    }
+  >
+    bold world
+  </Text>
+</Text>
+`;
+
+exports[`HtmlText replaces a <br /> with a linkebreak 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  line 1
+line2
+</Text>
+`;
+
+exports[`HtmlText replaces a <i> tag 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      },
+      {
+        "fontStyle": "italic",
+      },
+    ]
+  }
+>
+  italic
+</Text>
+`;
+
+exports[`HtmlText replaces a <i> tag with preluding text 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+  testID="some-test-ID"
+>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    hello 
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontStyle": "italic",
+        },
+      ]
+    }
+  >
+    italic world
+  </Text>
+</Text>
+`;
+
+exports[`HtmlText replaces a complex product description 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+  testID="some-test-ID"
+>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    
+      Ein Erlebnis wie kein anderes. Im Kino mit Popcorn schaut es sich einfach am Besten!
+
+      Wir bieten verschiedene Preiskategorien an:
+
+      
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontWeight": "700",
+        },
+      ]
+    }
+  >
+    Loge
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    
+      
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontStyle": "italic",
+        },
+      ]
+    }
+  >
+    Unser bequemster Platz
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    
+
+      
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontWeight": "700",
+        },
+      ]
+    }
+  >
+    Parkett
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    
+      
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "fontStyle": "italic",
+        },
+      ]
+    }
+  >
+    Preiswerteste Wahl
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    
+
+      Mehr Infos 
+  </Text>
+  <Text
+    accessibilityLabel="hier"
+    accessibilityRole="link"
+    accessible={true}
+    onPress={[Function]}
+    style={
+      [
+        {
+          "color": "#0C0016",
+          "fontFamily": "Nunito",
+          "fontSize": 17,
+          "fontStyle": "normal",
+          "fontWeight": "400",
+          "lineHeight": 23,
+        },
+        {
+          "textDecorationLine": "underline",
+        },
+      ]
+    }
+  >
+    hier
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      }
+    }
+  >
+    !
+  </Text>
+</Text>
+`;
+
+exports[`HtmlText replaces all html entities 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  hellöäßLgt;&gt;
+</Text>
+`;
+
+exports[`HtmlText replaces html entities 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  hellöäß
+</Text>
+`;
+
+exports[`HtmlText replaces links which are opened in an external browser 1`] = `
+<Text
+  accessibilityLabel="linktext"
+  accessibilityRole="link"
+  accessible={true}
+  onPress={[Function]}
+  style={
+    [
+      {
+        "color": "#0C0016",
+        "fontFamily": "Nunito",
+        "fontSize": 17,
+        "fontStyle": "normal",
+        "fontWeight": "400",
+        "lineHeight": 23,
+      },
+      {
+        "textDecorationLine": "underline",
+      },
+    ]
+  }
+>
+  linktext
+</Text>
+`;
+
+exports[`HtmlText returns a pure text string wrapped into a text element 1`] = `
+<Text
+  style={
+    {
+      "color": "#0C0016",
+      "fontFamily": "Nunito",
+      "fontSize": 17,
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": 23,
+    }
+  }
+>
+  hello world
+</Text>
+`;

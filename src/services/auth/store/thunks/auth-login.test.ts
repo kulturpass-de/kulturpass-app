@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import { setupServer } from 'msw/lib/node'
+import { setupServer } from 'msw/node'
 
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -9,12 +9,16 @@ import { configureMockStore } from '../../../testing/configure-mock-store'
 import { authCdcLogin } from './auth-cdc-login'
 import { authCommerceLogin } from './auth-commerce-login'
 import { authLogin } from './auth-login'
+import { authLogout } from './auth-logout'
 
 const server = setupServer()
 
 describe('authLogin', () => {
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
-  const cdcLoginResult = { profile: { firstName: 'Tester' }, sessionInfo: {} }
+  const cdcLoginResult = {
+    profile: { firstName: 'Tester' },
+    sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
+  }
   const commerceLoginResult = { auth_something: 'token' }
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware, commerceApi.middleware] })
@@ -67,7 +71,10 @@ describe('authLogin', () => {
   })
 
   it('should reject and not call authCommerceLogin if authCdcLogin rejects', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))))
+    server.use(
+      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))),
+      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+    )
 
     await store.dispatch(authLogin(cdcLoginArg))
 
@@ -81,12 +88,16 @@ describe('authLogin', () => {
 
     // check that authCommerceLogin was not executed
     store.expectActionNotDispatched(authCommerceLogin.pending.match)
+
+    // check that authLogout was executed
+    store.expectActions([{ type: authLogout.pending.type }])
   })
 
   it('should reject if authCommerceLogin rejects', async () => {
     server.use(
       rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
       rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))),
+      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -98,5 +109,8 @@ describe('authLogin', () => {
     // find authCommerceLogin rejection, and check that it is the same as authLogin rejection
     const authCommerceLoginRejected = store.findAction(authCommerceLogin.rejected.match)
     expect(authLoginRejected?.payload).toEqual(authCommerceLoginRejected?.payload)
+
+    // check that authLogout was executed
+    store.expectActions([{ type: authLogout.pending.type }])
   })
 })

@@ -7,6 +7,7 @@ import { DeveloperMenuScreen } from './developer-menu-screen'
 import { EnvironmentConfigRouteConfig } from './environment-config-route'
 import { SimulationCardConfigRouteConfig } from './simulation-card-config-route'
 import { StorybookRouteConfig } from './storybook-route'
+import { AppConfigRouteConfig } from './app-config-route'
 
 export const DeveloperMenuRouteName = 'DeveloperMenu'
 
@@ -22,6 +23,12 @@ export const DeveloperMenuRoute: React.FC = () => {
   const onPressEnvironmentConfiguration = useCallback(() => {
     modalNavigation.navigate({
       screen: EnvironmentConfigRouteConfig.name,
+    })
+  }, [modalNavigation])
+
+  const onPressAppConfig = useCallback(() => {
+    modalNavigation.navigate({
+      screen: AppConfigRouteConfig.name,
     })
   }, [modalNavigation])
 
@@ -41,6 +48,7 @@ export const DeveloperMenuRoute: React.FC = () => {
     <DeveloperMenuScreen
       onHeaderPressClose={onHeaderPressClose}
       onPressEnvironmentConfiguration={onPressEnvironmentConfiguration}
+      onPressAppConfig={onPressAppConfig}
       onPressCardSimulationConfiguration={onPressCardSimulationConfiguration}
       onPressStorybookConfiguration={onPressStorybookConfiguration}
     />

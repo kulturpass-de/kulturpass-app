@@ -15,11 +15,15 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
 import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
-import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
+import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
+import { useLocalizedEnvironmentUrl } from '../../../utils/links/hooks/use-localized-environment-url'
 
 export type EidAboutVerificationScreenProps = {
-  onNext: (accessRights: AccessRightsMessage, certificate: CertificateMessage) => void
+  onNext: (accessRights: AccessRights, certificate: Certificate) => void
   onNFCNotSupported: () => void
   onError: (error: ErrorWithCode | SerializedError) => void
   onClose: () => void
@@ -32,6 +36,8 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   onClose,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
+  const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
   const { isLoading: initLoading } = useInitAA2Sdk()
 
@@ -96,7 +102,11 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
             testID={buildTestId('eid_aboutVerification_content_text')}
           />
           <View style={styles.textPadding}>
-            <LinkText i18nKey="eid_aboutVerification_faq_link" link="https://www.sap.de" />
+            <LinkText
+              testID={buildTestId('eid_aboutVerification_faq_link')}
+              i18nKey="eid_aboutVerification_faq_link"
+              link={eidGeneralFaqLink}
+            />
           </View>
           <TranslatedText
             i18nKey="eid_aboutVerification_accept_text"
@@ -105,11 +115,15 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
             testID={buildTestId('eid_aboutVerification_accept_text')}
           />
           <View style={styles.textPadding}>
-            <LinkText i18nKey="eid_aboutVerification_dataprivacy_link" link="https://www.sap.de" />
+            <LinkText
+              testID={buildTestId('eid_aboutVerification_dataprivacy_link')}
+              i18nKey="eid_aboutVerification_dataprivacy_link"
+              link={dpsDocumentUrl}
+            />
           </View>
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={startAuth}
           variant="primary"
@@ -117,7 +131,7 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
           testID={buildTestId('eid_aboutVerification_accept_button')}
           i18nKey="eid_aboutVerification_accept_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -162,15 +176,5 @@ export const styles = StyleSheet.create({
   },
   textPadding: {
     paddingTop: spacing[6],
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

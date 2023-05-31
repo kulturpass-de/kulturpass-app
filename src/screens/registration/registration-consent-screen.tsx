@@ -1,16 +1,22 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import { Button } from '../../components/button/button'
 import { Checkbox } from '../../components/checkbox/checkbox'
 import { LinkText } from '../../components/link-text/link-text'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
+import {
+  getCdcDpsDocumentUrl,
+  getCdcEulaDocumentUrl,
+} from '../../services/environment-configuration/redux/environment-configuration-selectors'
 import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
+import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
 
 export type RegistrationConsentScreenProps = {
   onHeaderPressClose: () => void
@@ -22,11 +28,13 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
   onHeaderPressClose,
   onPressContinue,
 }) => {
+  const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
+  const eulaDocumentUrl = useLocalizedEnvironmentUrl(getCdcEulaDocumentUrl)
   const [eulaAccepted, setEulaAccepted] = useState(false)
   const [dataPricacyAccepted, setDataPricacyAccepted] = useState(false)
 
   return (
-    <ModalScreen whiteBottom testID={buildTestId('registration_consent')}>
+    <ModalScreen whiteBottom testID={SCREEN_TEST_ID}>
       <ModalScreenHeader
         titleI18nKey="registration_consent_screen_title"
         testID={buildTestId('registration_consent_screen_title')}
@@ -52,39 +60,47 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
           textStyleOverrides={styles.eulaCopytext}
         />
         <LinkText
-          link="https://www.sap.de"
+          link={eulaDocumentUrl}
           i18nKey="registration_consent_eula_linktext"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_linktext')}
           textStyle="BodyMedium"
           style={styles.eulaLinkText}
         />
-        <Checkbox i18nKey="registration_consent_eula_checkbox" onChange={setEulaAccepted} selected={eulaAccepted} />
+        <Checkbox
+          i18nKey="registration_consent_eula_checkbox"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_checkbox')}
+          onChange={setEulaAccepted}
+          selected={eulaAccepted}
+        />
 
         <TranslatedText
           i18nKey="registration_consent_data_privacy_copytext"
           textStyle={'BodySmallRegular'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'dataPrivacy_copytext')}
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_copytext')}
           textStyleOverrides={styles.dataPrivacyCopyText}
         />
         <LinkText
-          link="https://www.sap.de"
+          link={dpsDocumentUrl}
           i18nKey="registration_consent_data_privacy_linktext"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_linktext')}
           textStyle="BodyMedium"
           style={styles.dataPrivacyLinkText}
         />
         <Checkbox
           i18nKey="registration_consent_data_privacy_checkbox"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_checkbox')}
           onChange={setDataPricacyAccepted}
           selected={dataPricacyAccepted}
         />
       </ScreenContent>
-      <View style={styles.submitButtonView}>
+      <ModalScreenFooter>
         <Button
           disabled={!(eulaAccepted && dataPricacyAccepted)}
-          testID={buildTestId('registration_consent_submit')}
           i18nKey="registration_consent_submit"
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'submit')}
           onPress={onPressContinue}
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -92,16 +108,9 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
 const styles = StyleSheet.create({
   screenContent: {
     paddingHorizontal: spacing[5],
-  },
-  submitButtonView: {
-    paddingTop: spacing[5],
-    paddingHorizontal: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
+    paddingVertical: spacing[7],
   },
   headline: {
-    paddingTop: spacing[7],
     paddingBottom: spacing[6],
     color: colors.basicBlack,
   },

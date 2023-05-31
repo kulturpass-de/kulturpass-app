@@ -5,7 +5,7 @@ import { AlertTitle } from '../../../components/alert/alert-title'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useHandleErrors } from '../hooks/use-handle-errors'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { textStyles } from '../../../theme/typography'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
@@ -14,24 +14,49 @@ import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { EidAboutVerificationRouteName } from '../screens/eid-about-verification-route'
 import { Button } from '../../../components/button/button'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import {
+  AA2BelowMinAge,
+  AA2BelowMinYearOfBirth,
+  AA2CardDeactivated,
+  AA2CardRemoved,
+  AA2ForeignResidency,
+  AA2PukRequired,
+  AA2Timeout,
+} from '../errors'
+import { useTranslation } from '../../../services/translation/translation'
 
 export type EidErrorAlertProps = {
   error: ErrorWithCode | null
+  onModalIsVisible?: (isVisible: boolean) => void
+  cancelEidFlowAlertVisible?: boolean
+  handleUserCancellation?: boolean
 }
 
-export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({ error }) => {
+export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
+  error,
+  onModalIsVisible,
+  cancelEidFlowAlertVisible = false,
+  handleUserCancellation = false,
+}) => {
   const { buildTestId } = useTestIdBuilder()
+  const { t } = useTranslation()
   const modalNavigation = useModalNavigation()
 
   const [intError, setIntError] = useState<ErrorWithCode | null>(null)
 
-  useHandleErrors(setIntError)
+  useHandleErrors(setIntError, handleUserCancellation, cancelEidFlowAlertVisible)
 
   useEffect(() => {
     if (error !== null) {
       setIntError(error)
     }
   }, [error])
+
+  useEffect(() => {
+    if (onModalIsVisible !== undefined) {
+      onModalIsVisible(intError !== null)
+    }
+  }, [intError, onModalIsVisible])
 
   const cancelFlow = useCancelFlow()
 
@@ -57,6 +82,24 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({ error }) => {
     setIntError(null)
   }, [cancelFlow, modalNavigation])
 
+  const errorMessage: string | undefined = useMemo(() => {
+    if (intError instanceof AA2BelowMinYearOfBirth) {
+      return t('eid_error_belowMinYearOfBirth_message')
+    } else if (intError instanceof AA2BelowMinAge) {
+      return t('eid_error_belowMinAge_message')
+    } else if (intError instanceof AA2ForeignResidency) {
+      return t('eid_error_foreignResidency_message')
+    } else if (intError instanceof AA2PukRequired) {
+      return t('eid_error_pukRequired_message')
+    } else if (intError instanceof AA2CardDeactivated) {
+      return t('eid_error_cardDeactivated_message')
+    } else if (intError instanceof AA2Timeout) {
+      return t('eid_error_timeout_message')
+    } else if (intError instanceof AA2CardRemoved) {
+      return t('eid_error_cardRemoved_message')
+    }
+  }, [intError, t])
+
   const errorCode: string | undefined = useMemo(() => {
     if (intError === null) {
       return
@@ -76,9 +119,22 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({ error }) => {
           i18nKey="error_alert_message_fallback"
           testID={buildTestId('error_alert_message')}
         />
-        <Text style={[textStyles.BodyRegular, styles.errorCode]} testID={buildTestId('error_alert_code')}>
-          {errorCode}
-        </Text>
+        <View style={styles.content}>
+          {errorMessage ? (
+            <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_message_detail')}>
+              {errorMessage}
+            </Text>
+          ) : (
+            <TranslatedText
+              i18nKey="eid_error_try_again_message"
+              textStyle="BodyRegular"
+              textStyleOverrides={styles.message}
+            />
+          )}
+          <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_code')}>
+            {errorCode}
+          </Text>
+        </View>
         <Button
           widthOption="stretch"
           variant="primary"
@@ -99,8 +155,12 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({ error }) => {
 }
 
 const styles = StyleSheet.create({
-  errorCode: {
-    marginBottom: spacing[6],
+  message: {
+    textAlign: 'center',
     color: colors.moonDarker,
+  },
+  content: {
+    marginBottom: spacing[6],
+    gap: spacing[4],
   },
 })

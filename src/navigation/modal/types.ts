@@ -110,6 +110,7 @@ import {
   AccountDeletionSuccessfulRouteParams,
 } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
+import { AppConfigRouteName, AppConfigRouteParams } from '../../screens/developer-settings/app-config-route'
 
 export type ModalParamList = {
   [LogOutRouteName]: LogOutRouteParams
@@ -151,6 +152,7 @@ export type ModalParamList = {
 
   [DeveloperMenuRouteName]: DeveloperMenuRouteParams
   [EnvironmentConfigRouteName]: EnvironmentConfigRouteParams
+  [AppConfigRouteName]: AppConfigRouteParams
   [SimulationCardConfigRouteName]: SimulationCardConfigRouteParams
   [StorybookRouteName]: StorybookRouteParams
 }

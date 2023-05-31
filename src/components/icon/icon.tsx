@@ -1,7 +1,8 @@
 import React from 'react'
-import { ColorValue, Image, StyleSheet, View, ViewStyle } from 'react-native'
+import { ColorValue, Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import Checkmark from '../../assets/icons/checkmark.png'
+import Mail from '../../assets/icons/mail.png'
 import Chevron from '../../assets/icons/chevron.png'
 import Cog from '../../assets/icons/cog.png'
 import ArrowBack from '../../assets/icons/arrow-back.png'
@@ -11,7 +12,6 @@ import Close from '../../assets/icons/close.png'
 import ShowPassword from '../../assets/icons/show-password.png'
 import HidePassword from '../../assets/icons/hide-password.png'
 import InputError from '../../assets/icons/input-error.png'
-import Info from '../../assets/icons/info.png'
 import Coupon from '../../assets/icons/coupon.png'
 import Book from '../../assets/icons/book.png'
 import MapPin from '../../assets/icons/map-pin.png'
@@ -19,13 +19,11 @@ import Calendar from '../../assets/icons/calendar.png'
 import Tag from '../../assets/icons/tag.png'
 import Video from '../../assets/icons/Video.png'
 import Music from '../../assets/icons/music.png'
-import Globe from '../../assets/icons/globe.png'
-import Preferences from '../../assets/icons/preferences.png'
 import ArrowForward from '../../assets/icons/arrow-forward.png'
 import LinkArrow from '../../assets/icons/link-arrow.png'
 import ID1 from '../../assets/icons/id1.png'
 import ID2 from '../../assets/icons/id2.png'
-import VerifyID from '../../assets/icons/verify-id.png'
+import IDCard from '../../assets/icons/id-card.png'
 import Clipboard from '../../assets/icons/clipboard.png'
 import Check from '../../assets/icons/check.png'
 import Processing from '../../assets/icons/processing.png'
@@ -37,10 +35,17 @@ import HeartUnselected from '../../assets/icons/heart-unselected.png'
 import HeartSelected from '../../assets/icons/heart-selected.png'
 import Government from '../../assets/icons/government.png'
 import HumanSketch from '../../assets/icons/human-sketch.png'
-import Profile from '../../assets/icons/profile.png'
+import CubeOne from '../../assets/icons/cube_one.png'
+import CubeTwo from '../../assets/icons/cube_two.png'
+import CubeThree from '../../assets/icons/cube_three.png'
+import CubeFour from '../../assets/icons/cube_four.png'
+import CubeFive from '../../assets/icons/cube_five.png'
+import CubeSix from '../../assets/icons/cube_six.png'
+import Info from '../../assets/icons/info.png'
 
 const availableSources = {
   Checkmark,
+  Mail,
   Chevron,
   Cog,
   ArrowBack,
@@ -50,7 +55,6 @@ const availableSources = {
   ShowPassword,
   HidePassword,
   InputError,
-  Info,
   Coupon,
   Book,
   MapPin,
@@ -58,13 +62,11 @@ const availableSources = {
   Tag,
   Video,
   Music,
-  Globe,
-  Preferences,
   ArrowForward,
   LinkArrow,
   ID1,
   ID2,
-  VerifyID,
+  IDCard,
   Clipboard,
   Check,
   Processing,
@@ -76,7 +78,13 @@ const availableSources = {
   HeartSelected,
   Government,
   HumanSketch,
-  Profile,
+  CubeOne,
+  CubeTwo,
+  CubeThree,
+  CubeFour,
+  CubeFive,
+  CubeSix,
+  Info,
 } as const
 
 const styles = StyleSheet.create({
@@ -85,21 +93,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
 })
 
 export type IconProps = {
   source: keyof typeof availableSources
-  style?: ViewStyle
+  style?: StyleProp<ViewStyle>
   width?: number
   height?: number
   tintColor?: ColorValue
   accessibilityLabel?: string
 }
 
-export const Icon: React.FC<IconProps> = ({ source, style, width, height, tintColor, accessibilityLabel }) => {
+export const Icon: React.FC<IconProps> = ({
+  source,
+  style,
+  width = 24,
+  height = 24,
+  tintColor,
+  accessibilityLabel,
+}) => {
   return (
     <View style={[styles.container, style, { width, height }]}>
-      <Image style={{ tintColor }} source={availableSources[source]} accessibilityLabel={accessibilityLabel} />
+      <Image
+        style={[styles.image, { tintColor }]}
+        source={availableSources[source]}
+        accessibilityLabel={accessibilityLabel}
+      />
     </View>
   )
 }

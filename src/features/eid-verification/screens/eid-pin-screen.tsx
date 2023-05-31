@@ -13,7 +13,7 @@ import { spacing } from '../../../theme/spacing'
 import { PinInput } from '../components/pin-input'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
-import { usePinFormValidation } from '../components/use-pin-form-validation'
+import { usePinFormValidation } from '../hooks/use-pin-form-validation'
 
 export type EidPinScreenProps = {
   onNext: (pin: string) => void

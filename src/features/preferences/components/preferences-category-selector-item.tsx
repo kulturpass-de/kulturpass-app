@@ -41,11 +41,24 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
   )
 
   return (
-    <Pressable onPress={onPress} style={styles.pressable}>
+    <Pressable
+      onPress={onPress}
+      style={styles.pressable}
+      disabled={!isSelectable}
+      accessibilityLabel={category.name}
+      accessibilityRole="togglebutton"
+      accessibilityState={{ checked: isSelected }}
+      accessible>
       {({ pressed }) => (
         <>
           {(isSelected || pressed) && <View style={styles.shadow} />}
-          <View style={[styles.container, (isSelected || pressed) && selectedStyle, style]}>
+          <View
+            style={[
+              styles.container,
+              (isSelected || pressed) && selectedStyle,
+              !isSelectable && styles.disabled,
+              style,
+            ]}>
             <View style={styles.image}>
               <SvgImage
                 type={buttonStyle.svgImageType}
@@ -78,6 +91,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.basicBlack,
     zIndex: 1,
+  },
+  disabled: {
+    opacity: 0.55,
   },
   shadow: {
     position: 'absolute',

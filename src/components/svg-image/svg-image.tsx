@@ -9,6 +9,8 @@ import {
   BrowserPopup,
   Canceled,
   CrossCircleRed,
+  CutoutBottom,
+  CutoutTop,
   Hourglass,
   HourglassTilted,
   LogoCompact,
@@ -43,6 +45,14 @@ import {
   DeleteAccount,
   WebviewSkeleton,
   InformationCircle,
+  InformationCircleSmall,
+  EMail,
+  Globe,
+  HumanSketch,
+  ListLink,
+  Preferences,
+  SpeechBubbles,
+  TransparentLogo,
 } from './svgs'
 
 export type SvgImageType =
@@ -54,6 +64,8 @@ export type SvgImageType =
   | 'budget-received'
   | 'canceled'
   | 'cross-circle-red'
+  | 'cutout-bottom'
+  | 'cutout-top'
   | 'data-privacy'
   | 'eid-scan'
   | 'eid'
@@ -93,8 +105,16 @@ export type SvgImageType =
   | 'delete-account'
   | 'webview-skeleton'
   | 'information-circle'
+  | 'information-circle-small'
+  | 'e-mail'
+  | 'globe'
+  | 'human-sketch'
+  | 'list-link'
+  | 'preferences'
+  | 'speech-bubbles'
+  | 'transparent-logo'
 
-export type SvgImageProps = {
+export type SvgImageProps = SvgProps & {
   type: SvgImageType
 
   /**
@@ -115,7 +135,7 @@ export type SvgImageProps = {
   screenWidthRelativeSize?: number
 
   i18nKey?: AvailableTranslations
-  testID: string
+  testID?: string
 }
 
 export const SvgImage: React.FC<SvgImageProps> = ({
@@ -125,6 +145,8 @@ export const SvgImage: React.FC<SvgImageProps> = ({
   screenWidthRelativeSize = 0.5,
   i18nKey,
   testID,
+  color,
+  style,
 }) => {
   const { t } = useTranslation()
 
@@ -142,6 +164,8 @@ export const SvgImage: React.FC<SvgImageProps> = ({
     testID,
     accessible: !!i18nKey,
     accessibilityRole: 'image',
+    color,
+    style,
   }
 
   if (svgProps.accessible) {
@@ -158,6 +182,10 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       return <Canceled {...svgProps} />
     case 'cross-circle-red':
       return <CrossCircleRed {...svgProps} />
+    case 'cutout-bottom':
+      return <CutoutBottom {...svgProps} />
+    case 'cutout-top':
+      return <CutoutTop {...svgProps} />
     case 'logo-compact':
       return <LogoCompact {...svgProps} />
     case 'logo-horizontal':
@@ -216,6 +244,22 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       return <WebviewSkeleton {...svgProps} />
     case 'information-circle':
       return <InformationCircle {...svgProps} />
+    case 'information-circle-small':
+      return <InformationCircleSmall {...svgProps} />
+    case 'e-mail':
+      return <EMail {...svgProps} />
+    case 'globe':
+      return <Globe {...svgProps} />
+    case 'human-sketch':
+      return <HumanSketch {...svgProps} />
+    case 'list-link':
+      return <ListLink {...svgProps} />
+    case 'preferences':
+      return <Preferences {...svgProps} />
+    case 'speech-bubbles':
+      return <SpeechBubbles {...svgProps} />
+    case 'transparent-logo':
+      return <TransparentLogo {...svgProps} />
     case 'placeholder-rectangle':
     default:
       return <PlaceholderRectange {...svgProps} />

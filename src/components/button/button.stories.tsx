@@ -31,3 +31,14 @@ export const TertiarySmall: ComponentStory<typeof Button> = args => (
 export const White: ComponentStory<typeof Button> = args => <Button {...args} variant="white" />
 
 export const Transparent: ComponentStory<typeof Button> = args => <Button {...args} variant="transparent" />
+
+export const VariantStyleOverrides: ComponentStory<typeof Button> = args => (
+  <Button
+    {...args}
+    buttonVariantStyleOverrides={{
+      baseContainer: {
+        backgroundColor: 'green',
+      },
+    }}
+  />
+)

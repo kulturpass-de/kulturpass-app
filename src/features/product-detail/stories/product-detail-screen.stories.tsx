@@ -5,12 +5,21 @@ import { ProductDetailScreen } from '../screens/product-detail-screen'
 const componentMeta: ComponentMeta<typeof ProductDetailScreen> = {
   title: 'Product Detail Screen',
   component: ProductDetailScreen,
+  args: {
+    randomMode: false,
+  },
   argTypes: {
     onClose: {
       action: 'onClose',
     },
     onOfferSelection: {
       action: 'onOfferSelection',
+    },
+    onRandomReroll: {
+      action: 'onRandomReroll',
+    },
+    reserveProduct: {
+      action: 'reserveProduct',
     },
   },
 }
@@ -46,4 +55,8 @@ export const StagedEventDetail: ComponentStory<typeof ProductDetailScreen> = arg
 
 export const VideoDetail: ComponentStory<typeof ProductDetailScreen> = args => (
   <ProductDetailScreen {...args} productDetail={require('./mocked-video.json')} />
+)
+
+export const RandomMode: ComponentStory<typeof ProductDetailScreen> = args => (
+  <ProductDetailScreen {...args} productDetail={require('././mocked-audio.json')} randomMode />
 )

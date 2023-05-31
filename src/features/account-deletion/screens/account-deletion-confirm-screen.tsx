@@ -18,6 +18,8 @@ import { useDeleteAccount } from '../hooks/use-delete-account'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 
 export type AccountDeletionConfirmScreenProps = {
   onNext: () => void
@@ -31,12 +33,15 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
   const { deleteAccount, loading } = useDeleteAccount()
 
   const form = useForm<{ password: string }>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z.object({
         password: z.string().trim().nonempty(),
       }),
     ),
   })
+
+  useFocusErrors(form)
 
   const handlePressDelete = form.handleSubmit(async data => {
     try {
@@ -89,10 +94,11 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
             control={form.control}
             containerStyle={styles.passwordFormFieldContainerStyle}
             isRequired
+            disableAccessibilityForLabel
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <View style={styles.buttonPadding}>
           <Button
             onPress={handlePressDelete}
@@ -108,7 +114,7 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
           testID={addTestIdModifier(screenTestId, 'cancel_button')}
           i18nKey="accountDeletion_confirm_cancel_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -138,16 +144,6 @@ export const styles = StyleSheet.create({
   contentText: {
     paddingVertical: spacing[6],
     color: colors.basicBlack,
-  },
-  buttonFooter: {
-    backgroundColor: colors.basicWhite,
-    padding: spacing[5],
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 134,
   },
   buttonPadding: {
     paddingBottom: spacing[5],

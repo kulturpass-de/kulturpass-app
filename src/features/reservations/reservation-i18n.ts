@@ -1,5 +1,6 @@
 import { AvailableTranslations } from '../../components/translated-text/types'
-import { Order, OrderEntry } from '../../services/api/types/commerce/api-types'
+import { Order } from '../../services/api/types/commerce/api-types'
+import { ProductDetail, ProductTypes } from '../product-detail/types/product-detail'
 
 type I18N_KEYS_MAP_TYPE = {
   [key: string]: {
@@ -17,9 +18,19 @@ const RESERVATION_DETAILS_I18N_KEYS_MAP: I18N_KEYS_MAP_TYPE = {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickup_headline',
     copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickup_copytext',
   },
-  READY_FOR_PICKUP_VOUCHER: {
-    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickup_voucher_headline',
-    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickup_voucher_copytext',
+  READY_FOR_PICKUP_REQUIRED_VOUCHER: {
+    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupRequired_voucher_headline',
+    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupRequired_voucher_copytext',
+  },
+  READY_FOR_PICKUP_NOT_REQUIRED_VOUCHER: {
+    headline:
+      'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupNotRequired_voucher_headline',
+    copytext:
+      'reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupNotRequired_voucher_copytext',
+  },
+  RECEIVED_VOUCHER: {
+    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_headline',
+    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_copytext',
   },
   // TODO: cleanup orderState - received and completed seem to be same usecase
   RECEIVED: {
@@ -40,13 +51,24 @@ const RESERVATION_DETAILS_I18N_KEYS_MAP: I18N_KEYS_MAP_TYPE = {
   },
 }
 
-export const getReservationOrderTranslations = (orderStatus?: Order['status'], orderEntry?: OrderEntry) => {
+export const getReservationOrderTranslations = (productDetail: ProductDetail, orderStatus?: Order['status']) => {
   if (!orderStatus) {
     return { headline: undefined, copytext: undefined }
   }
 
-  if (orderStatus === 'READY_FOR_PICKUP' && orderEntry?.voucherCode && orderEntry.voucherIsValid) {
-    return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_VOUCHER
+  if (productDetail.productType === ProductTypes.Voucher && orderStatus === 'READY_FOR_PICKUP') {
+    if (productDetail.isVoucherPickupRequired) {
+      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
+    } else {
+      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_NOT_REQUIRED_VOUCHER
+    }
+  }
+
+  if (
+    productDetail.productType === ProductTypes.Voucher &&
+    (orderStatus === 'RECEIVED' || orderStatus === 'COMPLETED')
+  ) {
+    return RESERVATION_DETAILS_I18N_KEYS_MAP.RECEIVED_VOUCHER
   }
 
   return RESERVATION_DETAILS_I18N_KEYS_MAP[orderStatus.toUpperCase()]

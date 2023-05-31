@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
-import { ScreenContent } from '../../components/screen/screen-content'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 
 export type StorybookScreenProps = {
@@ -24,9 +23,7 @@ export const StorybookScreen: React.FC<StorybookScreenProps> = ({ onHeaderPressB
         onPressBack={onHeaderPressBack}
         onPressClose={onHeaderPressClose}
       />
-      <ScreenContent>
-        <StorybookComponent />
-      </ScreenContent>
+      <StorybookComponent />
     </ModalScreen>
   )
 }

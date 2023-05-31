@@ -9,6 +9,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type EidVerificationCompletionScreenProps = {
   onNext: () => void
@@ -45,14 +46,14 @@ export const EidVerificationCompletionScreen: React.FC<EidVerificationCompletion
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onNext}
           variant="primary"
           testID={buildTestId('eid_verificationCompletion_accept_button')}
           i18nKey="eid_verificationCompletion_accept_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -66,12 +67,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentTitleContainer: {
-    width: '100%',
     textAlign: 'center',
-    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    marginHorizontal: spacing[5],
+    paddingHorizontal: spacing[5],
     paddingBottom: spacing[6],
   },
   contentTitle: {
@@ -85,15 +84,5 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
     textAlign: 'center',
     color: colors.moonDarkest,
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

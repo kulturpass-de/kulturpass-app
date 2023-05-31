@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
 import { useSelector } from 'react-redux'
 
+import { useTranslation } from '../../services/translation/translation'
 import { Screen } from '../../components/screen/screen'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
@@ -20,8 +21,6 @@ export type HomeScreenProps = {}
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const { buildTestId } = useTestIdBuilder()
   const homeUrl = useSelector(getCommerceHomeUrl)
-
-  const offset = useRef(new Animated.Value(0)).current
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
@@ -43,16 +42,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
     }, [refetch, isLoggedIn]),
   )
 
+  const { l: language } = useTranslation()
+
+  const offset = useRef(new Animated.Value(0)).current
+  const [contentOffset, setContentOffset] = useState<number>(0)
   return (
     <Screen withBasicBackground testID={buildTestId('home')}>
       <ErrorAlert error={visibleError} onDismiss={clearVisibleError} />
-      <HomeHeaderShrinkable offset={offset}>{isLoggedIn && data && <HomeHeader profile={data} />}</HomeHeaderShrinkable>
       <SpartacusWebView
+        contentOffset={contentOffset}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}
         webViewId={WebViewId.Home}
         url={homeUrl}
         testID={buildTestId('screens_home_webview')}
+        language={language}
       />
+      <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
+        <HomeHeader profile={data} />
+      </HomeHeaderShrinkable>
     </Screen>
   )
 }

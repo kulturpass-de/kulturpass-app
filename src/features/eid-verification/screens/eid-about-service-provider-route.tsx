@@ -7,16 +7,16 @@ import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidAboutServiceProviderScreen } from './eid-about-service-provider-screen'
 import { EidErrorAlert } from '../components/eid-error-alert'
-import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { EidServiceProviderDetailsRouteName } from './eid-service-provider-details-route'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export const EidAboutServiceProviderRouteName = 'EidAboutServiceProvider'
 
 export type EidAboutServiceProviderRouteParams = {
-  accessRights: AccessRightsMessage
-  certificate: CertificateMessage
+  accessRights: AccessRights
+  certificate: Certificate
 }
 
 export type EidAboutServiceProviderRouteProps = ModalScreenProps<'EidAboutServiceProvider'>

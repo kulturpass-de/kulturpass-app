@@ -3,11 +3,11 @@ import React, { useCallback } from 'react'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { useUserInfo } from '../../services/user/use-user-info'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
 import { Preferences } from '../../features/preferences/components/preferences'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useSetAccountInfo } from '../../services/user/use-set-account-info'
 
 export type RegistrationPreferencesScreenProps = {
   regToken: string
@@ -22,7 +22,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
-  const { firstName, setAccountInfo, accountInfo } = useUserInfo(regToken)
+  const setAccountInfo = useSetAccountInfo(regToken)
 
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
@@ -34,7 +34,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
 
   return (
     <>
-      <LoadingIndicator loading={preferenceCategories.isLoading || accountInfo.isLoading} />
+      <LoadingIndicator loading={preferenceCategories.isLoading} />
       <ModalScreen whiteBottom testID={buildTestId('preferences')}>
         <ModalScreenHeader
           titleI18nKey="preferences_headline"
@@ -42,10 +42,8 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
           onPressClose={onPressClose}
         />
         <Preferences
-          withGreeting
+          inModal
           onPressSubmit={onSubmit}
-          firstName={firstName}
-          userPreferences={accountInfo.data?.data}
           availableCategories={preferenceCategories.data?.categories}
           submitButtonI18nKey="preferences_form_registration_submit"
         />

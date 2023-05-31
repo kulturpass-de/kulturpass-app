@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
@@ -10,6 +10,7 @@ import { spacing } from '../../theme/spacing'
 import { Button } from '../../components/button/button'
 import { colors } from '../../theme/colors'
 import { SvgImage } from '../../components/svg-image/svg-image'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 
 export type ForgotPasswordSuccessScreenProps = {
   onHeaderPressClose: () => void
@@ -30,7 +31,7 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
         <SvgImage
           screenWidthRelativeSize={0.95}
           height={150}
-          testID={buildTestId('forgotPasswordSuccess_image')}
+          testID={buildTestId('forgotPasswordSuccess_image_alt')}
           i18nKey="forgotPasswordSuccess_image_alt"
           type="password"
         />
@@ -41,13 +42,13 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
           testID={buildTestId('forgotPasswordSuccess_copytext')}
         />
       </ScreenContent>
-      <View style={styles.buttonView}>
+      <ModalScreenFooter>
         <Button
           testID={buildTestId('forgotPasswordSuccess_toLogin_button')}
           i18nKey="forgotPasswordSuccess_toLogin_button"
           onPress={onToLogin}
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -61,11 +62,5 @@ const styles = StyleSheet.create({
     marginBottom: spacing[6],
     textAlign: 'center',
     color: colors.primaryDark,
-  },
-  buttonView: {
-    padding: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
 })

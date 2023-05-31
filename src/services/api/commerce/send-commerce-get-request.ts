@@ -12,6 +12,7 @@ export const sendCommerceGetRequest: CreateQueryFn<
     queryParams?: Record<string, any>
     appendLanguageQueryParams?: boolean
     appendLocationQueryParams?: boolean
+    appendNoCacheHeader?: boolean
   }
 > = prepare => async (arg, api, extraOptions, baseQuery) => {
   const rootState = api.getState() as RootState
@@ -33,6 +34,9 @@ export const sendCommerceGetRequest: CreateQueryFn<
   const headers = new AxiosHeaders()
   if (authState.commerce?.access_token) {
     headers.set('Authorization', `Bearer ${authState.commerce.access_token}`)
+  }
+  if (prepared.appendNoCacheHeader) {
+    headers.set('Cache-Control', 'no-cache')
   }
 
   const args: AxiosRequestConfig = { url, headers, method: 'GET', params: prepared.queryParams }

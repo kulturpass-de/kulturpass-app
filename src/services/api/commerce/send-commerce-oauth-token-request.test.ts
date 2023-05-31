@@ -30,7 +30,7 @@ describe('send-commerce-oauth-token-request', () => {
   const extraOptions = {}
 
   it('should call given prepare with arg and api', async () => {
-    const prepare = jestFn()
+    const prepare = jest.fn(() => ({ queryParams: {} }))
     const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)

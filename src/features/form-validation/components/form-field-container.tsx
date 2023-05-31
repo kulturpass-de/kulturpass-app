@@ -16,6 +16,7 @@ export type FormFieldContainerProps = PropsWithChildren<{
   error?: FieldError
   containerStyle?: ViewStyle
   isRequired?: boolean
+  disableAccessibilityForLabel?: boolean
 }>
 
 export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
@@ -24,6 +25,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   error,
   containerStyle,
   isRequired,
+  disableAccessibilityForLabel,
   children,
 }) => {
   const { t } = useTranslation()
@@ -40,7 +42,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
         <Text
           testID={addTestIdModifier(testID, 'label')}
           accessibilityLabel={t(labelI18nKey)}
-          accessible
+          accessible={!disableAccessibilityForLabel}
           style={[textStyles.BodyRegular, styles.textColor]}>
           {t(labelI18nKey) + (isRequired ? ' *' : '')}
         </Text>

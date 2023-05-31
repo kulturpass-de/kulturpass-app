@@ -1,5 +1,13 @@
 /* eslint-disable no-undef */
 
+const crypto = require('crypto');
+const stream = require('stream');
+const buffer = require('buffer');
+
+global.crypto = crypto;
+global.stream = stream;
+global.buffer = buffer;
+
 jest.mock('react-native-device-info', () => require('react-native-device-info/jest/react-native-device-info-mock'));
 
 jest.mock('@react-native-async-storage/async-storage', () => {
@@ -43,6 +51,16 @@ jest.mock('./src/env', () => {
         data: [
           {
             name: 'test',
+            appInformation: {
+              imprintUrl: {
+                de: 'http://localhost/consents/deImprintUrl',
+                en: 'http://localhost/consents/enImprintUrl',
+              },
+              openSourceLegalNoticeUrl: {
+                de: 'http://localhost/consents/deOpenSourceLegalNoticeUrl',
+                en: 'http://localhost/consents/enOpenSourceLegalNoticeUrl',
+              },
+            },
             commerce: {
               baseUrl: 'http://localhost/cc',
               baseSiteId: 'kulturapp',
@@ -62,10 +80,20 @@ jest.mock('./src/env', () => {
                   de: 'http://localhost/consents/deDpsDocumentUrl',
                   en: 'http://localhost/consents/enDpsDocumentUrl',
                 },
+                eulaDocumentUrl: {
+                  de: 'http://localhost/consents/deEulaDocumentUrl',
+                  en: 'http://localhost/consents/enEulaDocumentUrl',
+                },
               },
             },
             eid: {
               tcTokenUrl: 'http://localhost/eid',
+            },
+            faq: {
+              homeUrl: {
+                de: 'http://localhost/consents/deFaqHomeUrl',
+                en: 'http://localhost/consents/enFaqHomeUrl',
+              },
             },
             appConfig: {
               url: 'http://localhost/appConfig/url',
@@ -79,3 +107,25 @@ jest.mock('./src/env', () => {
     },
   };
 });
+
+jest.mock('redux-persist', () => {
+  const real = jest.requireActual('redux-persist');
+  return {
+    ...real,
+    persistReducer: (_config, reducers) => reducers,
+  };
+});
+
+jest.mock('redux-persist/integration/react', () => ({ PersistGate: props => props.children }));
+
+let mockedAppConfig = {
+  appVersions: { min: '0.5.55' },
+  certificates: {
+    cdc: [{ fingerprint256: 'cdc_fingerprint256' }],
+    commerce: [{ fingerprint256: 'commerce_fingerprint256' }],
+  },
+};
+
+jest.mock('./src/services/redux/utils/verify-jws-with-jwk', () => ({
+  verifyJwsWithJwk: () => Promise.resolve(JSON.stringify(mockedAppConfig)),
+}));

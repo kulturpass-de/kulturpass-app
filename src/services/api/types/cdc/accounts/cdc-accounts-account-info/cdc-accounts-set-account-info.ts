@@ -1,5 +1,5 @@
 import { CdcApiBaseSuccessResponse } from '../../cdc-api-base-success-response'
-import { AccountInfoData, AccountInfoDeletionData, AccountInfoProfile } from './types'
+import { AccountInfoData, AccountInfoProfile } from './types'
 
 export type AccountsSetAccountInfoWithRegTokenUnsignedRequestParams = {
   profile?: AccountInfoProfile
@@ -18,7 +18,7 @@ export type AccountsSetAccountInfoSignedRequestParams = {
 
 export type AccountsSetAccountInfoWithCustomSessionSignedRequestParams = {
   profile?: AccountInfoProfile
-  data?: AccountInfoDeletionData
+  data?: AccountInfoData
   password?: string
   newPassword?: string
   sessionToken: string

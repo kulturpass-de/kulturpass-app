@@ -1,15 +1,24 @@
 import { useCallback, useState } from 'react'
-import { useAuth } from '../../../services/auth/use-auth'
-import { cdcApi } from '../../../services/api/cdc-api'
 import { useSelector } from 'react-redux'
-import { getCdcSessionEmail } from '../../../services/auth/store/auth-selectors'
 
+import { cdcApi } from '../../../services/api/cdc-api'
+import {
+  getCdcSessionEmail,
+  getIsUserVerificationPending,
+  getRegistrationToken,
+} from '../../../services/auth/store/auth-selectors'
+import { useAuth } from '../../../services/auth/use-auth'
+
+// TO-DO: This hook should should be a thunk inside the user service
 export const useDeleteAccount = () => {
   const [loading, setLoading] = useState(false)
   const { logout } = useAuth()
   const [login] = cdcApi.useAccountsLoginMutation()
-  const [setAccountInfo] = cdcApi.useAccountsSetAccountInfoWithCustomSessionSignedMutation()
+  const [setAccountInfoWithCustomSessionSigned] = cdcApi.useAccountsSetAccountInfoWithCustomSessionSignedMutation()
+  const [setAccountInfoWithRegTokenUnsigned] = cdcApi.useAccountsSetAccountInfoWithRegTokenUnsignedMutation()
   const email = useSelector(getCdcSessionEmail)
+  const regToken = useSelector(getRegistrationToken)
+  const isUserVerificationPending = useSelector(getIsUserVerificationPending)
 
   const deleteAccount = useCallback(
     async (password: string) => {
@@ -18,19 +27,39 @@ export const useDeleteAccount = () => {
       }
       setLoading(true)
       try {
-        const { sessionInfo } = await login({ loginID: email, password: password }).unwrap()
-        const { sessionSecret, sessionToken } = sessionInfo
-        await setAccountInfo({
-          sessionSecret,
-          sessionToken,
-          data: { deletionRequested: true },
-        }).unwrap()
+        if (isUserVerificationPending) {
+          if (regToken) {
+            await setAccountInfoWithRegTokenUnsigned({
+              regToken,
+              data: { deletionRequested: true },
+            }).unwrap()
+          }
+        } else {
+          const { sessionInfo } = await login({ loginID: email, password: password }).unwrap()
+          const { sessionSecret, sessionToken } = sessionInfo
+          if (sessionSecret && sessionToken) {
+            await setAccountInfoWithCustomSessionSigned({
+              sessionSecret,
+              sessionToken,
+              data: { deletionRequested: true },
+            }).unwrap()
+          }
+        }
+
         await logout()
       } finally {
         setLoading(false)
       }
     },
-    [email, login, logout, setAccountInfo],
+    [
+      email,
+      login,
+      logout,
+      isUserVerificationPending,
+      regToken,
+      setAccountInfoWithCustomSessionSigned,
+      setAccountInfoWithRegTokenUnsigned,
+    ],
   )
 
   return { deleteAccount, loading }

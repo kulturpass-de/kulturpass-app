@@ -3,6 +3,7 @@ import { createApi as createRtkApi, defaultSerializeQueryArgs } from '@reduxjs/t
 import { getEnvironmentConfigurationState } from '../environment-configuration/redux/environment-configuration-selectors'
 import { RootState } from '../redux/configure-store'
 import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
+import { sendCommerceDeleteRequest } from './commerce/send-commerce-delete-request'
 import { sendCommerceGetRequest } from './commerce/send-commerce-get-request'
 import { sendCommerceOauthTokenRequest } from './commerce/send-commerce-oauth-token-request'
 import { sendCommercePostRequest } from './commerce/send-commerce-post-request'
@@ -20,25 +21,34 @@ import {
 import { Order } from './types/commerce/api-types'
 import { CancelReservationParams } from './types/commerce/commerce-cancel-reservation'
 import { CreateReservationParams } from './types/commerce/commerce-create-reservation'
+import { DeleteCartEntryParams } from './types/commerce/commerce-delete-cart-entry'
 import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
 import { GetOrderDetailParams, GetOrderDetailResponse } from './types/commerce/commerce-get-order-detail'
 import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-get-profile'
 import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
+import { GetRandomProductParams, GetRandomProductResponse } from './types/commerce/commerce-get-random-product'
+
+const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 
 export const commerceApi = createRtkApi({
+  ...dontRemoveOtherwiseJestTestsWillNotClose,
   reducerPath: 'commerceApi',
   baseQuery: repeatRequestIfInvalidToken<unknown>(axiosBaseQuery),
-  tagTypes: ['profile', 'reservations', 'reservation-detail'],
+  tagTypes: ['profile', 'reservations', 'reservation-detail', 'favorites', 'product-detail'],
   endpoints: builder => ({
     postAuthToken: builder.mutation<PostAuthTokenResponse, PostAuthTokenParams>({
+      invalidatesTags: ['profile', 'favorites', 'reservations', 'reservation-detail'],
       queryFn: sendCommerceOauthTokenRequest(params => ({
         queryParams: params,
       })),
     }),
     getFavorites: builder.query<GetFavoritesResponse, GetFavoritesRequestParams>({
+      providesTags: ['favorites'],
       queryFn: sendCommerceGetRequest(() => ({
-        path: 'users/current/carts',
-        queryParams: { fields: 'FULL' },
+        path: 'users/current/favourites',
+        appendLanguageQueryParams: true,
+        appendLocationQueryParams: true,
+        appendNoCacheHeader: true,
       })),
     }),
     getProductDetail: builder.query<GetProductDetailResponse, GetProductDetailParams>({
@@ -49,15 +59,30 @@ export const commerceApi = createRtkApi({
           appendLocationQueryParams: true,
         }
       }),
+      providesTags: (result, error, arg) => [{ type: 'product-detail', id: arg.productCode }],
+    }),
+    getRandomProduct: builder.query<GetRandomProductResponse, GetRandomProductParams>({
+      queryFn: sendCommerceGetRequest(() => {
+        return {
+          path: 'products/geospatial/random',
+          appendLanguageQueryParams: true,
+          appendLocationQueryParams: true,
+        }
+      }),
     }),
     getOrderDetail: builder.query<GetOrderDetailResponse, GetOrderDetailParams>({
-      providesTags: ['reservation-detail'],
+      providesTags: (result, error, arg) => [{ type: 'reservation-detail', id: arg.orderCode }],
       queryFn: sendCommerceGetRequest(params => ({
         path: `users/current/orders/${params.orderCode}`,
+        appendNoCacheHeader: true,
       })),
     }),
     cancelReservation: builder.mutation<void, CancelReservationParams>({
-      invalidatesTags: ['profile', 'reservations', 'reservation-detail'],
+      invalidatesTags: (result, error, arg) => [
+        'profile',
+        'reservations',
+        { type: 'reservation-detail', id: arg.order.code },
+      ],
       queryFn: sendCommercePostRequest(params => {
         if (!params.order.code) {
           throw new Error("Can't cancel the reservation due of missing a code in order.")
@@ -78,8 +103,10 @@ export const commerceApi = createRtkApi({
     }),
     getReservations: builder.query<GetReservationsResponse, GetReservationsParams>({
       providesTags: ['reservations'],
-      queryFn: sendCommerceGetRequest(() => ({
+      queryFn: sendCommerceGetRequest(queryParams => ({
         path: 'users/current/reservations',
+        queryParams,
+        appendNoCacheHeader: true,
       })),
     }),
     getPreferenceCategories: builder.query<GetPreferenceCategoriesResponse, GetPreferenceCategoriesRequestParams>({
@@ -93,6 +120,7 @@ export const commerceApi = createRtkApi({
         path: 'users/current/reservations',
         queryParams: params,
       })),
+      invalidatesTags: ['reservations'],
     }),
     getProfile: builder.query<GetProfileResponseBody, GetProfileRequestParams>({
       providesTags: ['profile'],
@@ -105,6 +133,7 @@ export const commerceApi = createRtkApi({
       queryFn: sendCommerceGetRequest(queryParams => ({
         path: 'users/current',
         queryParams,
+        appendNoCacheHeader: true,
       })),
     }),
     getAppConfig: builder.query<GetAppConfigResponseBody, GetAppConfigRequestParams>({
@@ -112,8 +141,14 @@ export const commerceApi = createRtkApi({
         const rootState = api.getState() as RootState
         const environmentConfiguration = getEnvironmentConfigurationState(rootState)
         const url: string = environmentConfiguration.currentEnvironment.appConfig.url
-        return { url }
+        return { url, appendNoCacheHeader: true }
       }),
+    }),
+    removeProductFromCart: builder.mutation<undefined, DeleteCartEntryParams>({
+      invalidatesTags: ['favorites'],
+      queryFn: sendCommerceDeleteRequest(params => ({
+        path: `users/current/carts/${params.cartId}/entries/${params.entryNumber}`,
+      })),
     }),
   }),
 })

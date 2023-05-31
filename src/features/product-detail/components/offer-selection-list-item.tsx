@@ -40,7 +40,7 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
       <View style={styles.titleContainer}>
         <Text
           testID={buildTestId('offerSelection_offer_shopName')}
-          style={[textStyles.SubtitleExtrabold, { color: colors.basicBlack }]}>
+          style={[textStyles.SubtitleExtrabold, styles.shopName]}>
           {offer.shopName}
         </Text>
         {formattedPrice ? (
@@ -73,6 +73,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  shopName: {
+    color: colors.basicBlack,
+    flex: 1,
   },
   address: {
     marginTop: spacing[1],

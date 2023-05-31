@@ -27,3 +27,23 @@ export const getCommerceHomeUrl = createSelector(getEnvironmentConfigurationComm
 export const getCommerceSearchUrl = createSelector(getEnvironmentConfigurationCommerce, commerce => commerce.searchUrl)
 
 export const getCdcDpsDocumentUrl = createSelector(getEnvironmentConfigurationCdc, cdc => cdc.consents.dpsDocumentUrl)
+
+export const getCdcEulaDocumentUrl = createSelector(getEnvironmentConfigurationCdc, cdc => cdc.consents.eulaDocumentUrl)
+
+export const getEnvironmentConfigurationAppInformation = createSelector(
+  getCurrentEnvironmentConfiguration,
+  state => state.appInformation,
+)
+
+export const getImprintUrl = createSelector(
+  getEnvironmentConfigurationAppInformation,
+  appInformation => appInformation.imprintUrl,
+)
+export const getOpenSourceLegalNoticeUrl = createSelector(
+  getEnvironmentConfigurationAppInformation,
+  appInformation => appInformation.openSourceLegalNoticeUrl,
+)
+
+export const getEnvironmentConfigurationFaq = createSelector(getCurrentEnvironmentConfiguration, state => state.faq)
+
+export const getFaqHomeUrl = createSelector(getEnvironmentConfigurationFaq, faq => faq.homeUrl)

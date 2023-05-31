@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react'
 import { act } from 'react-test-renderer'
 import { StoreProvider } from '../../../services/testing/test-utils'
 import { useDeleteAccount } from './use-delete-account'
-import { setupServer } from 'msw/lib/node'
+import { setupServer } from 'msw/node'
 import { rest } from 'msw'
 import { useSelector } from 'react-redux'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
@@ -33,8 +33,6 @@ describe('useDeleteAccount', () => {
           }),
         )
       }),
-    )
-    server.use(
       rest.post('http://localhost/cdc/accounts.setAccountInfo', async (req, res, ctx) => {
         const params = await req.text()
         // Converting search params without some library...
@@ -42,6 +40,7 @@ describe('useDeleteAccount', () => {
         setAccountInfoParams = tempUrl.searchParams
         return res(ctx.status(200), ctx.json({}))
       }),
+      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
     )
 
     const { result } = renderHook(
@@ -50,9 +49,7 @@ describe('useDeleteAccount', () => {
         const userIsLoggedIn = useSelector(getIsUserLoggedIn)
         return { deleteAccount, userIsLoggedIn }
       },
-      {
-        wrapper: Wrapper,
-      },
+      { wrapper: Wrapper },
     )
 
     await act(() => {})

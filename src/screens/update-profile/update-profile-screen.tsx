@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
@@ -12,12 +12,11 @@ import { ScreenContent } from '../../components/screen/screen-content'
 import { DateFormField } from '../../components/form-fields/date-form-field'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
+import { CdcStatusInvalidParameter, CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
-import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { Screen } from '../../components/screen/screen'
@@ -26,6 +25,8 @@ import { FormFieldGroup } from '../../components/form-field-group/form-field-gro
 import { useUserInfo } from '../../services/user/use-user-info'
 import { AccountsGetAccountInfoResponse, AccountsSetAccountInfoSignedRequestParams } from '../../services/api/types'
 import { useSetAccountInfo } from '../../services/user/use-set-account-info'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
+import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 
 const hasIdVerfiedDayOfBirth = (response?: AccountsGetAccountInfoResponse) => {
   return !!(response?.data?.idVerified === 'true' && response?.data.eid?.dateOfBirth)
@@ -51,10 +52,11 @@ export type UpdateProfileScreenProps = {
 
 export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHeaderPressClose, afterUpdate }) => {
   const { t } = useTranslation()
-  const [loading, setLoading] = useState(false)
+  const [state, setState] = useState({ isLoading: false, hasSetDefaultValues: false })
 
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const form = useForm<UpdateProfileFormData>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z
         .object({
@@ -79,6 +81,10 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
   const { accountInfo } = useUserInfo()
   const setAccountInfo = useSetAccountInfo()
   useEffect(() => {
+    if (state.hasSetDefaultValues) {
+      return
+    }
+
     if (accountInfo.data?.profile && accountInfo.data?.data) {
       const {
         profile: { firstName, email },
@@ -92,19 +98,18 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
         dateOfBirth = data.dateOfBirth
       }
 
-      form.reset({
-        email,
-        firstName,
-        dateOfBirth,
-      })
-    }
-  }, [form, accountInfo.data])
+      form.reset({ email, firstName, dateOfBirth })
 
-  const { setErrors } = useValidationErrors(form)
+      setState(currentState => ({ ...currentState, hasSetDefaultValues: true }))
+    }
+  }, [state, form, accountInfo.data])
+
+  useFocusErrors(form)
+  const { setErrors, setError } = useValidationErrors(form)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
-    setLoading(true)
+    setState(currentState => ({ ...currentState, isLoading: true }))
     try {
       const { email, firstName, dateOfBirth, password, newPassword } = data
 
@@ -129,7 +134,13 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
       await setAccountInfo(update)
       afterUpdate()
     } catch (error: unknown) {
-      if (error instanceof CdcStatusValidationError) {
+      if (error instanceof CdcStatusInvalidParameter) {
+        setError({
+          errorCode: error.invalidParameter.errorCode,
+          fieldName: 'newPassword',
+          message: error.invalidParameter.errorDetails,
+        })
+      } else if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
         setVisibleError(error)
@@ -137,7 +148,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
         setVisibleError(new UnknownError())
       }
     } finally {
-      setLoading(false)
+      setState(currentState => ({ ...currentState, isLoading: false }))
     }
   })
 
@@ -145,7 +156,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
 
   return (
     <>
-      <LoadingIndicator loading={accountInfo.isLoading || loading} />
+      <LoadingIndicator loading={accountInfo.isLoading || state.isLoading} />
       <Screen
         testID={testID}
         header={
@@ -172,6 +183,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               keyboardType="email-address"
               isRequired
               disabled
+              disableAccessibilityForLabel
             />
             <FormFieldWithControl
               name={'firstName'}
@@ -179,6 +191,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               labelI18nKey="updateProfile_name"
               testID={addTestIdModifier(testID, 'name')}
               control={form.control}
+              disableAccessibilityForLabel
             />
             <FormFieldWithControl
               name={'dateOfBirth'}
@@ -187,6 +200,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               testID={addTestIdModifier(testID, 'dateOfBirth')}
               control={form.control}
               disabled={hasIdVerfiedDayOfBirth(accountInfo.data)}
+              disableAccessibilityForLabel
             />
           </FormFieldGroup>
           <FormFieldGroup
@@ -200,6 +214,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               testID={addTestIdModifier(testID, 'password')}
               control={form.control}
               isRequired
+              disableAccessibilityForLabel
             />
             <FormFieldWithControl
               name={'newPassword'}
@@ -208,6 +223,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               testID={addTestIdModifier(testID, 'newPassword')}
               control={form.control}
               isRequired
+              disableAccessibilityForLabel
             />
             <FormFieldWithControl
               name={'newPasswordConfirmation'}
@@ -216,17 +232,18 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               testID={addTestIdModifier(testID, 'newPasswordConfirmation')}
               control={form.control}
               isRequired
+              disableAccessibilityForLabel
             />
           </FormFieldGroup>
         </ScreenContent>
-        <View style={styles.submitButtonView}>
+        <ModalScreenFooter ignorePaddingWithSafeArea={false}>
           <Button
             disabled={!form.formState.isDirty}
             testID={addTestIdModifier(testID, 'submit')}
             i18nKey="updateProfile_submit"
             onPress={onSubmit}
           />
-        </View>
+        </ModalScreenFooter>
       </Screen>
     </>
   )
@@ -239,12 +256,5 @@ const styles = StyleSheet.create({
   },
   passwordGroup: {
     marginTop: spacing[6],
-  },
-  submitButtonView: {
-    paddingVertical: spacing[5],
-    paddingHorizontal: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
 })

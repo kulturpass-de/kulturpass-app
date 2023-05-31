@@ -23,6 +23,15 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
   protected eventEmitter = new EventEmitter<WebViewBridgeAdapterEventsMap>()
   protected availableWebViews = new Map<WebViewId, WebView>()
 
+  public async callBridgeFunctionToAll<WebViewFunctionName extends keyof WebViewFunctions>(
+    target: WebViewFunctionName,
+    args: WebViewFunctions[WebViewFunctionName]['arguments'],
+  ) {
+    this.availableWebViews.forEach((_, webViewId) => {
+      this.callBridgeFunction(webViewId, target, args)
+    })
+  }
+
   public async callBridgeFunction<WebViewFunctionName extends keyof WebViewFunctions>(
     webViewId: WebViewId,
     target: WebViewFunctionName,
@@ -119,6 +128,43 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
     }
 
     return disconnectWebView
+  }
+
+  public resetToInitialPage(webViewId: WebViewId) {
+    const webView = this.availableWebViews.get(webViewId)
+    /*
+     * This script gets inserted into the webview each time this function gets called
+     * This means, we can't redefine 'deltaRelativeToCurrentPage' each time new with
+     * 'let' or 'const' but with `var`.
+     *
+     * Better would be, to insert a function once into the webview like
+     *
+     * webView?.injectJavaScript(`
+     *  function resetToInitialPage() {
+     *   var deltaRelativeToCurrentPage = window.history.length - 1
+     *   if (deltaRelativeToCurrentPage > 0) {
+     *     window.history.go(-deltaRelativeToCurrentPage);
+     *   }
+     *  }
+     *
+     *   // Don't remove
+     *   true;
+     * `)
+     *
+     * And then calling the function inside of the webview each time like:
+     *
+     * webView?.injectJavaScript(`resetToInitialPage(); true;`)
+     *
+     */
+    webView?.injectJavaScript(`
+      var deltaRelativeToCurrentPage = window.history.length - 1
+      if (deltaRelativeToCurrentPage > 0) {
+        window.history.go(-deltaRelativeToCurrentPage);
+      }
+
+      // Don't remove
+      true;
+    `)
   }
 }
 

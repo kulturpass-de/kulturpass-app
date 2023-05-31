@@ -2,18 +2,29 @@ import React, { useCallback } from 'react'
 import { StyleSheet, Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { getSimulateCard, getSimulatedCardName } from '../../features/eid-verification/redux/simulated-card-selectors'
-import { setSimulateCard, setSimulatedCardName } from '../../features/eid-verification/redux/simulated-card'
+import {
+  getRandomLastName,
+  getSimulateCard,
+  getSimulatedCardDate,
+  getSimulatedCardName,
+} from '../../features/eid-verification/redux/simulated-card-selectors'
+import {
+  setRandomLastName,
+  setSimulateCard,
+  setSimulatedCardDate,
+  setSimulatedCardName,
+} from '../../features/eid-verification/redux/simulated-card'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { spacing } from '../../theme/spacing'
 import { useTranslation } from '../../services/translation/translation'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
+import { Icon } from '../../components/icon/icon'
+import { DateFormField } from '../../components/form-fields/date-form-field'
 
 export type SimulationCardConfigScreenProps = {
   onHeaderPressBack: () => void
@@ -29,10 +40,16 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
   const { t } = useTranslation()
 
   const simulateCard = useSelector(getSimulateCard)
+  const simulatedCardDate = useSelector(getSimulatedCardDate)
+  const randomLastName = useSelector(getRandomLastName)
 
   const toggleSimulateCard = useCallback(() => {
     dispatch(setSimulateCard(!simulateCard))
   }, [dispatch, simulateCard])
+
+  const toggleRandomLastName = useCallback(() => {
+    dispatch(setRandomLastName(!randomLastName))
+  }, [dispatch, randomLastName])
 
   const currentSimulationCardName = useSelector(getSimulatedCardName)
 
@@ -43,6 +60,13 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
   const onPressSimulatedCard = useCallback(
     (cardName: string) => {
       dispatch(setSimulatedCardName(cardName as any))
+    },
+    [dispatch],
+  )
+
+  const onDateChange = useCallback(
+    (text: string | undefined) => {
+      dispatch(setSimulatedCardDate(text))
     },
     [dispatch],
   )
@@ -63,7 +87,7 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
           textStyleOverrides={styles.text}
         />
         <Switch
-          testID={buildTestId('developerMenu_simulateCard_switch')}
+          testID={buildTestId('developerMenu_simulateCard_label')}
           accessibilityLabel={t('developerMenu_simulateCard_label')}
           value={simulateCard}
           onValueChange={toggleSimulateCard}
@@ -71,17 +95,37 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
       </View>
       {simulateCard ? (
         <ScreenContent>
+          <View style={styles.toggleListItem}>
+            <TranslatedText
+              i18nKey="developerMenu_simulateCard_randomLastName_label"
+              testID={buildTestId('developerMenu_simulateCard_randomLastName_label')}
+              textStyle="BodyRegular"
+              textStyleOverrides={styles.text}
+            />
+            <Switch
+              testID={buildTestId('developerMenu_simulateCard_randomLastName_label')}
+              accessibilityLabel={t('developerMenu_simulateCard_randomLastName_label')}
+              value={randomLastName}
+              onValueChange={toggleRandomLastName}
+            />
+          </View>
+          <DateFormField
+            testID={buildTestId('developerMenu_simulateCard_simulatedCardDate_label')}
+            labelI18nKey="developerMenu_simulateCard_simulatedCardDate_label"
+            onChange={onDateChange}
+            value={simulatedCardDate}
+            containerStyle={styles.dateField}
+          />
           {cardNames.map(cardName => {
             return (
               <ListItem
                 key={cardName}
                 icon={
-                  <Icon
-                    source="Chevron"
-                    width={24}
-                    height={24}
-                    style={cardName === currentSimulationCardName ? styles.selectedCardIcon : styles.unselectedCardIcon}
-                  />
+                  cardName === currentSimulationCardName ? (
+                    <Icon source="Chevron" width={24} height={24} />
+                  ) : (
+                    <View style={styles.noIcon} />
+                  )
                 }
                 title={cardName}
                 testID={buildTestId(`developerMenu_simulateCard_${cardName}_button`)}
@@ -97,14 +141,15 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
 }
 
 const styles = StyleSheet.create({
-  selectedCardIcon: {
-    opacity: 1,
-  },
-  unselectedCardIcon: {
-    opacity: 0,
+  noIcon: {
+    width: 24,
   },
   text: {
     color: colors.basicBlack,
+  },
+  dateField: {
+    paddingHorizontal: spacing[5],
+    paddingTop: spacing[5],
   },
   toggleListItem: {
     paddingHorizontal: spacing[5],

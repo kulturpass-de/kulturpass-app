@@ -8,18 +8,27 @@ import { Icon } from '../icon/icon'
 import { TranslatedText } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
 import { spacing } from '../../theme/spacing'
+import { HITSLOP } from '../../theme/constants'
+import { useFocusEffect } from '@react-navigation/native'
+import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: spacing[5],
     paddingHorizontal: spacing[3],
-    height: 56,
+    minHeight: 56,
     backgroundColor: colors.basicWhite,
   },
-  titleContainer: { marginLeft: 6 },
-  closeButton: { marginRight: 6 },
+  titleContainer: { paddingHorizontal: 6, flexDirection: 'row', flexShrink: 1 },
+  closeButton: { marginRight: 6, flexShrink: 0 },
+  title: {
+    flex: 1,
+    flexWrap: 'wrap',
+    color: colors.moonDarkest,
+  },
 })
 
 export type ModalScreenHeaderProps = {
@@ -37,13 +46,18 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
 }) => {
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+
+  useFocusEffect(setFocus)
 
   return (
     <View style={styles.container} testID={testID}>
       {onPressBack && (
         <Pressable
+          hitSlop={HITSLOP}
           onPress={onPressBack}
           testID={addTestIdModifier(testID, 'backButton')}
+          accessibilityRole="button"
           accessibilityLabel={t('back_button')}
           accessible>
           <Icon source="ArrowBack" width={24} height={24} />
@@ -51,17 +65,21 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
       )}
       <View style={styles.titleContainer}>
         <TranslatedText
+          ref={focusRef}
           testID={addTestIdModifier(testID, 'title')}
           i18nKey={titleI18nKey}
           textStyle="SubtitleExtrabold"
-          textStyleOverrides={{ color: colors.moonDarkest }}
+          textStyleOverrides={styles.title}
+          accessibilityRole="header"
         />
       </View>
       {onPressClose && (
         <Pressable
+          hitSlop={HITSLOP}
           style={styles.closeButton}
           onPress={onPressClose}
           testID={addTestIdModifier(testID, 'closeButton')}
+          accessibilityRole="button"
           accessibilityLabel={t('close_button')}
           accessible>
           <Icon source="Close" width={24} height={24} />

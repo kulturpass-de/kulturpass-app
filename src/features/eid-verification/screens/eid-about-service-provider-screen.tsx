@@ -7,16 +7,17 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { AccessRightsMessage, CertificateMessage } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Icon } from '../../../components/icon/icon'
 import { useTranslation } from '../../../services/translation/translation'
 import { textStyles } from '../../../theme/typography'
-import { AccessRightsFields } from '@jolocom/react-native-ausweis/js/types'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { AccessRight, AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
+import { HITSLOP } from '../../../theme/constants'
 
 export type EidAboutServiceProviderScreenProps = {
-  accessRights: AccessRightsMessage
-  certificate: CertificateMessage
+  accessRights: AccessRights
+  certificate: Certificate
   onProviderDetails: () => void
   onNext: () => void
   onClose: () => void
@@ -33,8 +34,8 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
   const { t } = useTranslation()
 
   const renderItem = useCallback(
-    (item: AccessRightsFields) => {
-      const type = item.toLowerCase() as Lowercase<AccessRightsFields>
+    (item: AccessRight) => {
+      const type = item.toLowerCase() as Lowercase<AccessRight>
       const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${type}` as const
       const accessRightText = t(accessRightI18NKey, '')
 
@@ -73,6 +74,8 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
         />
         <Pressable
           accessible
+          accessibilityRole="button"
+          hitSlop={HITSLOP}
           testID={buildTestId('eid_aboutServiceProvider_details_button')}
           style={styles.providerButton}
           onPress={onProviderDetails}>
@@ -100,14 +103,14 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
         />
         <View>{effectiveAccessRights.map(renderItem)}</View>
       </ScrollView>
-      <View style={styles.buttonFooter}>
+      <ModalScreenFooter>
         <Button
           onPress={onNext}
           variant="primary"
           testID={buildTestId('eid_aboutServiceProvider_accept_button')}
           i18nKey="eid_aboutServiceProvider_accept_button"
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -145,15 +148,5 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: colors.basicBlack,
-  },
-  buttonFooter: {
-    padding: spacing[5],
-    backgroundColor: colors.basicWhite,
-    borderTopWidth: 2,
-    borderTopColor: colors.basicBlack,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    height: 80,
   },
 })

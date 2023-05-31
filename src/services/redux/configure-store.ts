@@ -7,6 +7,8 @@ import { ErrorWithCode } from '../errors/errors'
 import { rootReducer } from './root-reducer'
 import { reduxPersistIgnoredActions } from './persist-reducer'
 import { listenerMiddleware } from './listener-middleware'
+import { subscribeToAppState } from './subscriptions/subscribe-to-app-state'
+import { subscribeToTranslationLanguageChanged } from './subscriptions/subscribe-to-translation-language-changed'
 
 export type SetupStoreProps = {
   preloadedState?: Partial<RootState>
@@ -40,6 +42,9 @@ export const setupStore = (props: SetupStoreProps) => {
   })
 
   const persistor = persistStore(store)
+
+  subscribeToAppState(store)
+  subscribeToTranslationLanguageChanged(store)
 
   return { store, persistor }
 }

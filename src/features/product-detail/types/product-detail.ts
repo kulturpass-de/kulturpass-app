@@ -122,6 +122,10 @@ export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
     city: string
     postalCode: string
   }
+  /**
+   * The location distance
+   */
+  venueDistance?: string
 }
 
 export type MusicInstrumentProductDetail = ProductDetailBase<ProductTypes.MusicInstrument> & {
@@ -176,6 +180,10 @@ export type StagedEventProductDetail = ProductDetailBase<ProductTypes.StagedEven
     city: string
     postalCode: string
   }
+  /**
+   * The location distance
+   */
+  venueDistance?: string
 }
 
 export type VideoProductDetail = ProductDetailBase<ProductTypes.Video> & {
@@ -200,10 +208,18 @@ export type VideoProductDetail = ProductDetailBase<ProductTypes.Video> & {
 export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
   voucherPickupPoint?: {
     name?: string
-    street: string
-    city: string
-    postalCode: string
+    street?: string
+    city?: string
+    postalCode?: string
   }
+  /**
+   * The location distance
+   */
+  venueDistance?: string
+  /**
+   * If it is required to pickup the voucher from the vendor or it is available digitally through the app
+   */
+  isVoucherPickupRequired?: boolean
 }
 
 export type PriceWithValue = Required<Pick<Price, 'value' | 'currencyIso'>>

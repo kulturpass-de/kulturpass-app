@@ -10,6 +10,7 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { Illustration } from '../../components/illustration/illustration'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 
 export type RegistrationSuccessScreenProps = {
   onConfirmation: () => void
@@ -27,7 +28,7 @@ export const RegistrationSuccessScreen: React.FC<RegistrationSuccessScreenProps>
       />
       <View style={styles.imageContainer}>
         <Illustration
-          testID={buildTestId('registration_success_image')}
+          testID={buildTestId('registration_success_image_alt')}
           i18nKey="registration_success_image_alt"
           type="verify-mail"
         />
@@ -46,13 +47,13 @@ export const RegistrationSuccessScreen: React.FC<RegistrationSuccessScreenProps>
           testID={buildTestId('registration_success_todo_information')}
         />
       </ScreenContent>
-      <View style={styles.buttonContainer}>
+      <ModalScreenFooter>
         <Button
           testID={buildTestId('registration_success_button')}
           i18nKey="registration_success_button"
           onPress={onConfirmation}
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -78,12 +79,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: spacing[6],
     color: colors.moonDarkest,
-  },
-  buttonContainer: {
-    paddingTop: spacing[5],
-    paddingHorizontal: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
 })

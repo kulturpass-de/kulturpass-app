@@ -8,6 +8,7 @@ import {
 import { GuardedType } from '@reduxjs/toolkit/dist/listenerMiddleware/types'
 
 import { addAuthStoreEffects } from '../auth/store/effects'
+import { addUserEffects } from '../user/redux/effects'
 import { AppDispatch, RootState } from './configure-store'
 import { addRootStoreEffects } from './effects'
 
@@ -20,3 +21,4 @@ export type ListenerEffectMatcherAction<T> = GuardedType<T>
 
 addAuthStoreEffects(listenerMiddleware.startListening)
 addRootStoreEffects(listenerMiddleware.startListening)
+addUserEffects(listenerMiddleware.startListening)

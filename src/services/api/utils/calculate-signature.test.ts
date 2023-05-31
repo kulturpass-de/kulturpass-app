@@ -50,6 +50,7 @@ describe('calculateSignature', () => {
           preferredProductCategoryId3: null,
           preferredProductCategoryId4: null,
         }),
+        password: '`~!@#$%^&*()_+-={}[]|:";\',.<>/?',
         oauth_token:
           'st2.s.AcbHnAC57Q.sPhiFnMoHpNVtN0L4w-vo56oH232LMSjlPCOXNoEyV0u0t1YDii-dJCf39r0guiYA3wHNPYYvm3KX16B9bX85QUJisQaKAbKJYaOq5Fc4ZM._j1hY772CpA7LrrlsYd8YRU5WRiSKHsf_4SdreL_qSfwvGqMqXrWRqXYddDel4mYEO0z7pzmc9UFsipK4bLzdg.sc3',
         apiKey: '4_2g1jeuAFipNhVuN-xkILiw',
@@ -57,7 +58,7 @@ describe('calculateSignature', () => {
     }
 
     expect(calculateSignature(input.secret, input.method, input.url, input.parameters)).toBe(
-      'hTsQ3COu0JDu7dgxMXsV7/d3h68=',
+      'kMF9/Oqrt5Z14XBB2Cppy98CIMw=',
     )
   })
 })

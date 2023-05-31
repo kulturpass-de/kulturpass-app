@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Alert } from '../../../components/alert/alert'
 import { AlertContent } from '../../../components/alert/alert-content'
@@ -6,13 +6,13 @@ import { AlertTitle } from '../../../components/alert/alert-title'
 import { Button } from '../../../components/button/button'
 import { LinkText } from '../../../components/link-text/link-text'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { useCancelFlow } from '../hooks/use-cancel-flow'
 import { LoadingIndicatorOverlay } from '../../../components/loading-indicator/loading-indicator-overlay'
 import { useDebouncedLoading } from '../../../components/loading-indicator/use-debounced-loading'
+import { useCloseFlow } from '../hooks/use-close-flow'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type CancelEidFlowAlertProps = {
   visible: boolean
@@ -21,25 +21,20 @@ export type CancelEidFlowAlertProps = {
 
 export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible, onChange }) => {
   const { buildTestId } = useTestIdBuilder()
-  const modalNavigation = useModalNavigation()
+  const resetPinFaqLink = useFaqLink('EID_PIN_RESET')
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  const debouncedLoading = useDebouncedLoading(isLoading)
-
-  const cancelFlow = useCancelFlow()
+  const { closeFlow, loading } = useCloseFlow()
+  //TODO: Refactor loading and debouncedLoading
+  const debouncedLoading = useDebouncedLoading(loading)
 
   const handleResume = useCallback(() => {
     onChange(false)
   }, [onChange])
 
   const handleCancel = useCallback(async () => {
-    setIsLoading(true)
-    await cancelFlow()
-    modalNavigation.closeModal()
+    await closeFlow()
     onChange(false)
-    setIsLoading(false)
-  }, [cancelFlow, modalNavigation, onChange])
+  }, [closeFlow, onChange])
 
   return (
     <Alert visible={visible} onChange={onChange}>
@@ -54,7 +49,8 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
         <View style={styles.linkContainer}>
           <LinkText
             i18nKey="eid_cancel_flow_resetPin_link"
-            link="https://www.sap.de"
+            testID={buildTestId('eid_cancel_flow_resetPin_link')}
+            link={resetPinFaqLink}
             textStyle="BodyMedium"
             flex={false}
           />
@@ -63,14 +59,14 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
           testID={buildTestId('eid_cancel_flow_resume_button')}
           i18nKey="eid_cancel_flow_resume_button"
           variant="primary"
-          disabled={isLoading}
+          disabled={loading}
           onPress={handleResume}
         />
         <Button
           testID={buildTestId('eid_cancel_flow_cancel_button')}
           i18nKey="eid_cancel_flow_cancel_button"
           variant="white"
-          disabled={isLoading}
+          disabled={loading}
           onPress={handleCancel}
         />
       </AlertContent>

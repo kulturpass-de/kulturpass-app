@@ -19,6 +19,7 @@ import BackdropLarge2 from '../assets/backdrop-large-2.svg'
 import BackdropLarge3 from '../assets/backdrop-large-3.svg'
 import BackdropLarge4 from '../assets/backdrop-large-4.svg'
 import { getBackgdropIndex, lastDigitOfString } from '../utils'
+import { HITSLOP } from '../../../theme/constants'
 
 const backdrops = {
   small: [BackdropSmall0, BackdropSmall1, BackdropSmall2, BackdropSmall3, BackdropSmall4],
@@ -48,8 +49,10 @@ export const ReservationDetailHeader: React.FC<ReservationDetailHeaderProps> = (
       </View>
       <View style={styles.content}>
         <Pressable
+          hitSlop={HITSLOP}
           style={styles.closeButton}
           testID={buildTestId('reservationDetail_header_deliveryScenario_pickup_closeButton')}
+          accessibilityRole="button"
           accessibilityLabel={t('reservationDetail_header_deliveryScenario_pickup_closeButton')}
           onPress={onClose}>
           <Icon source="Close" width={24} height={24} />

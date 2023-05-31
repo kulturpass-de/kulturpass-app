@@ -48,7 +48,6 @@ const buildStoryForOrderStatus = (orderStatus: Order['status']) => {
         onClose={() => {}}
         order={order}
         productDetail={productDetail}
-        selectedOffer={productDetail}
       />
     </View>
   )

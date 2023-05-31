@@ -28,7 +28,7 @@ describe('send-commerce-post-request', () => {
   const extraOptions = {}
 
   it('should call given prepare with arg and api', async () => {
-    const prepare = jestFn()
+    const prepare = jest.fn(() => ({ path: '' }))
     const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
 
     sendCommercePostRequest(prepare)(arg, api, extraOptions, baseQuery)

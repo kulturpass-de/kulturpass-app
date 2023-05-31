@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native'
-
+import React, { forwardRef } from 'react'
+import { StyleSheet, Text, type StyleProp, type TextStyle, AccessibilityProps } from 'react-native'
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation, Trans } from '../../services/translation/translation'
 import { textStyles } from '../../theme/typography'
+import { applyAccessibilityReplacements } from './accessibility-replacements'
 import { AvailableTextStyles, AvailableTranslations } from './types'
 
 export type TranslatedTextProps = {
@@ -13,28 +13,31 @@ export type TranslatedTextProps = {
   textStyleOverrides?: StyleProp<TextStyle>
   testID?: TestId
   customComponents?: Record<string, JSX.Element>
+  accessibilityRole?: AccessibilityProps['accessibilityRole']
 }
 
-export const TranslatedText: FC<TranslatedTextProps> = ({
-  i18nKey,
-  i18nParams,
-  textStyle,
-  textStyleOverrides = {},
-  testID = i18nKey,
-  customComponents,
-}) => {
-  const { t } = useTranslation()
+export const TranslatedText = forwardRef<Text, TranslatedTextProps>(
+  (
+    { i18nKey, i18nParams, textStyle, textStyleOverrides = {}, testID, customComponents, accessibilityRole = 'text' },
+    ref: React.ForwardedRef<Text>,
+  ) => {
+    const { t } = useTranslation()
+    let accessibilityLabel = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
+    accessibilityLabel = applyAccessibilityReplacements(accessibilityLabel)
 
-  return (
-    <Text
-      testID={testID}
-      accessibilityLabel={t(i18nKey)}
-      accessible
-      style={[styles.base, textStyles[textStyle], textStyleOverrides]}>
-      <Trans i18nKey={i18nKey as any} values={i18nParams} components={{ ...components, ...customComponents }} />
-    </Text>
-  )
-}
+    return (
+      <Text
+        ref={ref}
+        testID={testID}
+        accessibilityLabel={accessibilityLabel}
+        accessible
+        accessibilityRole={accessibilityRole}
+        style={[styles.base, textStyles[textStyle], textStyleOverrides]}>
+        <Trans i18nKey={i18nKey as any} values={i18nParams} components={{ ...components, ...customComponents }} />
+      </Text>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   base: {

@@ -13,6 +13,7 @@ export const onGetAppConfigFulfilledEffect: ListenerEffect<
   const { currentEnvironment } = getEnvironmentConfigurationState(listenerApi.getState())
 
   let appConfigString: string
+
   try {
     appConfigString = await verifyJwsWithJwk(action.payload, currentEnvironment.appConfig.publicKey)
   } catch (error) {

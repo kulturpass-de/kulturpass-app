@@ -77,7 +77,17 @@ export class CdcStatusValidationError extends CdcError {
   }
 }
 
+export class CdcStatusInvalidParameter extends CdcError {
+  invalidParameter: CdcResponseInvalidParameter
+
+  constructor(invalidParameter: CdcResponseInvalidParameter, errorCode: string = 'CDC_STATUS_INVALID_PARAMETER') {
+    super(errorCode)
+    this.invalidParameter = invalidParameter
+  }
+}
+
 export const CDC_ERROR_CODES: Array<[RegExp, string]> = [
+  [/400006/, 'CDC_STATUS_INVALID_PARAMETER'],
   [/400009/, 'CDC_STATUS_VALIDATION_ERROR'],
   [/400028/, 'CDC_EMAIL_NOT_VERIFIED'],
   [/403041/, 'CDC_ACCOUNT_DISABLED'],
@@ -104,6 +114,13 @@ export const mapCdcErrorCodeToAppErrorCode = (cdcErrorCode: number): string => {
   const [, appErrorCode] = match
   return appErrorCode
 }
+
+export const CdcResponseInvalidParameterSchema = z.object({
+  errorCode: z.number().min(300),
+  errorDetails: z.string(),
+})
+
+export type CdcResponseInvalidParameter = z.infer<typeof CdcResponseInvalidParameterSchema>
 
 export const CdcResponseValidationErrorSchema = z.object({
   errorCode: z.number().min(300),
@@ -135,6 +152,8 @@ export const createCdcErrorFromSchema = (errorBody: CdcApiErrorResponseBody) => 
   const appErrorCode = mapCdcErrorCodeToAppErrorCode(errorBody.errorCode)
 
   switch (appErrorCode) {
+    case 'CDC_STATUS_INVALID_PARAMETER':
+      return new CdcStatusInvalidParameter(errorBody)
     case 'CDC_STATUS_VALIDATION_ERROR':
       return new CdcStatusValidationError(errorBody.validationErrors ?? [])
   }

@@ -1,6 +1,6 @@
 export type CdcSessionData = {
-  sessionToken: string
-  sessionSecret: string
+  sessionToken?: string
+  sessionSecret?: string
   sessionStartTimestamp: number
   idToken: string
   sessionValidity: number

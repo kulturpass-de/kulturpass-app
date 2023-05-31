@@ -7,8 +7,10 @@ export const dateToDotDate = (date: Date) => {
   }
 }
 
-export const dateToIsoDate = (date: Date) => {
-  return date.toISOString().replace(/T.*$/, '')
+export const dateToIsoDate = (date: Date | number | null) => {
+  if (!isNaN(date as number) && date instanceof Date) {
+    return date?.toISOString().replace(/T.*$/, '')
+  }
 }
 
 export const isoDateToDate = (isoDate?: string) => {

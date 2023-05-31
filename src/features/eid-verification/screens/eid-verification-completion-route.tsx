@@ -1,4 +1,3 @@
-import { aa2Module } from '@jolocom/react-native-ausweis'
 import React, { useCallback, useEffect } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 
@@ -7,6 +6,7 @@ import { commerceApi } from '../../../services/api/commerce-api'
 import { modalCardStyle } from '../../../theme/utils'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidVerificationCompletionScreen } from './eid-verification-completion-screen'
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 
 export const EidVerificationCompletionRouteName = 'EidVerificationCompletion'
 
@@ -23,7 +23,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
   const onNext = useCallback(() => {
     modalNavigation.closeModal()
     try {
-      aa2Module.disconnectAa2Sdk()
+      AA2CommandService.stop()
     } catch (e) {
       console.log(e)
     }

@@ -1,20 +1,22 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import { Icon } from '../../../components/icon/icon'
 import { LinkTextInline } from '../../../components/link-text/link-text-inline'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTextStyles } from '../../../components/translated-text/types'
 import { buildTestId } from '../../../services/test-id/test-id'
-import { selectUserProfile } from '../../../services/user/redux/user-selectors'
+import { useUserInfo } from '../../../services/user/use-user-info'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 const FaqLink: React.FC<PropsWithChildren<{ textStyle: AvailableTextStyles }>> = ({ textStyle }) => {
+  const identificationStatusDuplicateFaqLink = useFaqLink('IDENTIFICATION_STATUS_DUPLICATE')
+
   return (
     <LinkTextInline
       textStyle={textStyle}
-      link="https://www.sap.de"
+      link={identificationStatusDuplicateFaqLink}
       i18nKey="verification_duplicate_faq_link"
       iconSize={12}
     />
@@ -22,7 +24,7 @@ const FaqLink: React.FC<PropsWithChildren<{ textStyle: AvailableTextStyles }>> =
 }
 
 export const VerificationDuplicateHeader: React.FC = () => {
-  const userData = useSelector(selectUserProfile)
+  const { firstName } = useUserInfo()
 
   return (
     <View style={styles.container}>
@@ -32,7 +34,7 @@ export const VerificationDuplicateHeader: React.FC = () => {
           <TranslatedText
             testID={buildTestId('verification_duplicate_title')}
             i18nKey="verification_duplicate_title"
-            i18nParams={{ name: userData?.firstName ?? '' }}
+            i18nParams={{ name: firstName }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.moonDarkest }}
           />
@@ -56,7 +58,6 @@ export const VerificationDuplicateHeader: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: spacing[5],
     marginBottom: spacing[1],
   },
   shadow: {

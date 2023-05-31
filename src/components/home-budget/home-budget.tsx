@@ -24,10 +24,14 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
 
   const validBalance = useMemo(() => toValidBalance(balance), [balance])
 
+  const shouldShowBudgetBar =
+    validBalance !== undefined && validBalance.availableBalance !== validBalance.grantedBalance
+
   return (
     <View style={styles.container}>
       {firstName ? (
         <TranslatedText
+          accessibilityRole="header"
           testID={buildTestId('home_budget_greeting_text')}
           textStyle="BodySmallMedium"
           i18nKey="home_budget_greeting"
@@ -36,6 +40,7 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
         />
       ) : (
         <TranslatedText
+          accessibilityRole="header"
           testID={buildTestId('home_budget_title_text_without_user_text')}
           textStyle="BodySmallMedium"
           i18nKey="home_budget_greeting_without_user"
@@ -63,7 +68,7 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
           </View>
         )}
       </View>
-      {validBalance !== undefined && (
+      {shouldShowBudgetBar && (
         <UserBudgetBar
           max={validBalance.grantedBalance}
           available={validBalance.availableBalance}
@@ -76,7 +81,7 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: spacing[5],
+    paddingBottom: spacing[2],
     flexShrink: 0,
   },
   amountContainer: {

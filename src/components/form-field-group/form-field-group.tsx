@@ -5,6 +5,7 @@ import React from 'react'
 import { FormFieldWithControlProps } from '../form-fields/form-field-with-control'
 import { spacing } from '../../theme/spacing'
 import { TranslatedText } from '../translated-text/translated-text'
+import { colors } from '../../theme/colors'
 
 export type FormFieldGroupProps = {
   i18nKey: AvailableTranslations
@@ -41,5 +42,6 @@ const styles = StyleSheet.create({
   groupCaption: {
     marginTop: spacing[2],
     marginBottom: spacing[6],
+    color: colors.moonDarkest,
   },
 })

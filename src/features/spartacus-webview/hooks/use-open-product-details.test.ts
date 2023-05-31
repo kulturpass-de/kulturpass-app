@@ -15,6 +15,15 @@ const mockedRouterEvent: WebViewEvents['router.events'] = {
   },
 }
 
+const mockedRandomModeRouterEvent: WebViewEvents['router.events'] = {
+  name: 'test1',
+  source: SpartacusBridge.EventForwarding.Source.RouterEvents,
+  data: {
+    id: 2,
+    url: '/product/testProduct/something?randomMode=true&lang=de',
+  },
+}
+
 const mockedNavigateFn = jest.fn(x => x)
 
 jest.mock('../../../navigation/modal/hooks', () => ({
@@ -42,6 +51,28 @@ describe('useOpenProductDetail', () => {
       screen: ProductDetailRouteConfig.name,
       params: {
         productCode: 'testProduct',
+        randomMode: false,
+      },
+    }
+
+    expect(mockedNavigateFn.mock.results[0].value).toEqual(navigationResult)
+  })
+
+  test('should navigate to radnom mode product detail', () => {
+    const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
+    renderHook(() => useOpenProductDetail(mockedBridgeAdapterApi))
+
+    expect(mockedNavigateFn.mock.calls).toHaveLength(0)
+
+    sendRouterEvent.current?.(mockedRandomModeRouterEvent)
+
+    expect(mockedNavigateFn.mock.calls).toHaveLength(1)
+
+    const navigationResult = {
+      screen: ProductDetailRouteConfig.name,
+      params: {
+        productCode: 'testProduct',
+        randomMode: true,
       },
     }
 
@@ -64,6 +95,7 @@ describe('useOpenProductDetail', () => {
       screen: ProductDetailRouteConfig.name,
       params: {
         productCode: 'testProduct',
+        randomMode: false,
       },
     }
 

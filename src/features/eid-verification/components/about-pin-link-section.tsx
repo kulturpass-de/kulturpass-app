@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { LinkText } from '../../../components/link-text/link-text'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type AboutPinLinkSection = {
   type: 'pin' | 'can'
@@ -8,16 +10,27 @@ export type AboutPinLinkSection = {
 }
 
 export const AboutPinLinkSection: React.FC<AboutPinLinkSection> = ({ type, showResetPin }) => {
+  const { buildTestId } = useTestIdBuilder()
+  const link_i18nKey = type === 'pin' ? 'eid_pin_faq_link' : 'eid_can_faq_link'
+  const pinFaqLink = useFaqLink(type === 'pin' ? 'EID_PIN' : 'EID_CAN')
+  const resetPinFaqLink = useFaqLink('EID_PIN_RESET')
+
   return (
     <View style={styles.links}>
       {showResetPin ? (
         <View style={styles.linkPadding}>
-          <LinkText i18nKey="eid_resetPin_link" link="https://www.sap.de" textStyle="BodySmallMedium" />
+          <LinkText
+            i18nKey="eid_resetPin_link"
+            testID={buildTestId('eid_resetPin_link')}
+            link={resetPinFaqLink}
+            textStyle="BodySmallMedium"
+          />
         </View>
       ) : null}
       <LinkText
-        i18nKey={type === 'pin' ? 'eid_pin_faq_link' : 'eid_can_faq_link'}
-        link={type === 'pin' ? 'https://www.sap.de' : 'https://www.sap.de'} // TODO: Insert correct faq links
+        i18nKey={link_i18nKey}
+        testID={buildTestId(link_i18nKey)}
+        link={pinFaqLink}
         textStyle="BodySmallMedium"
       />
     </View>

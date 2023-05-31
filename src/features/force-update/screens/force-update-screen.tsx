@@ -14,6 +14,7 @@ export const ForceUpdateScreen: React.FC = () => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
 
   const screenTestId = buildTestId('force_update')
+  const forceUpdateLinkI18nKey = Platform.OS === 'ios' ? 'force_update_link_ios' : 'force_update_link_android'
 
   return (
     <ModalScreen testID={screenTestId}>
@@ -38,7 +39,8 @@ export const ForceUpdateScreen: React.FC = () => {
         />
         <View style={styles.link}>
           <LinkText
-            i18nKey={Platform.OS === 'ios' ? 'force_update_link_ios' : 'force_update_link_android'}
+            i18nKey={forceUpdateLinkI18nKey}
+            testID={buildTestId(forceUpdateLinkI18nKey)}
             // TODO: Add missing app store and google play store links
             link={Platform.OS === 'ios' ? 'https://www.sap.de' : 'https://www.sap.de'}
           />

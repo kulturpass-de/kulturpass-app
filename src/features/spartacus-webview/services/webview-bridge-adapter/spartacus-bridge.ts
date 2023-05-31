@@ -33,6 +33,7 @@ export namespace SpartacusBridge {
       AuthLogout = 'auth.logout',
       GeolocationSetLocation = 'geolocation.setLocation',
       RouterNavigate = 'router.navigate',
+      UserProfileRefresh = 'userProfile.refresh',
     }
     export type Arguments = Serializable[]
     export type ResultValue = Serializable
@@ -66,7 +67,7 @@ export namespace SpartacusBridge {
     }
 
     export namespace GeolocationSetLocation {
-      export type Arguments = [latitude: number, longitude: number]
+      export type Arguments = [latitude?: number, longitude?: number]
       export type ResultValue = void
       export type Signature = (...args: Arguments) => Promise<ResultValue>
       export interface Request extends FunctionCall.Request<Target.GeolocationSetLocation, Arguments> {}
@@ -78,6 +79,14 @@ export namespace SpartacusBridge {
       export type ResultValue = void
       export type Signature = (...args: Arguments) => Promise<ResultValue>
       export interface Request extends FunctionCall.Request<Target.RouterNavigate, Arguments> {}
+      export interface Result extends FunctionCall.Result<ResultValue> {}
+    }
+
+    export namespace UserProfileRefresh {
+      export type Arguments = []
+      export type ResultValue = void
+      export type Signature = (...args: Arguments) => Promise<ResultValue>
+      export interface Request extends FunctionCall.Request<Target.UserProfileRefresh, Arguments> {}
       export interface Result extends FunctionCall.Result<ResultValue> {}
     }
   }

@@ -1,14 +1,15 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { buildTestId } from '../../../services/test-id/test-id'
-import { AppProviders, StoreProvider } from '../../../services/testing/test-utils'
+import { AppProviders, serverHandlersRequired, StoreProvider } from '../../../services/testing/test-utils'
 import { ProductDetailFooter } from './product-detail-footer'
 import { GetProfileResponseBody } from '../../../services/api/types/commerce/commerce-get-profile'
 
 export const server = setupServer(
+  ...serverHandlersRequired,
   rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -39,29 +40,21 @@ const renderComponent = (children: React.ReactNode) => {
 
 test('Should render product detail footer with sufficient credit', async () => {
   const onReserve = jest.fn()
-  const onFavorite = jest.fn()
 
   renderComponent(
-    <ProductDetailFooter
-      onReserve={onReserve}
-      onFavorite={onFavorite}
-      selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }}
-    />,
+    <ProductDetailFooter onReserve={onReserve} selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }} />,
   )
+  await act(() => {})
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('productDetail_footer_priceTitle'))).toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('productDetail_footer_reserve_button'))).toBeOnTheScreen()
 
   fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_reserve_button')))
   expect(onReserve).toHaveBeenCalledTimes(1)
-
-  fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_favorite_button')))
-  expect(onFavorite).toHaveBeenCalledTimes(1)
 })
 
 test('Should render product detail footer with non-sufficient credit', async () => {
   const onReserve = jest.fn()
-  const onFavorite = jest.fn()
 
   server.use(
     rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
@@ -81,14 +74,10 @@ test('Should render product detail footer with non-sufficient credit', async () 
   )
 
   renderComponent(
-    <ProductDetailFooter
-      onReserve={onReserve}
-      onFavorite={onFavorite}
-      selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }}
-    />,
+    <ProductDetailFooter onReserve={onReserve} selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }} />,
   )
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
-  expect(screen.getByTestId(buildTestId('productDetail_footer_cannot_afford_text'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('productDetail_footer_cannot_afford_text'))).toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('productDetail_footer_price'))).toBeOnTheScreen()
 
   expect(screen.queryByTestId(buildTestId('productDetail_footer_priceTitle'))).not.toBeOnTheScreen()
@@ -98,7 +87,6 @@ test('Should render product detail footer with non-sufficient credit', async () 
 
 test('Should render product detail footer without a total price', async () => {
   const onReserve = jest.fn()
-  const onFavorite = jest.fn()
 
   server.use(
     rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
@@ -120,11 +108,12 @@ test('Should render product detail footer without a total price', async () => {
   renderComponent(
     <ProductDetailFooter
       onReserve={onReserve}
-      onFavorite={onFavorite}
       // no offer = do not display the total price
       // selectedOffer={}
     />,
   )
+  await act(() => {})
+
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
   expect(screen.queryByTestId(buildTestId('productDetail_footer_priceTitle'))).not.toBeOnTheScreen()
   expect(screen.queryByTestId(buildTestId('productDetail_footer_price'))).not.toBeOnTheScreen()
@@ -132,7 +121,4 @@ test('Should render product detail footer without a total price', async () => {
 
   fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_reserve_button')))
   expect(onReserve).toHaveBeenCalledTimes(1)
-
-  fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_favorite_button')))
-  expect(onFavorite).toHaveBeenCalledTimes(1)
 })

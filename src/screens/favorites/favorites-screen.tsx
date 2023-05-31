@@ -1,35 +1,46 @@
-import React from 'react'
-
+import React, { useCallback } from 'react'
 import { Screen } from '../../components/screen/screen'
-
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { commerceApi } from '../../services/api/commerce-api'
-
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { FavoritesEmptyScreen } from './favorites-empty-screen'
-import { FavoritesList } from './favorites-list'
+import { FavoritesList, FavoritesListProps } from './favorites-list'
+import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useFavouritesOnFocus } from './use-favourites-on-focus'
 
-export type FavoritesScreenProps = {}
+export type FavoritesScreenProps = {
+  onFavoritePressed: (productCode: string) => void
+}
 
-export const FavoritesScreen: React.FC<FavoritesScreenProps> = () => {
+export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({ onFavoritePressed }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
-  const { data } = commerceApi.useGetFavoritesQuery()
+  const { favourites, reloadFavourites, isLoading, error, resetError } = useFavouritesOnFocus()
 
-  const wishlist = data?.carts?.[0] ?? null
-  const wishlistProducts = wishlist?.entries ?? []
-
-  if (wishlistProducts.length === 0) {
-    return <FavoritesEmptyScreen />
-  }
+  const onProductPressed: NonNullable<FavoritesListProps['onProductPressed']> = useCallback(
+    product => {
+      onFavoritePressed(product.code!)
+    },
+    [onFavoritePressed],
+  )
 
   return (
-    <Screen
-      testID={buildTestId('favorites')}
-      header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />}>
-      <FavoritesList orderEntries={wishlistProducts} />
-    </Screen>
+    <>
+      <LoadingIndicator loading={isLoading && !error} />
+      <ErrorAlert error={error} onDismiss={resetError} />
+      <Screen
+        testID={buildTestId('favorites')}
+        header={
+          <ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />
+        }>
+        <FavoritesList
+          favourites={favourites}
+          onProductPressed={onProductPressed}
+          refreshing={isLoading}
+          onRefresh={reloadFavourites}
+        />
+      </Screen>
+    </>
   )
 }

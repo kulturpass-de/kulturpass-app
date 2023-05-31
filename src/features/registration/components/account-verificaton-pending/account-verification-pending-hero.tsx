@@ -1,26 +1,38 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
-import { selectUserProfile } from '../../../../services/user/redux/user-selectors'
 import { colors } from '../../../../theme/colors'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { Icon } from '../../../../components/icon/icon'
 import { Button } from '../../../../components/button/button'
 import { cdcApi } from '../../../../services/api/cdc-api'
-import { getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
+import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
 import { ErrorAlert } from '../../../form-validation/components/error-alert'
 import { spacing } from '../../../../theme/spacing'
 import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
+import { useUserInfo } from '../../../../services/user/use-user-info'
+import { InfoBox } from '../../../../components/info-box/info-box'
+
+const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 
 export const AccountVerificationHero: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
-  const userData = useSelector(selectUserProfile)
+  const isLoggedIn = useSelector(getIsUserLoggedIn)
+  const { firstName } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
+  const timerRef = useRef<NodeJS.Timeout>()
+  const [canResend, setCanResend] = useState(true)
   const [accountsResendVerificationCode, result] = cdcApi.endpoints.accountsResendVerificationCode.useLazyQuery()
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timerRef.current)
+    }
+  }, [])
 
   const onPressResendVerificationCode = useCallback(async () => {
     if (regToken == null) {
@@ -29,6 +41,8 @@ export const AccountVerificationHero: React.FC = () => {
 
     try {
       await accountsResendVerificationCode({ regToken })
+      setCanResend(false)
+      timerRef.current = setTimeout(() => setCanResend(true), RESEND_MAIL_VERIFICATION_AFTER_1MIN)
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
         setVisibleError(error)
@@ -42,16 +56,26 @@ export const AccountVerificationHero: React.FC = () => {
     <>
       <LoadingIndicator loading={result.isLoading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
-      <View style={styles.container}>
+      <InfoBox>
         <TranslatedText
           textStyle="HeadlineH4Extrabold"
           textStyleOverrides={{ color: colors.moonDarkest }}
           testID={buildTestId('account_verification_hero_greeting_text')}
-          i18nKey={userData ? 'account_verification_hero_greeting' : 'account_verification_hero_greeting_without_name'}
-          i18nParams={userData ? { name: userData.firstName } : undefined}
+          i18nKey={firstName ? 'account_verification_hero_greeting' : 'account_verification_hero_greeting_without_name'}
+          i18nParams={isLoggedIn ? { name: firstName } : undefined}
         />
         <View style={styles.content}>
-          {result.isSuccess ? (
+          {canResend ? (
+            <>
+              <Icon source="Mail" width={36} height={36} />
+              <TranslatedText
+                textStyleOverrides={styles.text}
+                testID={buildTestId('account_verification_description_text')}
+                i18nKey="account_verification_description"
+                textStyle="BodySmallMedium"
+              />
+            </>
+          ) : (
             <>
               <Icon source="Checkmark" width={36} height={36} />
               <TranslatedText
@@ -61,40 +85,23 @@ export const AccountVerificationHero: React.FC = () => {
                 textStyle="BodySmallMedium"
               />
             </>
-          ) : (
-            <>
-              <Icon source="Coupon" width={36} height={36} />
-              <TranslatedText
-                textStyleOverrides={styles.text}
-                testID={buildTestId('account_verification_description_text')}
-                i18nKey="account_verification_description"
-                textStyle="BodySmallMedium"
-              />
-            </>
           )}
         </View>
 
         <Button
           variant="secondary"
-          i18nKey={result.isSuccess ? 'account_verification_resend_disabled' : 'account_verification_resend'}
+          i18nKey={canResend ? 'account_verification_resend' : 'account_verification_resend_disabled'}
           testID={buildTestId('account_verification_resend_button')}
           onPress={onPressResendVerificationCode}
-          disabled={result.isSuccess}
+          disabled={!canResend}
           modifier="small"
         />
-      </View>
+      </InfoBox>
     </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.sunLighter,
-    flexDirection: 'column',
-    borderRadius: 16,
-    padding: spacing[5],
-    overflow: 'hidden',
-  },
   content: {
     marginTop: spacing[2],
     marginBottom: spacing[5],

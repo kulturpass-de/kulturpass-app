@@ -1068,7 +1068,7 @@ export interface Offer {
   accessibilityWheelchairShop?: boolean
   accessibilityToiletShop?: boolean
   accessibilityOffer?: string
-  accessibilityOfferOthers?: string // label (de): Sonstige Angaben
+  accessibilityOfferOthers?: string
 }
 
 /** OfferList */
@@ -1610,6 +1610,18 @@ export interface Principal {
 }
 
 /**
+ * FavouritesItem
+ * Representation of a FavouritesItem
+ */
+export interface FavouritesItem {
+  product: Product
+  /** The Cart identifier of the wishlist cart */
+  cartId: string
+  /** The entry number of the product in the wishlist cart */
+  entryNumber: number
+}
+
+/**
  * Product
  * Representation of a Product
  */
@@ -1645,7 +1657,16 @@ export interface Product {
   futureStocks?: FutureStock[]
   /** List of images linked to product */
   images?: Image[]
-  itemType?: string
+  /** The type of product */
+  itemType?:
+    | 'AudioProduct'
+    | 'VideoProduct'
+    | 'BookProduct'
+    | 'SheetMusicProduct'
+    | 'StagedEventProduct'
+    | 'ExhibitProduct'
+    | 'CinemaProduct'
+    | 'MusicInstrumentProduct'
   leafCategoryName?: string
   /** @format double */
   lowestOfferPrice?: number
@@ -1694,11 +1715,14 @@ export interface Product {
   variantOptions?: VariantOption[]
   /** Variant type of the product */
   variantType?: string
+  /** The name of the location of the event - populated only for stagedEvent and exhibit products */
   venueName?: string
   /** List of volume prices */
   volumePrices?: Price[]
   /** Flag stating if volume price should be displayed */
   volumePricesFlag?: boolean
+  /** Name of the seller of the offer (if offer count = 1) */
+  seller?: string
 }
 
 /**

@@ -21,6 +21,7 @@ import { useValidationErrors } from '../../features/form-validation/hooks/use-va
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { colors } from '../../theme/colors'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 
 export type LoginFormData = {
   email: string
@@ -45,6 +46,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   const [loading, setLoading] = useState(false)
 
   const form = useForm<LoginFormData>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z.object({
         email: EMAIL_SCHEMA(t, true),
@@ -52,6 +54,8 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
       }),
     ),
   })
+
+  useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
@@ -61,6 +65,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
     setLoading(true)
     try {
       await afterLogin(data)
+      form.reset()
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
@@ -95,6 +100,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           autoCorrect={false}
           keyboardType="email-address"
           isRequired
+          disableAccessibilityForLabel
         />
         <FormFieldWithControl
           name={'password'}
@@ -104,8 +110,12 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           control={form.control}
           containerStyle={style.passwordFormFieldContainerStyle}
           isRequired
+          disableAccessibilityForLabel
         />
-        <Pressable onPress={afterForgotPassword} testID={buildTestId('login_form_forgotPassword_button')}>
+        <Pressable
+          accessibilityRole="link"
+          onPress={afterForgotPassword}
+          testID={buildTestId('login_form_forgotPassword_button')}>
           <TranslatedText
             i18nKey="login_form_forgotPassword"
             testID={buildTestId('login_form_forgotPassword')}

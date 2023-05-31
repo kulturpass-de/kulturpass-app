@@ -34,7 +34,7 @@ export const ReservationsUnauthorizedScreen: React.FC<ReservationsUnauthorizedSc
       }>
       <ScreenContent style={styles.content}>
         <Illustration
-          testID={buildTestId('reservations_unauthorized_image')}
+          testID={buildTestId('reservations_list_noPendingItems_image_alt')}
           i18nKey="reservations_list_noPendingItems_image_alt"
           type="empty-state-reservations"
         />
@@ -53,7 +53,7 @@ export const ReservationsUnauthorizedScreen: React.FC<ReservationsUnauthorizedSc
         <View style={styles.buttonContainer}>
           <Button
             onPress={onSignInRequested}
-            testID={buildTestId('reservations_unauthorized_sign_in')}
+            testID={buildTestId('login_button')}
             i18nKey="login_button"
             widthOption="content"
           />

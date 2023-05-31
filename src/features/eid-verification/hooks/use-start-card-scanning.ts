@@ -1,24 +1,44 @@
-import { aa2Module } from '@jolocom/react-native-ausweis'
-import { Messages } from '@jolocom/react-native-ausweis/js/messageTypes'
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { getSimulateCard, getSimulatedCardName } from '../redux/simulated-card-selectors'
-import { useCancelFlow } from './use-cancel-flow'
-import { useStartAA2ChangePin } from './use-start-change-pin'
-import { Flow } from '../types'
+import {
+  AA2CommandService,
+  AA2Messages,
+  AA2WorkflowHelper,
+  Auth,
+  ReaderData,
+  Simulator,
+} from '@sap/react-native-ausweisapp2-wrapper'
 import { Platform } from 'react-native'
+import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import {
+  AA2CardDeactivated,
+  AA2PukRequired,
+  AA2Timeout,
+  extractAuthResultUrlQueryError,
+  isTimeoutError,
+} from '../errors'
+import {
+  getRandomLastName,
+  getSimulateCard,
+  getSimulatedCardDate,
+  getSimulatedCardName,
+} from '../redux/simulated-card-selectors'
+import { Flow } from '../types'
+import { generateSimulatedCard } from '../utils'
+import { useStartAA2ChangePin } from './use-start-change-pin'
 
 type StartCardScanningParams = {
   flow: Flow
   onPinRetry: (retryCounter?: number) => void
-  onCanRetry: () => void
-  onPukRetry: () => void
+  onCanRetry: (canRetry: boolean) => void
+  onPukRetry: (pukRetry: boolean) => void
   pin?: string
   newPin?: string
   can?: string
   onAuthSuccess: (url: string) => void
   onChangePinSuccess: () => void
+  onError: (error: ErrorWithCode) => void
 }
 
 /**
@@ -31,72 +51,76 @@ export const useStartCardScanning = ({
   newPin,
   onPinRetry,
   onCanRetry,
-  onPukRetry,
   onAuthSuccess,
   onChangePinSuccess,
+  onError,
 }: StartCardScanningParams) => {
   const simulateCard = useSelector(getSimulateCard)
   const simulatedCardName = useSelector(getSimulatedCardName)
+  const simulatedCardDate = useSelector(getSimulatedCardDate)
+  const randomLastName = useSelector(getRandomLastName)
 
   const [isLoading, setIsLoading] = useState(false)
-
-  const cancelFlow = useCancelFlow()
 
   const startChangePin = useStartAA2ChangePin()
 
   useEffect(() => {
-    aa2Module.setHandlers({
-      handleAuthSuccess: onAuthSuccess,
-    })
-
-    return () => {
-      aa2Module.setHandlers({
-        handleAuthSuccess: undefined,
-      })
-    }
-  }, [cancelFlow, onAuthSuccess])
-
-  useEffect(() => {
     if (simulateCard) {
-      const simulatedCard =
+      const simulatedCardDateInst = simulatedCardDate ? new Date(simulatedCardDate) : undefined
+      const simulatedCard: Simulator | undefined =
         simulatedCardName !== undefined
-          ? {
-              files: require('../../../screens/developer-settings/simulation-cards/simulation-cards').simulationCards[
-                simulatedCardName
-              ],
-            }
+          ? generateSimulatedCard(simulatedCardName, simulatedCardDateInst, randomLastName)
           : undefined
-      aa2Module.setHandlers({
-        handleCardRequest: () => {
-          aa2Module.setCard('Simulator', simulatedCard)
-        },
+      const sub = AA2WorkflowHelper.handleInsertCard(msg => {
+        if (msg.error === undefined) {
+          AA2CommandService.setCard('Simulator', simulatedCard)
+        }
       })
-      return () => {
-        aa2Module.setHandlers({
-          handleCardRequest: undefined,
-        })
-      }
+      return () => sub.unsubscribe()
     }
-  }, [simulateCard, simulatedCardName])
+  }, [randomLastName, simulateCard, simulatedCardDate, simulatedCardName])
 
-  const handleRetry = useCallback(
-    async (msg: string, retryCounter?: number) => {
+  const handleAuth = useCallback(
+    (authMsg: Auth) => {
       if (
-        [Messages.enterPin, Messages.enterCan, Messages.enterPuk].includes(msg as Messages) &&
-        Platform.OS === 'ios' &&
-        !simulateCard
+        authMsg.error === undefined &&
+        authMsg.result?.major.endsWith('#error') !== true &&
+        authMsg.url !== undefined
       ) {
-        await aa2Module.interruptFlow()
-      }
-      if (msg === Messages.enterPin) {
-        onPinRetry(retryCounter)
-      } else if (msg === Messages.enterCan) {
-        onCanRetry()
-      } else if (msg === Messages.enterPuk) {
-        onPukRetry()
+        const queryError = extractAuthResultUrlQueryError(authMsg)
+        if (queryError !== undefined) {
+          onError(queryError)
+        } else {
+          onAuthSuccess(authMsg.url)
+        }
       }
     },
-    [onCanRetry, onPinRetry, onPukRetry, simulateCard],
+    [onAuthSuccess, onError],
+  )
+
+  const handleRetry = useCallback(
+    async (
+      msg: AA2Messages.EnterPin | AA2Messages.EnterCan | AA2Messages.EnterPuk,
+      retry: boolean,
+      reader?: ReaderData,
+    ) => {
+      if (Platform.OS === 'ios' && !simulateCard) {
+        AA2CommandService.interrupt()
+      }
+      if (reader?.card?.deactivated === true) {
+        onError(new AA2CardDeactivated())
+        return
+      }
+      if (msg === AA2Messages.EnterPin) {
+        onPinRetry(reader?.card?.retryCounter)
+      } else if (msg === AA2Messages.EnterCan) {
+        onCanRetry(retry)
+      } else if (msg === AA2Messages.EnterPuk) {
+        onError(new AA2PukRequired())
+        // onPukRetry(retry)
+      }
+    },
+    [onCanRetry, onError, onPinRetry, simulateCard],
   )
 
   const enterNewPin = useCallback(async () => {
@@ -104,67 +128,83 @@ export const useStartCardScanning = ({
       throw new Error('No new PIN provided')
     }
 
-    const changePinResult = await aa2Module.setNewPin(simulateCard ? undefined : newPin)
-    if (changePinResult.success === true) {
+    const changePinResult = await AA2CommandService.setNewPin(simulateCard ? undefined : newPin)
+    if (changePinResult.success) {
       onChangePinSuccess()
     }
   }, [newPin, onChangePinSuccess, simulateCard])
 
   const enterPin = useCallback(async () => {
-    const result = await aa2Module.setPin(simulateCard ? undefined : pin)
-    const msg: string = result.msg
+    // Use 30 seconds timeout, because this step can take a long time
+    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, { msTimeout: 30000 })
 
-    if (msg === Messages.enterNewPin && newPin !== undefined) {
+    if (result.msg === AA2Messages.EnterNewPin) {
       enterNewPin()
+    } else if (result.msg === AA2Messages.Auth) {
+      handleAuth(result)
     } else {
-      const retryCounter = result.reader?.card?.retryCounter
-      handleRetry(msg, retryCounter)
+      handleRetry(result.msg, result.msg === AA2Messages.EnterPin, result.reader)
     }
-  }, [enterNewPin, handleRetry, newPin, pin, simulateCard])
+  }, [enterNewPin, handleAuth, handleRetry, pin, simulateCard])
 
   const enterCan = useCallback(async () => {
     if (can === undefined) {
       throw new Error('No CAN provided')
     }
-    await aa2Module.setCan(can)
-    enterPin()
-  }, [can, enterPin])
+    const result = await AA2CommandService.setCan(can, { msTimeout: 20000 })
+    handleRetry(result.msg, result.msg === AA2Messages.EnterCan, result.reader)
+  }, [can, handleRetry])
 
   const handleInitialScan = useCallback(async () => {
-    const result = await aa2Module.acceptAuthRequest()
-    const msg: any = result.msg
-    if (msg === Messages.enterPin && pin !== undefined) {
-      await enterPin()
-    } else {
-      const retryCounter = (result as any).reader?.card?.retryCounter
-      handleRetry(msg, retryCounter)
-    }
-  }, [enterPin, handleRetry, pin])
+    const result = await AA2CommandService.accept({ msTimeout: 20000 })
+    handleRetry(result.msg, false, result.reader)
+  }, [handleRetry])
 
   const startScanning = useCallback(async () => {
     setIsLoading(true)
-    const status = await aa2Module.getStatus()
-    var msg: string | null = status.state
-    if (status.workflow === null) {
-      if (flow === 'ChangePin') {
-        const result = await startChangePin()
-        msg = result.msg
+    try {
+      const status = await AA2CommandService.getStatus()
+      var msg = status.state
+      if (status.workflow === null) {
+        if (flow === 'ChangePin') {
+          const result = await startChangePin()
+          msg = result.msg
+        }
       }
-    }
 
-    switch (msg) {
-      case Messages.accessRights:
-        return await handleInitialScan()
-      case Messages.enterPin:
-        return await enterPin()
-      case Messages.enterCan:
-        return await enterCan()
-      case Messages.enterPuk:
-        return //TODO: await enterPuk()
-      default:
-        throw new Error(`Invalid state ${msg}`)
+      switch (msg) {
+        case AA2Messages.AccessRights:
+          return await handleInitialScan()
+        case AA2Messages.EnterPin:
+          return await enterPin()
+        case AA2Messages.EnterCan:
+          return await enterCan()
+        case AA2Messages.EnterPuk:
+          //return  await enterPuk()
+          onError(new AA2PukRequired())
+          return
+        default:
+          throw new Error(`Invalid state ${msg}`)
+      }
+    } catch (e: unknown) {
+      if (
+        [AA2Messages.BadState, AA2Messages.InternalError, AA2Messages.Invalid, AA2Messages.UnknownCommand].includes(
+          (e as any)?.msg,
+        )
+      ) {
+        // AA2 Message Errors are handled by the useHandleErrors hook
+        return
+      }
+
+      if (isTimeoutError(e)) {
+        onError(new AA2Timeout())
+      } else {
+        onError(new UnknownError())
+      }
+    } finally {
+      setIsLoading(false)
     }
-  }, [enterCan, enterPin, flow, handleInitialScan, startChangePin])
+  }, [enterCan, enterPin, flow, handleInitialScan, onError, startChangePin])
 
   return { startScanning, isLoading }
 }

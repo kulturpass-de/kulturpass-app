@@ -5,6 +5,7 @@ import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { useTranslation } from '../../../services/translation/translation'
+import { HITSLOP } from '../../../theme/constants'
 
 type ProductDetailHeaderProps = {
   imageUrl?: string
@@ -56,8 +57,10 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({ onClos
         <Animated.View style={[styles.overlay, overlayOpacityStyle]} />
       </Animated.View>
       <Pressable
+        hitSlop={HITSLOP}
         style={styles.closeButtonContainer}
         testID={buildTestId('productDetail_header_closeButton')}
+        accessibilityRole="button"
         accessibilityLabel={t('productDetail_header_closeButton')}
         onPress={onClose}>
         <View style={styles.closeButton}>

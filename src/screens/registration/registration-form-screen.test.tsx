@@ -1,15 +1,18 @@
-import React from 'react'
-import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved, act } from '@testing-library/react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-
-import { buildTestId, addTestIdModifier } from '../../services/test-id/test-id'
-import { RegistrationFormScreen } from './registration-form-screen'
-import t from '../../services/translation/i18n/de.json'
-import { setupServer } from 'msw/lib/node'
+import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import { rest } from 'msw'
-import { configureMockStore } from '../../services/testing/configure-mock-store'
+import { setupServer } from 'msw/node'
+import React from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
+import { NavigationContainer } from '@react-navigation/native'
+
+import { AccountsRegisterResponse } from '../../services/api/types'
+import * as authLoginModule from '../../services/auth/store/thunks/auth-login'
+import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
+import { configureMockStore } from '../../services/testing/configure-mock-store'
+import t from '../../services/translation/i18n/de.json'
 import { register } from '../../services/user/redux/thunks/register'
+import { RegistrationFormScreen } from './registration-form-screen'
 
 const server = setupServer()
 
@@ -19,7 +22,9 @@ describe('registration-form-screen', () => {
   const renderScreen = (children: React.ReactNode) => {
     render(
       <SafeAreaProvider>
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store}>
+          <NavigationContainer>{children}</NavigationContainer>
+        </Provider>
       </SafeAreaProvider>,
     )
   }
@@ -45,6 +50,8 @@ describe('registration-form-screen', () => {
 
   it('Should display no errors on initial render', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
     expect(screen.queryByTestId(addTestIdModifier(emailInput, 'error'))).not.toBeOnTheScreen()
     expect(screen.queryByTestId(addTestIdModifier(passwordInput, 'error'))).not.toBeOnTheScreen()
@@ -52,11 +59,15 @@ describe('registration-form-screen', () => {
 
   it('Should have disabled submit button on initial render', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
   })
 
   it('Should enable submit button when form gets dirty', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), ' ')
     expect(await screen.findByTestId(formSubmitBtn)).toBeEnabled()
@@ -64,6 +75,8 @@ describe('registration-form-screen', () => {
 
   it('Should display errors when submitting without values', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), 'abcdef')
@@ -82,6 +95,8 @@ describe('registration-form-screen', () => {
 
   it('Should handle email input field', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), '')
@@ -96,6 +111,8 @@ describe('registration-form-screen', () => {
 
   it('Should handle password input field', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), 'email@example.org')
@@ -118,6 +135,8 @@ describe('registration-form-screen', () => {
 
   it('Should handle birthdate input field', async () => {
     renderRegistrationScreen()
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), 'cp@example.org')
@@ -138,12 +157,24 @@ describe('registration-form-screen', () => {
     server.use(
       rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
       rest.post('*/accounts.register', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' })),
+        res(
+          ctx.status(200),
+          ctx.json({
+            regToken: 'my_reg_token',
+            profile: { firstName: '', age: 18, email: 'cp@example.org', birthYear: 1993 },
+          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
+        ),
       ),
     )
 
+    const authLogin = jest
+      .spyOn(authLoginModule, 'authLogin')
+      .mockImplementation((() => ({ type: '', unwrap: () => Promise.resolve() })) as any)
+
     const afterRegister = jest.fn()
     renderRegistrationScreen({ afterRegister })
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), 'cp@example.org')
@@ -161,19 +192,34 @@ describe('registration-form-screen', () => {
     ])
 
     await waitFor(() => expect(afterRegister).toHaveBeenCalledTimes(1))
-    await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token'))
+    await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token', ''))
+
+    expect(authLogin).toHaveBeenCalledTimes(1)
+    expect(authLogin).toHaveBeenCalledWith({ loginID: 'cp@example.org', password: 'S3cr3t' })
   })
 
   it('Should be able to submit registration form successfully with all fields', async () => {
     server.use(
       rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
       rest.post('*/accounts.register', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ regToken: 'my_reg_token' })),
+        res(
+          ctx.status(200),
+          ctx.json({
+            regToken: 'my_reg_token',
+            profile: { firstName: 'Nice', age: 18, email: 'cp@example.org', birthYear: 1993 },
+          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
+        ),
       ),
     )
 
+    const authLogin = jest
+      .spyOn(authLoginModule, 'authLogin')
+      .mockImplementation((() => ({ type: '', unwrap: () => Promise.resolve() })) as any)
+
     const afterRegister = jest.fn()
     renderRegistrationScreen({ afterRegister })
+    await act(() => {})
+
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), 'cp@example.org')
@@ -201,6 +247,9 @@ describe('registration-form-screen', () => {
     ])
 
     await waitFor(() => expect(afterRegister).toHaveBeenCalledTimes(1))
-    await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token'))
+    await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token', 'Nice'))
+
+    expect(authLogin).toHaveBeenCalledTimes(1)
+    expect(authLogin).toHaveBeenCalledWith({ loginID: 'cp@example.org', password: 'S3cr3t' })
   })
 })

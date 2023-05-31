@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
-import { Offer, Order } from '../../../services/api/types/commerce/api-types'
+import { Order } from '../../../services/api/types/commerce/api-types'
 
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { spacing } from '../../../theme/spacing'
@@ -27,10 +27,10 @@ import { ReservationDetailStatusInfo } from '../components/reservation-detail-st
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { HtmlText } from '../../../components/html-text/html-text'
 
 export type ReservationDetailScreenProps = {
   productDetail?: ProductDetail
-  selectedOffer?: Offer
   order: Order
   onClose: () => void
   afterCancelReservationTriggered: () => void
@@ -38,7 +38,6 @@ export type ReservationDetailScreenProps = {
 
 export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({
   productDetail,
-  selectedOffer,
   onClose,
   afterCancelReservationTriggered,
   order,
@@ -49,10 +48,6 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const [visibleCancellationConfirmationAlert, setVisibleCancellationConfirmationAlert] = useState(false)
-
-  const onFavorite = useCallback(() => {
-    console.log('Favorited!')
-  }, [])
 
   const onPressCancellation = useCallback(() => {
     setVisibleCancellationConfirmationAlert(true)
@@ -83,11 +78,11 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const orderStatus = order.status
   const orderEntry = order.entries?.find(() => true)
 
-  if (!productDetail || !selectedOffer) {
+  if (!productDetail || !orderEntry) {
     return null
   }
 
-  const { headline, copytext } = getReservationOrderTranslations(orderStatus)
+  const orderStatusTranslattions = getReservationOrderTranslations(productDetail, orderStatus)
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('pickupReservationDetail')}>
@@ -102,9 +97,10 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
       <ScreenContent>
         <View style={styles.topContainer}>
-          {headline ? (
+          {orderStatusTranslattions?.headline ? (
             <TranslatedText
-              i18nKey={headline}
+              i18nKey={orderStatusTranslattions.headline}
+              testID={buildTestId(orderStatusTranslattions.headline)}
               textStyle={orderStatus === 'READY_FOR_PICKUP' ? 'HeadlineH3Extrabold' : 'HeadlineH4Extrabold'}
               textStyleOverrides={styles.topContainerHeadline}
             />
@@ -116,12 +112,13 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           <ReservationDetailStatusInfo order={order} />
         </View>
         <View style={styles.bottomContainer}>
-          {copytext ? (
+          {orderStatusTranslattions?.copytext ? (
             <>
               <View style={styles.bottomContainerStatusDescription}>
                 <Icon source={'Boings'} width={24} height={24} style={styles.bottomContainerStatusDescriptionIcon} />
                 <TranslatedText
-                  i18nKey={copytext}
+                  testID={buildTestId('orderStatus')}
+                  i18nKey={orderStatusTranslattions.copytext}
                   textStyle="BodySmallBold"
                   textStyleOverrides={styles.bottomContainerStatusDescriptionText}
                 />
@@ -130,17 +127,20 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
             </>
           ) : null}
           <ProductDetailTitle productDetail={productDetail} />
-          {selectedOffer ? <ProductDetailOffer selectedOffer={selectedOffer} copyAddressToClipboard /> : null}
+          <ProductDetailOffer offerInfo={orderEntry} copyAddressToClipboard />
 
           <ProductDetailTyped productDetail={productDetail} />
-          <Text style={styles.bottomContainerProductDescription}>{productDetail.description}</Text>
+          <HtmlText
+            testID={buildTestId('productDescription')}
+            style={[textStyles.BodyRegular, styles.bottomContainerProductDescription]}
+            html={productDetail.description}
+          />
         </View>
       </ScreenContent>
       <ReservationDetailFooter
         cancellable={order.cancellable}
         price={order.totalPrice}
         refunds={order.refunds}
-        onFavorite={onFavorite}
         onCancelReservation={onPressCancellation}
       />
     </ModalScreen>
@@ -189,6 +189,5 @@ const styles = StyleSheet.create({
   bottomContainerProductDescription: {
     paddingVertical: spacing[6],
     color: colors.moonDarkest,
-    ...textStyles.BodyRegular,
   },
 })

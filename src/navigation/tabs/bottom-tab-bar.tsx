@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
@@ -14,9 +14,10 @@ type BottomTabItemProps = {
   route: RouteProp<TabsParamList, keyof TabsParamList>
   navigation: BottomTabBarProps['navigation']
   isFocused: boolean
+  accessibilityHint: AccessibilityProps['accessibilityHint']
 }
 
-const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigation }) => {
+const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigation, accessibilityHint }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
@@ -48,15 +49,19 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigat
       testID={buildTestId(`${routeName}_bottomNavigation_button`)}
       onPress={onPress}
       onLongPress={onLongPress}
-      accessibilityState={isFocused ? { selected: true } : {}}>
+      accessibilityLabel={t(`${routeName}_bottomNavigation_label`)}
+      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityRole="tab"
+      accessibilityHint={accessibilityHint}
+      accessible>
       <TabBarIcon isFocused={isFocused} name={route.name} />
-      <Text
-        accessible
-        numberOfLines={1}
-        testID={buildTestId(`${routeName}_bottomNavigation_label`)}
-        style={[isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium, styles.tabBarLabel]}>
-        {t(`${routeName}_bottomNavigation_label`)}
-      </Text>
+      <View style={styles.tabBarLabelContainer}>
+        <Text
+          testID={buildTestId(`${routeName}_bottomNavigation_label`)}
+          style={[isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium, styles.tabBarLabel]}>
+          {t(`${routeName}_bottomNavigation_label`)}
+        </Text>
+      </View>
     </Pressable>
   )
 }
@@ -66,6 +71,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
   navigation,
   bottomSafeArea,
 }) => {
+  const { t } = useTranslation()
+
   return (
     <View style={[styles.container, { paddingBottom: bottomSafeArea }]}>
       <View style={styles.tabBarStyle}>
@@ -75,6 +82,10 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
             route={route as RouteProp<TabsParamList, keyof TabsParamList>}
             navigation={navigation}
             isFocused={state.index === index}
+            accessibilityHint={t('tabNavigation_accessibilityHint_count', {
+              current: index + 1,
+              total: state.routes.length,
+            })}
           />
         ))}
       </View>
@@ -91,15 +102,20 @@ const styles = StyleSheet.create({
   },
   tabBarStyle: {
     flexDirection: 'row',
-    height: 56,
+    minHeight: 56,
     alignItems: 'flex-start',
     justifyContent: 'space-evenly',
+  },
+  tabBarLabelContainer: {
+    flexDirection: 'row',
   },
   tabBarLabel: {
     color: colors.basicBlack,
     paddingTop: spacing[0],
     lineHeight: 12,
     flex: 1,
+    flexWrap: 'wrap',
+    textAlign: 'center',
   },
   tabBarButton: {
     flexDirection: 'column',

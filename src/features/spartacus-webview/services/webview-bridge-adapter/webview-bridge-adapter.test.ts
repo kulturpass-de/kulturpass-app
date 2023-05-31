@@ -98,7 +98,7 @@ describe('WebViewBridgeAdapter', () => {
 
       jest.runAllTimers()
 
-      await expect(fncPromise).rejects.toBeInstanceOf(BridgeFCTimeout)
+      await expect(fncPromise).rejects.toThrow(BridgeFCTimeout)
     })
   })
 

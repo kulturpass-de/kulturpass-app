@@ -1,21 +1,12 @@
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { colors } from '../../theme/colors'
+import { StyleSheet } from 'react-native'
+import { Divider } from '../../components/divider/divider'
 import { spacing } from '../../theme/spacing'
 
-export const FavoritesListItemSeparator = () => (
-  <View style={styles.container}>
-    <View style={styles.line} />
-  </View>
-)
+export const FavoritesListItemSeparator = () => <Divider style={styles.container} marginTop={0} marginBottom={0} />
 
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: spacing[5],
-  },
-  line: {
-    height: 1,
-    width: '100%',
-    backgroundColor: colors.sunLight,
   },
 })

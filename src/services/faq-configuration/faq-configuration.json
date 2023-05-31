@@ -1,0 +1,39 @@
+{
+  "$schema": "https://kulturpass.sap.com/interfaces/json-schema/definitions/faq-config.yml",
+  "data": {
+    "entries": {
+      "DEFAULT": {
+        "de": "https://service.kulturpass.de/help/de-de",
+        "en": "https://service.kulturpass.de/help/de-de"
+      },
+      "ACCOUNT_DELETE": {
+        "de": "https://service.kulturpass.de/help/de-de/2/63",
+        "en": "https://service.kulturpass.de/help/de-de/2/63"
+      },
+      "EID_PIN": {
+        "de": "https://service.kulturpass.de/help/de-de/2/64",
+        "en": "https://service.kulturpass.de/help/de-de/2/64"
+      },
+      "EID_CAN": {
+        "de": "https://service.kulturpass.de/help/de-de/2/65",
+        "en": "https://service.kulturpass.de/help/de-de/2/65"
+      },
+      "EID_IDENTIFICATION_GENERAL": {
+        "de": "https://service.kulturpass.de/help/de-de/36/66",
+        "en": "https://service.kulturpass.de/help/de-de/36/66"
+      },
+      "EID_PIN_RESET": {
+        "de": "https://service.kulturpass.de/help/de-de/2/67",
+        "en": "https://service.kulturpass.de/help/de-de/2/67"
+      },
+      "IDENTIFICATION_STATUS_DUPLICATE": {
+        "de": "https://service.kulturpass.de/help/de-de/2/68",
+        "en": "https://service.kulturpass.de/help/de-de/2/68"
+      },
+      "RESERVATION_ABOUT": {
+        "de": "https://service.kulturpass.de/help/de-de/2/69",
+        "en": "https://service.kulturpass.de/help/de-de/2/69"
+      }
+    }
+  }
+}

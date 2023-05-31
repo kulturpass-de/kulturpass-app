@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import { setupServer } from 'msw/lib/node'
+import { setupServer } from 'msw/node'
 
 import { commerceApi } from '../../api/commerce-api'
 import { configureMockStore } from '../../testing/configure-mock-store'

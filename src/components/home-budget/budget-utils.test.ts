@@ -42,9 +42,7 @@ describe('HomeBudget budget utils', () => {
       availableBalance: {
         value: 10,
       },
-      reservedBalance: {
-        value: 0,
-      },
+      reservedBalance: {},
     }
 
     const noValidBalance = toValidBalance(noBalance)

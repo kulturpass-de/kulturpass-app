@@ -17,7 +17,7 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.RouterNavigate, [arg])
   }
 
-  const geolocationSetLocation = async (latitude: number, longitude: number) => {
+  const geolocationSetLocation = async (latitude?: number, longitude?: number) => {
     return webViewBridgeAdapter.callBridgeFunction(
       webViewId,
       SpartacusBridge.FunctionCall.Target.GeolocationSetLocation,

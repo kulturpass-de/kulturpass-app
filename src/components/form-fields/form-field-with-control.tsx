@@ -25,9 +25,9 @@ export const FormFieldWithControl = <
           value={field.value}
           onChange={field.onChange}
           onBlur={field.onBlur}
+          ref={field.ref}
           error={fieldState.error}
           editable={!disabled}
-          // selectTextOnFocus={!disabled}
           {...props}
         />
       )

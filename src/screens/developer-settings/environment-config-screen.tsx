@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
@@ -12,28 +11,8 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { changeEnvironment } from '../../services/environment-configuration/redux/thunks/change-environment'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
-
-/* eslint-disable react/jsx-no-bind */
-
-const styles = StyleSheet.create({
-  currentEnvironmentConfiguration: {
-    margin: 10,
-    paddingTop: 14,
-    paddingLeft: 19,
-    paddingBottom: 14,
-    paddingRight: 19,
-    borderWidth: 1,
-    borderColor: colors.moonDarkest,
-    borderRadius: 5,
-    color: colors.moonDarkest,
-  },
-  selectedEnvironmentIcon: {
-    opacity: 1,
-  },
-  unselectedEnvironmentIcon: {
-    opacity: 0,
-  },
-})
+import { Icon } from '../../components/icon/icon'
+import { spacing } from '../../theme/spacing'
 
 export type EnvironmentConfigScreenProps = {
   onHeaderPressBack: () => void
@@ -72,19 +51,15 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
             <ListItem
               key={environmentConfigurationItem.name}
               icon={
-                <Icon
-                  source="Chevron"
-                  width={24}
-                  height={24}
-                  style={
-                    currentEnvironmentConfiguration.name === environmentConfigurationItem.name
-                      ? styles.selectedEnvironmentIcon
-                      : styles.unselectedEnvironmentIcon
-                  }
-                />
+                currentEnvironmentConfiguration.name === environmentConfigurationItem.name ? (
+                  <Icon source="Chevron" width={24} height={24} />
+                ) : (
+                  <View style={styles.noIcon} />
+                )
               }
               title={environmentConfigurationItem.name}
               testID={buildTestId(`environmentConfiguration_${environmentConfigurationItem.name}_button`)}
+              // eslint-disable-next-line react/jsx-no-bind
               onPress={() => onPressEnvironment(environmentConfigurationItem.name)}
             />
           )
@@ -96,3 +71,18 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
     </ModalScreen>
   )
 }
+
+const styles = StyleSheet.create({
+  currentEnvironmentConfiguration: {
+    margin: spacing[3],
+    paddingVertical: spacing[4],
+    paddingHorizontal: spacing[5],
+    borderWidth: 1,
+    borderColor: colors.moonDarkest,
+    borderRadius: 5,
+    color: colors.moonDarkest,
+  },
+  noIcon: {
+    width: 24,
+  },
+})

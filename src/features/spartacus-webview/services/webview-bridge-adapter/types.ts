@@ -30,6 +30,10 @@ export type WebViewFunctions = {
     arguments: SpartacusBridge.FunctionCall.GeolocationSetLocation.Request['arguments']
     result: SpartacusBridge.FunctionCall.GeolocationSetLocation.Result
   }
+  [SpartacusBridge.FunctionCall.Target.UserProfileRefresh]: {
+    arguments: SpartacusBridge.FunctionCall.UserProfileRefresh.Request['arguments']
+    result: SpartacusBridge.FunctionCall.UserProfileRefresh.Result
+  }
 }
 
 export type AnyWebViewFunctionResult = ValueOf<WebViewFunctions>['result']

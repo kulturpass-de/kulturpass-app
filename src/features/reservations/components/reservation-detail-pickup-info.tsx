@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Linking, Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
+import { Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import Clipboard from '@react-native-clipboard/clipboard'
 
@@ -12,6 +12,8 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { colors } from '../../../theme/colors'
 import { useTranslation } from '../../../services/translation/translation'
+import { openLink } from '../../../utils/links/utils'
+import { HITSLOP } from '../../../theme/constants'
 
 export type ReservationDetailPickupInfoProps = {
   orderEntry: OrderEntry
@@ -40,14 +42,12 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
       return
     }
 
-    if (await Linking.canOpenURL(orderEntry.voucherRedemptionUrl)) {
-      await Linking.openURL(orderEntry.voucherRedemptionUrl)
-    }
+    await openLink(orderEntry.voucherRedemptionUrl)
   }, [orderEntry.voucherRedemptionUrl])
 
   return (
     <View style={styles.container} onLayout={onContainerLayout}>
-      {orderEntry.voucherCode && orderEntry.voucherIsValid ? (
+      {orderEntry.voucherCode ? (
         <>
           <TranslatedText
             i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_headline"
@@ -55,9 +55,11 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             textStyleOverrides={styles.voucherCodeHeadline}
           />
           <Pressable
+            hitSlop={HITSLOP}
             style={styles.voucherCodeContainer}
             onPress={onPressVoucherCodeCopy}
             testID={buildTestId('reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode')}
+            accessibilityRole="button"
             accessibilityLabel={orderEntry.voucherCode}>
             <Text style={styles.voucherCodeText}>{orderEntry.voucherCode}</Text>
             <Icon
@@ -68,7 +70,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
           </Pressable>
         </>
       ) : null}
-      {orderEntry.voucherRedemptionUrl && orderEntry.voucherIsValid ? (
+      {orderEntry.voucherRedemptionUrl ? (
         <Button
           variant="tertiary"
           i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
@@ -77,6 +79,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
           widthOption="grow"
           bodyStyleOverrides={styles.voucherRedemptionUrlButton}
           onPress={onPressVoucherRedemptionUrl}
+          accessibilityRole="link"
         />
       ) : null}
       {orderEntry.barcodeDisplayType === 'QR_CODE' && orderEntry.barcodeData ? (

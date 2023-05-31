@@ -34,4 +34,17 @@ describe('authCdcLogut', () => {
     const authCdcLogoutRejected = store.findAction(authCdcLogout.rejected.match)
     expect(authCdcLogoutRejected?.payload).toEqual(myError)
   })
+
+  it('should not throw an error if accountsLogoutSigned fails', async () => {
+    const myError = new ErrorWithCode('I am broken...')
+
+    jest.spyOn(cdcApi.endpoints.accountsLogoutSigned, 'initiate').mockImplementation(() => {
+      throw myError
+    })
+
+    await store.dispatch(authCdcLogout())
+
+    const authCdcLogoutRejected = store.findAction(authCdcLogout.rejected.match)
+    expect(authCdcLogoutRejected).toBe(undefined)
+  })
 })

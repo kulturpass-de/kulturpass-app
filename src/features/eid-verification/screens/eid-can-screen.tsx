@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
@@ -15,22 +15,39 @@ import { PinInput } from '../components/pin-input'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
+import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
+import { useTranslation } from '../../../services/translation/translation'
 
 export type EidCanScreenProps = {
   onNext: (can: string) => void
   onClose: () => void
+  retry: boolean
 }
 
-export const EidCanScreen: React.FC<EidCanScreenProps> = ({ onNext, onClose }) => {
+export const EidCanScreen: React.FC<EidCanScreenProps> = ({ onNext, onClose, retry }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { t } = useTranslation()
 
   const form = useForm<{ can: string }>({
+    shouldFocusError: false,
     resolver: zodResolver(
       z.object({
         can: z.string().min(6).max(6),
       }),
     ),
   })
+
+  useFocusErrors(form)
+
+  useEffect(() => {
+    if (retry) {
+      form.setError('can', {
+        message: t('eid_canView_invalid_can'),
+      })
+    } else {
+      form.clearErrors('can')
+    }
+  }, [retry, form, t])
 
   const onPressSubmit = form.handleSubmit(async values => {
     onNext(values.can)

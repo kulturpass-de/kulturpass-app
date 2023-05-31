@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -11,23 +11,19 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
-import { FavoriteButton } from '../../../components/favorite-button/favorite-button'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
+import { applyAccessibilityReplacements } from '../../../components/translated-text/accessibility-replacements'
 
 type ProductDetailFooterProps = {
   onReserve: () => void
-  onFavorite: () => void
   selectedOffer?: Offer
 }
 
-export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onReserve, onFavorite, selectedOffer }) => {
+export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onReserve, selectedOffer }) => {
   const { buildTestId } = useTestIdBuilder()
   const { t } = useTranslation()
-
-  const handleFavoritePress = useCallback(() => {
-    onFavorite()
-  }, [onFavorite])
 
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
@@ -36,6 +32,8 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
 
   const availableBalanceFormatted = useFormattedPrice(data?.balance?.availableBalance)
 
+  const isEntitled = data?.balanceStatus === 'ENTITLED'
+
   const canAfford = useMemo(() => {
     const availableBalance = data?.balance?.availableBalance?.value
     const offerPrice = selectedOffer?.price?.value
@@ -43,23 +41,36 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
     return shouldValidateBalance ? availableBalance >= offerPrice : true
   }, [data, selectedOffer])
 
+  const showFooter = useMemo(() => {
+    return (canAfford && formattedPrice) || (isLoggedIn && canAfford) || (isLoggedIn && !canAfford)
+  }, [canAfford, formattedPrice, isLoggedIn])
+
+  if (!showFooter) {
+    return null
+  }
+
   return (
     <View style={styles.container} testID={buildTestId('productDetail_footer')}>
       {canAfford && formattedPrice ? (
-        <View style={styles.row}>
+        <View
+          style={styles.row}
+          accessible
+          accessibilityLabel={t('productDetail_footer_priceTitle') + applyAccessibilityReplacements(formattedPrice)}>
           <Text
             testID={buildTestId('productDetail_footer_priceTitle')}
-            style={[textStyles.CaptionExtrabold, styles.priceTitle]}>
+            style={[textStyles.CaptionExtrabold, styles.priceTitle]}
+            accessibilityElementsHidden>
             {t('productDetail_footer_priceTitle')}
           </Text>
           <Text
             testID={buildTestId('productDetail_footer_price')}
-            style={[textStyles.HeadlineH3Extrabold, { color: colors.moonDarkest }]}>
+            style={[textStyles.HeadlineH3Extrabold, { color: colors.moonDarkest }]}
+            accessibilityElementsHidden>
             {formattedPrice}
           </Text>
         </View>
       ) : null}
-      {isLoggedIn && canAfford ? (
+      {isLoggedIn && isEntitled && canAfford ? (
         <View style={[styles.row, styles.rowSpacing]}>
           <Button
             widthOption="grow"
@@ -67,17 +78,10 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
             testID={buildTestId('productDetail_footer_reserve_button')}
             variant="primary"
             onPress={onReserve}
-            bodyStyleOverrides={styles.reserveButton}
-          />
-          <FavoriteButton
-            active={false} // TODO: Add favorite functionality
-            accessibilityLabel={t('productDetail_footer_favorite_button')}
-            testID={buildTestId('productDetail_footer_favorite_button')}
-            onPress={handleFavoritePress}
           />
         </View>
       ) : null}
-      {isLoggedIn && !canAfford ? (
+      {isLoggedIn && isEntitled && !canAfford ? (
         <View style={[styles.row, styles.rowCentered]}>
           <View style={styles.cannotAffordContainer}>
             <TranslatedText
@@ -98,6 +102,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           </Text>
         </View>
       ) : null}
+      <ModalScreenFooterPadding fallbackPadding={spacing[4]} />
     </View>
   )
 }
@@ -105,7 +110,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing[5],
-    paddingTop: 12,
+    paddingTop: spacing[4],
     borderTopColor: colors.moonDarkest,
     borderTopWidth: 2,
     backgroundColor: colors.basicWhite,
@@ -119,9 +124,6 @@ const styles = StyleSheet.create({
   },
   rowSpacing: {
     marginTop: spacing[4],
-  },
-  reserveButton: {
-    marginRight: spacing[5],
   },
   priceTitle: {
     height: 26,

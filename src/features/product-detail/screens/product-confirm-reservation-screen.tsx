@@ -16,12 +16,18 @@ import { textStyles } from '../../../theme/typography'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
-import { ProductDetail } from '../types/product-detail'
-import { useDpsDocumentUrl } from '../../../services/environment-configuration/hooks/use-dps-document-url'
+import { ProductDetail, ProductTypes } from '../types/product-detail'
+import { useLocalizedEnvironmentUrl } from '../../../utils/links/hooks/use-localized-environment-url'
 import { ProductConfirmOverview } from '../components/product-confirm-overview'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { Icon } from '../../../components/icon/icon'
+import { AvailableTranslations } from '../../../components/translated-text/types'
+import { isProductVoucherPickup } from '../utils'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type ProductConfirmReservationScreenProps = {
   onBack: () => void
@@ -43,7 +49,8 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   const [loading, setLoading] = useState(false)
 
   const productImage = useProductImageUrl(productDetail.images, 'zoom')
-  const dpsDocumentUrl = useDpsDocumentUrl()
+  const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
+  const reservationFaqUrl = useFaqLink('RESERVATION_ABOUT')
   const [reservationMutation, reservationMutationResult] = commerceApi.useCreateReservationMutation()
 
   const reserveProduct = useCallback(async () => {
@@ -62,15 +69,19 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
     !reservationMutationResult.isLoading ? reservationMutationResult.error : undefined,
   )
 
-  if (
-    reservationMutationResult.isError ||
-    (reservationMutationResult.isSuccess && !reservationMutationResult.data.code)
-  ) {
-    return <ErrorAlert error={visibleError} onDismiss={onDismissVisibleError} />
+  let pickupCopytext: AvailableTranslations = 'productDetail_confirmReservation_product_pickup'
+  if (productDetail.productType === ProductTypes.Voucher) {
+    pickupCopytext = isProductVoucherPickup(productDetail)
+      ? 'productDetail_confirmReservation_voucher_pickupRequired'
+      : 'productDetail_confirmReservation_voucher_pickupNotRequired'
   }
+
+  const displayErrorAlert =
+    reservationMutationResult.isError || (reservationMutationResult.isSuccess && !reservationMutationResult.data.code)
 
   return (
     <ModalScreen testID={buildTestId('offerSelection')}>
+      {displayErrorAlert && <ErrorAlert error={visibleError} onDismiss={onDismissVisibleError} />}
       <LoadingIndicator loading={loading} />
       <OfferSelectionHeader imageUrl={productImage?.imageUrl} onClose={onClose} onBack={onBack} />
       <ScreenContent style={styles.content}>
@@ -81,42 +92,65 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
             textStyleOverrides={styles.title}
             testID={buildTestId('productDetail_confirmReservation_title')}
           />
+        </View>
+        <View style={styles.subtitleContainer}>
           <TranslatedText
             i18nKey="productDetail_confirmReservation_subtitle"
             textStyle="BodyRegular"
-            textStyleOverrides={styles.subtitle}
+            textStyleOverrides={styles.subtitlePrefix}
             testID={buildTestId('productDetail_confirmReservation_subtitle')}
           />
           <Text
             style={[textStyles.BodyExtrabold, styles.subtitleBody]}
             accessibilityLabel={t('productDetail_confirmReservation_supplierName')}
             testID={buildTestId('productDetail_confirmReservation_supplierName')}>
-            {selectedOffer.shopName}
+            {' ' + selectedOffer.shopName}
           </Text>
         </View>
-        <ProductConfirmOverview productDetail={productDetail} price={selectedOffer.price} />
-        <View style={[styles.consentContainer]}>
+        <View style={styles.descriptionContainer}>
           <TranslatedText
-            i18nKey="productDetail_confirmReservation_consentText"
-            textStyle="BodyRegular"
-            testID={buildTestId('productDetail_confirmReservation_consentText')}
-            textStyleOverrides={styles.consentText}
+            i18nKey="productDetail_confirmReservation_description"
+            textStyle="BodySmallRegular"
+            textStyleOverrides={styles.subtitleDescription}
+            testID={buildTestId('productDetail_confirmReservation_description')}
+          />
+        </View>
+        <ProductConfirmOverview productDetail={productDetail} price={selectedOffer.price} />
+        <View style={[styles.reservationDetailsContainer]}>
+          <View style={styles.reservationDetailsPickup}>
+            <Icon source="Boings" width={20} height={20} style={styles.reservationDetailsPickupIcon} />
+            <TranslatedText
+              i18nKey={pickupCopytext}
+              testID={buildTestId(pickupCopytext)}
+              textStyle="BodySmallBold"
+              textStyleOverrides={styles.reservationDetailsPickupText}
+            />
+          </View>
+          <LinkText
+            i18nKey="productDetail_confirmReservation_aboutReservationsFaqLink"
+            testID={buildTestId('productDetail_confirmReservation_aboutReservationsFaqLink')}
+            link={reservationFaqUrl}
+            iconSize={20}
+            textStyle="BodySmallMedium"
+            style={styles.reservationDetailsLink}
           />
           <LinkText
             i18nKey="productDetail_confirmReservation_consentLink"
+            testID={buildTestId('productDetail_confirmReservation_consentLink')}
             link={dpsDocumentUrl}
             iconSize={20}
-            textStyle="BodyRegular"
+            textStyle="BodySmallMedium"
+            style={styles.reservationDetailsLink}
           />
         </View>
       </ScreenContent>
-      <View style={styles.submitButton}>
+      <ModalScreenFooter>
         <Button
           testID={buildTestId('productDetail_confirmReservation_submitButton')}
           i18nKey="productDetail_confirmReservation_submitButton"
           onPress={reserveProduct}
         />
-      </View>
+      </ModalScreenFooter>
     </ModalScreen>
   )
 }
@@ -127,34 +161,47 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    paddingTop: spacing[8],
-    paddingBottom: spacing[8],
+    marginTop: spacing[7],
+    marginBottom: spacing[5],
   },
   title: {
     color: colors.moonDarker,
     textAlign: 'center',
-    marginBottom: spacing[4],
   },
-  subtitle: {
-    marginBottom: spacing[4],
+  subtitleContainer: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: spacing[6],
+  },
+  subtitlePrefix: {
     color: colors.moonDarkest,
   },
   subtitleBody: {
-    textAlign: 'center',
     color: colors.moonDarkest,
   },
-  consentContainer: {
+  subtitleDescription: {
+    color: colors.moonDarkest,
+  },
+  descriptionContainer: {
+    marginBottom: spacing[5],
+    alignItems: 'center',
+  },
+  reservationDetailsContainer: {
     paddingTop: spacing[8],
   },
-  consentText: {
-    marginBottom: spacing[6],
+  reservationDetailsPickup: {
+    flexDirection: 'row',
+  },
+  reservationDetailsPickupIcon: {
+    marginRight: spacing[2],
+  },
+  reservationDetailsPickupText: {
+    flex: 1,
+    marginBottom: spacing[5],
     color: colors.moonDarkest,
   },
-  submitButton: {
-    paddingHorizontal: spacing[5],
-    paddingTop: spacing[5],
-    borderTopColor: colors.moonDarkest,
-    borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
+  reservationDetailsLink: {
+    marginBottom: spacing[4],
+    textDecorationLine: 'underline',
   },
 })

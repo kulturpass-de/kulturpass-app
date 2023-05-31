@@ -1,9 +1,23 @@
 import React, { FC, useCallback, useMemo } from 'react'
-import { Pressable, PressableStateCallbackType, StyleProp, ViewStyle, Text, View } from 'react-native'
+import {
+  AccessibilityRole,
+  Pressable,
+  PressableStateCallbackType,
+  StyleProp,
+  ViewStyle,
+  Text,
+  View,
+} from 'react-native'
 
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
-import { buttonModifierStyle, baseButtonStyle, buttonVariantStyles, buttonWidthOptionStyle } from './button-style'
+import {
+  buttonModifierStyle,
+  baseButtonStyle,
+  buttonVariantStyles,
+  buttonWidthOptionStyle,
+  ButtonTypeStyle,
+} from './button-style'
 import { useTranslation } from '../../services/translation/translation'
 import { IconProps } from '../icon/icon'
 import { Icon } from '../icon/icon'
@@ -19,8 +33,10 @@ export type ButtonProps = {
   onPress: () => void
   disabled?: boolean
   bodyStyleOverrides?: ViewStyle
+  buttonVariantStyleOverrides?: Partial<ButtonTypeStyle>
   iconSource?: IconProps['source']
   iconPosition?: 'left' | 'right'
+  accessibilityRole?: AccessibilityRole
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -31,10 +47,12 @@ export const Button: FC<ButtonProps> = ({
   i18nKey,
   i18nParams,
   onPress,
-  testID = i18nKey,
+  testID,
   bodyStyleOverrides = {},
+  buttonVariantStyleOverrides,
   iconSource,
   iconPosition = 'right',
+  accessibilityRole = 'button',
 }) => {
   const { t } = useTranslation()
 
@@ -45,12 +63,19 @@ export const Button: FC<ButtonProps> = ({
     return buttonWidth
   }, [widthOption])
 
+  const buttonVariantStyle: ButtonTypeStyle = useMemo(() => {
+    const buttonStyles = buttonVariantStyles[buttonVariant]
+    return buttonVariantStyleOverrides !== undefined
+      ? { ...buttonStyles, ...buttonVariantStyleOverrides }
+      : buttonStyles
+  }, [buttonVariant, buttonVariantStyleOverrides])
+
   const buttonContainerStyle = useCallback<(state: PressableStateCallbackType) => StyleProp<ViewStyle>>(
     ({ pressed }) => {
       const { buttonContainer } = baseButtonStyle
       const { size: buttonSize } = buttonModifierStyle[modifier]
       const { width: buttonWidth } = buttonWidthOptionStyle[widthOption]
-      const { baseContainer, disabledContainer, pressedContainer } = buttonVariantStyles[buttonVariant]
+      const { baseContainer, disabledContainer, pressedContainer } = buttonVariantStyle
       const style = [buttonContainer, buttonSize, buttonWidth, baseContainer]
 
       if (disabled) {
@@ -63,12 +88,12 @@ export const Button: FC<ButtonProps> = ({
 
       return style
     },
-    [buttonVariant, widthOption, disabled, modifier, bodyStyleOverrides],
+    [modifier, widthOption, buttonVariantStyle, disabled, bodyStyleOverrides],
   )
 
   const buttonShadowStyle = useCallback<(state: PressableStateCallbackType) => StyleProp<ViewStyle>>(
     ({ pressed }) => {
-      const { baseShadow, pressedShadow, disabledShadow } = buttonVariantStyles[buttonVariant]
+      const { baseShadow, pressedShadow, disabledShadow } = buttonVariantStyle
       const { size: buttonSize } = buttonModifierStyle[modifier]
       const { width: buttonWidth } = buttonWidthOptionStyle[widthOption]
       const style = [baseShadow, buttonSize, buttonWidth]
@@ -82,14 +107,14 @@ export const Button: FC<ButtonProps> = ({
 
       return style
     },
-    [modifier, widthOption, buttonVariant, disabled],
+    [buttonVariantStyle, modifier, widthOption, disabled],
   )
 
   const buttonTextStyle = useCallback(
     (pressed: boolean) => {
       const { text: buttonText } = buttonModifierStyle[modifier]
 
-      const { baseText, disabledText, pressedText } = buttonVariantStyles[buttonVariant]
+      const { baseText, disabledText, pressedText } = buttonVariantStyle
       const style = [buttonText, baseText]
 
       if (disabled) {
@@ -101,7 +126,7 @@ export const Button: FC<ButtonProps> = ({
 
       return style
     },
-    [buttonVariant, disabled, modifier],
+    [buttonVariantStyle, disabled, modifier],
   )
 
   const buttonText = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
@@ -112,6 +137,10 @@ export const Button: FC<ButtonProps> = ({
       onPress={onPress}
       testID={testID}
       disabled={disabled}
+      accessibilityLabel={buttonText}
+      accessible
+      accessibilityRole={accessibilityRole}
+      accessibilityState={disabled ? { disabled: true } : undefined}
       style={[baseButtonStyle.pressed, buttonPressableStyle]}>
       {state => (
         <>
@@ -121,15 +150,16 @@ export const Button: FC<ButtonProps> = ({
               {iconSource && iconPosition === 'left' && (
                 <Icon source={iconSource} width={iconSize} height={iconSize} style={baseButtonStyle.buttonIconLeft} />
               )}
-              <Text
-                testID={addTestIdModifier(testID, 'text')}
-                accessibilityLabel={buttonText}
-                accessible
-                style={buttonTextStyle(state.pressed)}>
+              <Text testID={addTestIdModifier(testID ?? i18nKey, 'text')} style={buttonTextStyle(state.pressed)}>
                 {buttonText}
               </Text>
               {iconSource && iconPosition === 'right' && (
-                <Icon source={iconSource} width={iconSize} height={iconSize} style={baseButtonStyle.buttonIconRight} />
+                <Icon
+                  source={iconSource}
+                  width={iconSize}
+                  height={iconSize}
+                  style={[baseButtonStyle.buttonIconRight, disabled ? baseButtonStyle.buttonIconDisabled : undefined]}
+                />
               )}
             </View>
           </View>

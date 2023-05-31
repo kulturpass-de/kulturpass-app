@@ -1,10 +1,13 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+
 import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
+import { HITSLOP } from '../../../theme/constants'
 
 type OfferSelectionHeaderProps = {
   imageUrl?: string
@@ -29,7 +32,9 @@ export const OfferSelectionHeader: React.FC<OfferSelectionHeaderProps> = ({ imag
       <View style={styles.overlay} />
       <View style={styles.buttonContainer}>
         <Pressable
+          hitSlop={HITSLOP}
           testID={buildTestId('offerSelection_header_closeButton')}
+          accessibilityRole="button"
           accessibilityLabel={t('offerSelection_header_closeButton')}
           onPress={onBack}>
           <View style={styles.button}>
@@ -37,7 +42,9 @@ export const OfferSelectionHeader: React.FC<OfferSelectionHeaderProps> = ({ imag
           </View>
         </Pressable>
         <Pressable
+          hitSlop={HITSLOP}
           testID={buildTestId('offerSelection_header_backButton')}
+          accessibilityRole="button"
           accessibilityLabel={t('offerSelection_header_backButton')}
           onPress={onClose}>
           <View style={styles.button}>
@@ -50,9 +57,7 @@ export const OfferSelectionHeader: React.FC<OfferSelectionHeaderProps> = ({ imag
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: 62,
-  },
+  container: {},
   overlay: {
     position: 'absolute',
     backgroundColor: colors.basicWhite,
@@ -76,9 +81,7 @@ const styles = StyleSheet.create({
     zIndex: 300,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 11,
-    paddingLeft: 20,
-    paddingRight: 9,
+    margin: spacing[2],
   },
   button: {
     borderRadius: 24,
