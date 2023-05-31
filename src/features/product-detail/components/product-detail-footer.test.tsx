@@ -42,7 +42,10 @@ test('Should render product detail footer with sufficient credit', async () => {
   const onReserve = jest.fn()
 
   renderComponent(
-    <ProductDetailFooter onReserve={onReserve} selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }} />,
+    <ProductDetailFooter
+      onReserve={onReserve}
+      selectedOffer={{ code: 'test', price: { value: 22.99, currencyIso: 'EUR' } }}
+    />,
   )
   await act(() => {})
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
@@ -74,7 +77,10 @@ test('Should render product detail footer with non-sufficient credit', async () 
   )
 
   renderComponent(
-    <ProductDetailFooter onReserve={onReserve} selectedOffer={{ price: { value: 22.99, currencyIso: 'EUR' } }} />,
+    <ProductDetailFooter
+      onReserve={onReserve}
+      selectedOffer={{ code: 'test', price: { value: 22.99, currencyIso: 'EUR' } }}
+    />,
   )
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
   expect(await screen.findByTestId(buildTestId('productDetail_footer_cannot_afford_text'))).toBeOnTheScreen()
@@ -108,17 +114,11 @@ test('Should render product detail footer without a total price', async () => {
   renderComponent(
     <ProductDetailFooter
       onReserve={onReserve}
-      // no offer = do not display the total price
+      // no offer = do not display the footer
       // selectedOffer={}
     />,
   )
   await act(() => {})
 
-  expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('productDetail_footer_priceTitle'))).not.toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('productDetail_footer_price'))).not.toBeOnTheScreen()
-  expect(screen.getByTestId(buildTestId('productDetail_footer_reserve_button'))).toBeOnTheScreen()
-
-  fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_reserve_button')))
-  expect(onReserve).toHaveBeenCalledTimes(1)
+  expect(screen.queryAllByTestId(buildTestId('productDetail_footer')).length).toBe(0)
 })

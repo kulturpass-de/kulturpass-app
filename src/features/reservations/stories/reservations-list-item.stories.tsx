@@ -4,6 +4,7 @@ import { ReservationsListItem } from '../components/reservations-list-item'
 import {
   DELIVERY_SCENARIO_IN_APP_VOUCHER,
   DELIVERY_SCENARIO_PICKUP,
+  ORDER_STATUS_CANCELLING,
   ORDER_STATUS_CANCELLED,
   ORDER_STATUS_COMPLETED,
   ORDER_STATUS_CREATED,
@@ -36,6 +37,10 @@ export const Created: ComponentStory<typeof ReservationsListItem> = args => {
 
 export const Shipping: ComponentStory<typeof ReservationsListItem> = args => {
   return <ReservationsListItem status={ORDER_STATUS_SHIPPING} {...args} />
+}
+
+export const Cancelling: ComponentStory<typeof ReservationsListItem> = args => {
+  return <ReservationsListItem status={ORDER_STATUS_CANCELLING} {...args} />
 }
 
 export const Cancelled: ComponentStory<typeof ReservationsListItem> = args => {

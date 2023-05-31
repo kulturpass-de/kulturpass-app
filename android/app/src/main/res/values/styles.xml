@@ -22,6 +22,7 @@
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
         <item name="postSplashScreenTheme">@style/SplashTheme</item>
     </style>
 </resources>

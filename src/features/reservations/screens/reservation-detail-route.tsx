@@ -14,6 +14,7 @@ export const ReservationDetailRouteName = 'ReservationDetail'
 
 export type ReservationDetailRouteParams = {
   orderCode: NonNullable<Order['code']>
+  completedReservation?: boolean
 }
 
 type ReservationDetailProps = ModalScreenProps<'ReservationDetail'>
@@ -21,7 +22,7 @@ type ReservationDetailProps = ModalScreenProps<'ReservationDetail'>
 export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route }) => {
   const modalNavigation = useModalNavigation()
 
-  const { orderCode } = route.params
+  const { orderCode, completedReservation } = route.params
   const orderDetailResponse = commerceApi.useGetOrderDetailQuery({ orderCode }, { refetchOnMountOrArgChange: true })
   const order = orderDetailResponse.data
   const orderEntry = order?.entries?.[0]
@@ -48,6 +49,7 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
         order={order}
         onClose={onClose}
         afterCancelReservationTriggered={afterCancelReservationTriggered}
+        completedReservation={completedReservation}
       />
     </>
   )

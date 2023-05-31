@@ -41,6 +41,10 @@ const RESERVATION_DETAILS_I18N_KEYS_MAP: I18N_KEYS_MAP_TYPE = {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_headline',
     copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_copytext',
   },
+  CANCELLING: {
+    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_cancelled_headline',
+    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_cancelled_copytext',
+  },
   CANCELLED: {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_cancelled_headline',
     copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_cancelled_copytext',

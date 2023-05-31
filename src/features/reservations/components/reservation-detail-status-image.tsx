@@ -10,6 +10,7 @@ const OrderStatusSvg: Record<string, SvgImageType> = {
   // 'READY_FOR_PICKUP': null,
   RECEIVED: 'ticket-checkmark',
   COMPLETED: 'ticket-checkmark',
+  CANCELLING: 'cross-circle-red',
   CANCELLED: 'cross-circle-red',
 }
 

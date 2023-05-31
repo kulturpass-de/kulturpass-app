@@ -58,6 +58,7 @@ export const ReadyForPickup: ComponentStory<typeof ReservationDetailScreen> = ()
   buildStoryForOrderStatus('READY_FOR_PICKUP')
 export const Received: ComponentStory<typeof ReservationDetailScreen> = () => buildStoryForOrderStatus('RECEIVED')
 export const Completed: ComponentStory<typeof ReservationDetailScreen> = () => buildStoryForOrderStatus('COMPLETED')
+export const Cancelling: ComponentStory<typeof ReservationDetailScreen> = () => buildStoryForOrderStatus('CANCELLING')
 export const Cancelled: ComponentStory<typeof ReservationDetailScreen> = () => buildStoryForOrderStatus('CANCELLED')
 
 const styles = StyleSheet.create({

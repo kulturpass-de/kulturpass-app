@@ -21,7 +21,7 @@ export type ReservationsTabsParamList = {
 const Tab = createMaterialTopTabNavigator<ReservationsTabsParamList>()
 
 export type ReservationsScreenProps = {
-  onReservationPressed: (orderCode: NonNullable<Order['code']>) => void
+  onReservationPressed: (orderCode: NonNullable<Order['code']>, completedReservation?: boolean) => void
 }
 
 export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReservationPressed }) => {
@@ -31,14 +31,14 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onOrderPressed = useCallback(
-    (order: Order) => {
+    (completedReservation: boolean) => (order: Order) => {
       if (!order.code) {
         // This should be replaced with a suitable error in the future
         setVisibleError(new UnknownError())
         return
       }
 
-      onReservationPressed(order.code)
+      onReservationPressed(order.code, completedReservation)
     },
     [onReservationPressed],
   )
@@ -60,7 +60,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
         <Tab.Screen name="PendingReservations">
           {() => (
             <ReservationsListTabContent
-              onOrderPressed={onOrderPressed}
+              onOrderPressed={onOrderPressed(false)}
               testID={addTestIdModifier(screenTestId, 'pendingreservations')}
               i18nNoItemsTitleKey="reservations_list_noItems_title"
               i18nNoItemsContentKey="reservations_list_noPendingItems_content"
@@ -74,7 +74,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
         <Tab.Screen name="CompletedReservations">
           {() => (
             <ReservationsListTabContent
-              onOrderPressed={onOrderPressed}
+              onOrderPressed={onOrderPressed(true)}
               testID={addTestIdModifier(screenTestId, 'completedreservations')}
               i18nNoItemsTitleKey="reservations_list_noItems_title"
               i18nNoItemsContentKey="reservations_list_noCompletedItems_content"

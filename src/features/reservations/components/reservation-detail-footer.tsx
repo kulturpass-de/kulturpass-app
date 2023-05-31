@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -18,6 +18,9 @@ export type ReservationDetailFooterProps = {
   onCancelReservation: () => void
   price?: Price
   refunds?: Refunds
+  completedReservation?: boolean
+  orderStatus?: string
+  isCancelTriggered?: boolean
 }
 
 export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = ({
@@ -25,6 +28,9 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   onCancelReservation,
   price,
   refunds,
+  completedReservation,
+  orderStatus,
+  isCancelTriggered,
 }) => {
   const { buildTestId } = useTestIdBuilder()
 
@@ -33,6 +39,8 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   const formattedTotalWithoutRefunds = useFormattedPrice(refunds?.totalWithoutRefunds)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const hasRefunds = (refunds?.refundAmount?.value ?? 0) > 0
+
+  const noop = useCallback(() => {}, [])
 
   return (
     <View testID={buildTestId('reservationDetail_footer')} style={styles.container}>
@@ -67,7 +75,7 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
           </Text>
         </View>
       ) : null}
-      {isLoggedIn ? (
+      {isLoggedIn && !completedReservation ? (
         <View style={styles.rowActions}>
           {cancellable && (
             <Button
@@ -77,6 +85,18 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
               variant="secondary"
               onPress={onCancelReservation}
               bodyStyleOverrides={styles.reserveButton}
+              disabled={isCancelTriggered}
+            />
+          )}
+          {orderStatus === 'CREATED' && !cancellable && (
+            <Button
+              widthOption="grow"
+              i18nKey="reservationDetail_footer_cancel_button_creating"
+              testID={buildTestId('reservationDetail_footer_cancel_button_creating')}
+              variant="secondary"
+              onPress={noop}
+              bodyStyleOverrides={styles.reserveButton}
+              disabled={true}
             />
           )}
         </View>

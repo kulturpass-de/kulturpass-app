@@ -22,8 +22,8 @@ export const ReservationsRoute: React.FC = () => {
   }, [modalNavigation])
 
   const onReservationPressed: ReservationsScreenProps['onReservationPressed'] = useCallback(
-    orderCode => {
-      modalNavigation.navigate({ screen: 'ReservationDetail', params: { orderCode } })
+    (orderCode, completedReservation) => {
+      modalNavigation.navigate({ screen: 'ReservationDetail', params: { orderCode, completedReservation } })
     },
     [modalNavigation],
   )

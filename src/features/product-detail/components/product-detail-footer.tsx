@@ -32,8 +32,6 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
 
   const availableBalanceFormatted = useFormattedPrice(data?.balance?.availableBalance)
 
-  const isEntitled = data?.balanceStatus === 'ENTITLED'
-
   const canAfford = useMemo(() => {
     const availableBalance = data?.balance?.availableBalance?.value
     const offerPrice = selectedOffer?.price?.value
@@ -41,17 +39,23 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
     return shouldValidateBalance ? availableBalance >= offerPrice : true
   }, [data, selectedOffer])
 
-  const showFooter = useMemo(() => {
-    return (canAfford && formattedPrice) || (isLoggedIn && canAfford) || (isLoggedIn && !canAfford)
-  }, [canAfford, formattedPrice, isLoggedIn])
+  const { showPrice, showReserveButton, showCannotAfford } = useMemo(() => {
+    const isEntitled = data?.balanceStatus === 'ENTITLED'
+    const hasSelectedOffer = selectedOffer !== undefined && selectedOffer.code !== undefined
+    return {
+      showPrice: canAfford && formattedPrice,
+      showReserveButton: hasSelectedOffer && isLoggedIn && canAfford && isEntitled,
+      showCannotAfford: hasSelectedOffer && isLoggedIn && !canAfford && isEntitled,
+    }
+  }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, isLoggedIn])
 
-  if (!showFooter) {
+  if (!(showPrice || showReserveButton || showCannotAfford)) {
     return null
   }
 
   return (
     <View style={styles.container} testID={buildTestId('productDetail_footer')}>
-      {canAfford && formattedPrice ? (
+      {showPrice && formattedPrice ? (
         <View
           style={styles.row}
           accessible
@@ -70,7 +74,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           </Text>
         </View>
       ) : null}
-      {isLoggedIn && isEntitled && canAfford ? (
+      {showReserveButton ? (
         <View style={[styles.row, styles.rowSpacing]}>
           <Button
             widthOption="grow"
@@ -81,7 +85,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           />
         </View>
       ) : null}
-      {isLoggedIn && isEntitled && !canAfford ? (
+      {showCannotAfford ? (
         <View style={[styles.row, styles.rowCentered]}>
           <View style={styles.cannotAffordContainer}>
             <TranslatedText

@@ -34,6 +34,7 @@ export type ReservationDetailScreenProps = {
   order: Order
   onClose: () => void
   afterCancelReservationTriggered: () => void
+  completedReservation?: boolean
 }
 
 export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({
@@ -41,9 +42,11 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   onClose,
   afterCancelReservationTriggered,
   order,
+  completedReservation,
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
+  const [isCancelTriggered, setIsCancelTriggered] = useState(false)
   const [cancelReservation] = commerceApi.useCancelReservationMutation()
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
@@ -54,6 +57,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   }, [])
 
   const onCancelReservation = useCallback(async () => {
+    setIsCancelTriggered(true)
     setVisibleCancellationConfirmationAlert(false)
     setLoading(true)
 
@@ -138,6 +142,9 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         </View>
       </ScreenContent>
       <ReservationDetailFooter
+        isCancelTriggered={isCancelTriggered}
+        completedReservation={completedReservation}
+        orderStatus={order.status}
         cancellable={order.cancellable}
         price={order.totalPrice}
         refunds={order.refunds}

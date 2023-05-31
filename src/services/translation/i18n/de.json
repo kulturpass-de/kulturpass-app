@@ -298,6 +298,7 @@
   "reservationDetail_qrCode_dataDescription": "QR-Code für die Reservierung",
   "reservationDetail_qrCode_hint": "Diesen QR-Code kannst du beim unten genannten Anbieter einlösen.",
   "reservationDetail_footer_cancel_button": "Stornieren",
+  "reservationDetail_footer_cancel_button_creating": "Reservierung wird erstellt",
   "reservationDetail_footer_favorite_button": "Als Favorit markieren",
   "reservationDetail_footer_priceTitle": "Gesamtpreis",
   "reservationDetail_footer_refunds": "vom <extrabold>Gesamtpreis</extrabold> von {{totalWithoutRefunds}} hast du <em>{{refundAmount}}</em> zurückerhalten",

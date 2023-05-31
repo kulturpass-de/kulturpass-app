@@ -9,6 +9,7 @@ import { textStyles } from '../../../theme/typography'
 import {
   DELIVERY_SCENARIO_IN_APP_VOUCHER,
   DELIVERY_SCENARIO_PICKUP,
+  ORDER_STATUS_CANCELLING,
   ORDER_STATUS_CANCELLED,
   ORDER_STATUS_COMPLETED,
   ORDER_STATUS_CREATED,
@@ -33,6 +34,8 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
       case ORDER_STATUS_RECEIVED:
       case ORDER_STATUS_COMPLETED:
         return { icon: 'Completed', color: 'moonDarkest' }
+      case ORDER_STATUS_CANCELLING:
+        return { icon: 'Cancelled', color: 'redDarkest' }
       case ORDER_STATUS_CANCELLED:
         return { icon: 'Cancelled', color: 'redDarkest' }
       default:
@@ -43,9 +46,11 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   const colorStyle = { color: colors[color] }
 
   const i18nKey = useMemo(() => {
-    if (status === ORDER_STATUS_CREATED || status === ORDER_STATUS_SHIPPING || status === ORDER_STATUS_CANCELLED) {
+    if (status === ORDER_STATUS_CREATED || status === ORDER_STATUS_SHIPPING) {
       const statusLowerCase = status.toLowerCase() as Lowercase<typeof status>
       return `reservations_list_state_${statusLowerCase}` as const
+    } else if (status === ORDER_STATUS_CANCELLING || status === ORDER_STATUS_CANCELLED) {
+      return 'reservations_list_state_cancelled'
     } else if (
       (deliveryScenario === DELIVERY_SCENARIO_PICKUP || deliveryScenario === DELIVERY_SCENARIO_IN_APP_VOUCHER) &&
       (status === ORDER_STATUS_READY_FOR_PICKUP ||
