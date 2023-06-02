@@ -10,17 +10,18 @@ import { SpartacusWebView } from '../../features/spartacus-webview/components/we
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import { getCommerceHomeUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
 import { ErrorWithCode } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { HomeHeader } from './home-header'
 import { HomeHeaderShrinkable } from './home-header-shrinkable'
+import { HomeHeaderWithWebView } from './home-header-with-webview'
+import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-get-environment-configuration'
 
 export type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const { buildTestId } = useTestIdBuilder()
-  const homeUrl = useSelector(getCommerceHomeUrl)
+  const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
@@ -58,7 +59,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
         language={language}
       />
       <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
-        <HomeHeader profile={data} />
+        <HomeHeaderWithWebView>
+          <HomeHeader profile={data} />
+        </HomeHeaderWithWebView>
       </HomeHeaderShrinkable>
     </Screen>
   )

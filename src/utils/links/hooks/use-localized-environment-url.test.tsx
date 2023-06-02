@@ -1,15 +1,29 @@
 import { renderHook } from '@testing-library/react-native'
-import { useLocalizedEnvironmentUrl } from './use-localized-environment-url'
+import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from './use-localized-environment-url'
 import React, { PropsWithChildren } from 'react'
 import { StoreProvider } from '../../../services/testing/test-utils'
 import { act } from 'react-test-renderer'
 import { translation, useTranslation } from '../../../services/translation/translation'
 import { Language } from '../../../services/translation/types'
-import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
 
 const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
   return <StoreProvider>{children}</StoreProvider>
 }
+
+jest.mock('../../../services/environment-configuration/utils', () => {
+  return {
+    getEnvironmentConfig: jest.fn(() => ({
+      cdc: {
+        consents: {
+          dpsDocumentUrl: {
+            de: 'http://localhost/consents/deDpsDocumentUrl',
+            en: 'http://localhost/consents/enDpsDocumentUrl',
+          },
+        },
+      },
+    })),
+  }
+})
 
 describe('useLocalizedEnvironmentUrl', () => {
   test('Should return the DE url', async () => {

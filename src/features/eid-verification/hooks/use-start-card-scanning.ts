@@ -136,7 +136,7 @@ export const useStartCardScanning = ({
 
   const enterPin = useCallback(async () => {
     // Use 30 seconds timeout, because this step can take a long time
-    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, { msTimeout: 30000 })
+    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, { msTimeout: 40000 })
 
     if (result.msg === AA2Messages.EnterNewPin) {
       enterNewPin()

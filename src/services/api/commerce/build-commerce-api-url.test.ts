@@ -1,13 +1,17 @@
 import { buildCommerceApiUrl } from './build-commerce-api-url'
 import { RootState } from '../../redux/configure-store'
 
+jest.mock('../../environment-configuration/utils', () => {
+  return {
+    getEnvironmentConfig: jest.fn(() => ({ commerce: { baseSiteId: 'baseSiteId', baseUrl: 'https://baseUrl' } })),
+  }
+})
+
 describe('build-commerce-api-url', () => {
   it('should concat given path with the commerce baseSiteId and basedUrl in the given rootState', async () => {
     const rootState = {
       persisted: {
-        environmentConfiguration: {
-          currentEnvironment: { commerce: { baseSiteId: 'baseSiteId', baseUrl: 'https://baseUrl' } },
-        },
+        environmentConfiguration: { currentEnvironmentName: 'test' },
       },
     } as RootState
 

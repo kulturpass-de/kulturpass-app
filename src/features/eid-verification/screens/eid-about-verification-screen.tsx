@@ -19,8 +19,10 @@ import { LoadingIndicator } from '../../../components/loading-indicator/loading-
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
-import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
-import { useLocalizedEnvironmentUrl } from '../../../utils/links/hooks/use-localized-environment-url'
+import {
+  getCdcDpsDocumentUrl,
+  useLocalizedEnvironmentUrl,
+} from '../../../utils/links/hooks/use-localized-environment-url'
 
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRights, certificate: Certificate) => void

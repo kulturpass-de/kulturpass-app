@@ -7,17 +7,23 @@ import { jestFn } from '../../testing/jest-fn'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { sendCommercePostRequest } from './send-commerce-post-request'
 
+jest.mock('../../environment-configuration/utils', () => {
+  return {
+    getEnvironmentConfig: jest.fn(() => ({
+      commerce: {
+        baseSiteId: 'my_base_site_id',
+        baseUrl: 'http://my_base_url',
+      },
+    })),
+  }
+})
+
 describe('send-commerce-post-request', () => {
   const preloadedState = {
     auth: { commerce: { access_token: 'my_access_token' } },
     persisted: {
       environmentConfiguration: {
-        currentEnvironment: {
-          commerce: {
-            baseSiteId: 'my_base_site_id',
-            baseUrl: 'http://my_base_url',
-          },
-        },
+        currentEnvironmentName: 'test',
       },
     },
   } as RootState

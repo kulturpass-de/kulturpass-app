@@ -1,18 +1,19 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { environmentConfigurations } from '../../services/environment-configuration/environment-configuration'
-import { AppDispatch, RootState } from '../../services/redux/configure-store'
+import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { changeEnvironment } from '../../services/environment-configuration/redux/thunks/change-environment'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
 import { Icon } from '../../components/icon/icon'
 import { spacing } from '../../theme/spacing'
+import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-get-environment-configuration'
 
 export type EnvironmentConfigScreenProps = {
   onHeaderPressBack: () => void
@@ -26,9 +27,7 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
   const { buildTestId } = useTestIdBuilder()
   const dispatch = useDispatch<AppDispatch>()
 
-  const currentEnvironmentConfiguration = useSelector(
-    (state: RootState) => state.persisted.environmentConfiguration.currentEnvironment,
-  )
+  const currentEnvironmentConfiguration = useEnvironmentConfiguration()
 
   const onPressEnvironment = useCallback(
     (envName: string) => {

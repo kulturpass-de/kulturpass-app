@@ -1,4 +1,4 @@
-import { getEnvironmentConfigurationCdc } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { callCdcWithCustomSessionInfoSigned } from './call-cdc-with-custom-session-info-signed'
@@ -44,8 +44,9 @@ describe('call-cdc-with-custom-session-info-signed', () => {
   })
 
   it('should call sendCdcPostRequest with correct parameters', async () => {
-    const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
-
+    const cdcEnvConfig = getEnvironmentConfig(
+      store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+    ).cdc
     const prepare = () => ({ path: 'my_path', sessionToken: 'my_session_token', sessionSecret: 'my_session_secret' })
 
     const result = await callCdcWithCustomSessionInfoSigned<Result, Params>(prepare)(arg, api, extraOptions, baseQuery)
@@ -70,8 +71,9 @@ describe('call-cdc-with-custom-session-info-signed', () => {
 
   describe('when bodyPayload is provided by prepare', () => {
     it('should call sendCdcPostRequest with correct parameters', async () => {
-      const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
-
+      const cdcEnvConfig = getEnvironmentConfig(
+        store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+      ).cdc
       const prepare = () => ({
         path: 'my_path',
         bodyPayload: {

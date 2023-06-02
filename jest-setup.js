@@ -87,7 +87,8 @@ jest.mock('./src/env', () => {
               },
             },
             eid: {
-              tcTokenUrl: 'http://localhost/eid',
+              tcTokenUrl: 'http://%s.localhost/eid',
+              tcTokenUrlDefaultSubdomain: 'testsubdomain',
             },
             faq: {
               homeUrl: {
@@ -120,9 +121,8 @@ jest.mock('redux-persist/integration/react', () => ({ PersistGate: props => prop
 
 let mockedAppConfig = {
   appVersions: { min: '0.5.55' },
-  certificates: {
-    cdc: [{ fingerprint256: 'cdc_fingerprint256' }],
-    commerce: [{ fingerprint256: 'commerce_fingerprint256' }],
+  eid: {
+    tcTokenUrlSubdomains: ['test'],
   },
 };
 

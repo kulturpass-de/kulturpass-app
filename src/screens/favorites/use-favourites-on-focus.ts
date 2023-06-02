@@ -21,7 +21,7 @@ export const useFavouritesOnFocus = (): UseFavouritesOnFocusResult => {
   const favourites = useMemo(() => {
     const sortedFavorites = data?.favouritesItems ? [...data.favouritesItems] : []
     sortedFavorites.sort((f1, f2) => f1.entryNumber - f2.entryNumber)
-    return sortedFavorites
+    return sortedFavorites.filter(favorite => !!favorite.product)
   }, [data])
 
   const reloadFavourites = useCallback(

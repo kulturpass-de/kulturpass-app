@@ -14,8 +14,7 @@ import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { RegistrationDataPrivacyCancelAlert } from './registration-data-privacy-cancel-alert'
 import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
-import { getCdcDpsDocumentUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
-import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
+import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from '../../utils/links/hooks/use-localized-environment-url'
 
 export type RegistrationDataPrivacyScreenProps = {
   onHeaderClose: () => void

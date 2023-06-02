@@ -13,17 +13,23 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+jest.mock('../../environment-configuration/utils', () => {
+  return {
+    getEnvironmentConfig: jest.fn(() => ({
+      commerce: {
+        baseSiteId: 'my_base_site_id',
+        baseUrl: 'http://my_base_url',
+      },
+    })),
+  }
+})
+
 test('Should send DELETE request', async () => {
   const preloadedState = {
     auth: { commerce: { access_token: 'my_access_token' } },
     persisted: {
       environmentConfiguration: {
-        currentEnvironment: {
-          commerce: {
-            baseSiteId: 'my_base_site_id',
-            baseUrl: 'http://my_base_url',
-          },
-        },
+        currentEnvironmentName: 'test',
       },
     },
   } as RootState

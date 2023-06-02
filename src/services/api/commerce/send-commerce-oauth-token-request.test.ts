@@ -6,21 +6,25 @@ import { jestFn } from '../../testing/jest-fn'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { sendCommerceOauthTokenRequest } from './send-commerce-oauth-token-request'
 
+jest.mock('../../environment-configuration/utils', () => {
+  return {
+    getEnvironmentConfig: jest.fn(() => ({
+      commerce: {
+        baseSiteId: 'my_base_site_id',
+        auth: {
+          clientId: 'my_client_id',
+          clientSecret: 'my_client_secret',
+          tokenEndpoint: 'http://my_token_endpoint',
+        },
+      },
+    })),
+  }
+})
+
 describe('send-commerce-oauth-token-request', () => {
   const preloadedState = {
     persisted: {
-      environmentConfiguration: {
-        currentEnvironment: {
-          commerce: {
-            baseSiteId: 'my_base_site_id',
-            auth: {
-              clientId: 'my_client_id',
-              clientSecret: 'my_client_secret',
-              tokenEndpoint: 'http://my_token_endpoint',
-            },
-          },
-        },
-      },
+      environmentConfiguration: { currentEnvironmentName: 'test' },
     },
   } as RootState
   const store = configureMockStore({ preloadedState })

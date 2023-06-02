@@ -8,9 +8,8 @@ import { onGetAppConfigFulfilled, onGetAppConfigFulfilledEffect } from './on-get
 
 let mockedAppConfig: AppConfig = {
   appVersions: { min: '0.5.55' },
-  certificates: {
-    cdc: [{ fingerprint256: 'cdc_fingerprint256' }],
-    commerce: [{ fingerprint256: 'commerce_fingerprint256' }],
+  eid: {
+    tcTokenUrlSubdomains: ['eid-sp'],
   },
 }
 
@@ -78,11 +77,10 @@ describe('on-get-app-config-fulfilled', () => {
 
     it('should should throw ErrorWithCode if appConfig schema is not correct', async () => {
       mockedAppConfig = {
-        certificates: {
-          cdc: [{ fingerprint256: 'cdc_fingerprint256' }],
-          commerce: [{ fingerprint256: 'commerce_fingerprint256' }],
+        eid: {
+          tcTokenUrlSubdomains: 'test',
         },
-      } as AppConfig
+      } as any as AppConfig
 
       const promise = onGetAppConfigFulfilledEffect(expectedTriggerAction as any, store as any)
 

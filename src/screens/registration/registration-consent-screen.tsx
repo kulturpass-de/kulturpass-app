@@ -9,14 +9,14 @@ import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-fo
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import {
-  getCdcDpsDocumentUrl,
-  getCdcEulaDocumentUrl,
-} from '../../services/environment-configuration/redux/environment-configuration-selectors'
 import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
+import {
+  useLocalizedEnvironmentUrl,
+  getCdcDpsDocumentUrl,
+  getCdcEulaDocumentUrl,
+} from '../../utils/links/hooks/use-localized-environment-url'
 
 export type RegistrationConsentScreenProps = {
   onHeaderPressClose: () => void

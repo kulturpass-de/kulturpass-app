@@ -1,17 +1,19 @@
-import { getEnvironmentConfigurationCdc } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getCurrentEnvironmentConfigurationName } from '../../environment-configuration/redux/environment-configuration-selectors'
 import { RootState } from '../../redux/configure-store'
 import { CreateQueryFn } from '../common/types'
 import { appendCdcDefaultParameters } from './append-cdc-default-parameters'
 import { buildCdcApiUrl } from './build-cdc-api-url'
 import { encodeBodyPayload } from '../utils/encode-body-payload'
 import { sendCdcPostRequest } from './send-cdc-post-request'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 
 export const callCdcWithApiKey: CreateQueryFn<{
   path: string
   bodyPayload?: Record<string, any>
 }> = prepare => async (arg, api, extraOptions, baseQuery) => {
   const rootState = api.getState() as RootState
-  const cdcEnvConfig = getEnvironmentConfigurationCdc(rootState)
+  const envConfigName = getCurrentEnvironmentConfigurationName(rootState)
+  const cdcEnvConfig = getEnvironmentConfig(envConfigName).cdc
 
   const prepared = prepare(arg, api)
   if (!prepared.bodyPayload) {

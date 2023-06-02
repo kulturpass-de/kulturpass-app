@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 import { getProductImageUrl } from '../utils'
-import { useSelector } from 'react-redux'
 
-import { getCommerceBaseUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
 import { Image } from '../../../services/api/types/commerce/api-types'
 import { useOrigin } from '../../../features/spartacus-webview/hooks/use-origin'
+import { useEnvironmentConfigurationCommerce } from '../../../services/environment-configuration/hooks/use-get-environment-configuration'
 
 export const useProductImageUrl = (images?: Image[], format: 'zoom' | 'product' = 'zoom') => {
-  const currentCommerceUri = useSelector(getCommerceBaseUrl)
+  const currentCommerceUri = useEnvironmentConfigurationCommerce().baseUrl
 
   const currentCommerceOrigin = useOrigin(currentCommerceUri)
 

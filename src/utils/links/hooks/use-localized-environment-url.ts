@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux'
 import { useTranslation } from '../../../services/translation/translation'
 import { useMemo } from 'react'
-import { RootState } from '../../../services/redux/configure-store'
 import { z } from 'zod'
 import { Language } from '../../../services/translation/types'
+import { EnvironmentConfiguration } from '../../../services/environment-configuration/environment-configuration'
+import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-get-environment-configuration'
 
 export const LocalizedLinkSchema = z
   .record(z.nativeEnum(Language), z.string())
@@ -13,11 +13,24 @@ export const LocalizedLinkSchema = z
 
 export type LocalizedLink = z.infer<typeof LocalizedLinkSchema>
 
-export const useLocalizedEnvironmentUrl = (
-  localizedLinkSelector: Parameters<typeof useSelector<RootState, LocalizedLink>>[0],
-) => {
-  const { l: language } = useTranslation()
-  const localizedLink = useSelector(localizedLinkSelector)
+export type LocalizedLinkSelector = (envConfig: EnvironmentConfiguration) => LocalizedLink
 
-  return useMemo(() => localizedLink[language], [language, localizedLink])
+export const useLocalizedEnvironmentUrl = (localizedLinkSelector: LocalizedLinkSelector) => {
+  const { l: language } = useTranslation()
+  const envConfig = useEnvironmentConfiguration()
+
+  return useMemo(() => {
+    const localizedLink = localizedLinkSelector(envConfig)
+    return localizedLink[language]
+  }, [envConfig, language, localizedLinkSelector])
 }
+
+export const getCdcDpsDocumentUrl: LocalizedLinkSelector = env => env.cdc.consents.dpsDocumentUrl
+
+export const getCdcEulaDocumentUrl: LocalizedLinkSelector = env => env.cdc.consents.eulaDocumentUrl
+
+export const getImprintUrl: LocalizedLinkSelector = env => env.appInformation.imprintUrl
+
+export const getOpenSourceLegalNoticeUrl: LocalizedLinkSelector = env => env.appInformation.openSourceLegalNoticeUrl
+
+export const getFaqHomeUrl: LocalizedLinkSelector = env => env.faq.homeUrl

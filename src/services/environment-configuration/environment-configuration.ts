@@ -42,6 +42,7 @@ export type CustomerDataCloud = z.infer<typeof CustomerDataCloudSchema>
 
 export const EidSchema = z.object({
   tcTokenUrl: z.string(),
+  tcTokenUrlDefaultSubdomain: z.string(),
 })
 
 export type Eid = z.infer<typeof EidSchema>
@@ -75,7 +76,8 @@ export type EnvironmentConfiguration = z.infer<typeof EnvironmentConfigurationSc
 
 export const EnvironmentConfigurationContentSchema = z.object({
   $schema: z.string(),
-  data: z.array(EnvironmentConfigurationSchema),
+  // At least one environment configuration must be available
+  data: z.array(EnvironmentConfigurationSchema).refine(data => data.length > 0),
 })
 
 export type EnvironmentConfigurationContent = z.infer<typeof EnvironmentConfigurationContentSchema>

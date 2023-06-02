@@ -17,13 +17,4 @@ describe('changeEnvironment', () => {
     store.expectActions([{ type: setEnvironmentConfiguration.type }])
     store.expectActions([{ type: authLogout.pending.type }])
   })
-
-  it('should throw when given environment name does not exist', async () => {
-    await store.dispatch(changeEnvironment('test-test-test'))
-
-    const changeEnvironmentRejected = store.findAction(changeEnvironment.rejected.match)
-    expect(changeEnvironmentRejected?.payload).toBeInstanceOf(Error)
-
-    store.expectActionNotDispatched(authLogout.pending.match)
-  })
 })

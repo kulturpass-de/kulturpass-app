@@ -67,7 +67,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.productPriceInfoContainer}>
-          {!isVoucherPickup ? (
+          {!isVoucherPickup && productDetail.productType === ProductTypes.Voucher ? (
             <>
               <Icon source="Info" width={16} height={16} />
               <TranslatedText

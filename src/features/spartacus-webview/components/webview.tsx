@@ -45,7 +45,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
-  const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState } = useWebViewBridgeAdapter(webViewId)
+  const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState } =
+    useWebViewBridgeAdapter(webViewId)
 
   const origin = useOrigin(url)
 
@@ -69,6 +70,12 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
     resetError()
     webViewRef.current?.reload()
   }, [resetError, webViewRef])
+
+  const onLoadStart = useCallback(() => {
+    if (bridgeAdapterState.isReady) {
+      setBridgeAdapterState({ ...bridgeAdapterState, isReady: false })
+    }
+  }, [bridgeAdapterState, setBridgeAdapterState])
 
   const dispatch = useDispatch<AppDispatch>()
   const isUserLoggedIn = useSelector(getIsUserLoggedIn)
@@ -113,6 +120,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
         onMessage={onMessage}
         {...props}
         onLoadEnd={setContentOffset}
+        onLoadStart={onLoadStart}
         style={[styles.webview, style]}
         onScroll={onScroll}
         onTouchStart={onTouchStart}

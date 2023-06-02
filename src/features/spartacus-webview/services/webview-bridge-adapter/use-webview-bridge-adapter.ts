@@ -36,19 +36,16 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
   }, [webViewBridgeAdapter, webViewId])
 
   useEffect(() => {
-    if (!bridgeAdapterState.isReady) {
-      const subscription = bridgeAdapterApi.onBridge(event => {
-        if (event.name === 'ready') {
-          setBridgeAdapterState(currentState => ({ ...currentState, isReady: true }))
-          subscription.unsubscribe()
-        }
-      })
-
-      return () => {
-        subscription.unsubscribe()
+    const subscription = bridgeAdapterApi.onBridge(event => {
+      if (event.name === 'ready') {
+        setBridgeAdapterState(currentState => ({ ...currentState, isReady: true }))
       }
-    }
-  }, [bridgeAdapterState.isReady, bridgeAdapterApi])
+    })
 
-  return { webViewRef, onMessage, bridgeAdapterApi, bridgeAdapterState }
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [bridgeAdapterApi])
+
+  return { webViewRef, onMessage, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState }
 }

@@ -2,12 +2,9 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { env } from '../../../env'
-import { getCdcSessionData } from '../../../services/auth/store/auth-selectors'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import { RootState } from '../../../services/redux/configure-store'
 import { useTranslation } from '../../../services/translation/translation'
 import { getSimulateCard } from '../redux/simulated-card-selectors'
-import { useGetAccountInfoLazyQuery } from '../../../services/user/use-get-account-info-lazy-query'
 import {
   AccessRights,
   Certificate,
@@ -16,6 +13,7 @@ import {
   AA2WorkflowHelper,
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { AA2Timeout, isTimeoutError } from '../errors'
+import { useGetTcTokenUrl } from './use-get-tc-token-url'
 
 /**
  * Hook that returns a callback for starting the AA2 Auth flow.
@@ -28,12 +26,7 @@ export const useStartAA2Auth = (
 ) => {
   const { t } = useTranslation()
   const simulateCard = useSelector(getSimulateCard)
-  const tcTokenUrl = useSelector(
-    (state: RootState) => state.persisted.environmentConfiguration.currentEnvironment.eid.tcTokenUrl,
-  )
-
-  const sessionData = useSelector(getCdcSessionData)
-  const getAccountInfoLazyQuery = useGetAccountInfoLazyQuery()
+  const getTcTokenUrl = useGetTcTokenUrl()
 
   const [isLoading, setIsLoading] = useState(false)
   const startAuth = useCallback(async () => {
@@ -48,19 +41,7 @@ export const useStartAA2Auth = (
         }
       }
 
-      if (sessionData === null) {
-        return onError(new UnknownError())
-      }
-
-      const { data, error } = await getAccountInfoLazyQuery(sessionData.regToken)
-
-      if (error !== undefined) {
-        return onError(error)
-      }
-
-      if (data?.id_token === undefined) {
-        return onError(new UnknownError())
-      }
+      const tokenUrl = await getTcTokenUrl()
 
       const messages: WorkflowMessages = {
         sessionStarted: t('eid_iosScanDialog_sessionStarted'),
@@ -68,19 +49,22 @@ export const useStartAA2Auth = (
         sessionSucceeded: t('eid_iosScanDialog_sessionSucceeded'),
         sessionInProgress: t('eid_iosScanDialog_sessionInProgress'),
       }
-      const tokenUrl = `${tcTokenUrl}?idToken=${data.id_token}`
-      const accessRights = await AA2CommandService.runAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages)
+      const accessRights = await AA2CommandService.runAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages, {
+        msTimeout: 50000,
+      })
       const certificate = await AA2CommandService.getCertificate()
       onSuccess(accessRights, certificate)
     } catch (e) {
-      if (isTimeoutError(e)) {
+      if (e instanceof ErrorWithCode) {
+        onError(e)
+      } else if (isTimeoutError(e)) {
         onError(new AA2Timeout())
       }
       // Other Error cases are handled by the useHandleErrors hook
     } finally {
       setIsLoading(false)
     }
-  }, [simulateCard, sessionData, getAccountInfoLazyQuery, t, onNFCNotSupported, onError, tcTokenUrl, onSuccess])
+  }, [simulateCard, getTcTokenUrl, t, onSuccess, onError, onNFCNotSupported])
 
   return { startAuth, isLoading }
 }

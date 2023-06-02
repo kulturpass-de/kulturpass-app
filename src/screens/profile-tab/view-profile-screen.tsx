@@ -13,8 +13,7 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useUserInfo } from '../../services/user/use-user-info'
 import { spacing } from '../../theme/spacing'
 import { SvgImage } from '../../components/svg-image/svg-image'
-import { getFaqHomeUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
-import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
+import { useLocalizedEnvironmentUrl, getFaqHomeUrl } from '../../utils/links/hooks/use-localized-environment-url'
 import { openLink } from '../../utils/links/utils'
 
 export type ViewProfileScreenProps = {

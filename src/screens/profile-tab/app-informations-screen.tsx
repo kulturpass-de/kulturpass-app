@@ -10,12 +10,12 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import {
+  useLocalizedEnvironmentUrl,
   getCdcDpsDocumentUrl,
   getCdcEulaDocumentUrl,
   getImprintUrl,
   getOpenSourceLegalNoticeUrl,
-} from '../../services/environment-configuration/redux/environment-configuration-selectors'
-import { useLocalizedEnvironmentUrl } from '../../utils/links/hooks/use-localized-environment-url'
+} from '../../utils/links/hooks/use-localized-environment-url'
 import { openLink } from '../../utils/links/utils'
 import { ListItem } from '../../components/list-item/list-item'
 import { SvgImage } from '../../components/svg-image/svg-image'
@@ -83,7 +83,7 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
             textStyle="CaptionSemibold"
             textStyleOverrides={styles.appVersionText}
             i18nKey="app_informations_app_version"
-            i18nParams={{ version: pkg.version }}
+            i18nParams={{ version: `${pkg.version} (${pkg.buildNumber})` }}
           />
         </View>
         <View style={styles.spacer} />

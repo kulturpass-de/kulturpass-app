@@ -1,4 +1,4 @@
-import { getEnvironmentConfigurationCdc } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { ErrorWithCode } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
@@ -45,7 +45,9 @@ describe('call-cdc-with-session-info-signed', () => {
   })
 
   it('should call sendCdcPostRequest with correct parameters', async () => {
-    const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
+    const cdcEnvConfig = getEnvironmentConfig(
+      store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+    ).cdc
 
     const prepare = () => ({ path: 'my_path', sessionToken: 'my_session_token', sessionSecret: 'my_session_secret' })
 
@@ -71,7 +73,9 @@ describe('call-cdc-with-session-info-signed', () => {
 
   describe('when bodyPayload is provided by prepare', () => {
     it('should call sendCdcPostRequest with correct parameters', async () => {
-      const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
+      const cdcEnvConfig = getEnvironmentConfig(
+        store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+      ).cdc
 
       const prepare = () => ({
         path: 'my_path',

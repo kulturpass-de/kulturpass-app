@@ -1,19 +1,18 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 import { useTranslation } from '../../services/translation/translation'
 import { Screen } from '../../components/screen/screen'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { getCommerceSearchUrl } from '../../services/environment-configuration/redux/environment-configuration-selectors'
+import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-get-environment-configuration'
 
 export type SearchScreenProps = {}
 
 export const SearchScreen: React.FC<SearchScreenProps> = () => {
   const { buildTestId } = useTestIdBuilder()
 
-  const searchUrl = useSelector(getCommerceSearchUrl)
+  const searchUrl = useEnvironmentConfigurationCommerce().searchUrl
   const { l: language } = useTranslation()
 
   return (

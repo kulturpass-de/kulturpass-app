@@ -22,9 +22,11 @@ export const AppConfigScreen: React.FC<AppConfigScreenProps> = ({ onHeaderPressB
 
   const currentAppConfig = useSelector((state: RootState) => state.persisted.appCore.appConfig)
 
+  const [executeQuery] = commerceApi.useLazyGetAppConfigQuery()
+
   const onPressForceReloadAppConfig = useCallback(() => {
-    commerceApi.endpoints.getAppConfig.initiate(undefined, { forceRefetch: true })
-  }, [])
+    executeQuery(undefined, false)
+  }, [executeQuery])
 
   return (
     <ModalScreen testID={buildTestId('appConfig')}>

@@ -1,4 +1,4 @@
-import { getEnvironmentConfigurationCdc } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 import { callCdcWithApiKey } from './call-cdc-with-api-key'
@@ -36,7 +36,9 @@ describe('call-cdc-with-api-key', () => {
   })
 
   it('should call sendCdcPostRequest with correct parameters', async () => {
-    const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
+    const cdcEnvConfig = getEnvironmentConfig(
+      store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+    ).cdc
 
     const prepare = () => ({ path: 'my_path' })
 
@@ -60,7 +62,9 @@ describe('call-cdc-with-api-key', () => {
 
   describe('when bodyPayload is provided by prepare', () => {
     it('should call sendCdcPostRequest with correct parameters', async () => {
-      const cdcEnvConfig = getEnvironmentConfigurationCdc(store.getState())
+      const cdcEnvConfig = getEnvironmentConfig(
+        store.getState().persisted.environmentConfiguration.currentEnvironmentName,
+      ).cdc
 
       const prepare = () => ({
         path: 'my_path',

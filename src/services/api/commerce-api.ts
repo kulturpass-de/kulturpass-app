@@ -1,6 +1,6 @@
 import { createApi as createRtkApi, defaultSerializeQueryArgs } from '@reduxjs/toolkit/query/react'
 
-import { getEnvironmentConfigurationState } from '../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../environment-configuration/utils'
 import { RootState } from '../redux/configure-store'
 import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
 import { sendCommerceDeleteRequest } from './commerce/send-commerce-delete-request'
@@ -25,8 +25,8 @@ import { DeleteCartEntryParams } from './types/commerce/commerce-delete-cart-ent
 import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
 import { GetOrderDetailParams, GetOrderDetailResponse } from './types/commerce/commerce-get-order-detail'
 import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-get-profile'
-import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
 import { GetRandomProductParams, GetRandomProductResponse } from './types/commerce/commerce-get-random-product'
+import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
 
 const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 
@@ -139,8 +139,10 @@ export const commerceApi = createRtkApi({
     getAppConfig: builder.query<GetAppConfigResponseBody, GetAppConfigRequestParams>({
       queryFn: sendCommerceGetRequest((params, api) => {
         const rootState = api.getState() as RootState
-        const environmentConfiguration = getEnvironmentConfigurationState(rootState)
-        const url: string = environmentConfiguration.currentEnvironment.appConfig.url
+        const environmentConfiguration = getEnvironmentConfig(
+          rootState.persisted.environmentConfiguration.currentEnvironmentName,
+        )
+        const url: string = environmentConfiguration.appConfig.url
         return { url, appendNoCacheHeader: true }
       }),
     }),

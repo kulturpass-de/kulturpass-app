@@ -17,12 +17,14 @@ import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
 import { ProductDetail, ProductTypes } from '../types/product-detail'
-import { useLocalizedEnvironmentUrl } from '../../../utils/links/hooks/use-localized-environment-url'
+import {
+  useLocalizedEnvironmentUrl,
+  getCdcDpsDocumentUrl,
+} from '../../../utils/links/hooks/use-localized-environment-url'
 import { ProductConfirmOverview } from '../components/product-confirm-overview'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { getCdcDpsDocumentUrl } from '../../../services/environment-configuration/redux/environment-configuration-selectors'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { Icon } from '../../../components/icon/icon'
 import { AvailableTranslations } from '../../../components/translated-text/types'

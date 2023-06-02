@@ -27,7 +27,7 @@
 	<key>NFCReaderUsageDescription</key>
 	<string>KulturPass DE needs NFC to access the ID card.</string>
 	<key>NSAppTransportSecurity</key>
-	<!-- build v0.9.5 -->
+	<!-- build v1.0.1 -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
