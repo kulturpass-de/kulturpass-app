@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -106,7 +106,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <AccountVerifiedWebViewHandler bridgeAdapterApi={bridgeAdapterApi} />
       <WebView
         onShouldStartLoadWithRequest={handleShouldLoadRequest}
@@ -126,12 +126,18 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       />
-      {errorCode !== undefined ? <WebviewErrorView onRefresh={reload} errorCode={errorCode} /> : null}
-    </>
+      {errorCode !== undefined ? (
+        <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />
+      ) : null}
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
   webview: {
     backgroundColor: colors.basicBackground,
   },

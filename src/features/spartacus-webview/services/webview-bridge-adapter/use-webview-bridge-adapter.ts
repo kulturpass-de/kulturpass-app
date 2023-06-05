@@ -26,7 +26,12 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
 
   const onMessage = useCallback(
     (event: WebViewMessageEvent) => {
-      webViewBridgeAdapter.webviewMessageHandler(webViewId, event)
+      try {
+        webViewBridgeAdapter.webviewMessageHandler(webViewId, event)
+      } catch (e) {
+        // Fail silently, as the event format is not correct
+        console.warn(e)
+      }
     },
     [webViewBridgeAdapter, webViewId],
   )

@@ -121,12 +121,13 @@ const styles = StyleSheet.create({
   productPriceInfoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexShrink: 1,
   },
   productPriceInfo: {
     paddingLeft: spacing[2],
   },
   productPrice: {
     color: colors.moonDarkest,
-    paddingRight: spacing[5],
+    paddingHorizontal: spacing[5],
   },
 })

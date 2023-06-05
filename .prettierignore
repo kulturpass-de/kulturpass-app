@@ -13,3 +13,5 @@ coverage/
 src/components/loading-animation/loading-animation-lottie.json
 # Ignoring simulated card jsons
 src/screens/developer-settings/simulation-cards/*.json
+# Ignoring en.json translations
+src/services/translation/i18n/en.json 

@@ -10,7 +10,7 @@ import { SpartacusWebView } from '../../features/spartacus-webview/components/we
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import { ErrorWithCode } from '../../services/errors/errors'
+import { ErrorWithCode, NetworkError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { HomeHeader } from './home-header'
 import { HomeHeaderShrinkable } from './home-header-shrinkable'
@@ -29,7 +29,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   useEffect(() => {
-    if (error instanceof ErrorWithCode) {
+    if (error instanceof ErrorWithCode && !(error instanceof NetworkError)) {
       setVisibleError(error)
     }
   }, [error])

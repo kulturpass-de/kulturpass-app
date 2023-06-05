@@ -31,7 +31,7 @@ export const useGetTcTokenUrl = () => {
     let tcTokenSubdomain: string
     const filteredSubdomains = tcTokenUrlSubdomains?.filter(dom => dom.match(/^[A-Za-z0-9-_]+$/) !== null)
     if (filteredSubdomains !== undefined && filteredSubdomains.length !== 0) {
-      const randomIndex = Math.floor(Math.random() * filteredSubdomains.length)
+      const randomIndex = Math.round(Math.random() * (filteredSubdomains.length - 1))
       tcTokenSubdomain = filteredSubdomains[randomIndex]
     } else {
       tcTokenSubdomain = eidEnv.tcTokenUrlDefaultSubdomain

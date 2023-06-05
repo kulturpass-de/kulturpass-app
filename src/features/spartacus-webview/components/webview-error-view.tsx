@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { Illustration } from '../../../components/illustration/illustration'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
@@ -12,12 +12,13 @@ export const ERR_NO_INTERNET = 'ERR_NO_INTERNET'
 export type WebviewErrorViewProps = {
   onRefresh?: () => void
   errorCode: number | typeof ERR_NO_INTERNET
+  style?: StyleProp<ViewStyle>
 }
 
-export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, errorCode }) => {
+export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, errorCode, style }) => {
   const { buildTestId } = useTestIdBuilder()
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={[styles.content, style]}>
       <Illustration i18nKey="noNetwork_image_alt" testID={buildTestId('webView_noNetwork_image')} type="no-network" />
       <View style={styles.contentContainer}>
         <TranslatedText
@@ -40,15 +41,17 @@ export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, e
           </View>
         ) : null}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    flexDirection: 'column',
     backgroundColor: colors.basicBackground,
+  },
+  content: {
+    flexDirection: 'column',
   },
   contentContainer: {
     flexGrow: 1,

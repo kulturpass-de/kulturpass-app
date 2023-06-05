@@ -12,7 +12,7 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
     try {
       await locationService.requestLocationPermission()
     } catch (e) {
-      console.log('Location Permission not granted')
+      // Location permission not granted
     } finally {
       onNext()
     }
@@ -25,12 +25,10 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
       contentTitleI18nKey="onboarding_locationPermission_content_title"
       contentTextI18nKey="onboarding_locationPermission_content_text"
       acceptButtonI18nKey="onboarding_locationPermission_acceptButton"
-      denyButtonI18nKey="onboarding_locationPermission_denyButton"
       illustrationI18nKey="onboarding_locationPermission_image_alt"
       dataprivacyI18nKey="onboarding_locationPermission_dpsLink"
       illustrationType="localisation-consent"
       onAccept={onAccept}
-      onDeny={onNext}
     />
   )
 }
