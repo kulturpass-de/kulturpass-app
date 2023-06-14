@@ -35,7 +35,6 @@ test.skip('Should render menu item in settings page', async () => {
       onPressContact={() => {}}
       onPressDeleteAccount={() => {}}
       onPressLogin={() => {}}
-      onPressLogout={() => {}}
       onPressDeveloperMenu={() => {}}
       onPressChangeLanguage={() => {}}
       onPressEditPreferences={() => {}}

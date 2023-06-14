@@ -131,7 +131,7 @@ describe('useWebViewAuthSync', () => {
     })
 
     it('Should force logout if isLoggedIn changes to false within 5 seconds', async () => {
-      const authLogout = jest.spyOn(authLogoutModule, 'authLogout').mockImplementation((() => {}) as any)
+      const authLogout = jest.spyOn(authLogoutModule, 'authLogoutWithoutErrors').mockImplementation((() => {}) as any)
 
       const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
 

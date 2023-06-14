@@ -9,14 +9,11 @@ import { SettingsStack, SettingsStackInitialRouteName } from './settings/setting
 import { TabsParamList } from './types'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BottomTabBar } from './bottom-tab-bar'
-import { useWebViewBridgeAdapterContext } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter-provider'
-import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 
 const BottomTab = createBottomTabNavigator<TabsParamList>()
 
 export const Tabs: React.FC = () => {
   const { bottom } = useSafeAreaInsets()
-  const webViewBridgeAdapter = useWebViewBridgeAdapterContext()
 
   const screenOptions: BottomTabNavigationOptions = {
     headerShown: false,
@@ -29,20 +26,8 @@ export const Tabs: React.FC = () => {
 
   return (
     <BottomTab.Navigator tabBar={renderTabBar} screenOptions={screenOptions}>
-      <BottomTab.Screen
-        name={HomeRouteConfig.name}
-        component={HomeRouteConfig.component}
-        listeners={{
-          tabPress: () => webViewBridgeAdapter.resetToInitialPage(WebViewId.Home),
-        }}
-      />
-      <BottomTab.Screen
-        name={SearchRouteConfig.name}
-        component={SearchRouteConfig.component}
-        listeners={{
-          tabPress: () => webViewBridgeAdapter.resetToInitialPage(WebViewId.Search),
-        }}
-      />
+      <BottomTab.Screen name={HomeRouteConfig.name} component={HomeRouteConfig.component} />
+      <BottomTab.Screen name={SearchRouteConfig.name} component={SearchRouteConfig.component} />
       <BottomTab.Screen name={ReservationsRouteConfig.name} component={ReservationsRouteConfig.component} />
       <BottomTab.Screen name={FavoritesRouteConfig.name} component={FavoritesRouteConfig.component} />
       <BottomTab.Screen

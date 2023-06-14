@@ -56,7 +56,7 @@ export const PreferencesCategorySelector = React.forwardRef<View, PreferencesCat
               <PreferencesCategorySelectorItem
                 testID={addTestIdModifier(testID, `category_${category.id}`)}
                 key={category.id}
-                style={grid === 'column' ? styles.columnItem : { width: size.width / 2 - spacing[5] }}
+                style={grid === 'column' ? styles.columnItem : { width: size.width / 2 - spacing[5] / 2 }}
                 isSelected={isSelected}
                 isSelectable={isSelected || canSelectMore}
                 category={category}
@@ -71,12 +71,14 @@ export const PreferencesCategorySelector = React.forwardRef<View, PreferencesCat
 
 const styles = StyleSheet.create({
   rows: {
-    margin: -spacing[5] / 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: spacing[5],
+    alignItems: 'stretch',
   },
   columns: {
     flexDirection: 'column',
+    gap: spacing[5],
   },
   columnItem: {
     width: '100%',

@@ -60,7 +60,7 @@ export const useStartAA2Auth = (
       } else if (isTimeoutError(e)) {
         onError(new AA2Timeout())
       }
-      // Other Error cases are handled by the useHandleErrors hook
+      // AusweisApp2 Message errors are handled by the useHandleErrors hook
     } finally {
       setIsLoading(false)
     }

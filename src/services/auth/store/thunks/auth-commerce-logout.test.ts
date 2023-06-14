@@ -16,10 +16,12 @@ describe('authCommerceLogut', () => {
   it('should call authSlice.clearCommerceSession and sessionService.clearCommerceSession', async () => {
     const clearCommerceSession = jest.spyOn(sessionService, 'clearCommerceSession')
 
-    await store.dispatch(authCommerceLogout())
+    const apiErrors: any[] = []
+    await store.dispatch(authCommerceLogout(apiErrors))
 
     store.expectActions([{ type: authSlice.actions.clearCommerceSession.type }])
     expect(clearCommerceSession).toHaveBeenCalledTimes(1)
+    expect(apiErrors.length).toBe(0)
   })
 
   it('should return error as payload, of a deeply nested thrown error, and break', async () => {
@@ -29,9 +31,11 @@ describe('authCommerceLogut', () => {
       throw myError
     })
 
-    await store.dispatch(authCommerceLogout())
+    const apiErrors: any[] = []
+    await store.dispatch(authCommerceLogout(apiErrors))
 
     const authCommerceLogoutRejected = store.findAction(authCommerceLogout.rejected.match)
     expect(authCommerceLogoutRejected?.payload).toEqual(myError)
+    expect(apiErrors.length).toBe(0)
   })
 })

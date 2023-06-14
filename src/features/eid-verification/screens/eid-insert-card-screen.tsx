@@ -23,6 +23,7 @@ export type EidInsertCardScreenProps = {
   pin?: string
   newPin?: string
   can?: string
+  puk?: string
   errorModalVisible: boolean
   onAuthSuccess: () => void
   onChangePinSuccess: () => void
@@ -45,6 +46,7 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   pin,
   newPin,
   can,
+  puk,
   errorModalVisible,
 }) => {
   const { buildTestId } = useTestIdBuilder()
@@ -57,6 +59,7 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
     pin,
     newPin,
     can,
+    puk,
     onPinRetry,
     onCanRetry,
     onPukRetry,

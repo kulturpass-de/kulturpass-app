@@ -8,7 +8,6 @@ export enum ProductTypes {
   MusicInstrument = 'musicInstrumentProductWsDTO',
   SheetMusic = 'sheetMusicProductWsDTO',
   StagedEvent = 'stagedEventProductWsDTO',
-  Video = 'videoProductWsDTO',
   Voucher = 'voucherProductWsDTO',
 }
 
@@ -186,25 +185,6 @@ export type StagedEventProductDetail = ProductDetailBase<ProductTypes.StagedEven
   venueDistance?: string
 }
 
-export type VideoProductDetail = ProductDetailBase<ProductTypes.Video> & {
-  /**
-   * The ean of the video product
-   */
-  ean: string
-  /**
-   * One of: Dvd, Vinyl, Other  - optional
-   */
-  videoFormat?: 'DVD' | 'BLURAY' | 'ULTRA_HD_4K'
-  /**
-   * One of: NoRestriction, Over6, Over12, Over16, Over18
-   */
-  ageRating: 'NO_RESTRICTION' | 'OVER_6' | 'OVER_12' | 'OVER_16' | 'OVER_18'
-  /**
-   * The length of the video - optional
-   */
-  durationInMins?: number
-}
-
 export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
   voucherPickupPoint?: {
     name?: string
@@ -234,5 +214,4 @@ export type ProductDetail =
   | MusicInstrumentProductDetail
   | SheetMusicProductDetail
   | StagedEventProductDetail
-  | VideoProductDetail
   | VoucherProductDetail

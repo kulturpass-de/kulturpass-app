@@ -1,4 +1,5 @@
 import React from 'react'
+import { StatusBar } from 'react-native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 
 import { LogInRouteConfig } from '../../screens/log-in/log-in-route'
@@ -10,7 +11,6 @@ import { ModalParamList } from './types'
 import { StorybookRouteConfig } from '../../screens/developer-settings/storybook-route'
 import { OnboardingAboutAppRouteConfig } from '../../features/onboarding/screens/onboarding-about-app-route'
 import { OnboardingLocationPermissionRouteConfig } from '../../features/onboarding/screens/onboarding-location-permission-route'
-import { OnboardingNotificationPermissionRouteConfig } from '../../features/onboarding/screens/onboarding-notification-permission-route'
 import { RegistrationFormRouteConfig } from '../../screens/registration/registration-form-route'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { RegistrationPreferencesRouteConfig } from '../../screens/registration-preferences/registration-preferences-route'
@@ -37,12 +37,18 @@ import { AccountDeletionConfirmRouteConfig } from '../../features/account-deleti
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
 import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
+import { EidPukRouteConfig } from '../../features/eid-verification/screens/eid-puk-route'
+import { EidPukInoperativeRouteConfig } from '../../features/eid-verification/screens/eid-puk-inoperative-route'
 
 const Stack = createStackNavigator<ModalParamList>()
 
 export const ModalStack: React.FC = () => {
   return (
     <ModalStackWrapper>
+      {/* Note: Although #00000000 is just "transparent", together with `translucent` - it allows the modals of
+      react-nativation to display their backdrop properly on Android */}
+      <StatusBar backgroundColor="#00000000" translucent barStyle={'dark-content'} />
+
       <Stack.Navigator
         initialRouteName="OnboardingAboutApp"
         detachInactiveScreens
@@ -62,7 +68,6 @@ export const ModalStack: React.FC = () => {
         <Stack.Group screenOptions={{ gestureEnabled: false }}>
           <Stack.Screen {...OnboardingAboutAppRouteConfig} />
           <Stack.Screen {...OnboardingLocationPermissionRouteConfig} />
-          <Stack.Screen {...OnboardingNotificationPermissionRouteConfig} />
         </Stack.Group>
 
         {/* Registration Routes */}
@@ -88,11 +93,13 @@ export const ModalStack: React.FC = () => {
           <Stack.Screen {...EidInsertCardRouteConfig} />
           <Stack.Screen {...EidPinRouteConfig} />
           <Stack.Screen {...EidCanRouteConfig} />
+          <Stack.Screen {...EidPukRouteConfig} />
           <Stack.Screen {...EidTransportPinRouteConfig} />
           <Stack.Screen {...EidNewPinRouteConfig} />
           <Stack.Screen {...EidVerificationCompletionRouteConfig} />
           <Stack.Screen {...EidChangePinCompletionRouteConfig} />
           <Stack.Screen {...EidNFCNotSupportedRouteConfig} />
+          <Stack.Screen {...EidPukInoperativeRouteConfig} />
         </Stack.Group>
         <Stack.Screen {...EidServiceProviderDetailsRouteConfig} />
 

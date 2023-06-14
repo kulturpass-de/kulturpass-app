@@ -1,6 +1,6 @@
 import { Balance } from '../../services/api/types/commerce/api-types'
 
-type ValidBalance = {
+export type ValidBalance = {
   grantedBalance: number
   availableBalance: number
   reservedBalance: number

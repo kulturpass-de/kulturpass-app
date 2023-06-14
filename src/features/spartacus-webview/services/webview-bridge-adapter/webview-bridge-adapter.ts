@@ -130,7 +130,7 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
     return disconnectWebView
   }
 
-  public resetToInitialPage(webViewId: WebViewId) {
+  public goToPage(webViewId: WebViewId, uri: string) {
     const webView = this.availableWebViews.get(webViewId)
     /*
      * This script gets inserted into the webview each time this function gets called
@@ -140,11 +140,14 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
      * Better would be, to insert a function once into the webview like
      *
      * webView?.injectJavaScript(`
-     *  function resetToInitialPage() {
-     *   var deltaRelativeToCurrentPage = window.history.length - 1
-     *   if (deltaRelativeToCurrentPage > 0) {
-     *     window.history.go(-deltaRelativeToCurrentPage);
-     *   }
+     *  function goToPage(uri: string) {
+     *    try {
+     *      var injectedUri = new URL(uri);
+     *      if (document.location.origin !== injectedUri.origin
+     *  || document.location.pathname !== injectedUri.pathname) {
+     *        document.location.href = injectedUri;
+     *      }
+     *    } catch {}
      *  }
      *
      *   // Don't remove
@@ -153,14 +156,34 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
      *
      * And then calling the function inside of the webview each time like:
      *
-     * webView?.injectJavaScript(`resetToInitialPage(); true;`)
+     * webView?.injectJavaScript(`goToPage(${JSON.stringify(uri)}); true;`)
      *
      */
+
     webView?.injectJavaScript(`
-      var deltaRelativeToCurrentPage = window.history.length - 1
-      if (deltaRelativeToCurrentPage > 0) {
-        window.history.go(-deltaRelativeToCurrentPage);
-      }
+      try {
+        var injectedUri = new URL(${JSON.stringify(uri)});
+
+        if (document.location.origin !== injectedUri.origin || document.location.pathname !== injectedUri.pathname) {
+          document.location.href = injectedUri;
+        }
+      } catch {}
+
+      // Don't remove
+      true;
+    `)
+  }
+
+  public scrollToTop(webViewId: WebViewId) {
+    const webView = this.availableWebViews.get(webViewId)
+    webView?.injectJavaScript(`
+      try {
+        window.scroll({
+          top: 0, 
+          left: 0, 
+          behavior: 'smooth'
+        });
+      } catch {}
 
       // Don't remove
       true;

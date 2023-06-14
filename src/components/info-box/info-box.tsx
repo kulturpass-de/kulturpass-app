@@ -9,7 +9,7 @@ type InfoBoxProps = PropsWithChildren<{
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ children, containerStyle }) => {
   return (
-    <View style={styles.button}>
+    <View style={styles.button} focusable>
       <View style={styles.shadow} />
       <View style={[styles.container, containerStyle]}>{children}</View>
     </View>

@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     bottom: -3.05,
   },
   container: {
-    height: 124,
+    minHeight: 124,
     borderRadius: 16,
     flexDirection: 'row',
     backgroundColor: colors.basicWhite,
@@ -152,15 +152,15 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flexDirection: 'row',
-    height: 42,
+    minHeight: 42,
     paddingTop: spacing[0],
   },
   middleContainer: {
     paddingTop: 5.5,
-    height: 37.5,
+    minHeight: 37.5,
   },
   bottomContainer: {
-    height: 27,
+    minHeight: 27,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: spacing[0],

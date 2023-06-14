@@ -18,7 +18,7 @@ const FaqLink: React.FC<PropsWithChildren<{ textStyle: AvailableTextStyles }>> =
       textStyle={textStyle}
       link={identificationStatusDuplicateFaqLink}
       i18nKey="verification_duplicate_faq_link"
-      iconSize={12}
+      iconSize={20}
     />
   )
 }
@@ -27,7 +27,7 @@ export const VerificationDuplicateHeader: React.FC = () => {
   const { firstName } = useUserInfo()
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} focusable>
       <View style={styles.shadow} />
       <View style={styles.innerContainer}>
         <View style={styles.shrink}>

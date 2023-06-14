@@ -96,16 +96,17 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
           />
         </View>
         <View style={styles.subtitleContainer}>
-          <TranslatedText
-            i18nKey="productDetail_confirmReservation_subtitle"
-            textStyle="BodyRegular"
-            textStyleOverrides={styles.subtitlePrefix}
-            testID={buildTestId('productDetail_confirmReservation_subtitle')}
-          />
           <Text
             style={[textStyles.BodyExtrabold, styles.subtitleBody]}
-            accessibilityLabel={t('productDetail_confirmReservation_supplierName')}
+            accessibilityLabel={t('productDetail_confirmReservation_subtitle') + ' ' + selectedOffer.shopName}
+            accessibilityHint={t('productDetail_confirmReservation_supplierName')}
             testID={buildTestId('productDetail_confirmReservation_supplierName')}>
+            <TranslatedText
+              i18nKey="productDetail_confirmReservation_subtitle"
+              textStyle="BodyRegular"
+              textStyleOverrides={styles.subtitlePrefix}
+              testID={buildTestId('productDetail_confirmReservation_subtitle')}
+            />
             {' ' + selectedOffer.shopName}
           </Text>
         </View>

@@ -66,6 +66,7 @@ jest.mock('./src/env', () => {
               baseSiteId: 'kulturapp',
               auth: {
                 tokenEndpoint: 'http://localhost/authorizationserver/oauth/token',
+                revocationEndpoint: 'http://localhost/authorizationserver/oauth/revoke',
                 clientId: 'mobile_android',
                 clientSecret: 'secret',
               },

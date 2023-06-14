@@ -17,14 +17,21 @@ export default function useAccessibilityFocus(
   const setFocus = useCallback(() => {
     if (platform === 'both' || Platform.OS === platform) {
       if (ref.current) {
-        InteractionManager.runAfterInteractions(() => {
+        const setFocusCallback = () => {
           setTimeout(() => {
             const focusPoint = findNodeHandle(ref.current)
+
             if (focusPoint) {
               AccessibilityInfo.setAccessibilityFocus(focusPoint)
             }
           }, timeout)
-        })
+        }
+
+        if (Platform.OS === 'android') {
+          requestAnimationFrame(setFocusCallback)
+        } else {
+          InteractionManager.runAfterInteractions(setFocusCallback)
+        }
       }
     }
   }, [ref, platform, timeout])

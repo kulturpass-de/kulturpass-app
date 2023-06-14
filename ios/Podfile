@@ -8,7 +8,6 @@ target 'cultureapp' do
   # React Native Permissions
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
   config = use_native_modules!
 

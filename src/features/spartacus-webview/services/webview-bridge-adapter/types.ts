@@ -98,4 +98,14 @@ export interface IBridgeAdapter {
    * This method is used by the WebViews, to receive scripts that they should inject in the web pages that they render.
    */
   connectWebView(webViewId: WebViewId, webView: WebView): () => void
+
+  /**
+   * Go to uri if document.location does not match with uri
+   */
+  goToPage(webViewId: WebViewId, uri: string): void
+
+  /**
+   * Scroll current page to the top
+   */
+  scrollToTop(webViewId: WebViewId): void
 }

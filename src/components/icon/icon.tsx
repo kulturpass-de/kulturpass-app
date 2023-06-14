@@ -17,7 +17,6 @@ import Book from '../../assets/icons/book.png'
 import MapPin from '../../assets/icons/map-pin.png'
 import Calendar from '../../assets/icons/calendar.png'
 import Tag from '../../assets/icons/tag.png'
-import Video from '../../assets/icons/Video.png'
 import Music from '../../assets/icons/music.png'
 import ArrowForward from '../../assets/icons/arrow-forward.png'
 import LinkArrow from '../../assets/icons/link-arrow.png'
@@ -25,6 +24,7 @@ import ID1 from '../../assets/icons/id1.png'
 import ID2 from '../../assets/icons/id2.png'
 import IDCard from '../../assets/icons/id-card.png'
 import Clipboard from '../../assets/icons/clipboard.png'
+import ClipboardCopy from '../../assets/icons/clipboard-copy.png'
 import Check from '../../assets/icons/check.png'
 import Processing from '../../assets/icons/processing.png'
 import Completed from '../../assets/icons/completed.png'
@@ -60,7 +60,6 @@ const availableSources = {
   MapPin,
   Calendar,
   Tag,
-  Video,
   Music,
   ArrowForward,
   LinkArrow,
@@ -68,6 +67,7 @@ const availableSources = {
   ID2,
   IDCard,
   Clipboard,
+  ClipboardCopy,
   Check,
   Processing,
   Completed,

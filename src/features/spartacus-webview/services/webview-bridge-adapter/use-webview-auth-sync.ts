@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { authLogout } from '../../../../services/auth/store/thunks/auth-logout'
+import { authLogoutWithoutErrors } from '../../../../services/auth/store/thunks/auth-logout'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
 import { WebViewBridgeAdapterState } from './use-webview-bridge-adapter'
@@ -25,7 +25,7 @@ export const useWebViewAuthSync = (
       const diff = now - lastLoggedInTimestamp.current
       if (diff < STATE_CHANGES_WITHIN_5_SECONDS) {
         lastLoggedInTimestamp.current = undefined
-        dispatch(authLogout()).unwrap()
+        dispatch(authLogoutWithoutErrors()).unwrap()
       }
     }
 

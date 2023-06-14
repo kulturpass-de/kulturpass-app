@@ -9,22 +9,22 @@ import { textStyles } from '../../../theme/typography'
 type ProductDetailEntryProps = {
   i18nKey: AvailableTranslations
   value: string
-  valueTestId: string
 }
 
-export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey, value, valueTestId }) => {
-  const { buildTestId } = useTestIdBuilder()
+export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey, value }) => {
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId(i18nKey)
 
   return (
     <View style={styles.container}>
       <TranslatedText
         i18nKey={i18nKey}
-        testID={buildTestId(i18nKey)}
+        testID={testID}
         textStyle="BodyExtrabold"
         textStyleOverrides={styles.entryTitle}
       />
       <Text style={textStyles.BodyRegular}> </Text>
-      <Text style={styles.entryContent} testID={buildTestId(valueTestId)}>
+      <Text style={styles.entryContent} testID={addTestIdModifier(testID, 'value')}>
         {value}
       </Text>
     </View>

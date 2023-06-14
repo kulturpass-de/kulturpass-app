@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { z } from 'zod'
 import { Language } from '../../../services/translation/types'
 import { EnvironmentConfiguration } from '../../../services/environment-configuration/environment-configuration'
-import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-get-environment-configuration'
+import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-environment-configuration'
 
 export const LocalizedLinkSchema = z
   .record(z.nativeEnum(Language), z.string())

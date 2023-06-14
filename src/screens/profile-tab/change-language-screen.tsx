@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
@@ -8,6 +9,8 @@ import { ListItem } from '../../components/list-item/list-item'
 import { StyleSheet, View } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { Icon } from '../../components/icon/icon'
+import { commerceApi } from '../../services/api/commerce-api'
+import { AppDispatch } from '../../services/redux/configure-store'
 
 export type ChangeLanguageScreenProps = {
   onHeaderPressClose: () => void
@@ -16,9 +19,11 @@ export type ChangeLanguageScreenProps = {
 export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHeaderPressClose }) => {
   const { t, l, cl, ls } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const dispatch = useDispatch<AppDispatch>()
 
   const onLanguageSelection = (newLanguage: Language) => () => {
     cl(newLanguage)
+    dispatch(commerceApi.util.invalidateTags(['language']))
   }
 
   const SCREEN_TEST_ID = buildTestId('changeLanguage')

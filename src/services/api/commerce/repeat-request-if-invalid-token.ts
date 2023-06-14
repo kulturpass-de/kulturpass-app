@@ -1,5 +1,6 @@
 import { authCommerceLogin } from '../../auth/store/thunks/auth-commerce-login'
-import { authLogout } from '../../auth/store/thunks/auth-logout'
+import { authLogoutWithoutErrors } from '../../auth/store/thunks/auth-logout'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { HttpStatusUnauthorizedError } from '../../errors/errors'
 import { AppDispatch, RootState } from '../../redux/configure-store'
 import { AxiosBaseQueryFn } from '../common/types'
@@ -18,6 +19,16 @@ export const repeatRequestIfInvalidToken = <T>(baseQuery: () => AxiosBaseQueryFn
     }
 
     const rootState = api.getState() as RootState
+
+    const commerceRevocationUrl = getEnvironmentConfig(
+      rootState.persisted.environmentConfiguration.currentEnvironmentName,
+    ).commerce.auth.revocationEndpoint
+
+    if (commerceRevocationUrl === args.url) {
+      // Should not retry while logging out
+      return response
+    }
+
     const dispatch = api.dispatch as AppDispatch
 
     try {
@@ -28,7 +39,7 @@ export const repeatRequestIfInvalidToken = <T>(baseQuery: () => AxiosBaseQueryFn
       }
       return response2
     } catch (error: any) {
-      await dispatch(authLogout())
+      await dispatch(authLogoutWithoutErrors()).unwrap()
       return { error }
     }
   }

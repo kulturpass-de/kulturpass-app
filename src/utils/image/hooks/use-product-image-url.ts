@@ -3,7 +3,7 @@ import { getProductImageUrl } from '../utils'
 
 import { Image } from '../../../services/api/types/commerce/api-types'
 import { useOrigin } from '../../../features/spartacus-webview/hooks/use-origin'
-import { useEnvironmentConfigurationCommerce } from '../../../services/environment-configuration/hooks/use-get-environment-configuration'
+import { useEnvironmentConfigurationCommerce } from '../../../services/environment-configuration/hooks/use-environment-configuration'
 
 export const useProductImageUrl = (images?: Image[], format: 'zoom' | 'product' = 'zoom') => {
   const currentCommerceUri = useEnvironmentConfigurationCommerce().baseUrl

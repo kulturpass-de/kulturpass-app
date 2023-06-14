@@ -5,6 +5,7 @@ export enum AA2ErrorCode {
   AA2_ERROR = 'AA2_ERROR',
   AA2_AUTH_ERROR_RESULT = 'AA2_AUTH_ERROR_RESULT',
   AA2_AUTH_ERROR = 'AA2_AUTH_ERROR',
+  AA2_INIT_ERROR = 'AA2_INIT_ERROR',
   AA2_BAD_STATE = 'AA2_BAD_STATE',
   AA2_INTERNAL_ERROR = 'AA2_INTERNAL_ERROR',
   AA2_INVALID_MESSAGE = 'AA2_INVALID_MESSAGE',
@@ -12,8 +13,8 @@ export enum AA2ErrorCode {
   AA2_BELOW_MIN_YEAR_OF_BIRTH = 'AA2_BELOW_MIN_YEAR_OF_BIRTH',
   AA2_BELOW_MIN_AGE = 'AA2_BELOW_MIN_AGE',
   AA2_FOREIGN_RESIDENCY = 'AA2_FOREIGN_RESIDENCY',
+  AA2_PSEUDONYM_ALREADY_IN_USE = 'AA2_PSEUDONYM_ALREADY_IN_USE',
   AA2_CARD_DEACTIVATED = 'AA2_CARD_DEACTIVATED',
-  AA2_PUK_REQUIRED = 'AA2_PUK_REQUIRED',
   AA2_TIMEOUT = 'AA2_TIMEOUT',
   AA2_CARD_REMOVED = 'AA2_CARD_REMOVED',
 }
@@ -38,6 +39,14 @@ export class AA2AuthErrorResultError extends AA2Error {
 export class AA2AuthError extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
     super(AA2ErrorCode.AA2_AUTH_ERROR, detailCode)
+    this.message = message ?? this.message
+    this.type = type
+  }
+}
+
+export class AA2InitError extends AA2Error {
+  constructor(detailCode?: string, message?: string, type?: string) {
+    super(AA2ErrorCode.AA2_INIT_ERROR, detailCode)
     this.message = message ?? this.message
     this.type = type
   }
@@ -104,20 +113,17 @@ export class AA2ForeignResidency extends AA2Error {
     this.type = type
   }
 }
-
-// INFO: The error is only temporary. This case will be handled by a seperate screen in the future.
-export class AA2CardDeactivated extends AA2Error {
+export class AA2PseudonymAlreadyInUse extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
-    super(AA2ErrorCode.AA2_CARD_DEACTIVATED, detailCode)
+    super(AA2ErrorCode.AA2_PSEUDONYM_ALREADY_IN_USE, detailCode)
     this.message = message ?? this.message
     this.type = type
   }
 }
 
-// INFO: The error is only temporary. This case will be handled by a seperate screen in the future
-export class AA2PukRequired extends AA2Error {
+export class AA2CardDeactivated extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
-    super(AA2ErrorCode.AA2_PUK_REQUIRED, detailCode)
+    super(AA2ErrorCode.AA2_CARD_DEACTIVATED, detailCode)
     this.message = message ?? this.message
     this.type = type
   }
@@ -188,14 +194,19 @@ export const isErrorUserCancellation = (authMsg: Auth): boolean => {
 
 export const extractAuthResultUrlQueryError = (authMsg: Auth): AA2Error | undefined => {
   if (authMsg.url !== undefined) {
-    const errorCode: string | undefined = authMsg.url.match(/^.*errorCode=([^&]*).*$/)?.[1]
+    const errorCode: string | undefined = authMsg.url.match(/^.*errorCode=([^&]+).*$/)?.[1]
     if (errorCode !== undefined) {
-      if (errorCode === 'BELOW_MIN_YEAR_OF_BIRTH') {
-        return new AA2BelowMinYearOfBirth()
-      } else if (errorCode === 'BELOW_MIN_AGE') {
-        return new AA2BelowMinAge()
-      } else {
-        return new AA2AuthError(errorCode)
+      switch (errorCode) {
+        case 'BELOW_MIN_YEAR_OF_BIRTH':
+          return new AA2BelowMinYearOfBirth()
+        case 'BELOW_MIN_AGE':
+          return new AA2BelowMinAge()
+        case 'FOREIGN_RESIDENCY':
+          return new AA2ForeignResidency()
+        case 'PSEUDONYM_ALREADY_IN_USE':
+          return new AA2PseudonymAlreadyInUse()
+        default:
+          return new AA2AuthError(errorCode)
       }
     }
   }

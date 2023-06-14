@@ -41,8 +41,11 @@ export const ForceUpdateScreen: React.FC = () => {
           <LinkText
             i18nKey={forceUpdateLinkI18nKey}
             testID={buildTestId(forceUpdateLinkI18nKey)}
-            // TODO: Add missing app store and google play store links
-            link={Platform.OS === 'ios' ? 'https://www.sap.de' : 'https://www.sap.de'}
+            link={
+              Platform.OS === 'ios'
+                ? 'https://apps.apple.com/de/app/id6446174970'
+                : 'https://play.google.com/store/apps/details?id=de.bkm.kulturpass'
+            }
           />
         </View>
       </ScrollView>

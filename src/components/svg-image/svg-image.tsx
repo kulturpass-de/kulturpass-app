@@ -76,7 +76,6 @@ export type SvgImageType =
   | 'localisation-consent'
   | 'logo-compact'
   | 'logo-horizontal'
-  | 'notification-consent'
   | 'onboarding'
   | 'order-pending-03'
   | 'order-pending'

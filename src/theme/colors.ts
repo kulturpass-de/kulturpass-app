@@ -54,4 +54,6 @@ export const colors = {
   transparentWhite100: '#FFFFFF00',
   transparentWhite45: '#FFFFFF2D',
   transparentWhite50: '#FFFFFF80',
+  transparentWhite80: '#FFFFFFCC',
+  transparentMoonDarker80: '#202325CC',
 } as const

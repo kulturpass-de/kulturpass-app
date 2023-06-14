@@ -4,6 +4,7 @@ export class ErrorWithCode extends Error {
   errorCode: string
   detailCode?: string
   parent?: ErrorWithCode
+  presentableErrorCode = true // For certain errors, you can choose to opt-out to display the error code.
 
   constructor(errorCode: string, detailCode?: string) {
     super(`Unknown error with error code "${errorCode}".`)
@@ -50,9 +51,23 @@ export class HttpServerError extends HttpError {
 }
 
 export class HttpStatusBadRequestError extends HttpClientError {
-  constructor(errorCode: string = 'HTTP_STATUS_BAD_REQUEST') {
-    super(400, errorCode)
+  errors: ErrorType[] = []
+
+  constructor(responseBody?: unknown) {
+    super(400, 'HTTP_STATUS_BAD_REQUEST')
     this.detailCode = 'Network request failed with status code 400 (Bad Request)'
+
+    const parsed = ResponseBodySchema.safeParse(responseBody)
+    if (parsed.success) {
+      this.errors = parsed.data.errors
+    }
+
+    // opt-out the error code to be presentable to the user
+    this.presentableErrorCode = !this.isInsufficientBalanceError()
+  }
+
+  isInsufficientBalanceError(): boolean {
+    return this.errors.find(({ type }) => type === 'InsufficientBalanceError') !== undefined
   }
 }
 
@@ -126,7 +141,7 @@ export class UnknownError extends ErrorWithCode {
 export const createHttpErrorFromStatusCode = (statusCode: number, responseBody?: unknown): HttpError => {
   switch (statusCode) {
     case 400:
-      return new HttpStatusBadRequestError()
+      return new HttpStatusBadRequestError(responseBody)
     case 401:
       return new HttpStatusUnauthorizedError(responseBody)
     case 403:

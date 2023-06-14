@@ -29,6 +29,7 @@ type OnboardingScreenProps = {
   denyButtonI18nKey?: AvailableTranslations
   onAccept: () => void
   onDeny?: () => void
+  additionalContent?: React.ReactNode
 }
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
@@ -43,6 +44,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   onDeny,
   acceptButtonI18nKey,
   denyButtonI18nKey,
+  additionalContent,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
 
@@ -83,6 +85,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
             i18nKey={contentTextI18nKey}
             textStyle="BodyRegular"
           />
+          {additionalContent}
           {dataprivacyI18nKey ? (
             <View style={styles.linkContainer}>
               <LinkText testID={buildTestId(dataprivacyI18nKey)} i18nKey={dataprivacyI18nKey} link={dpsDocumentUrl} />

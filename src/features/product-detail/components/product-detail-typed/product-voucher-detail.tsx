@@ -1,17 +1,18 @@
 import React from 'react'
-import { useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { VoucherProductDetail } from '../../types/product-detail'
 import { ProductDetailSection } from '../product-detail-section'
 import { Address } from '../address'
 
 export type ProductVoucherDetailProps = {
   productDetail: VoucherProductDetail
+  testID: TestId
 }
 
-export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ productDetail }) => {
-  const { buildTestId } = useTestIdBuilder()
+export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ productDetail, testID }) => {
+  const { addTestIdModifier } = useTestIdBuilder()
   const { voucherPickupPoint, venueDistance } = productDetail
-  const testID = buildTestId('productDetail_voucher_pickupPoint')
+  const sectionTestID = addTestIdModifier(testID, 'voucher_pickupPoint')
 
   if (
     voucherPickupPoint === undefined ||
@@ -25,7 +26,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
 
   return (
     <ProductDetailSection
-      testID={testID}
+      testID={sectionTestID}
       iconSource="MapPin"
       sectionCaptioni18nKey="productDetail_voucher_pickupPoint_caption">
       <Address
@@ -36,7 +37,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
         distance={venueDistance}
         showDistance
         showCopyToClipboard
-        baseTestId={testID}
+        baseTestId={sectionTestID}
       />
     </ProductDetailSection>
   )

@@ -2,7 +2,7 @@ import { createThunk } from '../../../redux/utils/create-thunk'
 import { authCdcLogin } from './auth-cdc-login'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCommerceLogin } from './auth-commerce-login'
-import { authLogout } from './auth-logout'
+import { authLogoutWithoutErrors } from './auth-logout'
 
 export const authLogin = createThunk<void, Parameters<typeof authCdcLogin>[0]>(
   'auth/login',
@@ -14,7 +14,7 @@ export const authLogin = createThunk<void, Parameters<typeof authCdcLogin>[0]>(
 
       thunkAPI.dispatch(userSlice.actions.setUserProfile({ firstName: cdcSessionData.user.firstName }))
     } catch (error: unknown) {
-      await thunkAPI.dispatch(authLogout()).unwrap()
+      await thunkAPI.dispatch(authLogoutWithoutErrors()).unwrap()
       throw error
     }
   },

@@ -15,7 +15,7 @@ export type AccountInfoData = {
   preferredProductCategoryId4?: string
   eid?: AccountInfoDataEid
   idVerified?: 'true'
-  dateOfBirth?: string // format YYYY-MM-DD
+  dateOfBirth?: string | null // format YYYY-MM-DD
   deletionRequested?: boolean
 }
 

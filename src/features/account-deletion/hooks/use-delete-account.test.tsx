@@ -41,6 +41,9 @@ describe('useDeleteAccount', () => {
         return res(ctx.status(200), ctx.json({}))
       }),
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({})),
+      ),
     )
 
     const { result } = renderHook(

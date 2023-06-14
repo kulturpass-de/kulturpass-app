@@ -1,24 +1,28 @@
-import * as React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { textStyles } from '../../theme/typography'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { FavouritesItem } from '../../services/api/types/commerce/api-types'
-import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
+import React, { useCallback } from 'react'
+import { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
+
 import { FavoriteButton } from '../../components/favorite-button/favorite-button'
+import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
-import { useFormattedDateTime } from '../../utils/date/hooks/use-formatted-date-time'
+import { colors } from '../../theme/colors'
 import { HITSLOP_FAVORITES_LIST_ITEM } from '../../theme/constants'
+import { spacing } from '../../theme/spacing'
+import { textStyles } from '../../theme/typography'
+import { useFormattedDateTime } from '../../utils/date/hooks/use-formatted-date-time'
+import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
+import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
+import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 
 export type FavoritesListItemProps = {
   favourite: FavouritesItem
+  onPress?: (product: Product) => void
 }
 
 export const ITEM_HEIGHT = 164
 
-export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { cartId, product } }) => {
+export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { cartId, product }, onPress }) => {
   const { buildTestId } = useTestIdBuilder()
   const { t } = useTranslation()
 
@@ -31,6 +35,9 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
     offersCount > 1 ? t('favorites_item_multiple_offers_price', { price: formattedPrice }) : formattedPrice
   const formattedEventStartDate = useFormattedDateTime(eventStartDate)
 
+  const { isFavorite, addToFavourites, removeFromFavorites, toggleIsFavourite, error, resetError } =
+    useFavouritesListItemActions({ cartId, productCode: product.code })
+
   const shopInformation = React.useMemo(() => {
     if (shopName !== undefined) {
       if (shopDistance !== undefined) {
@@ -40,99 +47,141 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
       }
     }
   }, [shopName, shopDistance, t])
+
+  const handlePressFavourite = useCallback(() => {
+    onPress?.(product)
+  }, [onPress, product])
+
+  const onAccessibilityAction: NonNullable<PressableProps['onAccessibilityAction']> = useCallback(
+    event => {
+      switch (event.nativeEvent.actionName) {
+        case 'view-product-details':
+          handlePressFavourite()
+          break
+        case 'add-product-to-favourites':
+          addToFavourites()
+          break
+        case 'remove-product-from-favourites':
+          removeFromFavorites()
+          break
+      }
+    },
+    [handlePressFavourite, addToFavourites, removeFromFavorites],
+  )
+
+  const accessibilityActions = isFavorite
+    ? [
+        { name: 'view-product-details', label: t('favorites_item_view_details_a11y_label') },
+        { name: 'remove-product-from-favourites', label: t('favorites_item_remove_a11y_label') },
+      ]
+    : [
+        { name: 'view-product-details', label: t('favorites_item_view_details_a11y_label') },
+        // NOTE: Currently, when the item is removed from favourites - the user can not re-add it to favourites.
+        // Later when the api is available to re-add the item to favourites - uncomment the next line.
+        // { name: 'add-product-to-favourites', label: t('favorites_item_add_a11y_label') },
+      ]
+
   return (
-    <View
-      testID={buildTestId('screens_favorites_favorites_list_item')}
-      style={[styles.container, { height: ITEM_HEIGHT }]}>
-      <View style={styles.containerItem}>
-        <View style={styles.imageContainer}>
-          {imageUrl && (
-            <>
-              <Image
-                testID={buildTestId('screens_favorites_favorites_list_item_image')}
-                style={styles.image}
-                source={{ uri: imageUrl }}
-              />
-              {topCategoryName !== undefined ? (
-                <Text
-                  testID={buildTestId('screens_favorites_favorites_list_item_top_category_name')}
-                  numberOfLines={2}
-                  style={styles.categoryName}>
-                  {topCategoryName}
-                </Text>
-              ) : null}
-            </>
-          )}
-          {image?.altText && (
-            <View testID={buildTestId('screens_favorites_favorites_list_item_badge')} style={styles.imageBadge}>
-              <Text
-                numberOfLines={2}
-                style={textStyles.MicroExtraboldCaps}
-                testID={buildTestId('screens_favorites_favorites_list_item_image_alt')}>
-                {image.altText}
-              </Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.main}>
-          <View style={styles.content}>
-            <Text
-              testID={buildTestId('screens_favorites_favorites_list_item_title')}
-              style={[textStyles.BodyExtrabold, styles.title]}
-              numberOfLines={2}>
-              {title}
-            </Text>
-            <View style={styles.informationLine}>
-              {shopInformation !== undefined ? (
-                <Text
-                  numberOfLines={1}
-                  testID={buildTestId('favorites_item_shopInformation')}
-                  style={styles.informationToken}>
-                  {shopInformation}
-                </Text>
-              ) : (
-                <Text
-                  numberOfLines={1}
-                  testID={buildTestId('favorites_item_no_offers')}
-                  style={styles.informationToken}>
-                  {t('favorites_item_no_offers')}
-                </Text>
+    <>
+      <ErrorAlert error={error} onDismiss={resetError} />
+      <Pressable
+        onPress={handlePressFavourite}
+        accessibilityRole="button"
+        accessibilityActions={accessibilityActions}
+        onAccessibilityAction={onAccessibilityAction}>
+        <View
+          testID={buildTestId('screens_favorites_favorites_list_item')}
+          style={[styles.container, { height: ITEM_HEIGHT }]}>
+          <View style={styles.containerItem}>
+            <View style={styles.imageContainer}>
+              {imageUrl && (
+                <>
+                  <Image
+                    testID={buildTestId('screens_favorites_favorites_list_item_image')}
+                    style={styles.image}
+                    source={{ uri: imageUrl }}
+                  />
+                  {topCategoryName !== undefined ? (
+                    <Text
+                      testID={buildTestId('screens_favorites_favorites_list_item_top_category_name')}
+                      numberOfLines={2}
+                      style={styles.categoryName}>
+                      {topCategoryName}
+                    </Text>
+                  ) : null}
+                </>
+              )}
+              {image?.altText && (
+                <View testID={buildTestId('screens_favorites_favorites_list_item_badge')} style={styles.imageBadge}>
+                  <Text
+                    numberOfLines={2}
+                    style={textStyles.MicroExtraboldCaps}
+                    testID={buildTestId('screens_favorites_favorites_list_item_image_alt')}>
+                    {image.altText}
+                  </Text>
+                </View>
               )}
             </View>
-            <View style={styles.informationLine}>
-              {formattedEventStartDate ? (
+            <View style={styles.main}>
+              <View style={styles.content}>
                 <Text
-                  numberOfLines={1}
-                  testID={buildTestId('favorites_item_event_start_date')}
-                  style={styles.informationToken}>
-                  {t('favorites_item_event_start_date', {
-                    date: formattedEventStartDate.date,
-                    time: formattedEventStartDate.time,
-                  })}
+                  testID={buildTestId('screens_favorites_favorites_list_item_title')}
+                  style={[textStyles.BodyExtrabold, styles.title]}
+                  numberOfLines={2}>
+                  {title}
                 </Text>
-              ) : null}
+                <View style={styles.informationLine}>
+                  {shopInformation !== undefined ? (
+                    <Text
+                      numberOfLines={1}
+                      testID={buildTestId('favorites_item_shopInformation')}
+                      style={styles.informationToken}>
+                      {shopInformation}
+                    </Text>
+                  ) : (
+                    <Text
+                      numberOfLines={1}
+                      testID={buildTestId('favorites_item_no_offers')}
+                      style={styles.informationToken}>
+                      {t('favorites_item_no_offers')}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.informationLine}>
+                  {formattedEventStartDate ? (
+                    <Text
+                      numberOfLines={1}
+                      testID={buildTestId('favorites_item_event_start_date')}
+                      style={styles.informationToken}>
+                      {t('favorites_item_event_start_date', {
+                        date: formattedEventStartDate.date,
+                        time: formattedEventStartDate.time,
+                      })}
+                    </Text>
+                  ) : null}
+                </View>
+                {formattedPriceInformation ? (
+                  <Text
+                    numberOfLines={1}
+                    testID={buildTestId('screens_favorites_favorites_list_item_price')}
+                    style={styles.price}>
+                    {formattedPriceInformation}
+                  </Text>
+                ) : null}
+              </View>
+              <View style={styles.actionContainer}>
+                <FavoriteButton
+                  testID={buildTestId('screens_favorites_favorites_list_item_heart_button')}
+                  isFavorite={isFavorite}
+                  hitSlop={HITSLOP_FAVORITES_LIST_ITEM}
+                  onPress={toggleIsFavourite}
+                />
+              </View>
             </View>
-            {formattedPriceInformation ? (
-              <Text
-                numberOfLines={1}
-                testID={buildTestId('screens_favorites_favorites_list_item_price')}
-                style={styles.price}>
-                {formattedPriceInformation}
-              </Text>
-            ) : null}
-          </View>
-          <View style={styles.actionContainer}>
-            <FavoriteButton
-              testID={buildTestId('screens_favorites_favorites_list_item_heart_button')}
-              cartId={cartId}
-              productCode={product.code}
-              active={true}
-              hitSlop={HITSLOP_FAVORITES_LIST_ITEM}
-            />
           </View>
         </View>
-      </View>
-    </View>
+      </Pressable>
+    </>
   )
 }
 

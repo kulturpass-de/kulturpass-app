@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
@@ -39,6 +39,14 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
             i18nKey="eid_nfcNotSupported_content_title"
             textStyle="HeadlineH4Extrabold"
           />
+          {Platform.OS === 'android' ? (
+            <TranslatedText
+              textStyleOverrides={styles.contentText}
+              testID={addTestIdModifier(screenTestId, 'activateNfc_android_text')}
+              i18nKey="eid_nfcNotSupported_activateNfc_android_text"
+              textStyle="BodyRegular"
+            />
+          ) : null}
           <TranslatedText
             textStyleOverrides={styles.contentText}
             testID={addTestIdModifier(screenTestId, 'content_text')}

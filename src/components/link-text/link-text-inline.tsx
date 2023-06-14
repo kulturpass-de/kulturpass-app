@@ -7,6 +7,7 @@ import { TranslatedText, TranslatedTextProps } from '../translated-text/translat
 import { AvailableTranslations } from '../translated-text/types'
 import { openLink } from '../../utils/links/utils'
 import { useTranslation } from '../../services/translation/translation'
+import { spacing } from '../../theme/spacing'
 
 type LinkTextInlineProps = {
   link: string
@@ -25,28 +26,33 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, i
   const linkTestId = buildTestId(i18nKey)
 
   return (
-    <Text
-      style={[styles.container, style]}
-      suppressHighlighting={true}
-      onPress={handlePress}
-      accessibilityRole="link"
-      accessibilityLabel={t(i18nKey)}
-      accessible
-      testID={linkTestId + '_button'}>
-      <Icon width={iconSize} height={iconSize} source="LinkArrow" />{' '}
-      <TranslatedText
-        testID={linkTestId}
-        textStyleOverrides={styles.text}
-        textStyle={textStyle ?? 'BodyRegular'}
-        i18nKey={i18nKey}
-      />
-    </Text>
+    <>
+      <Icon width={iconSize} height={iconSize} source="LinkArrow" style={styles.icon} />
+      <Text
+        style={[styles.container, style]}
+        suppressHighlighting={true}
+        onPress={handlePress}
+        accessibilityRole="link"
+        accessibilityLabel={t(i18nKey)}
+        accessible
+        testID={linkTestId + '_button'}>
+        <TranslatedText
+          testID={linkTestId}
+          textStyleOverrides={styles.text}
+          textStyle={textStyle ?? 'BodyRegular'}
+          i18nKey={i18nKey}
+        />
+      </Text>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+  },
+  icon: {
+    paddingTop: spacing[2],
   },
   text: {
     flexWrap: 'wrap',

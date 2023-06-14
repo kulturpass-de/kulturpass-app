@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react'
 import type { PropsWithChildren } from 'react'
-import { StyleSheet, ScrollView, type ViewProps, View, LayoutChangeEvent } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { LayoutChangeEvent, ScrollView, StyleSheet, View, type ViewProps } from 'react-native'
+
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 
@@ -8,7 +9,7 @@ export type AlertContentProps = PropsWithChildren<{
   style?: ViewProps['style']
 }>
 
-export const AlertContent = ({ style, children }: AlertContentProps) => {
+export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, children }, ref) => {
   const [contentHeight, setContentHeight] = useState(0)
 
   const onLayout = useCallback((evt: LayoutChangeEvent) => {
@@ -23,7 +24,12 @@ export const AlertContent = ({ style, children }: AlertContentProps) => {
 
   if (contentHeight === 0) {
     return (
-      <View onLayout={onLayout} style={[styles.container, styles.content, style]}>
+      <View
+        ref={ref}
+        accessible
+        accessibilityRole="alert"
+        onLayout={onLayout}
+        style={[styles.container, styles.content, style]}>
         {children}
       </View>
     )
@@ -31,12 +37,15 @@ export const AlertContent = ({ style, children }: AlertContentProps) => {
 
   return (
     <ScrollView
+      ref={ref}
+      accessible
+      accessibilityRole="alert"
       style={[styles.container, { maxHeight: contentHeight }]}
       contentContainerStyle={[styles.content, style]}>
       {children}
     </ScrollView>
   )
-}
+})
 
 export const styles = StyleSheet.create({
   container: {

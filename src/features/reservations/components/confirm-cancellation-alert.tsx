@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { useCallback } from 'react'
 
@@ -7,6 +8,7 @@ import { AlertContent } from '../../../components/alert/alert-content'
 import { AlertMessage } from '../../../components/alert/alert-message'
 import { AlertTitle } from '../../../components/alert/alert-title'
 import { Button } from '../../../components/button/button'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 
 export type ConfirmCancellationAlertProps = {
@@ -17,6 +19,8 @@ export type ConfirmCancellationAlertProps = {
 
 export const ConfirmCancellationAlert = ({ visible, onConfirm, onDismiss }: ConfirmCancellationAlertProps) => {
   const { buildTestId } = useTestIdBuilder()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   const onChange = useCallback(
     (newIsVisible: boolean) => {
@@ -29,7 +33,7 @@ export const ConfirmCancellationAlert = ({ visible, onConfirm, onDismiss }: Conf
 
   return (
     <Alert visible={visible} onChange={onChange} dismissable={false}>
-      <AlertContent>
+      <AlertContent ref={focusRef}>
         <AlertTitle
           i18nKey="cancellation_confirmation_alert_title"
           testID={buildTestId('canellation_confirmation_alert_title')}

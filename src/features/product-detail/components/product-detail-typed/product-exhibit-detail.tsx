@@ -5,12 +5,13 @@ import { useTranslation } from '../../../../services/translation/translation'
 import { Language } from '../../../../services/translation/types'
 import { textStyles } from '../../../../theme/typography'
 import { ProductDetailSection } from '../product-detail-section'
-import { useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { colors } from '../../../../theme/colors'
 import { Address } from '../address'
 
 export type ProductExhibitDetailProps = {
   productDetail: ExhibitProductDetail
+  testID: TestId
 }
 
 const formatDate = (
@@ -36,10 +37,10 @@ const formatDate = (
   }
 }
 
-export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail }) => {
+export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail, testID }) => {
   const { t, l: language } = useTranslation()
-  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-  const testID = buildTestId('productDetail_exhibit')
+  const { addTestIdModifier } = useTestIdBuilder()
+  const sectionTestID = addTestIdModifier(testID, 'exhibit')
   const { exhibitStartDate, exhibitEndDate, venue, venueDistance } = productDetail
   const exhibitDate = formatDate(t, language, exhibitStartDate, exhibitEndDate)
 
@@ -47,7 +48,7 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
     <>
       {venue ? (
         <ProductDetailSection
-          testID={addTestIdModifier(testID, 'location_caption')}
+          testID={addTestIdModifier(sectionTestID, 'location')}
           iconSource="MapPin"
           sectionCaptioni18nKey="productDetail_exhibit_location_caption">
           <Address
@@ -58,19 +59,19 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
             distance={venueDistance}
             showDistance
             showCopyToClipboard
-            baseTestId="productDetail_exhibit_location"
+            baseTestId={addTestIdModifier(sectionTestID, 'location')}
           />
         </ProductDetailSection>
       ) : null}
       {exhibitStartDate || exhibitEndDate ? (
         <ProductDetailSection
-          testID={buildTestId('productDetail_exhibit_duration')}
+          testID={addTestIdModifier(sectionTestID, 'duration')}
           iconSource="Calendar"
           sectionCaptioni18nKey="productDetail_exhibit_duration_caption">
           <Text
             accessibilityLabel={exhibitDate.accessibilityLabel}
             accessible
-            testID={buildTestId('productDetail_exhibit_duration_content')}
+            testID={addTestIdModifier(sectionTestID, 'duration_content')}
             style={[textStyles.BodyBlack, styles.colorMoonDarkest]}>
             {exhibitDate.text}
           </Text>

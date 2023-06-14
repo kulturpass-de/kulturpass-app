@@ -6,6 +6,7 @@ import { LocalizedLinkSchema } from '../../utils/links/hooks/use-localized-envir
 
 export const AuthSchema = z.object({
   tokenEndpoint: z.string(),
+  revocationEndpoint: z.string(),
   clientId: z.string(),
   clientSecret: z.string(),
 })

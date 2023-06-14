@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Alert } from '../../../components/alert/alert'
 import { AlertContent } from '../../../components/alert/alert-content'
@@ -20,10 +21,11 @@ import {
   AA2CardDeactivated,
   AA2CardRemoved,
   AA2ForeignResidency,
-  AA2PukRequired,
+  AA2PseudonymAlreadyInUse,
   AA2Timeout,
 } from '../errors'
 import { useTranslation } from '../../../services/translation/translation'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 
 export type EidErrorAlertProps = {
   error: ErrorWithCode | null
@@ -41,6 +43,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   const { buildTestId } = useTestIdBuilder()
   const { t } = useTranslation()
   const modalNavigation = useModalNavigation()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   const [intError, setIntError] = useState<ErrorWithCode | null>(null)
 
@@ -89,8 +93,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
       return t('eid_error_belowMinAge_message')
     } else if (intError instanceof AA2ForeignResidency) {
       return t('eid_error_foreignResidency_message')
-    } else if (intError instanceof AA2PukRequired) {
-      return t('eid_error_pukRequired_message')
+    } else if (intError instanceof AA2PseudonymAlreadyInUse) {
+      return t('eid_error_pseudonymAlreadyInUse_message')
     } else if (intError instanceof AA2CardDeactivated) {
       return t('eid_error_cardDeactivated_message')
     } else if (intError instanceof AA2Timeout) {
@@ -112,7 +116,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
 
   return (
     <Alert visible={intError !== null} dismissable={false}>
-      <AlertContent>
+      <AlertContent ref={focusRef}>
         <AlertTitle i18nKey="eid_error_title" testID={buildTestId('eid_error_title')} />
         <TranslatedText
           textStyle="BodyRegular"

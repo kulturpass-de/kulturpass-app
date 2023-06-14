@@ -13,7 +13,7 @@ import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
 import { Icon } from '../../components/icon/icon'
 import { spacing } from '../../theme/spacing'
-import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-get-environment-configuration'
+import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-environment-configuration'
 
 export type EnvironmentConfigScreenProps = {
   onHeaderPressBack: () => void

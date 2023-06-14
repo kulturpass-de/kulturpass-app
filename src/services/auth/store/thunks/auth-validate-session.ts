@@ -1,5 +1,5 @@
 import { createThunk } from '../../../redux/utils/create-thunk'
-import { authLogout } from './auth-logout'
+import { authLogoutWithoutErrors } from './auth-logout'
 import { getCdcSessionData, getCommerceSessionData, getIsUserLoggedIn } from '../auth-selectors'
 
 export const authValidateSession = createThunk('auth/validateSession', async (payload, thunkAPI) => {
@@ -9,6 +9,6 @@ export const authValidateSession = createThunk('auth/validateSession', async (pa
   const isUserLoggedIn = getIsUserLoggedIn(state)
 
   if ((cdcSessionData || commerceSessionData) && !isUserLoggedIn) {
-    await thunkAPI.dispatch(authLogout()).unwrap()
+    await thunkAPI.dispatch(authLogoutWithoutErrors()).unwrap()
   }
 })

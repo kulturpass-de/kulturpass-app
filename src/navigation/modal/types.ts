@@ -25,10 +25,6 @@ import {
   OnboardingLocationPermissionRouteName,
   OnboardingLocationPermissionRouteParams,
 } from '../../features/onboarding/screens/onboarding-location-permission-route'
-import {
-  OnboardingNotificationPermissionRouteName,
-  OnboardingNotificationPermissionRouteParams,
-} from '../../features/onboarding/screens/onboarding-notification-permission-route'
 import { RootStackParams, RootStackScreenProps } from '../types'
 import {
   ProductDetailRouteName,
@@ -111,6 +107,11 @@ import {
 } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
 import { AppConfigRouteName, AppConfigRouteParams } from '../../screens/developer-settings/app-config-route'
+import { EidPukRouteName, EidPukRouteParams } from '../../features/eid-verification/screens/eid-puk-route'
+import {
+  EidPukInoperativeRouteName,
+  EidPukInoperativeRouteParams,
+} from '../../features/eid-verification/screens/eid-puk-inoperative-route'
 
 export type ModalParamList = {
   [LogOutRouteName]: LogOutRouteParams
@@ -121,7 +122,6 @@ export type ModalParamList = {
 
   [OnboardingAboutAppRouteName]: OnboardingAboutAppRouteParams
   [OnboardingLocationPermissionRouteName]: OnboardingLocationPermissionRouteParams
-  [OnboardingNotificationPermissionRouteName]: OnboardingNotificationPermissionRouteParams
 
   [RegistrationConsentRouteName]: RegistrationConsentRouteParams
   [RegistrationDataPrivacyRouteName]: RegistrationDataPrivacyRouteParams
@@ -144,9 +144,11 @@ export type ModalParamList = {
   [EidTransportPinRouteName]: EidTransportPinRouteParams
   [EidNewPinRouteName]: EidNewPinRouteParams
   [EidCanRouteName]: EidCanRouteParams
+  [EidPukRouteName]: EidPukRouteParams
   [EidVerificationCompletionRouteName]: EidVerificationCompletionRouteParams
   [EidChangePinCompletionRouteName]: EidChangePinCompletionRouteParams
   [EidNFCNotSupportedRouteName]: EidNFCNotSupportedRouteParams
+  [EidPukInoperativeRouteName]: EidPukInoperativeRouteParams
 
   [ReservationDetailRouteName]: ReservationDetailRouteParams
 

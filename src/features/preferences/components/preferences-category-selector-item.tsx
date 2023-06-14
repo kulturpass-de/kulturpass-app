@@ -43,7 +43,6 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
   return (
     <Pressable
       onPress={onPress}
-      style={styles.pressable}
       disabled={!isSelectable}
       accessibilityLabel={category.name}
       accessibilityRole="togglebutton"
@@ -77,12 +76,9 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
 }
 
 const styles = StyleSheet.create({
-  pressable: {
-    height: 64,
-    margin: spacing[2],
-  },
   container: {
-    height: 64,
+    flex: 1,
+    minHeight: 64,
     borderRadius: 10,
     backgroundColor: colors.basicWhite,
     flexDirection: 'row',
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.basicBlack,
     borderRadius: 10,
     width: '100%',
-    height: 64,
+    height: '100%',
     zIndex: 0,
   },
   image: {
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
   },
   content: {
     zIndex: 20,
-    height: 64,
+    minHeight: 64,
     padding: spacing[4] / 2,
     paddingRight: spacing[5],
     flex: 1,

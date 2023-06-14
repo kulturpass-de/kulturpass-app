@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Alert } from '../../components/alert/alert'
@@ -5,6 +6,7 @@ import { AlertContent } from '../../components/alert/alert-content'
 import { AlertMessage } from '../../components/alert/alert-message'
 import { AlertTitle } from '../../components/alert/alert-title'
 import { Button } from '../../components/button/button'
+import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { spacing } from '../../theme/spacing'
 
@@ -19,10 +21,12 @@ export const RegistrationDataPrivacyCancelAlert: React.FC<RegistrationDataPrivac
 }) => {
   const [visible, setVisible] = useState<boolean>(true)
   const { buildTestId } = useTestIdBuilder()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   return (
     <Alert visible={visible} onChange={setVisible}>
-      <AlertContent>
+      <AlertContent ref={focusRef}>
         <AlertTitle
           testID={buildTestId('registration_data_privacy_cancel_dialog_title')}
           i18nKey="registration_data_privacy_cancel_dialog_title"

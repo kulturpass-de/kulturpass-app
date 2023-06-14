@@ -33,6 +33,10 @@
       "RESERVATION_ABOUT": {
         "de": "https://service.kulturpass.de/help/de-de/2/69",
         "en": "https://service.kulturpass.de/help/de-de/2/69"
+      },
+      "EID_PUK": {
+        "de": "https://service.kulturpass.de/help/de-de/2-jugendliche",
+        "en": "https://service.kulturpass.de/help/de-de/2-jugendliche"
       }
     }
   }

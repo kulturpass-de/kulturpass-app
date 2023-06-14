@@ -53,10 +53,6 @@ export const StagedEventDetail: ComponentStory<typeof ProductDetailScreen> = arg
   <ProductDetailScreen {...args} productDetail={require('./mocked-staged-event.json')} />
 )
 
-export const VideoDetail: ComponentStory<typeof ProductDetailScreen> = args => (
-  <ProductDetailScreen {...args} productDetail={require('./mocked-video.json')} />
-)
-
 export const RandomMode: ComponentStory<typeof ProductDetailScreen> = args => (
   <ProductDetailScreen {...args} productDetail={require('././mocked-audio.json')} randomMode />
 )

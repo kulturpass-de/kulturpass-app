@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
@@ -8,8 +8,9 @@ import { AlertContent } from '../../../../components/alert/alert-content'
 import { AlertMessage } from '../../../../components/alert/alert-message'
 import { AlertTitle } from '../../../../components/alert/alert-title'
 import { Button } from '../../../../components/button/button'
+import useAccessibilityFocus from '../../../../navigation/a11y/use-accessibility-focus'
 import { RootStackParams } from '../../../../navigation/types'
-import { authLogout } from '../../../../services/auth/store/thunks/auth-logout'
+import { authLogoutWithoutErrors } from '../../../../services/auth/store/thunks/auth-logout'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 
@@ -25,9 +26,11 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
   const { addTestIdModifier } = useTestIdBuilder()
   const navigation = useNavigation<NavigationProp<RootStackParams, 'Tabs'>>()
   const dispatch = useDispatch<AppDispatch>()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   const onSubmit = useCallback(async () => {
-    await dispatch(authLogout())
+    await dispatch(authLogoutWithoutErrors()).unwrap()
     navigation.navigate('Tabs', {
       screen: 'Settings',
     })
@@ -36,7 +39,7 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
 
   return (
     <Alert visible={true}>
-      <AlertContent>
+      <AlertContent ref={focusRef}>
         <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey="account_verified_alert_title" />
         <AlertMessage
           testID={addTestIdModifier(testID, 'text')}

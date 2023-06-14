@@ -76,8 +76,9 @@ export const EidCanScreen: React.FC<EidCanScreenProps> = ({ onNext, onClose, ret
           />
           <View style={styles.canView}>
             <FormFieldWithControl
-              testID={buildTestId('eid_pinView_can_input')}
+              testID={buildTestId('eid_canView_can_input')}
               name="can"
+              variant="can"
               control={form.control}
               component={PinInput}
               pinLength={6}

@@ -27,8 +27,10 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
   const shouldShowBudgetBar =
     validBalance !== undefined && validBalance.availableBalance !== validBalance.grantedBalance
 
+  const shouldShowReservedBalance = validBalance !== undefined && validBalance.reservedBalance > 0
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} focusable>
       {firstName ? (
         <TranslatedText
           accessibilityRole="header"
@@ -55,7 +57,7 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
           i18nParams={{ amount: formattedPrice }}
           textStyleOverrides={{ color: colors.moonDarkest }}
         />
-        {validBalance !== undefined && (
+        {shouldShowReservedBalance && (
           <View style={styles.reservedContainer}>
             <Icon source="Coupon" style={styles.reservedIcon} width={20} height={20} />
             <TranslatedText

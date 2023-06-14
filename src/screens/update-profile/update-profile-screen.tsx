@@ -118,12 +118,9 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
           email,
           firstName,
         },
-      }
-
-      if (dateOfBirth) {
-        update.data = {
-          dateOfBirth,
-        }
+        data: {
+          dateOfBirth: dateOfBirth || null,
+        },
       }
 
       if (password && newPassword) {

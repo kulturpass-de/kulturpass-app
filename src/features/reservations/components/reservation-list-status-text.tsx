@@ -72,12 +72,7 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   return (
     <View style={styles.container}>
       <Icon source={icon} width={16} height={16} />
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        testID={buildTestId(i18nKey)}
-        accessible
-        style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
+      <Text testID={buildTestId(i18nKey)} accessible style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
         {t(i18nKey)}
       </Text>
     </View>

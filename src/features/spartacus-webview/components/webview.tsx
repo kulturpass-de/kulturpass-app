@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +23,8 @@ import { AccountVerifiedWebViewHandler } from '../../registration/components/acc
 import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
 import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapter/use-webview-android-pull-to-refresh'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
+import { openLink } from '../../../utils/links/utils'
+import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 
 type SpartacusWebViewProps = {
   webViewId: WebViewId
@@ -45,24 +47,29 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
-  const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState } =
+  const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState, webViewBridgeAdapter } =
     useWebViewBridgeAdapter(webViewId)
 
   const origin = useOrigin(url)
 
   const handleShouldLoadRequest: OnShouldStartLoadWithRequest = useCallback(
     e => {
+      let isSamePage: boolean
       if (Platform.OS === 'ios') {
         // iOS invokes this function for each text/html request. Therefore using mainDocumentURL (iOS only)
-        return e.mainDocumentURL?.startsWith(origin) === true
+        isSamePage = e.mainDocumentURL?.startsWith(origin) === true
       } else {
         // Android does not invoke function on single page apps https://github.com/react-native-webview/react-native-webview/issues/1869
-        return e.url.startsWith(origin)
+        isSamePage = e.url.startsWith(origin)
       }
+      if (!isSamePage) {
+        openLink(e.url)
+      }
+      return isSamePage
     },
     [origin],
   )
-  const renderLoading = useCallback(() => <WebviewLoadingIndicator />, [])
+  const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 
   const { errorCode, resetError, handleError, handleHttpError } = useHandleWebviewErrors()
 
@@ -100,10 +107,23 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
     webViewRef,
   })
 
+  const navigation = useTabsNavigation()
+
   let uri = url
   if (commands) {
     uri += '/' + commands.join('/')
   }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      if (e.target?.startsWith(webViewId)) {
+        webViewBridgeAdapter.goToPage(webViewId, uri)
+        webViewBridgeAdapter.scrollToTop(webViewId)
+      }
+    })
+
+    return unsubscribe
+  }, [navigation, uri, webViewBridgeAdapter, webViewId])
 
   return (
     <View style={styles.container}>

@@ -16,10 +16,12 @@ describe('authCdcLogut', () => {
   it('should call authSlice.clearCdcSession and sessionService.clearCdcSession', async () => {
     const clearCdcSession = jest.spyOn(sessionService, 'clearCdcSession')
 
-    await store.dispatch(authCdcLogout())
+    const apiErrors: any[] = []
+    await store.dispatch(authCdcLogout(apiErrors))
 
     store.expectActions([{ type: authSlice.actions.clearCdcSession.type }])
     expect(clearCdcSession).toHaveBeenCalledTimes(1)
+    expect(apiErrors.length).toBe(0)
   })
 
   it('should return error as payload, of a deeply nested thrown error, and break', async () => {
@@ -29,10 +31,12 @@ describe('authCdcLogut', () => {
       throw myError
     })
 
-    await store.dispatch(authCdcLogout())
+    const apiErrors: any[] = []
+    await store.dispatch(authCdcLogout(apiErrors))
 
     const authCdcLogoutRejected = store.findAction(authCdcLogout.rejected.match)
     expect(authCdcLogoutRejected?.payload).toEqual(myError)
+    expect(apiErrors.length).toBe(0)
   })
 
   it('should not throw an error if accountsLogoutSigned fails', async () => {
@@ -42,9 +46,11 @@ describe('authCdcLogut', () => {
       throw myError
     })
 
-    await store.dispatch(authCdcLogout())
+    const apiErrors: any[] = []
+    await store.dispatch(authCdcLogout(apiErrors))
 
     const authCdcLogoutRejected = store.findAction(authCdcLogout.rejected.match)
     expect(authCdcLogoutRejected).toBe(undefined)
+    expect(apiErrors.length).toBe(0)
   })
 })

@@ -6,9 +6,14 @@ import { render, screen, waitFor } from '@testing-library/react-native'
 import { buildTestId } from '../../../services/test-id/test-id'
 import { AppProviders } from '../../../services/testing/test-utils'
 import { Preferences } from './preferences'
+import { NavigationContainer } from '@react-navigation/native'
 
 const renderScreen = (children: React.ReactNode) => {
-  render(<AppProviders>{children}</AppProviders>)
+  render(
+    <NavigationContainer>
+      <AppProviders>{children}</AppProviders>
+    </NavigationContainer>,
+  )
 }
 
 const renderPreferences = () => {

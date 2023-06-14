@@ -13,9 +13,9 @@ const componentMeta: ComponentMeta<typeof FavoriteButton> = {
 export default componentMeta
 
 export const Default: ComponentStory<typeof FavoriteButton> = args => {
-  return <FavoriteButton {...args} active={false} />
+  return <FavoriteButton {...args} isFavorite={false} />
 }
 
 export const Active: ComponentStory<typeof FavoriteButton> = args => {
-  return <FavoriteButton {...args} active={true} />
+  return <FavoriteButton {...args} isFavorite={true} />
 }

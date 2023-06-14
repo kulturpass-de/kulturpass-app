@@ -5,14 +5,15 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type AboutPinLinkSection = {
-  type: 'pin' | 'can'
+  type: 'pin' | 'can' | 'puk'
   showResetPin: boolean
 }
 
 export const AboutPinLinkSection: React.FC<AboutPinLinkSection> = ({ type, showResetPin }) => {
   const { buildTestId } = useTestIdBuilder()
-  const link_i18nKey = type === 'pin' ? 'eid_pin_faq_link' : 'eid_can_faq_link'
-  const pinFaqLink = useFaqLink(type === 'pin' ? 'EID_PIN' : 'EID_CAN')
+  const link_i18nKey = `eid_${type}_faq_link` as const
+  const faqEntryName = `EID_${type.toUpperCase() as Uppercase<typeof type>}` as const
+  const pinFaqLink = useFaqLink(faqEntryName)
   const resetPinFaqLink = useFaqLink('EID_PIN_RESET')
 
   return (

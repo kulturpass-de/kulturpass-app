@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { useGetAccountInfoLazyQuery } from '../../../services/user/use-get-account-info-lazy-query'
 import { getCdcSessionData } from '../../../services/auth/store/auth-selectors'
 import { UnknownError } from '../../../services/errors/errors'
-import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-get-environment-configuration'
+import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-environment-configuration'
 
 export const useGetTcTokenUrl = () => {
   const sessionData = useSelector(getCdcSessionData)

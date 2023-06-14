@@ -115,10 +115,10 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         // Fixes build error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
-        // packagingOptions {
-        //     pickFirst "lib/arm64-v8a/libc++_shared.so"
-        //     jniLibs { useLegacyPackaging = true }
-        // }
+        packagingOptions {
+            pickFirst "lib/arm64-v8a/libc++_shared.so"
+            jniLibs { useLegacyPackaging = true }
+        }
     }
 
     splits {

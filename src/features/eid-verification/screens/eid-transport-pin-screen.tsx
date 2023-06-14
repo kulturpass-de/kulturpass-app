@@ -52,6 +52,7 @@ export const EidTransportPinScreen: React.FC<EidTransportPinScreenProps> = ({ on
             <FormFieldWithControl
               testID={buildTestId('eid_transportPinView_transportPin_input')}
               name="pin"
+              variant="transportPin"
               control={form.control}
               component={PinInput}
               pinLength={PIN_LENGTH}

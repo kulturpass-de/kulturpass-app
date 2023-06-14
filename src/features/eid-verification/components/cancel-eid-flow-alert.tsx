@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Alert } from '../../../components/alert/alert'
@@ -13,6 +14,7 @@ import { LoadingIndicatorOverlay } from '../../../components/loading-indicator/l
 import { useDebouncedLoading } from '../../../components/loading-indicator/use-debounced-loading'
 import { useCloseFlow } from '../hooks/use-close-flow'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 
 export type CancelEidFlowAlertProps = {
   visible: boolean
@@ -22,6 +24,8 @@ export type CancelEidFlowAlertProps = {
 export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible, onChange }) => {
   const { buildTestId } = useTestIdBuilder()
   const resetPinFaqLink = useFaqLink('EID_PIN_RESET')
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   const { closeFlow, loading } = useCloseFlow()
   //TODO: Refactor loading and debouncedLoading
@@ -38,7 +42,7 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
 
   return (
     <Alert visible={visible} onChange={onChange}>
-      <AlertContent style={styles.container}>
+      <AlertContent ref={focusRef} style={styles.container}>
         <AlertTitle testID={buildTestId('eid_cancel_flow_title')} i18nKey="eid_cancel_flow_title" />
         <TranslatedText
           textStyleOverrides={styles.text}

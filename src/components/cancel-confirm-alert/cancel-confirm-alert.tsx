@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Alert } from '../../components/alert/alert'
@@ -5,6 +6,7 @@ import { AlertContent } from '../../components/alert/alert-content'
 import { AlertTitle } from '../../components/alert/alert-title'
 import { Button } from '../../components/button/button'
 import { TranslatedText } from '../../components/translated-text/translated-text'
+import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
@@ -29,10 +31,12 @@ export const CancelConfirmAlert: React.FC<CancelConfirmAlertProps> = ({
   ...i18n
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
 
   return (
     <Alert visible={visible}>
-      <AlertContent style={styles.container}>
+      <AlertContent ref={focusRef} style={styles.container}>
         <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey={i18n.i18nKeyTitle} />
         <TranslatedText
           textStyleOverrides={styles.text}

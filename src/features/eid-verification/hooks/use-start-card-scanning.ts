@@ -11,13 +11,7 @@ import {
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { Platform } from 'react-native'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import {
-  AA2CardDeactivated,
-  AA2PukRequired,
-  AA2Timeout,
-  extractAuthResultUrlQueryError,
-  isTimeoutError,
-} from '../errors'
+import { AA2CardDeactivated, AA2Timeout, extractAuthResultUrlQueryError, isTimeoutError } from '../errors'
 import {
   getRandomLastName,
   getSimulateCard,
@@ -36,6 +30,7 @@ type StartCardScanningParams = {
   pin?: string
   newPin?: string
   can?: string
+  puk?: string
   onAuthSuccess: (url: string) => void
   onChangePinSuccess: () => void
   onError: (error: ErrorWithCode) => void
@@ -48,9 +43,11 @@ export const useStartCardScanning = ({
   flow,
   pin,
   can,
+  puk,
   newPin,
   onPinRetry,
   onCanRetry,
+  onPukRetry,
   onAuthSuccess,
   onChangePinSuccess,
   onError,
@@ -116,11 +113,10 @@ export const useStartCardScanning = ({
       } else if (msg === AA2Messages.EnterCan) {
         onCanRetry(retry)
       } else if (msg === AA2Messages.EnterPuk) {
-        onError(new AA2PukRequired())
-        // onPukRetry(retry)
+        onPukRetry(retry)
       }
     },
-    [onCanRetry, onError, onPinRetry, simulateCard],
+    [simulateCard, onError, onPinRetry, onCanRetry, onPukRetry],
   )
 
   const enterNewPin = useCallback(async () => {
@@ -155,6 +151,14 @@ export const useStartCardScanning = ({
     handleRetry(result.msg, result.msg === AA2Messages.EnterCan, result.reader)
   }, [can, handleRetry])
 
+  const enterPuk = useCallback(async () => {
+    if (puk === undefined) {
+      throw new Error('No PUK provided')
+    }
+    const result = await AA2CommandService.setPuk(puk, { msTimeout: 20000 })
+    handleRetry(result.msg, result.msg === AA2Messages.EnterPuk, result.reader)
+  }, [handleRetry, puk])
+
   const handleInitialScan = useCallback(async () => {
     const result = await AA2CommandService.accept({ msTimeout: 20000 })
     handleRetry(result.msg, false, result.reader)
@@ -180,9 +184,7 @@ export const useStartCardScanning = ({
         case AA2Messages.EnterCan:
           return await enterCan()
         case AA2Messages.EnterPuk:
-          //return  await enterPuk()
-          onError(new AA2PukRequired())
-          return
+          return await enterPuk()
         default:
           throw new Error(`Invalid state ${msg}`)
       }
@@ -192,7 +194,7 @@ export const useStartCardScanning = ({
           (e as any)?.msg,
         )
       ) {
-        // AA2 Message Errors are handled by the useHandleErrors hook
+        // AusweisApp2 Message errors are handled by the useHandleErrors hook
         return
       }
 
@@ -204,7 +206,7 @@ export const useStartCardScanning = ({
     } finally {
       setIsLoading(false)
     }
-  }, [enterCan, enterPin, flow, handleInitialScan, onError, startChangePin])
+  }, [enterCan, enterPin, enterPuk, flow, handleInitialScan, onError, startChangePin])
 
   return { startScanning, isLoading }
 }

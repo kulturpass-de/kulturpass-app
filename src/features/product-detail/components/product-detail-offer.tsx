@@ -21,24 +21,23 @@ export const ProductDetailOffer: React.FC<ProductDetailOfferProps> = ({
   showDistance,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const sectionTestID = buildTestId('productDetail_offer')
 
   return (
-    <>
-      <ProductDetailSection
-        testID={buildTestId('productDetail_offer')}
-        iconSource="Coupon"
-        sectionCaptioni18nKey="productDetail_offer_caption">
-        <Address
-          name={offerInfo.shopName}
-          city={offerInfo.shopAddress?.city}
-          street={offerInfo.shopAddress?.street}
-          postalCode={offerInfo.shopAddress?.postalCode}
-          distance={offerInfo.shopDistance}
-          showDistance={showDistance}
-          showCopyToClipboard={copyAddressToClipboard}
-          baseTestId="productDetail_offer"
-        />
-      </ProductDetailSection>
-    </>
+    <ProductDetailSection
+      testID={sectionTestID}
+      iconSource="Coupon"
+      sectionCaptioni18nKey="productDetail_offer_caption">
+      <Address
+        name={offerInfo.shopName}
+        city={offerInfo.shopAddress?.city}
+        street={offerInfo.shopAddress?.street}
+        postalCode={offerInfo.shopAddress?.postalCode}
+        distance={offerInfo.shopDistance}
+        showDistance={showDistance}
+        showCopyToClipboard={copyAddressToClipboard}
+        baseTestId={sectionTestID}
+      />
+    </ProductDetailSection>
   )
 }

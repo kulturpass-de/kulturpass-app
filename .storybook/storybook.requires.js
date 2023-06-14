@@ -70,6 +70,8 @@ const getStories = () => {
     "./src/features/eid-verification/screens/eid-change-pin-completion-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-change-pin-completion-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-new-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-new-pin-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-pin-screen.stories.tsx"),
+    "./src/features/eid-verification/screens/eid-puk-inoperative-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-inoperative-screen.stories.tsx"),
+    "./src/features/eid-verification/screens/eid-puk-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx"),
     "./src/features/product-detail/stories/offer-selection-screen.stories.tsx": require("../src/features/product-detail/stories/offer-selection-screen.stories.tsx"),
     "./src/features/product-detail/stories/product-detail-screen.stories.tsx": require("../src/features/product-detail/stories/product-detail-screen.stories.tsx"),

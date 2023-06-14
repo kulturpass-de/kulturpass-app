@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -15,6 +15,10 @@ import { spacing } from '../../theme/spacing'
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { useLocalizedEnvironmentUrl, getFaqHomeUrl } from '../../utils/links/hooks/use-localized-environment-url'
 import { openLink } from '../../utils/links/utils'
+import { useAuth } from '../../services/auth/use-auth'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 
 export type ViewProfileScreenProps = {
   onPressChangeLanguage: () => void
@@ -25,7 +29,6 @@ export type ViewProfileScreenProps = {
   onPressDeleteAccount: () => void
   onPressDeveloperMenu: () => void
   onPressLogin: () => void
-  onPressLogout: () => void
 }
 
 export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
@@ -37,11 +40,29 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   onPressDeleteAccount,
   onPressDeveloperMenu,
   onPressLogin,
-  onPressLogout,
 }) => {
   const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const [loading, setLoading] = useState(false)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
+  const auth = useAuth()
   const faqDocumentUrl = useLocalizedEnvironmentUrl(getFaqHomeUrl)
+
+  const onPressLogout = useCallback(async () => {
+    setLoading(true)
+    try {
+      await auth.logout()
+    } catch (error: unknown) {
+      // Should always succeed as our API only throws ErrorWithCode instances
+      if (error instanceof ErrorWithCode) {
+        setVisibleError(error)
+      } else {
+        setVisibleError(new UnknownError())
+      }
+    } finally {
+      setLoading(false)
+    }
+  }, [auth])
 
   const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl), [faqDocumentUrl])
 
@@ -64,6 +85,8 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
           onPress={onHeaderPressTitle}
         />
       }>
+      <LoadingIndicator loading={loading} />
+      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent style={styles.screenContent}>
         <ListItem
           icon={

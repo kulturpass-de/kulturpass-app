@@ -74,7 +74,7 @@ export const Address: React.FC<AddressProps> = ({
             accessibilityRole="button"
             accessibilityLabel={t('productDetail_offer_copyToClipboard')}
             onPress={copyToClipboard}>
-            <Icon source="Clipboard" width={24} height={24} />
+            {({ pressed }) => <Icon source={pressed ? 'ClipboardCopy' : 'Clipboard'} width={24} height={24} />}
           </Pressable>
         ) : null}
       </View>

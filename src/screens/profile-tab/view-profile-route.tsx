@@ -5,7 +5,6 @@ import { useTabsNavigation } from '../../navigation/tabs/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { ViewProfileScreen } from './view-profile-screen'
 import { env } from '../../env'
-import { useAuth } from '../../services/auth/use-auth'
 
 export const ViewProfileRouteName = 'ViewProfile'
 
@@ -14,7 +13,6 @@ export type ViewProfileRouteParams = undefined
 export const ViewProfileRoute: React.FC = () => {
   const tabsNavigation = useTabsNavigation()
   const modalnavigation = useModalNavigation()
-  const auth = useAuth()
 
   const onPressChangeLanguage = useCallback(() => {
     tabsNavigation.navigate('Settings', { screen: 'ChangeLanguage' })
@@ -52,10 +50,6 @@ export const ViewProfileRoute: React.FC = () => {
     })
   }, [modalnavigation])
 
-  const onPressLogout = useCallback(() => {
-    auth.logout()
-  }, [auth])
-
   return (
     <ViewProfileScreen
       onPressChangeLanguage={onPressChangeLanguage}
@@ -66,7 +60,6 @@ export const ViewProfileRoute: React.FC = () => {
       onPressDeleteAccount={onPressDeleteAccount}
       onPressDeveloperMenu={onPressDeveloperMenu}
       onPressLogin={onPressLogin}
-      onPressLogout={onPressLogout}
     />
   )
 }

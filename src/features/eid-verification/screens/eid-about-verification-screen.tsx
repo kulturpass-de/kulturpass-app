@@ -41,7 +41,7 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
-  const { isLoading: initLoading } = useInitAA2Sdk()
+  const { isLoading: initLoading } = useInitAA2Sdk(onError)
 
   const { isLoading: startAuthLoading, startAuth } = useStartAA2Auth(onNext, onNFCNotSupported, onError)
 

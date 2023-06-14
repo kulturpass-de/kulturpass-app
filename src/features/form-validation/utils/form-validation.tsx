@@ -6,7 +6,7 @@ import {
   CdcInvalidLoginIdError,
   CdcResponseValidationError,
 } from '../../../services/errors/cdc-errors'
-import { ErrorWithCode } from '../../../services/errors/errors'
+import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
@@ -84,6 +84,14 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'cdc_invalid_loginid_title' },
           message: { key: 'cdc_invalid_loginid_message' },
+        }
+      }
+      case HttpStatusBadRequestError: {
+        if ((error as HttpStatusBadRequestError).isInsufficientBalanceError()) {
+          return {
+            title: { key: 'cc_insufficient_balance_title' },
+            message: { key: 'cc_insufficient_balance_message' },
+          }
         }
       }
     }

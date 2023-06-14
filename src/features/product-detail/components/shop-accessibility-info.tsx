@@ -79,12 +79,8 @@ export type ShopAccessibilityInfoProps = {
 }
 
 export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ testID, selectedOffer }) => {
-  const {
-    accessibilityWheelchairShop = false,
-    accessibilityToiletShop = false,
-    accessibilityOffer,
-    accessibilityOfferOthers,
-  } = selectedOffer
+  const { accessibilityWheelchairShop, accessibilityToiletShop, accessibilityOffer, accessibilityOfferOthers } =
+    selectedOffer
 
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
@@ -97,20 +93,24 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
       iconSource="HumanSketch"
       sectionCaptioni18nKey="productDetail_offer_accessibility_caption">
       <View style={styles.container}>
-        <AccessibilityFeatureCheckable
-          key="wheelchair_shop"
-          testID={addTestIdModifier(testID, 'wheelchair_shop')}
-          checked={accessibilityWheelchairShop}
-          enabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_enabled_caption"
-          disabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_disabled_caption"
-        />
-        <AccessibilityFeatureCheckable
-          key="toilet_shop"
-          testID={addTestIdModifier(testID, 'toilet_shop')}
-          checked={accessibilityToiletShop}
-          enabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_enabled_caption"
-          disabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_disabled_caption"
-        />
+        {accessibilityWheelchairShop !== undefined ? (
+          <AccessibilityFeatureCheckable
+            key="wheelchair_shop"
+            testID={addTestIdModifier(testID, 'wheelchair_shop')}
+            checked={accessibilityWheelchairShop}
+            enabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_enabled_caption"
+            disabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_disabled_caption"
+          />
+        ) : null}
+        {accessibilityToiletShop !== undefined ? (
+          <AccessibilityFeatureCheckable
+            key="toilet_shop"
+            testID={addTestIdModifier(testID, 'toilet_shop')}
+            checked={accessibilityToiletShop}
+            enabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_enabled_caption"
+            disabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_disabled_caption"
+          />
+        ) : null}
         {accessibilityOfferCleaned ? (
           <AccessibilityFeatureText
             testID={addTestIdModifier(testID, 'offer')}

@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
-  "version": "1.0.0",
-  "buildNumber": "9",
+  "version": "1.0.1",
+  "buildNumber": "3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -49,7 +49,7 @@
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/stack": "^6.3.14",
     "@reduxjs/toolkit": "^1.9.3",
-    "@sap/react-native-ausweisapp2-wrapper": "1.0.4",
+    "@sap/react-native-ausweisapp2-wrapper": "1.0.5",
     "appcenter": "^4.4.5",
     "appcenter-crashes": "^4.4.5",
     "axios": "^1.4.0",
@@ -190,7 +190,6 @@
     "unset-value": "2.0.1"
   },
   "reactNativePermissionsIOS": [
-    "Notifications",
     "LocationAccuracy",
     "LocationAlways",
     "LocationWhenInUse"

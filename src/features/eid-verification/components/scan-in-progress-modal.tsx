@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
 import { spacing } from '../../../theme/spacing'
@@ -6,16 +7,20 @@ import { AlertBackdrop } from '../../../components/alert/alert-backdrop'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { LoadingAnimation } from '../../../components/loading-animation/loading-animation'
 import { colors } from '../../../theme/colors'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 
 export type ScanInProgressModalProps = {
   scanning: boolean
 }
 export const ScanInProgressModal: React.FC<ScanInProgressModalProps> = ({ scanning }) => {
+  const [focusRef, setFocus] = useAccessibilityFocus()
+  useFocusEffect(setFocus)
+
   return (
     <Modal animationType="none" presentationStyle="overFullScreen" transparent={true} visible={scanning}>
       <View style={styles.container}>
         <AlertBackdrop />
-        <AlertContent>
+        <AlertContent ref={focusRef}>
           <TranslatedText
             textStyleOverrides={styles.title}
             i18nKey="eid_insertCard_android_scanModal_title"

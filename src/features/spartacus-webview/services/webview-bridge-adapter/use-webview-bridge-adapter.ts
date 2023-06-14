@@ -52,5 +52,5 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
     }
   }, [bridgeAdapterApi])
 
-  return { webViewRef, onMessage, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState }
+  return { webViewRef, onMessage, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState, webViewBridgeAdapter }
 }

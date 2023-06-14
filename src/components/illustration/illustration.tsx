@@ -6,7 +6,6 @@ import { AvailableTranslations } from '../translated-text/types'
 export type IllustrationType =
   | 'onboarding'
   | 'localisation-consent'
-  | 'notification-consent'
   | 'data-privacy'
   | 'verify-mail'
   | 'registration-finished'
@@ -55,8 +54,6 @@ function requireImage(type: IllustrationType): ImageSourcePropType {
       return require('./imgs/onboarding.png')
     case 'localisation-consent':
       return require('./imgs/localisation-consent.png')
-    case 'notification-consent':
-      return require('./imgs/notification-consent.png')
     case 'data-privacy':
       return require('./imgs/data-privacy.png')
     case 'verify-mail':

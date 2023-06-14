@@ -54,6 +54,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
             <FormFieldWithControl
               testID={buildTestId('eid_pinView_pin_input')}
               name="pin"
+              variant="pin"
               control={form.control}
               component={PinInput}
               pinLength={PIN_LENGTH}

@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react-native'
 import { FavoritesList } from './favorites-list'
 import { FavouritesItem } from '../../services/api/types/commerce/api-types'
 import { StoreProvider } from '../../services/testing/test-utils'
+import { NavigationContainer } from '@react-navigation/native'
 
 test('Should display list of favorites', async () => {
   const favourites: FavouritesItem[] = [
@@ -78,9 +79,11 @@ test('Should display list of favorites', async () => {
   ]
 
   render(
-    <StoreProvider>
-      <FavoritesList favourites={favourites} />
-    </StoreProvider>,
+    <NavigationContainer>
+      <StoreProvider>
+        <FavoritesList favourites={favourites} />
+      </StoreProvider>
+    </NavigationContainer>,
   )
 
   const results = await screen.findAllByText('Lively Chorus DE')

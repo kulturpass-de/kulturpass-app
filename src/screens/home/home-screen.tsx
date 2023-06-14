@@ -15,7 +15,7 @@ import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { HomeHeader } from './home-header'
 import { HomeHeaderShrinkable } from './home-header-shrinkable'
 import { HomeHeaderWithWebView } from './home-header-with-webview'
-import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-get-environment-configuration'
+import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
 
 export type HomeScreenProps = {}
 
@@ -50,6 +50,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   return (
     <Screen withBasicBackground testID={buildTestId('home')}>
       <ErrorAlert error={visibleError} onDismiss={clearVisibleError} />
+      <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
+        <HomeHeaderWithWebView>
+          <HomeHeader profile={data} />
+        </HomeHeaderWithWebView>
+      </HomeHeaderShrinkable>
       <SpartacusWebView
         contentOffset={contentOffset}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}
@@ -58,11 +63,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
         testID={buildTestId('screens_home_webview')}
         language={language}
       />
-      <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
-        <HomeHeaderWithWebView>
-          <HomeHeader profile={data} />
-        </HomeHeaderWithWebView>
-      </HomeHeaderShrinkable>
     </Screen>
   )
 }

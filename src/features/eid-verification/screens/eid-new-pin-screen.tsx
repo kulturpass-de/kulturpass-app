@@ -84,6 +84,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
             <FormFieldWithControl
               testID={buildTestId('eid_newPinView_newPin_input')}
               name="newPin"
+              variant="pin"
               control={form.control}
               component={PinInput}
               pinLength={6}
@@ -99,6 +100,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
             <FormFieldWithControl
               testID={buildTestId('eid_newPinView_confirmNewPin_input')}
               name="confirmNewPin"
+              variant="pin"
               control={form.control}
               component={PinInput}
               pinLength={6}
