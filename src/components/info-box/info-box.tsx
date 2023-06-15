@@ -5,11 +5,12 @@ import { colors } from '../../theme/colors'
 
 type InfoBoxProps = PropsWithChildren<{
   containerStyle?: StyleProp<ViewStyle>
+  focusable?: boolean
 }>
 
-export const InfoBox: React.FC<InfoBoxProps> = ({ children, containerStyle }) => {
+export const InfoBox: React.FC<InfoBoxProps> = ({ children, containerStyle, focusable }) => {
   return (
-    <View style={styles.button} focusable>
+    <View style={styles.button} focusable={focusable}>
       <View style={styles.shadow} />
       <View style={[styles.container, containerStyle]}>{children}</View>
     </View>

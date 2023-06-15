@@ -2,6 +2,7 @@ import { ChildNode, Text as TextNode } from 'domhandler/lib/node'
 import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native'
+import { useTranslation } from '../../services/translation/translation'
 
 import { openLink } from '../../utils/links/utils'
 
@@ -11,6 +12,7 @@ type InlineTextLinkProps = {
   textStyle?: StyleProp<TextStyle>
 }
 const InlineTextLink: React.FC<InlineTextLinkProps> = ({ text, link, textStyle }) => {
+  const { t } = useTranslation()
   const handlePress = useCallback(() => openLink(link), [link])
 
   return (
@@ -19,6 +21,7 @@ const InlineTextLink: React.FC<InlineTextLinkProps> = ({ text, link, textStyle }
       accessible
       accessibilityLabel={text}
       accessibilityRole="link"
+      accessibilityHint={t('external_link_short_accessibility_announcement')}
       onPress={handlePress}>
       {text}
     </Text>

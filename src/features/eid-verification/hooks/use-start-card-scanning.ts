@@ -21,6 +21,7 @@ import {
 import { Flow } from '../types'
 import { generateSimulatedCard } from '../utils'
 import { useStartAA2ChangePin } from './use-start-change-pin'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 type StartCardScanningParams = {
   flow: Flow
@@ -124,7 +125,9 @@ export const useStartCardScanning = ({
       throw new Error('No new PIN provided')
     }
 
-    const changePinResult = await AA2CommandService.setNewPin(simulateCard ? undefined : newPin)
+    const changePinResult = await AA2CommandService.setNewPin(simulateCard ? undefined : newPin, {
+      msTimeout: AA2_TIMEOUTS.SET_NEW_PIN,
+    })
     if (changePinResult.success) {
       onChangePinSuccess()
     }
@@ -132,7 +135,9 @@ export const useStartCardScanning = ({
 
   const enterPin = useCallback(async () => {
     // Use 30 seconds timeout, because this step can take a long time
-    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, { msTimeout: 40000 })
+    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
+      msTimeout: AA2_TIMEOUTS.SET_PIN,
+    })
 
     if (result.msg === AA2Messages.EnterNewPin) {
       enterNewPin()
@@ -147,7 +152,9 @@ export const useStartCardScanning = ({
     if (can === undefined) {
       throw new Error('No CAN provided')
     }
-    const result = await AA2CommandService.setCan(can, { msTimeout: 20000 })
+    const result = await AA2CommandService.setCan(can, {
+      msTimeout: AA2_TIMEOUTS.SET_CAN,
+    })
     handleRetry(result.msg, result.msg === AA2Messages.EnterCan, result.reader)
   }, [can, handleRetry])
 
@@ -155,19 +162,25 @@ export const useStartCardScanning = ({
     if (puk === undefined) {
       throw new Error('No PUK provided')
     }
-    const result = await AA2CommandService.setPuk(puk, { msTimeout: 20000 })
+    const result = await AA2CommandService.setPuk(puk, {
+      msTimeout: AA2_TIMEOUTS.SET_PUK,
+    })
     handleRetry(result.msg, result.msg === AA2Messages.EnterPuk, result.reader)
   }, [handleRetry, puk])
 
   const handleInitialScan = useCallback(async () => {
-    const result = await AA2CommandService.accept({ msTimeout: 20000 })
+    const result = await AA2CommandService.accept({
+      msTimeout: AA2_TIMEOUTS.ACCEPT,
+    })
     handleRetry(result.msg, false, result.reader)
   }, [handleRetry])
 
   const startScanning = useCallback(async () => {
     setIsLoading(true)
     try {
-      const status = await AA2CommandService.getStatus()
+      const status = await AA2CommandService.getStatus({
+        msTimeout: AA2_TIMEOUTS.GET_STATUS,
+      })
       var msg = status.state
       if (status.workflow === null) {
         if (flow === 'ChangePin') {

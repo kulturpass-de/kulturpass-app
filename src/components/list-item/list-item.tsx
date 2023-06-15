@@ -6,6 +6,7 @@ import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { SvgImage } from '../svg-image/svg-image'
 import { Icon } from '../icon/icon'
+import { useTranslation } from '../../services/translation/translation'
 
 export type ListItemProps = {
   title: string
@@ -26,6 +27,7 @@ export const ListItem: React.FC<ListItemProps> = ({
   noBorderBottom,
   accessibilityState,
 }) => {
+  const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
   const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.basicBlack }
 
@@ -39,6 +41,8 @@ export const ListItem: React.FC<ListItemProps> = ({
     }
   }, [addTestIdModifier, testID, type])
 
+  const accessibilityHint = type === 'link' ? t('external_link_accessibility_announcement') : undefined
+
   return (
     <Pressable
       style={[styles.container, borderBottomStyle]}
@@ -47,6 +51,7 @@ export const ListItem: React.FC<ListItemProps> = ({
       accessibilityRole="button"
       accessibilityLabel={title}
       accessibilityState={accessibilityState}
+      accessibilityHint={accessibilityHint}
       accessible>
       {icon && <View style={styles.icon}>{icon}</View>}
       <Text style={[textStyles.BodyRegular, styles.text]}>{title}</Text>

@@ -482,6 +482,7 @@ exports[`HtmlText replaces a complex product description 1`] = `
       Mehr Infos 
   </Text>
   <Text
+    accessibilityHint="Externer"
     accessibilityLabel="hier"
     accessibilityRole="link"
     accessible={true}
@@ -557,6 +558,7 @@ exports[`HtmlText replaces html entities 1`] = `
 
 exports[`HtmlText replaces links which are opened in an external browser 1`] = `
 <Text
+  accessibilityHint="Externer"
   accessibilityLabel="linktext"
   accessibilityRole="link"
   accessible={true}

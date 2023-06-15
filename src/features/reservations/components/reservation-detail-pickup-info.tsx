@@ -79,7 +79,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
           widthOption="grow"
           bodyStyleOverrides={styles.voucherRedemptionUrlButton}
           onPress={onPressVoucherRedemptionUrl}
-          accessibilityRole="link"
+          accessibilityHint={t('external_link_accessibility_announcement')}
         />
       ) : null}
       {orderEntry.barcodeDisplayType === 'QR_CODE' && orderEntry.barcodeData ? (

@@ -45,7 +45,7 @@
   "eid_iosScanDialog_sessionSucceeded": "Dein Ausweis wurde erfolgreich gescannt.",
   "eid_error_title": "Oops!",
   "eid_error_retry_button": "Nochmal probieren",
-  "eid_error_belowMinYearOfBirth_message": "Du bist leider zu alt, um Budget zu erhalten.",
+  "eid_error_belowMinYearOfBirth_message": "Du bist leider zu alt, um Budget zu erhalten. Zurzeit ist nur der Jahrgang 2005 berechtigt.",
   "eid_error_belowMinAge_message": "Du bist leider zu jung, um Budget erhalten.",
   "eid_error_foreignResidency_message": "Der Wohnort in deinem Online-Ausweis muss sich in Deutschland befinden, um Budget zu erhalten.",
   "eid_error_pseudonymAlreadyInUse_message": "Der Online-Ausweis wurde schon für eine erfolgreiche Identifikation genutzt.",
@@ -508,7 +508,8 @@
   "not_yet_entitled_title": "Hi {{name}}!",
   "not_yet_entitled_button_text": "Schau dich schon mal um! Dein Budget erhältst du erst, wenn du 18 bist, aber bis dahin kannst du dich inspirieren lassen und Favoriten setzen.",
   "verification_duplicate_title": "Hi {{name}}!",
-  "verification_duplicate_text": "Dein Budget konnte nicht freigeschaltet werden, da es bereits jemanden mit deinen Identifikationsdaten gibt. Bitte schau in den<faqLink>FAQ</faqLink> nach, wie du weiter vorgehen musst.",
+  "verification_duplicate_text": "Dein Budget konnte nicht freigeschaltet werden, da es bereits jemanden mit deinen Identifikationsdaten gibt.",
+  "verification_duplicate_text_link": "Bitte schau in den FAQ nach, wie du weiter vorgehen musst.",
   "verification_duplicate_faq_link": "FAQ",
   "webview_error_noInternet_title": "Kein Internet",
   "webview_error_generic_title": "Oops!",
@@ -531,5 +532,7 @@
   "updateProfile_cancel_confirm_button": "Trotzdem abbrechen",
   "account_verified_alert_title": "Erfolgreich verifiziert",
   "account_verified_alert_content": "Du hast deine Mail verifiziert, bitte melde dich erneut an",
-  "account_verified_alert_button": "Weiter zur Anmeldung"
+  "account_verified_alert_button": "Weiter zur Anmeldung",
+  "external_link_accessibility_announcement": "Externer Link",
+  "external_link_short_accessibility_announcement": "Externer"
 }

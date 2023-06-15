@@ -1995,10 +1995,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sap/react-native-ausweisapp2-wrapper@1.0.5":
-  version "1.0.5"
-  resolved "https://common.repositories.cloud.sap/artifactory/api/npm/deploy-releases-hyperspace-npm/@sap/react-native-ausweisapp2-wrapper/-/@sap/react-native-ausweisapp2-wrapper-1.0.5.tgz#6b315a1f7cabfff79dbf11e15a8312cda4df0ae0"
-  integrity sha512-lKBNXLSEg00HL5m0AS5uwJTA/aq25f14ilfWq9/+qIj5kIcjx0wy5CGW5+A+D1/5JKci4OTR5h2ctfBL5mm5fQ==
+"@sap/react-native-ausweisapp2-wrapper@1.0.6":
+  version "1.0.6"
+  resolved "https://common.repositories.cloud.sap/artifactory/api/npm/deploy-releases-hyperspace-npm/@sap/react-native-ausweisapp2-wrapper/-/@sap/react-native-ausweisapp2-wrapper-1.0.6.tgz#3b670911b069394c45462ac982e674fd958b9880"
+  integrity sha512-CAY9bgyOgRBt5Qn6drjVxlCFFPI8h3rMWAAkt9xfmUNIGdlFHKUxahVJpd6pfS2TiOHwhucbRwHlEUfx4fBMGw==
   dependencies:
     rxjs "^7.8.1"
 

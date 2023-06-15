@@ -14,6 +14,7 @@ import {
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { AA2Timeout, isTimeoutError } from '../errors'
 import { useGetTcTokenUrl } from './use-get-tc-token-url'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 /**
  * Hook that returns a callback for starting the AA2 Auth flow.
@@ -50,9 +51,9 @@ export const useStartAA2Auth = (
         sessionInProgress: t('eid_iosScanDialog_sessionInProgress'),
       }
       const accessRights = await AA2CommandService.runAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages, {
-        msTimeout: 50000,
+        msTimeout: AA2_TIMEOUTS.RUN_AUTH,
       })
-      const certificate = await AA2CommandService.getCertificate()
+      const certificate = await AA2CommandService.getCertificate({ msTimeout: AA2_TIMEOUTS.GET_CERTIFICATE })
       onSuccess(accessRights, certificate)
     } catch (e) {
       if (e instanceof ErrorWithCode) {

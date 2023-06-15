@@ -37,6 +37,7 @@ export type ButtonProps = {
   iconSource?: IconProps['source']
   iconPosition?: 'left' | 'right'
   accessibilityRole?: AccessibilityRole
+  accessibilityHint?: string
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -53,6 +54,7 @@ export const Button: FC<ButtonProps> = ({
   iconSource,
   iconPosition = 'right',
   accessibilityRole = 'button',
+  accessibilityHint,
 }) => {
   const { t } = useTranslation()
 
@@ -140,6 +142,7 @@ export const Button: FC<ButtonProps> = ({
       accessibilityLabel={buttonText}
       accessible
       accessibilityRole={accessibilityRole}
+      accessibilityHint={accessibilityHint}
       accessibilityState={disabled ? { disabled: true } : undefined}
       style={[baseButtonStyle.pressed, buttonPressableStyle]}>
       {state => (

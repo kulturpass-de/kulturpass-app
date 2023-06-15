@@ -12,6 +12,7 @@ import { EidTransportPinRouteName } from './eid-transport-pin-route'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { EidErrorAlert } from '../components/eid-error-alert'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 export const EidPinRouteName = 'EidPin'
 
@@ -42,7 +43,7 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
   const onChangePin = useCallback(async () => {
     setIsLoading(true)
     try {
-      await AA2CommandService.cancel()
+      await AA2CommandService.cancel({ msTimeout: AA2_TIMEOUTS.CANCEL })
     } catch {
       // Will be handled by error EidErrorAlert
     } finally {

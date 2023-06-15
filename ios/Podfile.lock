@@ -356,7 +356,7 @@ PODS:
   - React-jsinspector (0.71.8)
   - React-logger (0.71.8):
     - glog
-  - react-native-ausweisapp2-wrapper (1.0.5):
+  - react-native-ausweisapp2-wrapper (1.0.6):
     - React-Core
   - react-native-date-picker (4.2.13):
     - React-Core
@@ -770,7 +770,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 747911ab5921641b4ed7e4900065896597142125
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
-  react-native-ausweisapp2-wrapper: 2a3691c1475b648b7e591130632da650e787e8fc
+  react-native-ausweisapp2-wrapper: 64cd79eb3b3247298433cf247cd94f88cd0f502b
   react-native-date-picker: 04e866ba4e7857f83abd504ad42e787f0f02ae00
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b

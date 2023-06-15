@@ -38,7 +38,8 @@ export const LinkText: React.FC<LinkTextProps> = ({
       <Pressable
         style={[styles.textPadding, flex ? styles.textFlex : undefined]}
         onPress={handlePress}
-        accessibilityRole="link"
+        accessibilityRole={'link'}
+        accessibilityHint={t('external_link_short_accessibility_announcement')}
         accessibilityLabel={t(i18nKey)}
         accessible
         testID={addTestIdModifier(testID, 'button')}>

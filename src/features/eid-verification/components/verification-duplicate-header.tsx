@@ -1,30 +1,18 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+
 import { Icon } from '../../../components/icon/icon'
 import { LinkTextInline } from '../../../components/link-text/link-text-inline'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { AvailableTextStyles } from '../../../components/translated-text/types'
 import { buildTestId } from '../../../services/test-id/test-id'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
-const FaqLink: React.FC<PropsWithChildren<{ textStyle: AvailableTextStyles }>> = ({ textStyle }) => {
-  const identificationStatusDuplicateFaqLink = useFaqLink('IDENTIFICATION_STATUS_DUPLICATE')
-
-  return (
-    <LinkTextInline
-      textStyle={textStyle}
-      link={identificationStatusDuplicateFaqLink}
-      i18nKey="verification_duplicate_faq_link"
-      iconSize={20}
-    />
-  )
-}
-
 export const VerificationDuplicateHeader: React.FC = () => {
   const { firstName } = useUserInfo()
+  const identificationStatusDuplicateFaqLink = useFaqLink('IDENTIFICATION_STATUS_DUPLICATE')
 
   return (
     <View style={styles.container} focusable>
@@ -40,15 +28,20 @@ export const VerificationDuplicateHeader: React.FC = () => {
           />
           <View style={styles.content}>
             <Icon source="Attention" width={36} height={36} />
-            <TranslatedText
-              textStyleOverrides={styles.text}
-              testID={buildTestId('verification_duplicate_text')}
-              i18nKey="verification_duplicate_text"
-              textStyle="BodySmallMedium"
-              customComponents={{
-                faqLink: <FaqLink textStyle="BodySmallMedium" />,
-              }}
-            />
+            <View style={styles.textWrapper}>
+              <TranslatedText
+                textStyleOverrides={styles.text}
+                testID={buildTestId('verification_duplicate_text')}
+                i18nKey="verification_duplicate_text"
+                textStyle="BodySmallMedium"
+              />
+              <LinkTextInline
+                textStyle="BodySmallMedium"
+                link={identificationStatusDuplicateFaqLink}
+                i18nKey="verification_duplicate_text_link"
+                iconSize={20}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -83,10 +76,15 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     marginTop: spacing[5],
+    marginRight: spacing[5],
     flexShrink: 1,
   },
-  text: {
+  textWrapper: {
+    flexDirection: 'column',
     marginLeft: spacing[4],
+    marginRight: spacing[5],
+  },
+  text: {
     flexShrink: 1,
     flexWrap: 'wrap',
     color: colors.moonDarkest,

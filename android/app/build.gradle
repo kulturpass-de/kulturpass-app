@@ -114,9 +114,12 @@ android {
         )
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        // Fixes build error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
         packagingOptions {
+            // Fixes build error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
             pickFirst "lib/arm64-v8a/libc++_shared.so"
+            // Needed for aab (Android App Bundle) creation.
+            // The AusweisApp2 SDK will not work correctly without it
+            // See also https://www.ausweisapp.bund.de/sdk/android.html#app-bundle
             jniLibs { useLegacyPackaging = true }
         }
     }

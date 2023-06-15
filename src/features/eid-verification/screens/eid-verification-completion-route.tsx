@@ -7,6 +7,7 @@ import { modalCardStyle } from '../../../theme/utils'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidVerificationCompletionScreen } from './eid-verification-completion-screen'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 export const EidVerificationCompletionRouteName = 'EidVerificationCompletion'
 
@@ -23,7 +24,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
   const onNext = useCallback(() => {
     modalNavigation.closeModal()
     try {
-      AA2CommandService.stop()
+      AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {
       console.log(e)
     }

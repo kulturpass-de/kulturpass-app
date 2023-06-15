@@ -124,6 +124,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
           if (index < value.length) {
             setFocusedIndex(index)
           } else {
+            innerInputRef.current?.blur()
             setFocusedIndex(nextInputIndex)
           }
         }
@@ -162,7 +163,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
           </Pressable>
         )
       },
-      [error, focusedIndex, selectedIndex, showPin, value, nextInputIndex, variant, t],
+      [selectedIndex, focusedIndex, error, value, showPin, t, variant, nextInputIndex, innerInputRef],
     )
 
     const focusSelectedIndex = useCallback(() => {
@@ -177,7 +178,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
       } else {
         setFocusInnerInputRef()
       }
-    }, [setFocusInnerInputRef, setFocusToggleShowPinRef, value, pinLength])
+    }, [pinLength, setFocusInnerInputRef, setFocusToggleShowPinRef, value.length])
 
     useEffect(() => {
       if (focusedIndex !== undefined && focusedIndex >= 0) {

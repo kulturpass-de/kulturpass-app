@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { StyleSheet, Text, TextStyle } from 'react-native'
+import { Pressable, StyleSheet, Text, TextStyle } from 'react-native'
+
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { Icon } from '../icon/icon'
@@ -26,16 +27,14 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, i
   const linkTestId = buildTestId(i18nKey)
 
   return (
-    <>
-      <Icon width={iconSize} height={iconSize} source="LinkArrow" style={styles.icon} />
-      <Text
-        style={[styles.container, style]}
-        suppressHighlighting={true}
-        onPress={handlePress}
-        accessibilityRole="link"
-        accessibilityLabel={t(i18nKey)}
-        accessible
-        testID={linkTestId + '_button'}>
+    <Pressable
+      onPress={handlePress}
+      accessibilityRole="link"
+      accessibilityHint={t('external_link_short_accessibility_announcement')}
+      accessibilityLabel={t(i18nKey)}
+      accessible>
+      <Text style={[styles.container, style]}>
+        <Icon width={iconSize} height={iconSize} source="LinkArrow" style={styles.icon} />
         <TranslatedText
           testID={linkTestId}
           textStyleOverrides={styles.text}
@@ -43,7 +42,7 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, i
           i18nKey={i18nKey}
         />
       </Text>
-    </>
+    </Pressable>
   )
 }
 
