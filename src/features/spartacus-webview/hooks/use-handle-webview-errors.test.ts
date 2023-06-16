@@ -5,6 +5,10 @@ import { act } from 'react-test-renderer'
 import { ERR_NO_INTERNET } from '../components/webview-error-view'
 
 describe('useHandleWebviewErrors', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {})
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })

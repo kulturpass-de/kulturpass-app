@@ -16,6 +16,7 @@ import { EidAboutVerificationRouteName } from '../screens/eid-about-verification
 import { Button } from '../../../components/button/button'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import {
+  AA2AcceptTimeout,
   AA2BelowMinAge,
   AA2BelowMinYearOfBirth,
   AA2CardDeactivated,
@@ -101,6 +102,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
       return t('eid_error_timeout_message')
     } else if (intError instanceof AA2CardRemoved) {
       return t('eid_error_cardRemoved_message')
+    } else if (intError instanceof AA2AcceptTimeout) {
+      return t('eid_error_acceptTimeout_message')
     }
   }, [intError, t])
 

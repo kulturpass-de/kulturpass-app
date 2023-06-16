@@ -154,7 +154,7 @@ describe('authLogut', () => {
       preloadedState,
     })
 
-    const warnSpy = jest.spyOn(global.console, 'warn')
+    const warnSpy = jest.spyOn(global.console, 'warn').mockImplementationOnce(() => {})
 
     await store.dispatch(authLogoutWithoutErrors())
 

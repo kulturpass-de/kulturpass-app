@@ -3,6 +3,7 @@ import { ErrorWithCode } from '../../../services/errors/errors'
 import {
   AA2AuthError,
   AA2AuthErrorResultError,
+  AA2CardDeactivated,
   AA2CardRemoved,
   createAA2ErrorFromMessage,
   extractDetailCode,
@@ -46,6 +47,11 @@ export const useHandleErrors = (
             msg.result?.reason === FailureCodes.Did_Authenticate_Eac2_Card_Command_Failed
           ) {
             onError(new AA2CardRemoved())
+            return
+          }
+
+          if (msg.result?.reason === FailureCodes.Connect_Card_Eid_Inactive) {
+            onError(new AA2CardDeactivated())
             return
           }
 

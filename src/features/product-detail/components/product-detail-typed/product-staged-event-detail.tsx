@@ -14,13 +14,13 @@ export type ProductStagedEventDetailProps = {
   testID: TestId
 }
 
-const formatDate = (language: Language, dateStr: string): string => {
+const formatDate = (language: Language, dateStr: string, oClockLabel: string): string => {
   const date = new Date(dateStr)
   const timeOpts: Intl.DateTimeFormatOptions = {
     hour: '2-digit',
     minute: '2-digit',
   }
-  return `${date.toLocaleDateString(language)} | ${date.toLocaleTimeString(language, timeOpts)}`
+  return `${date.toLocaleDateString(language)} | ${date.toLocaleTimeString(language, timeOpts)} ${oClockLabel}`
 }
 
 export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> = ({ productDetail, testID }) => {
@@ -56,7 +56,7 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
           <Text
             testID={addTestIdModifier(sectionTestID, 'time_date')}
             style={[textStyles.BodyBlack, styles.colorMoonDarkest]}>
-            {formatDate(language, eventDateTime)}
+            {formatDate(language, eventDateTime, t('productDetail_stagedEvent_time_oclock_label'))}
           </Text>
         ) : null}
         {durationInMins ? (

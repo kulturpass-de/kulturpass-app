@@ -55,10 +55,11 @@ describe('useDeleteAccount', () => {
       { wrapper: Wrapper },
     )
 
-    await act(() => {})
     expect(result.current.userIsLoggedIn).toBe(true)
     expect(setAccountInfoParams).toBeUndefined()
-    await result.current.deleteAccount('dummy')
+    await act(async () => {
+      await result.current.deleteAccount('dummy')
+    })
     expect(result.current.userIsLoggedIn).toBe(false)
     expect(setAccountInfoParams.get('oauth_token')).toBe('newDummyToken')
     expect(setAccountInfoParams.get('sig')).toBeTruthy()

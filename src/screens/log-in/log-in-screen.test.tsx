@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
+import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 
 import { buildTestId } from '../../services/test-id/test-id'
 import { LogInScreen } from './log-in-screen'
@@ -31,7 +31,6 @@ const passwordError = buildTestId('login_form_password_error')
 
 test('Should display no errors on initial render', async () => {
   renderLoginScreen()
-  await act(() => {})
   expect(screen.getByTestId(formSubmitBtn)).toBeDisabled()
   expect(screen.queryByTestId(emailError)).not.toBeOnTheScreen()
   expect(screen.queryByTestId(passwordError)).not.toBeOnTheScreen()
@@ -39,14 +38,12 @@ test('Should display no errors on initial render', async () => {
 
 test('Should enable the submit button if all required files are filled', async () => {
   renderLoginScreen()
-  await act(() => {})
   fireEvent.changeText(screen.getByTestId(emailInput), '')
   await waitFor(() => expect(screen.getByTestId(formSubmitBtn)).toBeEnabled())
 })
 
 test('Should handle email input field', async () => {
   renderLoginScreen()
-  await act(() => {})
 
   fireEvent.changeText(screen.getByTestId(emailInput), 'nope')
   await waitFor(() => expect(screen.getByTestId(formSubmitBtn)).toBeEnabled())
@@ -65,7 +62,6 @@ test('Should handle email input field', async () => {
 
 test('Should handle password input field', async () => {
   renderLoginScreen()
-  await act(() => {})
 
   fireEvent.changeText(screen.getByTestId(emailInput), 'email@example.org')
   await waitFor(() => expect(screen.getByTestId(formSubmitBtn)).toBeEnabled())
@@ -80,7 +76,6 @@ test('Should handle password input field', async () => {
 test('Should be able to submit login form successfully', async () => {
   const afterLogin = jest.fn()
   renderLoginScreen({ afterLogin })
-  await act(() => {})
 
   expect(screen.getByTestId(formSubmitBtn)).toBeDisabled()
 

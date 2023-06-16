@@ -19,6 +19,9 @@ export default function useAccessibilityFocus(
       if (ref.current) {
         const setFocusCallback = () => {
           setTimeout(() => {
+            if (!ref.current) {
+              return
+            }
             const focusPoint = findNodeHandle(ref.current)
 
             if (focusPoint) {

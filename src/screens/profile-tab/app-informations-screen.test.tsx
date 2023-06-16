@@ -8,7 +8,6 @@ import { buildTestId } from '../../services/test-id/test-id'
 import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
 import { AppInformationsScreen } from './app-informations-screen'
 import { ViewProfileScreen } from './view-profile-screen'
-import { act } from 'react-test-renderer'
 
 const renderScreen = (children: React.ReactNode) => {
   render(
@@ -20,15 +19,14 @@ const renderScreen = (children: React.ReactNode) => {
   )
 }
 
-test.skip('Should render app informations screen', async () => {
+test('Should render app informations screen', async () => {
   renderScreen(<AppInformationsScreen />)
-  await act(() => {})
   expect(screen.getByTestId(buildTestId('app_informations_screen'))).toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('app_informations_title'))).toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('app_informations_version'))).toBeOnTheScreen()
 })
 
-test.skip('Should render menu item in settings page', async () => {
+test('Should render menu item in settings page', async () => {
   renderScreen(
     <ViewProfileScreen
       onPressAppInformations={() => {}}

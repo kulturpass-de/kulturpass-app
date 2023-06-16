@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react-native'
 import { Image } from '../../../services/api/types/commerce/api-types'
 import { StoreProvider } from '../../../services/testing/test-utils'
-import { act } from 'react-test-renderer'
 import { useProductImageUrl } from './use-product-image-url'
 
 const productHighQualityImageUrl: Image = {
@@ -34,8 +33,7 @@ describe('useProductImageUrl', () => {
     const { result } = renderHook(() => useProductImageUrl(images, 'zoom'), {
       wrapper: StoreProvider,
     })
-    // Fixes hook not executed => seems to be a problem with redux store mocking and renderHook
-    await act(() => {})
+
     expect(result.current?.imageUrl).toBe('http://localhost/zoom.png')
     expect(result.current?.image?.altText).toBe('zoom')
   })
@@ -45,7 +43,7 @@ describe('useProductImageUrl', () => {
     const { result } = renderHook(() => useProductImageUrl(images, 'product'), {
       wrapper: StoreProvider,
     })
-    await act(() => {})
+
     expect(result.current?.imageUrl).toBe('http://localhost/product.png')
     expect(result.current?.image?.altText).toBe('product')
   })
@@ -55,7 +53,7 @@ describe('useProductImageUrl', () => {
     const { result } = renderHook(() => useProductImageUrl(images, 'product'), {
       wrapper: StoreProvider,
     })
-    await act(() => {})
+
     expect(result.current.image).toBeUndefined()
     expect(result.current.imageUrl).toBeUndefined()
   })

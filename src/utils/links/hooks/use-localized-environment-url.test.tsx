@@ -32,8 +32,6 @@ describe('useLocalizedEnvironmentUrl', () => {
       wrapper: Wrapper,
     })
 
-    await act(() => {})
-
     expect(result.current).toBe('http://localhost/consents/deDpsDocumentUrl')
   })
 
@@ -49,8 +47,6 @@ describe('useLocalizedEnvironmentUrl', () => {
         wrapper: Wrapper,
       },
     )
-
-    await act(() => {})
 
     await act(() => {
       result.current.cl(Language.en)

@@ -11,7 +11,13 @@ import {
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { Platform } from 'react-native'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import { AA2CardDeactivated, AA2Timeout, extractAuthResultUrlQueryError, isTimeoutError } from '../errors'
+import {
+  AA2AcceptTimeout,
+  AA2CardDeactivated,
+  AA2Timeout,
+  extractAuthResultUrlQueryError,
+  isTimeoutError,
+} from '../errors'
 import {
   getRandomLastName,
   getSimulateCard,
@@ -80,17 +86,15 @@ export const useStartCardScanning = ({
 
   const handleAuth = useCallback(
     (authMsg: Auth) => {
-      if (
-        authMsg.error === undefined &&
-        authMsg.result?.major.endsWith('#error') !== true &&
-        authMsg.url !== undefined
-      ) {
+      if (authMsg.url !== undefined) {
         const queryError = extractAuthResultUrlQueryError(authMsg)
         if (queryError !== undefined) {
           onError(queryError)
         } else {
           onAuthSuccess(authMsg.url)
         }
+      } else {
+        throw new Error('Auth message has no url')
       }
     },
     [onAuthSuccess, onError],
@@ -169,11 +173,19 @@ export const useStartCardScanning = ({
   }, [handleRetry, puk])
 
   const handleInitialScan = useCallback(async () => {
-    const result = await AA2CommandService.accept({
-      msTimeout: AA2_TIMEOUTS.ACCEPT,
-    })
-    handleRetry(result.msg, false, result.reader)
-  }, [handleRetry])
+    try {
+      const result = await AA2CommandService.accept({
+        msTimeout: AA2_TIMEOUTS.ACCEPT,
+      })
+      handleRetry(result.msg, false, result.reader)
+    } catch (error) {
+      if (isTimeoutError(error)) {
+        onError(new AA2AcceptTimeout())
+      } else {
+        throw error
+      }
+    }
+  }, [handleRetry, onError])
 
   const startScanning = useCallback(async () => {
     setIsLoading(true)
@@ -203,9 +215,14 @@ export const useStartCardScanning = ({
       }
     } catch (e: unknown) {
       if (
-        [AA2Messages.BadState, AA2Messages.InternalError, AA2Messages.Invalid, AA2Messages.UnknownCommand].includes(
-          (e as any)?.msg,
-        )
+        [
+          AA2Messages.BadState,
+          AA2Messages.InternalError,
+          AA2Messages.Invalid,
+          AA2Messages.UnknownCommand,
+          AA2Messages.Auth,
+          AA2Messages.ChangePin,
+        ].includes((e as any)?.msg)
       ) {
         // AusweisApp2 Message errors are handled by the useHandleErrors hook
         return

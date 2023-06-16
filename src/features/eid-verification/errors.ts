@@ -16,6 +16,7 @@ export enum AA2ErrorCode {
   AA2_PSEUDONYM_ALREADY_IN_USE = 'AA2_PSEUDONYM_ALREADY_IN_USE',
   AA2_CARD_DEACTIVATED = 'AA2_CARD_DEACTIVATED',
   AA2_TIMEOUT = 'AA2_TIMEOUT',
+  AA2_ACCEPT_TIMEOUT = 'AA2_ACCEPT_TIMEOUT',
   AA2_CARD_REMOVED = 'AA2_CARD_REMOVED',
 }
 
@@ -132,6 +133,14 @@ export class AA2CardDeactivated extends AA2Error {
 export class AA2Timeout extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
     super(AA2ErrorCode.AA2_TIMEOUT, detailCode)
+    this.message = message ?? this.message
+    this.type = type
+  }
+}
+
+export class AA2AcceptTimeout extends AA2Error {
+  constructor(detailCode?: string, message?: string, type?: string) {
+    super(AA2ErrorCode.AA2_ACCEPT_TIMEOUT, detailCode)
     this.message = message ?? this.message
     this.type = type
   }

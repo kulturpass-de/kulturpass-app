@@ -33,7 +33,11 @@ export const useStartAA2Auth = (
   const startAuth = useCallback(async () => {
     setIsLoading(true)
     try {
-      const isReaderAvailable = await AA2WorkflowHelper.readerIsAvailable(simulateCard, 'NFC')
+      const isReaderAvailable = await AA2WorkflowHelper.readerIsAvailable(
+        simulateCard,
+        'NFC',
+        AA2_TIMEOUTS.GET_READER_LIST,
+      )
       if (!isReaderAvailable) {
         if (simulateCard) {
           return onError(new UnknownError())

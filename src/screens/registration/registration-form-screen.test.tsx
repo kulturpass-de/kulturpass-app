@@ -40,6 +40,12 @@ describe('registration-form-screen', () => {
   const dateOfBirthInput = buildTestId('registration_form_dateOfBirth')
   const formSubmitBtn = buildTestId('registration_form_submit')
 
+  const cdcLoginResult = {
+    profile: { firstName: 'Tester' },
+    sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
+  }
+  const commerceLoginResult = { auth_something: 'token' }
+
   beforeAll(() => server.listen())
   afterEach(() => {
     jest.resetAllMocks()
@@ -50,7 +56,6 @@ describe('registration-form-screen', () => {
 
   it('Should display no errors on initial render', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
     expect(screen.queryByTestId(addTestIdModifier(emailInput, 'error'))).not.toBeOnTheScreen()
@@ -59,14 +64,12 @@ describe('registration-form-screen', () => {
 
   it('Should have disabled submit button on initial render', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
   })
 
   it('Should enable submit button when form gets dirty', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
     fireEvent.changeText(screen.getByTestId(`${emailInput}_input`), ' ')
@@ -75,7 +78,6 @@ describe('registration-form-screen', () => {
 
   it('Should display errors when submitting without values', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -95,7 +97,6 @@ describe('registration-form-screen', () => {
 
   it('Should handle email input field', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -111,7 +112,6 @@ describe('registration-form-screen', () => {
 
   it('Should handle password input field', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -135,7 +135,6 @@ describe('registration-form-screen', () => {
 
   it('Should handle birthdate input field', async () => {
     renderRegistrationScreen()
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -165,15 +164,12 @@ describe('registration-form-screen', () => {
           } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
         ),
       ),
+      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
+      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
     )
-
-    const authLogin = jest
-      .spyOn(authLoginModule, 'authLogin')
-      .mockImplementation((() => ({ type: '', unwrap: () => Promise.resolve() })) as any)
 
     const afterRegister = jest.fn()
     renderRegistrationScreen({ afterRegister })
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -194,8 +190,12 @@ describe('registration-form-screen', () => {
     await waitFor(() => expect(afterRegister).toHaveBeenCalledTimes(1))
     await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token', ''))
 
-    expect(authLogin).toHaveBeenCalledTimes(1)
-    expect(authLogin).toHaveBeenCalledWith({ loginID: 'cp@example.org', password: 'S3cr3t' })
+    store.expectActions([
+      {
+        type: authLoginModule.authLogin.pending.type,
+        meta: { arg: { loginID: 'cp@example.org', password: 'S3cr3t' } },
+      },
+    ])
   })
 
   it('Should be able to submit registration form successfully with all fields', async () => {
@@ -210,15 +210,12 @@ describe('registration-form-screen', () => {
           } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
         ),
       ),
+      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
+      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
     )
-
-    const authLogin = jest
-      .spyOn(authLoginModule, 'authLogin')
-      .mockImplementation((() => ({ type: '', unwrap: () => Promise.resolve() })) as any)
 
     const afterRegister = jest.fn()
     renderRegistrationScreen({ afterRegister })
-    await act(() => {})
 
     expect(await screen.findByTestId(formSubmitBtn)).toBeDisabled()
 
@@ -249,7 +246,11 @@ describe('registration-form-screen', () => {
     await waitFor(() => expect(afterRegister).toHaveBeenCalledTimes(1))
     await waitFor(() => expect(afterRegister).toHaveBeenCalledWith('my_reg_token', 'Nice'))
 
-    expect(authLogin).toHaveBeenCalledTimes(1)
-    expect(authLogin).toHaveBeenCalledWith({ loginID: 'cp@example.org', password: 'S3cr3t' })
+    store.expectActions([
+      {
+        type: authLoginModule.authLogin.pending.type,
+        meta: { arg: { loginID: 'cp@example.org', password: 'S3cr3t' } },
+      },
+    ])
   })
 })

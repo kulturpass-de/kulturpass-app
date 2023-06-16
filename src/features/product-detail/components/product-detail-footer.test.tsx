@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -47,10 +47,10 @@ test('Should render product detail footer with sufficient credit', async () => {
       selectedOffer={{ code: 'test', price: { value: 22.99, currencyIso: 'EUR' } }}
     />,
   )
-  await act(() => {})
+
+  expect(await screen.findByTestId(buildTestId('productDetail_footer_reserve_button'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('productDetail_footer_priceTitle'))).toBeOnTheScreen()
   expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
-  expect(screen.getByTestId(buildTestId('productDetail_footer_priceTitle'))).toBeOnTheScreen()
-  expect(screen.getByTestId(buildTestId('productDetail_footer_reserve_button'))).toBeOnTheScreen()
 
   fireEvent.press(screen.getByTestId(buildTestId('productDetail_footer_reserve_button')))
   expect(onReserve).toHaveBeenCalledTimes(1)
@@ -118,7 +118,8 @@ test('Should render product detail footer without a total price', async () => {
       // selectedOffer={}
     />,
   )
+
   await act(() => {})
 
-  expect(screen.queryAllByTestId(buildTestId('productDetail_footer')).length).toBe(0)
+  await waitFor(() => expect(screen.queryAllByTestId(buildTestId('productDetail_footer')).length).toBe(0))
 })

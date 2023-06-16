@@ -86,10 +86,14 @@ export type EnvironmentConfigurationContent = z.infer<typeof EnvironmentConfigur
 const readEnvironmentConfiguration = (): EnvironmentConfigurationContent => {
   let environmentConfiguration: unknown
   if (env.ENVIRONMENTS !== undefined) {
-    console.log('Using ENVIRONMENTS env variable to read environment configuration')
+    if (__DEV__ && process.env.NODE_ENV !== 'test') {
+      console.log('Using ENVIRONMENTS env variable to read environment configuration')
+    }
     environmentConfiguration = JSON.parse(env.ENVIRONMENTS)
   } else {
-    console.log('Using environment-configuration.yaml to read environment configuration')
+    if (__DEV__) {
+      console.log('Using environment-configuration.yaml to read environment configuration')
+    }
     environmentConfiguration = yaml.load(environmentConfigurationFileContent)
   }
 

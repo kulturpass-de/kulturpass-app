@@ -45,7 +45,7 @@ jest.mock('./src/env', () => {
       BRIDGE_FC_DEFAULT_TIMEOUT_MS: 1000,
       DEV_MENU: true,
       AA2_DEVELOPER_MODE: true,
-      DEBUG_TRANSLATION: true,
+      DEBUG_TRANSLATION: false,
       ENVIRONMENTS: JSON.stringify({
         $schema: 'https://kulturpass.sap.com/json-schema/environment-config.yml',
         data: [

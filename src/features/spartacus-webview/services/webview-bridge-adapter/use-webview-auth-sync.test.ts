@@ -146,15 +146,18 @@ describe('useWebViewAuthSync', () => {
       })
       await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
 
-      sendAuthIsUserLoggedIn.current!({
-        source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-        value: true,
+      await act(() => {
+        sendAuthIsUserLoggedIn.current!({
+          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
+          value: true,
+        })
       })
-      sendAuthIsUserLoggedIn.current!({
-        source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-        value: false,
+      await act(() => {
+        sendAuthIsUserLoggedIn.current!({
+          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
+          value: false,
+        })
       })
-
       await waitFor(() => expect(authLogout).toHaveBeenCalledTimes(1))
     })
   })

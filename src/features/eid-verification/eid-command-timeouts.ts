@@ -15,6 +15,7 @@ export const AA2_TIMEOUTS = {
   /**
    * Relevant for useStartAA2Auth
    */
+  GET_READER_LIST: DEFAULT_TIMEOUT,
   RUN_AUTH: 60000,
   GET_CERTIFICATE: DEFAULT_TIMEOUT,
   /**

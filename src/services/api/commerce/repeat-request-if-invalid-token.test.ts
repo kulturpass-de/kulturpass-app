@@ -1,12 +1,13 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import { HttpStatusUnauthorizedError } from '../../errors/errors'
 
+import { HttpStatusUnauthorizedError } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { axiosBaseQuery } from '../common/base-query'
 import { repeatRequestIfInvalidToken } from './repeat-request-if-invalid-token'
+import * as sessionService from '../../session/session-service'
 
 const server = setupServer()
 
@@ -91,7 +92,11 @@ describe('repeatRequestIfInvalidToken', () => {
         requestLogout = true
         return res(ctx.status(200), ctx.json({ ok: true }))
       }),
+      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
+
+    jest.spyOn(sessionService, 'clearCdcSession').mockImplementation(() => Promise.resolve())
+    jest.spyOn(sessionService, 'clearCommerceSession').mockImplementation(() => Promise.resolve())
 
     const queryWithHandlingInvalidToken = repeatRequestIfInvalidToken(axiosBaseQuery)
     const response = await queryWithHandlingInvalidToken(
