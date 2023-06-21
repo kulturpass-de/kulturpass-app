@@ -222,6 +222,7 @@ export const useStartCardScanning = ({
           AA2Messages.UnknownCommand,
           AA2Messages.Auth,
           AA2Messages.ChangePin,
+          AA2Messages.Reader,
         ].includes((e as any)?.msg)
       ) {
         // AusweisApp2 Message errors are handled by the useHandleErrors hook

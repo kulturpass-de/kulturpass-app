@@ -49,7 +49,7 @@
   "eid_error_belowMinAge_message": "Du bist leider zu jung, um Budget erhalten.",
   "eid_error_foreignResidency_message": "Der Wohnort in deinem Online-Ausweis muss sich in Deutschland befinden, um Budget zu erhalten.",
   "eid_error_pseudonymAlreadyInUse_message": "Der Online-Ausweis wurde schon für eine erfolgreiche Identifikation genutzt.",
-  "eid_error_cardDeactivated_message": "Dein Online-Ausweis ist deaktiviert und kann nicht zur Identifikation verwendet werden. Bitte nutze die AusweisApp2 für mehr Informationen.",
+  "eid_error_cardDeactivated_message": "Dein Online-Ausweis ist deaktiviert und kann nicht zur Identifikation verwendet werden. Bitte nutze die AusweisApp2, um deinen Online-Ausweis mit einem PIN-Rücksetzbrief zu aktivieren.",
   "eid_error_timeout_message": "Die Aktion hat leider zu lange gedauert. Bitte probiere es erneut.",
   "eid_error_acceptTimeout_message": "Dein Ausweis antwortet nicht. Deine Online-Ausweisfunktion ist wahrscheinlich deaktiviert. Bitte überprüfe mit der AusweisApp2 deinen Online-Ausweis.",
   "eid_error_cardRemoved_message": "Dein Online-Ausweis wurde bewegt. Bitte probiere es erneut ohne den Online-Ausweis zu bewegen.",

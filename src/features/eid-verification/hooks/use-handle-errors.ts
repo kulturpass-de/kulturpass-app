@@ -78,6 +78,10 @@ export const useHandleErrors = (
 
           onError(new AA2AuthErrorResultError(msg.reason))
         }
+      } else if (msg.msg === AA2Messages.Reader) {
+        if (msg.card?.deactivated === true) {
+          onError(new AA2CardDeactivated())
+        }
       } else {
         const error = createAA2ErrorFromMessage(msg.msg)
         onError(error)

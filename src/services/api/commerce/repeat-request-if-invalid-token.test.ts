@@ -48,6 +48,9 @@ describe('repeatRequestIfInvalidToken', () => {
           ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
         )
       }),
+      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ id_token: 'new_id_token' }))
+      }),
       rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
         obtainedNewToken = true
         return res(
