@@ -1,5 +1,5 @@
 import { CdcSessionData } from '../../session/types'
-import { AccountsLoginResponse } from '../../api/types'
+import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
 import { CDC_SESSION_EXPIRATION_INIFINITE } from '../../api/cdc-api'
 
 export const isNotEmptyString = (s?: string) => {
@@ -55,4 +55,11 @@ export const cdcLoginResponseToSessionData = (cdcLoginResponse: AccountsLoginRes
   }
 
   return sessionData
+}
+
+export const getTokenValidUntil = (commerceLoginResponse: PostAuthTokenResponse) => {
+  // NOTE: commerce sends expires_in as the number of seconds
+  //       converting it to milliseconds as expected by Date constructor
+  //       and removing 10 seconds to compensate for request duration
+  return Date.now() + (commerceLoginResponse.expires_in - 10) * 1000
 }

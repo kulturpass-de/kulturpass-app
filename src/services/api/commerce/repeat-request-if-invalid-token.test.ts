@@ -88,6 +88,9 @@ describe('repeatRequestIfInvalidToken', () => {
           ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
         )
       }),
+      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ id_token: 'new_id_token' }))
+      }),
       rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
         return res(ctx.status(401), ctx.json({ ok: false }))
       }),
@@ -95,7 +98,7 @@ describe('repeatRequestIfInvalidToken', () => {
         requestLogout = true
         return res(ctx.status(200), ctx.json({ ok: true }))
       }),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
 
     jest.spyOn(sessionService, 'clearCdcSession').mockImplementation(() => Promise.resolve())
@@ -111,7 +114,7 @@ describe('repeatRequestIfInvalidToken', () => {
       {},
     )
 
-    expect(response.error instanceof HttpStatusUnauthorizedError).toBeTruthy()
+    expect(response.error).toBeInstanceOf(HttpStatusUnauthorizedError)
     // should calling the api only once because obtaining token fails
     expect(requestProfileCounter).toBe(1)
     expect(requestLogout).toBe(true)

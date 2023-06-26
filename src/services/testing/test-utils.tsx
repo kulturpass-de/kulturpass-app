@@ -71,6 +71,7 @@ const actionsLoggedIn: Action[] = [
     token_type: 'bearer',
     expires_in: 43199,
     scope: 'basic openid',
+    token_valid_until: Date.now() + 43189 * 1000,
   }),
   userSlice.actions.setUserProfile({ firstName: 'Max' }),
 ]

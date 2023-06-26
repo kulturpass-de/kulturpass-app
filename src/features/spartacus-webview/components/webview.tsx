@@ -4,7 +4,11 @@ import { WebView, WebViewProps } from 'react-native-webview'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
-import { getCommerceAccessToken, getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
+import {
+  getCdcSessionData,
+  getCommerceSessionData,
+  getIsUserLoggedIn,
+} from '../../../services/auth/store/auth-selectors'
 import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
 import { AppDispatch } from '../../../services/redux/configure-store'
 import { colors } from '../../../theme/colors'
@@ -86,8 +90,16 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 
   const dispatch = useDispatch<AppDispatch>()
   const isUserLoggedIn = useSelector(getIsUserLoggedIn)
-  const commerceAccessToken = useSelector(getCommerceAccessToken)
-  useWebViewAuthSync(bridgeAdapterApi, bridgeAdapterState, dispatch, isUserLoggedIn, commerceAccessToken)
+  const cdcSessionData = useSelector(getCdcSessionData)
+  const commerceSessionData = useSelector(getCommerceSessionData)
+  useWebViewAuthSync(
+    bridgeAdapterApi,
+    bridgeAdapterState,
+    dispatch,
+    isUserLoggedIn,
+    cdcSessionData,
+    commerceSessionData,
+  )
 
   const currentUserLocation = useSelector(getCurrentUserLocation)
   useWebViewLocationSync(bridgeAdapterApi, bridgeAdapterState, currentUserLocation)

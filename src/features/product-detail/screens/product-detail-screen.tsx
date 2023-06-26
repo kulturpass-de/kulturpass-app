@@ -8,11 +8,7 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { ProductDetailOffer } from '../components/product-detail-offer'
 import { ProductDetailFooter } from '../components/product-detail-footer'
-import {
-  ProductDetailHeader,
-  PRODUCT_DETAIL_HEADER_HEIGHT_DIFF,
-  PRODUCT_DETAIL_HEADER_MIN_HEIGHT,
-} from '../components/product-detail-header'
+import { ProductDetailHeader } from '../components/product-detail-header'
 import { ProductDetailTitle } from '../components/product-detail-title'
 import { ProductDetailAllOffersButton } from '../components/product-detail-all-offers-button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
@@ -25,6 +21,7 @@ import { TryAgainButton } from '../../../components/try-again-button/try-again-b
 import { HtmlText } from '../../../components/html-text/html-text'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { useFocusEffect } from '@react-navigation/native'
+import { useProductDetailHeaderHeight } from '../hooks/use-product-detail-header-height'
 
 export type ProductDetailScreenProps = {
   productDetail: ProductDetail
@@ -53,45 +50,60 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
 
   const [focusRef, setFocus] = useAccessibilityFocus('both', 1500)
 
+  const productDetailHeaderHeightProps = useProductDetailHeaderHeight()
+
   useFocusEffect(setFocus)
 
   return (
     <ModalScreen whiteBottom testID={testID}>
-      <View style={styles.scrollContainer}>
-        <ProductDetailHeader scrollY={scrollY} onClose={onClose} imageUrl={productImage?.imageUrl} />
+      <View style={[styles.scrollContainer, { paddingTop: productDetailHeaderHeightProps.headerMinHeight }]}>
+        <ProductDetailHeader
+          {...productDetailHeaderHeightProps}
+          scrollY={scrollY}
+          onClose={onClose}
+          imageUrl={productImage?.imageUrl}
+        />
         <View style={styles.contentContainer}>
-          <Animated.ScrollView
-            testID={addTestIdModifier(testID, 'content')}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-              useNativeDriver: true,
-            })}
-            contentContainerStyle={styles.scrollView}>
-            <ProductDetailTitle productDetail={productDetail} ref={focusRef} />
-            {selectedOffer ? (
-              <ProductDetailOffer copyAddressToClipboard showDistance offerInfo={selectedOffer} />
-            ) : null}
-            {productDetail.offers !== undefined && productDetail.offers.length > 1 ? (
-              <ProductDetailAllOffersButton onPress={onOfferSelection} offers={productDetail.offers} />
-            ) : null}
-            <ProductDetailTyped productDetail={productDetail} />
-            <View style={styles.description}>
-              <HtmlText
-                testID={addTestIdModifier(testID, 'description')}
-                style={styles.descriptionHtmlText}
-                html={productDetail.description}
-              />
-            </View>
-            {selectedOffer ? (
-              <>
-                <Divider marginBottom={0} />
-                <ShopAccessibilityInfo
-                  testID={addTestIdModifier(testID, 'accessibility')}
-                  selectedOffer={selectedOffer}
+          {productDetailHeaderHeightProps.headerHeightDiff === null ? null : (
+            <Animated.ScrollView
+              testID={addTestIdModifier(testID, 'content')}
+              onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+                useNativeDriver: true,
+              })}
+              contentContainerStyle={[
+                styles.scrollView,
+                {
+                  paddingBottom: productDetailHeaderHeightProps.headerHeightDiff + spacing[7],
+                  marginTop: productDetailHeaderHeightProps.headerHeightDiff,
+                },
+              ]}>
+              <ProductDetailTitle productDetail={productDetail} ref={focusRef} />
+              {selectedOffer ? (
+                <ProductDetailOffer copyAddressToClipboard showDistance offerInfo={selectedOffer} />
+              ) : null}
+              {productDetail.offers !== undefined && productDetail.offers.length > 1 ? (
+                <ProductDetailAllOffersButton onPress={onOfferSelection} offers={productDetail.offers} />
+              ) : null}
+              <ProductDetailTyped productDetail={productDetail} />
+              <View style={styles.description}>
+                <HtmlText
+                  testID={addTestIdModifier(testID, 'description')}
+                  style={styles.descriptionHtmlText}
+                  html={productDetail.description}
                 />
-              </>
-            ) : null}
-            {randomMode ? <View style={styles.tryAgainPlaceholder} /> : null}
-          </Animated.ScrollView>
+              </View>
+              {selectedOffer ? (
+                <>
+                  <Divider marginBottom={0} />
+                  <ShopAccessibilityInfo
+                    testID={addTestIdModifier(testID, 'accessibility')}
+                    selectedOffer={selectedOffer}
+                  />
+                </>
+              ) : null}
+              {randomMode ? <View style={styles.tryAgainPlaceholder} /> : null}
+            </Animated.ScrollView>
+          )}
           {randomMode ? (
             <View style={styles.tryAgainButton}>
               <TryAgainButton
@@ -128,13 +140,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    paddingTop: PRODUCT_DETAIL_HEADER_MIN_HEIGHT,
     height: '100%',
   },
   scrollView: {
-    marginTop: PRODUCT_DETAIL_HEADER_HEIGHT_DIFF,
     paddingTop: spacing[7],
-    paddingBottom: PRODUCT_DETAIL_HEADER_HEIGHT_DIFF + spacing[7],
     paddingHorizontal: spacing[5],
     alignItems: 'flex-start',
   },

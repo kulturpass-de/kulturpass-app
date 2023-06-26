@@ -10,6 +10,11 @@ import { authCommerceLogin } from './auth-commerce-login'
 
 const server = setupServer()
 
+jest.mock('../utils', () => ({
+  ...jest.requireActual('../utils'),
+  getTokenValidUntil: () => 999,
+}))
+
 describe('authCommerceLogin', () => {
   const commerceLoginArg = {
     sessionStartTimestamp: 1234567890,
@@ -17,7 +22,7 @@ describe('authCommerceLogin', () => {
     uid: 'my_uid',
     uidSignature: 'my_uid_signature',
   }
-  const commerceLoginResult = { auth_something: 'token' }
+  const commerceLoginResult = { auth_something: 'token', expires_in: 25 }
 
   const persistCommerceSession = jest.spyOn(sessionService, 'persistCommerceSession')
 
@@ -54,7 +59,10 @@ describe('authCommerceLogin', () => {
     // find postAuthToken fulfilled, and check that persistCommerceSession was called with the results
     const postAuthTokenFulfilled = store.findAction(commerceApi.endpoints.postAuthToken.matchFulfilled)
     expect(persistCommerceSession).toHaveBeenCalledTimes(1)
-    expect(persistCommerceSession).toHaveBeenCalledWith(postAuthTokenFulfilled?.payload)
+    expect(persistCommerceSession).toHaveBeenCalledWith({
+      ...postAuthTokenFulfilled?.payload,
+      token_valid_until: 999,
+    })
   })
 
   it('should call setCommerceSession with data returned from postAuthToken', async () => {

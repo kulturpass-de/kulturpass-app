@@ -9,11 +9,14 @@ export const getAccountInfo = createThunk<AccountsGetAccountInfoResponse>(
     const regToken = getRegistrationToken(thunkAPI.getState())
 
     if (!regToken) {
-      return thunkAPI.dispatch(cdcApi.endpoints.accountsGetAccountInfoSigned.initiate()).unwrap()
+      const action = cdcApi.endpoints.accountsGetAccountInfoSigned.initiate(undefined, { forceRefetch: true })
+      return thunkAPI.dispatch(action).unwrap()
     }
 
-    return thunkAPI
-      .dispatch(cdcApi.endpoints.accountsGetAccountInfoWithRegTokenUnsigned.initiate({ regToken }))
-      .unwrap()
+    const action = cdcApi.endpoints.accountsGetAccountInfoWithRegTokenUnsigned.initiate(
+      { regToken },
+      { forceRefetch: true },
+    )
+    return thunkAPI.dispatch(action).unwrap()
   },
 )

@@ -1,38 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { authLogoutWithoutErrors } from '../../../../services/auth/store/thunks/auth-logout'
+import { authCommerceRefreshSession } from '../../../../services/auth/store/thunks/auth-commerce-refresh-session'
 import { AppDispatch } from '../../../../services/redux/configure-store'
+import { CdcSessionData, CommerceSessionData } from '../../../../services/session/types'
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
 import { WebViewBridgeAdapterState } from './use-webview-bridge-adapter'
-
-const STATE_CHANGES_WITHIN_5_SECONDS = 5000
 
 export const useWebViewAuthSync = (
   bridgeAdapterApi: ReturnType<typeof createBridgeAdapterApi>,
   bridgeAdapterState: WebViewBridgeAdapterState,
   dispatch: AppDispatch,
   isUserLoggedIn?: boolean,
-  commerceAccessToken?: string,
+  cdcSessionData?: CdcSessionData | null,
+  commerceSessionData?: CommerceSessionData | null,
 ) => {
   const [webViewAuthState, setWebViewAuthState] = useState<{ isLoggedIn?: boolean }>({})
-
-  const lastLoggedInTimestamp = useRef<number>()
-
-  useEffect(() => {
-    const now = Date.now()
-
-    if (!webViewAuthState.isLoggedIn && lastLoggedInTimestamp.current) {
-      const diff = now - lastLoggedInTimestamp.current
-      if (diff < STATE_CHANGES_WITHIN_5_SECONDS) {
-        lastLoggedInTimestamp.current = undefined
-        dispatch(authLogoutWithoutErrors()).unwrap()
-      }
-    }
-
-    if (webViewAuthState.isLoggedIn) {
-      lastLoggedInTimestamp.current = now
-    }
-  }, [webViewAuthState.isLoggedIn, dispatch])
 
   useEffect(() => {
     if (!bridgeAdapterState.isReady) {
@@ -41,18 +23,36 @@ export const useWebViewAuthSync = (
 
     const reauthenticate = async () => {
       const shouldReauthenticateWebView = !webViewAuthState.isLoggedIn && isUserLoggedIn
+      let shouldLogoutWebView = webViewAuthState.isLoggedIn && !isUserLoggedIn
 
-      const shouldLogoutWebView = webViewAuthState.isLoggedIn && !isUserLoggedIn
+      try {
+        if (shouldReauthenticateWebView) {
+          const { access_token, token_valid_until } = commerceSessionData!
+          if (token_valid_until && token_valid_until > Date.now()) {
+            await bridgeAdapterApi.authLogin(access_token)
+          } else {
+            await dispatch(authCommerceRefreshSession(cdcSessionData!)).unwrap()
+          }
+        }
+      } catch (error) {
+        shouldLogoutWebView = true
+      }
 
-      if (shouldReauthenticateWebView && commerceAccessToken) {
-        bridgeAdapterApi.authLogin(commerceAccessToken)
-      } else if (shouldLogoutWebView) {
+      if (shouldLogoutWebView) {
         bridgeAdapterApi.authLogout()
       }
     }
 
     reauthenticate()
-  }, [bridgeAdapterApi, bridgeAdapterState, webViewAuthState, isUserLoggedIn, commerceAccessToken, dispatch])
+  }, [
+    bridgeAdapterApi,
+    bridgeAdapterState,
+    webViewAuthState,
+    isUserLoggedIn,
+    cdcSessionData,
+    commerceSessionData,
+    dispatch,
+  ])
 
   useEffect(() => {
     const subscription = bridgeAdapterApi.onAuthIsUserLoggedIn(event => {

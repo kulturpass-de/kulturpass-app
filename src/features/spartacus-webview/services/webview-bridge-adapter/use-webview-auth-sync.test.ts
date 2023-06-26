@@ -2,7 +2,6 @@ import { act, renderHook, waitFor } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 
-import * as authLogoutModule from '../../../../services/auth/store/thunks/auth-logout'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
 import { SpartacusBridge } from './spartacus-bridge'
@@ -113,11 +112,36 @@ describe('useWebViewAuthSync', () => {
 
   describe('authApiState is logged in', () => {
     const isUserLoggedIn = true
-    const commerceAccessToken = 'my_access_token'
+
+    const cdcSessonData = {
+      uid: '0',
+      user: { firstName: 'Max', email: 'max@test.test' },
+      idToken: 'dummy',
+      sessionToken: 'dummy',
+      uidSignature: 'dummy',
+      sessionSecret: 'dummy',
+      sessionValidity: -2,
+      sessionStartTimestamp: Date.now(),
+      isVerified: true,
+    }
+    const commerceSessionData = {
+      access_token: 'my_access_token',
+      token_type: 'bearer',
+      expires_in: 43199,
+      scope: 'basic openid',
+      token_valid_until: Date.now() + 43189 * 1000,
+    }
 
     it('should authLogin when bridge is ready', async () => {
       renderHook(() =>
-        useWebViewAuthSync(mockedBridgeAdapterApi, { isReady: true }, dispatch, isUserLoggedIn, commerceAccessToken),
+        useWebViewAuthSync(
+          mockedBridgeAdapterApi,
+          { isReady: true },
+          dispatch,
+          isUserLoggedIn,
+          cdcSessonData,
+          commerceSessionData,
+        ),
       )
 
       await waitFor(() => expect(mockedBridgeAdapterApi.authLogin).toBeCalledTimes(1))
@@ -125,40 +149,11 @@ describe('useWebViewAuthSync', () => {
     })
 
     it('should not authLogin when bridge is not ready', async () => {
-      renderHook(() => useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, commerceAccessToken))
+      renderHook(() =>
+        useWebViewAuthSync(mockedBridgeAdapterApi, {}, dispatch, isUserLoggedIn, cdcSessonData, commerceSessionData),
+      )
 
       await waitFor(() => expect(mockedBridgeAdapterApi.authLogin).toBeCalledTimes(0))
-    })
-
-    it('Should force logout if isLoggedIn changes to false within 5 seconds', async () => {
-      const authLogout = jest.spyOn(authLogoutModule, 'authLogoutWithoutErrors').mockImplementation((() => {}) as any)
-
-      const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
-
-      renderHook(() => {
-        return useWebViewAuthSync(
-          mockedBridgeAdapterApi,
-          { isReady: true },
-          dispatch,
-          isUserLoggedIn,
-          commerceAccessToken,
-        )
-      })
-      await waitFor(() => expect(sendAuthIsUserLoggedIn.current).toBeDefined())
-
-      await act(() => {
-        sendAuthIsUserLoggedIn.current!({
-          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-          value: true,
-        })
-      })
-      await act(() => {
-        sendAuthIsUserLoggedIn.current!({
-          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-          value: false,
-        })
-      })
-      await waitFor(() => expect(authLogout).toHaveBeenCalledTimes(1))
     })
   })
 })

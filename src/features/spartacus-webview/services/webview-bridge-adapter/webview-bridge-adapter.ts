@@ -189,6 +189,11 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
       true;
     `)
   }
+
+  public reload(webViewId: WebViewId) {
+    const webView = this.availableWebViews.get(webViewId)
+    webView?.reload()
+  }
 }
 
 export const webViewBridgeAdapter = new WebViewBridgeAdapter()

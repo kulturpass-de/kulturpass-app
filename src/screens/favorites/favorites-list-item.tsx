@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.sunDark,
     height: '100%',
-    aspectRatio: 9 / 12,
+    aspectRatio: 1,
     overflow: 'hidden',
   },
   image: {

@@ -4,9 +4,13 @@ import { WebViewBridgeAdapter } from './webview-bridge-adapter'
 
 export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapter, webViewId: WebViewId) => {
   const authLogin = async (commerceAccessToken: string) => {
-    return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.AuthLogin, [
-      { access_token: commerceAccessToken },
-    ])
+    const result = await webViewBridgeAdapter.callBridgeFunction(
+      webViewId,
+      SpartacusBridge.FunctionCall.Target.AuthLogin,
+      [{ access_token: commerceAccessToken }],
+    )
+    webViewBridgeAdapter.reload(webViewId)
+    return result
   }
 
   const authLogout = async () => {

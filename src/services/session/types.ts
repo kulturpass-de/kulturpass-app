@@ -19,4 +19,5 @@ export type CommerceSessionData = {
   expires_in: number
   scope: string
   token_type: string
+  token_valid_until?: number
 }

@@ -1,55 +1,73 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import FastImage from 'react-native-fast-image'
-import { Animated, Pressable, StyleSheet, View, ViewStyle } from 'react-native'
+import { Animated, LayoutChangeEvent, Pressable, StyleSheet, View, ViewStyle } from 'react-native'
 import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { useTranslation } from '../../../services/translation/translation'
 import { HITSLOP } from '../../../theme/constants'
+import { UseProductDetailHeaderHeightReturnType } from '../hooks/use-product-detail-header-height'
 
-type ProductDetailHeaderProps = {
+type ProductDetailHeaderProps = UseProductDetailHeaderHeightReturnType & {
   imageUrl?: string
   onClose: () => void
   scrollY: Animated.Value
 }
 
-export const PRODUCT_DETAIL_HEADER_MAX_HEIGHT = 280
-export const PRODUCT_DETAIL_HEADER_MIN_HEIGHT = 56
-export const PRODUCT_DETAIL_HEADER_HEIGHT_DIFF = PRODUCT_DETAIL_HEADER_MAX_HEIGHT - PRODUCT_DETAIL_HEADER_MIN_HEIGHT
-
-export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({ onClose, imageUrl, scrollY }) => {
+export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
+  onClose,
+  imageUrl,
+  scrollY,
+  headerHeightDiff,
+  onHeaderSetMaxHeight,
+}) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
+  const onLayout = useCallback(
+    (evt: LayoutChangeEvent) => {
+      onHeaderSetMaxHeight(Math.floor(evt.nativeEvent.layout.width))
+    },
+    [onHeaderSetMaxHeight],
+  )
+
   const headerTransformStyle: Animated.AnimatedProps<ViewStyle> = useMemo(() => {
+    if (headerHeightDiff === null) {
+      return {}
+    }
+
     const headerTranslate = scrollY.interpolate({
-      inputRange: [0, PRODUCT_DETAIL_HEADER_HEIGHT_DIFF],
-      outputRange: [0, -PRODUCT_DETAIL_HEADER_HEIGHT_DIFF],
+      inputRange: [0, headerHeightDiff],
+      outputRange: [0, -headerHeightDiff],
       extrapolate: 'clamp',
     })
     return {
       transform: [{ translateY: headerTranslate }],
     }
-  }, [scrollY])
+  }, [scrollY, headerHeightDiff])
 
   const overlayOpacityStyle: Animated.AnimatedProps<ViewStyle> = useMemo(() => {
+    if (headerHeightDiff === null) {
+      return {}
+    }
+
     const overlayOpacity = scrollY.interpolate({
-      inputRange: [0, PRODUCT_DETAIL_HEADER_HEIGHT_DIFF],
+      inputRange: [0, headerHeightDiff],
       outputRange: [0.0, 0.75],
       extrapolate: 'clamp',
     })
     return {
       opacity: overlayOpacity,
     }
-  }, [scrollY])
+  }, [scrollY, headerHeightDiff])
 
   return (
-    <View testID={buildTestId('productDetail_header')} style={styles.container}>
+    <View testID={buildTestId('productDetail_header')} style={styles.container} onLayout={onLayout}>
       <Animated.View style={headerTransformStyle}>
         <FastImage
           testID={buildTestId('productDetail_header_image')}
           accessibilityLabel={t('productDetail_header_image')}
-          resizeMode={FastImage.resizeMode.cover}
+          resizeMode={FastImage.resizeMode.contain}
           style={styles.image}
           source={{ uri: imageUrl }}
           defaultSource={require('./dummy-placeholder.png')}
@@ -91,7 +109,8 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: PRODUCT_DETAIL_HEADER_MAX_HEIGHT,
+    width: '100%',
+    aspectRatio: 1,
     overflow: 'hidden',
   },
   closeButtonContainer: {
