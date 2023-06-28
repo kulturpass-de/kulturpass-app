@@ -31,46 +31,6 @@ test('Should display list of favorites', async () => {
         lowestOfferPrice: 35.01,
         name: 'Lively Chorus DE',
         offerCount: 2,
-        offersSummary: {
-          bestOffer: {
-            allOfferPricingsJSON:
-              '[{"price":35.01,"unit_origin_price":35.01,"volume_prices":[{"price":35.01,"unit_origin_price":35.01,"quantity_threshold":1}]}]',
-            code: 'offer_20575',
-            minPurchasableQty: 1,
-            minShippingPrice: {
-              currencyIso: 'EUR',
-              value: 0.0,
-            },
-            originPrice: {
-              currencyIso: 'EUR',
-              value: 35.01,
-            },
-            price: {
-              currencyIso: 'EUR',
-              value: 35.01,
-            },
-            quantity: 449,
-            shopId: '2008',
-            shopName: 'Stuttgart Seller Shop',
-            stateCode: '11',
-            totalPrice: {
-              currencyIso: 'EUR',
-              value: 35.01,
-            },
-          },
-          offerCount: 2,
-          states: [
-            {
-              minPrice: {
-                currencyIso: 'EUR',
-                value: 35.01,
-              },
-              offerCount: 2,
-              stateCode: '11',
-              stateLabel: 'Neu',
-            },
-          ],
-        },
         shopDistance: 11.4,
         topCategoryName: 'Tonträger',
         url: '/Katalog-%C3%B6ffnen/Marktplatz/Tontr%C3%A4ger/R%26B-%26-Soul/Lively-Chorus-DE/p/AudioProduct-167159963977',

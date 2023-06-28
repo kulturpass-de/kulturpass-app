@@ -2,32 +2,24 @@ import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
-import { Language } from '../../../../services/translation/types'
 import { colors } from '../../../../theme/colors'
 import { textStyles } from '../../../../theme/typography'
 import { StagedEventProductDetail } from '../../types/product-detail'
 import { ProductDetailSection } from '../product-detail-section'
 import { Address } from '../address'
+import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 
 export type ProductStagedEventDetailProps = {
   productDetail: StagedEventProductDetail
   testID: TestId
 }
 
-const formatDate = (language: Language, dateStr: string, oClockLabel: string): string => {
-  const date = new Date(dateStr)
-  const timeOpts: Intl.DateTimeFormatOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-  }
-  return `${date.toLocaleDateString(language)} | ${date.toLocaleTimeString(language, timeOpts)} ${oClockLabel}`
-}
-
 export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> = ({ productDetail, testID }) => {
-  const { t, l: language } = useTranslation()
+  const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
   const sectionTestID = addTestIdModifier(testID, 'stagedEvent')
   const { venue, eventDateTime, durationInMins, venueDistance } = productDetail
+  const formattedEventStartDate = useFormattedDateTime(eventDateTime)
 
   return (
     <>
@@ -52,11 +44,14 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
         testID={addTestIdModifier(sectionTestID, 'time')}
         iconSource="Calendar"
         sectionCaptioni18nKey="productDetail_stagedEvent_time_caption">
-        {eventDateTime ? (
+        {formattedEventStartDate ? (
           <Text
-            testID={addTestIdModifier(sectionTestID, 'time_date')}
+            testID={addTestIdModifier(sectionTestID, 'time_value')}
             style={[textStyles.BodyBlack, styles.colorMoonDarkest]}>
-            {formatDate(language, eventDateTime, t('productDetail_stagedEvent_time_oclock_label'))}
+            {t('productDetail_stagedEvent_time_value', {
+              date: formattedEventStartDate.date,
+              time: formattedEventStartDate.time,
+            })}
           </Text>
         ) : null}
         {durationInMins ? (

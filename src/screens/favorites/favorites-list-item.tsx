@@ -22,21 +22,30 @@ export type FavoritesListItemProps = {
 
 export const ITEM_HEIGHT = 164
 
-export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { cartId, product }, onPress }) => {
+export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { product }, onPress }) => {
   const { buildTestId } = useTestIdBuilder()
   const { t } = useTranslation()
 
-  const { name: title = '', images, topCategoryName, shopDistance, offersSummary, eventStartDate } = product
+  const {
+    name: title = '',
+    images,
+    topCategoryName,
+    shopDistance,
+    offerCount: productOfferCount,
+    eventStartDate,
+    lowestOfferPrice,
+    seller,
+  } = product
   const { imageUrl, image } = useProductImageUrl(images, 'product')
-  const offersCount = offersSummary?.offerCount ?? 0
-  const shopName = offersCount > 1 ? t('favorites_item_multiple_offers') : offersSummary?.bestOffer?.shopName
-  const formattedPrice = useFormattedPrice(offersSummary?.bestOffer?.price)
+  const offersCount = productOfferCount ?? 0
+  const shopName = offersCount > 1 ? t('favorites_item_multiple_offers') : seller
+  const formattedPrice = useFormattedPrice(lowestOfferPrice)
   const formattedPriceInformation =
     offersCount > 1 ? t('favorites_item_multiple_offers_price', { price: formattedPrice }) : formattedPrice
   const formattedEventStartDate = useFormattedDateTime(eventStartDate)
 
   const { isFavorite, addToFavourites, removeFromFavorites, toggleIsFavourite, error, resetError } =
-    useFavouritesListItemActions({ cartId, productCode: product.code })
+    useFavouritesListItemActions(product.code)
 
   const shopInformation = React.useMemo(() => {
     if (shopName !== undefined) {

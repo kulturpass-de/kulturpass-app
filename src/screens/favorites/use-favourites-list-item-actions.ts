@@ -1,14 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { commerceApi } from '../../services/api/commerce-api'
-import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
 
-export type UseFavouritesListItemActionsParams = {
-  cartId: FavouritesItem['cartId']
-  productCode: Product['code']
-}
-
-export const useFavouritesListItemActions = ({ cartId, productCode }: UseFavouritesListItemActionsParams) => {
+export const useFavouritesListItemActions = (productCode?: string) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(true)
   const [getFavorites] = commerceApi.useLazyGetFavoritesQuery()
   const [removeProductFromCart, { error, reset: resetError }] = commerceApi.useRemoveProductFromCartMutation()
@@ -31,18 +25,18 @@ export const useFavouritesListItemActions = ({ cartId, productCode }: UseFavouri
        */
       const favorites = await getFavorites(undefined, false)
       const favorite = favorites.data?.favouritesItems.find(
-        currentFavorite => currentFavorite.product.code === productCode,
+        currentFavorite => currentFavorite.product?.code === productCode,
       )
 
       if (!favorite) {
         return
       }
 
-      await removeProductFromCart({ cartId, entryNumber: favorite.entryNumber }).unwrap()
+      await removeProductFromCart({ cartId: favorite.cartId, entryNumber: favorite.entryNumber }).unwrap()
     } catch (err) {
       setIsFavorite(true)
     }
-  }, [getFavorites, productCode, removeProductFromCart, cartId])
+  }, [getFavorites, productCode, removeProductFromCart])
 
   const addToFavourites = useCallback(async () => {
     setIsFavorite(true)

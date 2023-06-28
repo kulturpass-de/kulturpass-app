@@ -9,10 +9,16 @@ export const mockedBridgeAdapterApi = {
   routerNavigate: jestFn<BridgeAdapterApi['routerNavigate']>(),
   geolocationSetLocation: jestFn<BridgeAdapterApi['geolocationSetLocation']>(),
 
+  onMobileAppEvents: jestFn<BridgeAdapterApi['onMobileAppEvents']>(() => ({
+    unsubscribe: () => {},
+  })),
   onAuthIsUserLoggedIn: jestFn<BridgeAdapterApi['onAuthIsUserLoggedIn']>(() => ({
     unsubscribe: () => {},
   })),
   onBridge: jestFn<BridgeAdapterApi['onBridge']>(() => ({
+    unsubscribe: () => {},
+  })),
+  onAuth: jestFn<BridgeAdapterApi['onAuth']>(() => ({
     unsubscribe: () => {},
   })),
   onRouterEvents: jestFn<BridgeAdapterApi['onRouterEvents']>(() => ({

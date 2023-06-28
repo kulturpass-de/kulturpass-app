@@ -2,7 +2,7 @@
     <img src="https://github.com/kulturpass-de/.github/blob/main/images/kulturpass-de-logo.jpg?raw=true">
 <p>
 <h1 align="center">
-Culture App
+KulturPass: App
 </h1>
 <p align="center">
 <a href="https://github.com/kulturpass-de/kulturpass-app/issues" title="Issues"><img src="https://img.shields.io/github/issues/kulturpass-de/kulturpass-app?style=flat"></a>
@@ -24,7 +24,7 @@ Culture App
 
 ## About this project
 
-The KulturPass project in Germany is implemented by resolution of the German Bundestag and is the responsibility of the Federal Government Commissioner for Culture and the Media (BKM). The main objective of the project is compensation in both ways: On the one hand to support the cultural community in the broadest sense; artists, agencies, stages, and cultural providers, and on the other hand to motivate, encourage, and inspire young interested people to actively discover, experience, and explore culture and art. To achieve this goal, with the KulturPass project we aim to create a "cultural marketplace" with offerings for the youth. Those cultural offers can be found and reserved leveraging a KulturPass app on the smartphone with a monetary budget funded by the German government. Visit our [website](https://kulturpass.de) for more information.
+The KulturPass in Germany is implemented by resolution of the German Bundestag and is the responsibility of the Federal Government Commissioner for Culture and the Media (BKM). The main objective of the project is compensation in both ways: On the one hand to support the cultural community in the broadest sense; artists, agencies, stages, and cultural providers, and on the other hand to motivate, encourage, and inspire young interested people to actively discover, experience, and explore culture and art. To achieve this goal, with the KulturPass we aim to create a "cultural marketplace" with offerings for the youth. Those cultural offers can be found and reserved leveraging a KulturPass app on the smartphone with a monetary budget funded by the German government. Visit our [website](https://kulturpass.de) for more information.
 
 You can find the architecture overview [here](https://github.com/kulturpass-de/kulturpass-documentation), which will give you a good starting point in how the services interact with other services, and what purpose they serve.
 

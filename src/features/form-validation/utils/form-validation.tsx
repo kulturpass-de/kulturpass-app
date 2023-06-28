@@ -4,6 +4,7 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import {
   CdcAccountDisabledError,
   CdcInvalidLoginIdError,
+  CdcLoginIdNotExistingError,
   CdcResponseValidationError,
 } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
@@ -84,6 +85,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'cdc_invalid_loginid_title' },
           message: { key: 'cdc_invalid_loginid_message' },
+        }
+      }
+      case CdcLoginIdNotExistingError: {
+        return {
+          title: { key: 'cdc_loginid_not_existing_title' },
+          message: { key: 'cdc_loginid_not_existing_message' },
         }
       }
       case HttpStatusBadRequestError: {

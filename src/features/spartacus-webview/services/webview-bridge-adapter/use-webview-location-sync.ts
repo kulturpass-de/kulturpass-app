@@ -1,21 +1,25 @@
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 import { getCurrentUserLocation } from '../../../../services/location/redux/location-selectors'
+import { selectWebViewState } from '../../../../services/webviews/redux/webviews-slice'
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
-import { WebViewBridgeAdapterState } from './use-webview-bridge-adapter'
+import { WebViewId } from './types'
 
 export const useWebViewLocationSync = (
+  webViewId: WebViewId,
   bridgeAdapterApi: ReturnType<typeof createBridgeAdapterApi>,
-  bridgeAdapterState: WebViewBridgeAdapterState,
   userLocationState: ReturnType<typeof getCurrentUserLocation>,
 ) => {
+  const webViewState = useSelector(state => selectWebViewState(state, webViewId))
+
   useEffect(() => {
-    if (bridgeAdapterState.isReady) {
+    if (webViewState.isReady) {
       if (userLocationState) {
         bridgeAdapterApi.geolocationSetLocation(userLocationState.coords.latitude, userLocationState.coords.longitude)
       } else {
         bridgeAdapterApi.geolocationSetLocation()
       }
     }
-  }, [userLocationState, bridgeAdapterApi, bridgeAdapterState])
+  }, [userLocationState, bridgeAdapterApi, webViewState])
 }

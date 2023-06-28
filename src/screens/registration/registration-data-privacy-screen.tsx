@@ -152,13 +152,11 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
           i18nKey="registration_data_privacy_submit"
           onPress={onContinue}
         />
-        <View style={styles.cancelButtonView}>
-          <Button
-            testID={buildTestId('registration_data_privacy_cancel')}
-            i18nKey="registration_data_privacy_cancel"
-            onPress={onPressCancelRegistration}
-          />
-        </View>
+        <Button
+          testID={buildTestId('registration_data_privacy_cancel')}
+          i18nKey="registration_data_privacy_cancel"
+          onPress={onPressCancelRegistration}
+        />
       </ModalScreenFooter>
       {showCancelAlert ? (
         <RegistrationDataPrivacyCancelAlert
@@ -174,9 +172,6 @@ const styles = StyleSheet.create({
   screenContent: {
     marginTop: spacing[6],
     paddingHorizontal: spacing[5],
-  },
-  cancelButtonView: {
-    paddingTop: spacing[5],
   },
   headline: {
     paddingTop: spacing[7],

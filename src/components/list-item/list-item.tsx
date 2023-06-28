@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo } from 'react'
-import { AccessibilityState, Pressable, StyleSheet, Text, View } from 'react-native'
+import { AccessibilityState, Pressable, StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
@@ -53,7 +53,7 @@ export const ListItem: React.FC<ListItemProps> = ({
       accessibilityState={accessibilityState}
       accessibilityHint={accessibilityHint}
       accessible>
-      {icon && <View style={styles.icon}>{icon}</View>}
+      {icon && icon}
       <Text style={[textStyles.BodyRegular, styles.text]}>{title}</Text>
       {iconElement}
     </Pressable>
@@ -65,13 +65,11 @@ const styles = StyleSheet.create({
     paddingLeft: spacing[6],
     paddingRight: spacing[4],
     minHeight: spacing[10],
+    gap: spacing[6],
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: colors.basicWhite,
-  },
-  icon: {
-    marginRight: spacing[6],
   },
   text: {
     flex: 1,

@@ -84,7 +84,6 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
               testID={buildTestId('reservationDetail_footer_cancel_button')}
               variant="secondary"
               onPress={onCancelReservation}
-              bodyStyleOverrides={styles.reserveButton}
               disabled={isCancelTriggered}
             />
           )}
@@ -95,7 +94,6 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
               testID={buildTestId('reservationDetail_footer_cancel_button_creating')}
               variant="secondary"
               onPress={noop}
-              bodyStyleOverrides={styles.reserveButton}
               disabled={true}
             />
           )}
@@ -119,6 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: spacing[9],
+    gap: spacing[5],
   },
   price: {
     color: colors.moonDarkest,
@@ -128,15 +127,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  reserveButton: {
-    marginRight: spacing[5],
-  },
   priceTitle: {
     lineHeight: 19,
     color: colors.moonDarkest,
     flexShrink: 1,
     flexWrap: 'wrap',
-    marginRight: spacing[5],
   },
   refundEmph: {
     ...textStyles.CaptionSemibold,

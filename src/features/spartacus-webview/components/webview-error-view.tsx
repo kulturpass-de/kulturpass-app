@@ -8,10 +8,11 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export const ERR_NO_INTERNET = 'ERR_NO_INTERNET'
+export const ERR_UNKNOWN = 'ERR_UNKNOWN'
 
 export type WebviewErrorViewProps = {
   onRefresh?: () => void
-  errorCode: number | typeof ERR_NO_INTERNET
+  errorCode: number | typeof ERR_NO_INTERNET | typeof ERR_UNKNOWN
   style?: StyleProp<ViewStyle>
 }
 

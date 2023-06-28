@@ -22,6 +22,7 @@ import {
   AA2CardDeactivated,
   AA2CardRemoved,
   AA2ForeignResidency,
+  AA2InitError,
   AA2PseudonymAlreadyInUse,
   AA2Timeout,
 } from '../errors'
@@ -67,16 +68,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
 
   const handleRestart = useCallback(async () => {
     await cancelFlow()
-    modalNavigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Modal',
-          state: {
-            routes: [{ name: EidAboutVerificationRouteName }],
-          },
-        },
-      ],
+    modalNavigation.replace({
+      screen: EidAboutVerificationRouteName,
     })
     setIntError(null)
   }, [cancelFlow, modalNavigation])
@@ -88,7 +81,9 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   }, [cancelFlow, modalNavigation])
 
   const errorMessage: string | undefined = useMemo(() => {
-    if (intError instanceof AA2BelowMinYearOfBirth) {
+    if (intError instanceof AA2InitError) {
+      return t('eid_error_init_message')
+    } else if (intError instanceof AA2BelowMinYearOfBirth) {
       return t('eid_error_belowMinYearOfBirth_message')
     } else if (intError instanceof AA2BelowMinAge) {
       return t('eid_error_belowMinAge_message')

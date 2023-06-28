@@ -42,10 +42,7 @@ describe('useFavouritesListItemActions', () => {
 
     const hook = renderHook(useFavouritesListItemActions, {
       wrapper,
-      initialProps: {
-        cartId: 'D11242100021',
-        productCode: 'PRODUCT_CODE_1',
-      },
+      initialProps: 'PRODUCT_CODE_1',
     })
 
     expect(hook.result.current.isFavorite).toBe(true)
@@ -61,10 +58,7 @@ describe('useFavouritesListItemActions', () => {
   it('Should revert the state if api call fails', async () => {
     const hook = renderHook(useFavouritesListItemActions, {
       wrapper,
-      initialProps: {
-        cartId: 'D11242100021',
-        productCode: 'PRODUCT_CODE_2',
-      },
+      initialProps: 'PRODUCT_CODE_2',
     })
 
     server.use(
@@ -87,5 +81,39 @@ describe('useFavouritesListItemActions', () => {
     })
 
     expect(hook.result.current.isFavorite).toBe(true)
+  })
+
+  it('Should remove a favorite item when there is a missing product', async () => {
+    const hook = renderHook(useFavouritesListItemActions, {
+      wrapper,
+      initialProps: 'D11242100021',
+    })
+
+    server.use(
+      rest.get('*/cc/kulturapp/users/current/favourites', (_req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json({
+            favouritesItems: [
+              { cartId: 'D11242100020', entryNumber: 122 },
+              { product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 },
+              { cartId: 'D11242100022', entryNumber: 124 },
+            ],
+          }),
+        )
+      }),
+      rest.delete('*/cc/kulturapp/users/current/carts/D11242100021/entries/123', async (_req, res, ctx) => {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        return res(ctx.status(200), ctx.text('OK'))
+      }),
+    )
+
+    expect(hook.result.current.isFavorite).toBe(true)
+
+    await act(async () => {
+      await hook.result.current.removeFromFavorites()
+    })
+
+    expect(hook.result.current.isFavorite).toBe(false)
   })
 })

@@ -43,23 +43,7 @@ exports[`HtmlText doesnt throw an error and still renders something if html inva
     >
       rld
     </Text>
-    <Text
-      style={
-        [
-          {
-            "color": "#0C0016",
-            "fontFamily": "Nunito",
-            "fontSize": 17,
-            "fontStyle": "normal",
-            "fontWeight": "400",
-            "lineHeight": 23,
-          },
-          {
-            "fontStyle": "italic",
-          },
-        ]
-      }
-    />
+    <Text />
   </Text>
 </Text>
 `;

@@ -140,7 +140,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
                 ? `eid_${variant}_form_accessibilityLabel_label_ios`
                 : `eid_${variant}_form_accessibilityLabel_label_android`,
             )}
-            accessibilityRole={'none'} // TODO: find better role. "text" or "button" are not intuitive, "input" does not exist. see 'accessibilityLabel' above
+            accessibilityRole={'none'}
             accessibilityActions={[{ name: 'activate' }]}
             accessibilityValue={{ text: fieldValue }}
             // eslint-disable-next-line react/jsx-no-bind

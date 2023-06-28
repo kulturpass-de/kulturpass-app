@@ -93,9 +93,12 @@ export namespace SpartacusBridge {
 
   export namespace EventForwarding {
     export enum Source {
+      MobileApp = 'MobileApp',
       RouterEvents = 'router.events',
       Bridge = 'bridge',
+      Auth = 'auth',
     }
+
     export interface Event extends Message {
       source: Source
       name: string
@@ -108,6 +111,11 @@ export namespace SpartacusBridge {
         id: number
         url: string
       }
+    }
+
+    export interface MobileAppEvent extends Event {
+      source: Source.MobileApp
+      data: 'ERR_UNKNOWN'
     }
   }
 

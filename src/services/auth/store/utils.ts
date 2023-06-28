@@ -60,6 +60,5 @@ export const cdcLoginResponseToSessionData = (cdcLoginResponse: AccountsLoginRes
 export const getTokenValidUntil = (commerceLoginResponse: PostAuthTokenResponse) => {
   // NOTE: commerce sends expires_in as the number of seconds
   //       converting it to milliseconds as expected by Date constructor
-  //       and removing 10 seconds to compensate for request duration
-  return Date.now() + (commerceLoginResponse.expires_in - 10) * 1000
+  return Date.now() + commerceLoginResponse.expires_in * 1000
 }

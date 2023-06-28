@@ -30,13 +30,7 @@ const AccessibilityFeatureCheckable: React.FC<AccessibilityFeatureCheckableProps
 
   return (
     <View testID={testID} style={styles.featureCheckable}>
-      <Icon
-        source={iconSource}
-        width={24}
-        height={24}
-        style={styles.featureCheckableIcon}
-        accessibilityLabel={iconLabel}
-      />
+      <Icon source={iconSource} width={24} height={24} accessibilityLabel={iconLabel} />
       <TranslatedText
         testID={buildTestId(labelI18nKey)}
         i18nKey={labelI18nKey}
@@ -143,10 +137,8 @@ const styles = StyleSheet.create({
   },
   featureCheckable: {
     marginTop: spacing[2],
+    gap: spacing[3],
     flexDirection: 'row',
-  },
-  featureCheckableIcon: {
-    marginRight: spacing[3],
   },
   featureText: {
     marginTop: spacing[5],

@@ -23,7 +23,7 @@ export const ModalScreenFooter: React.FC<ModalScreenFooterProps> = ({
         { paddingTop: verticalPadding, paddingHorizontal: horizontalPadding },
         !ignorePaddingWithSafeArea ? { paddingBottom: verticalPadding } : undefined,
       ]}>
-      {children}
+      <View style={[styles.buttonWrapper]}>{children}</View>
       {ignorePaddingWithSafeArea ? <ModalScreenFooterPadding fallbackPadding={verticalPadding} /> : null}
     </View>
   )
@@ -37,5 +37,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
+  },
+  buttonWrapper: {
+    rowGap: spacing[5],
   },
 })

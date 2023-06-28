@@ -12,6 +12,7 @@ import { spacing } from '../../../theme/spacing'
 import { OnboardingScreen } from '../components/onboarding-screen'
 import { useDispatch } from 'react-redux'
 import { setShowOnboardingOnStartup } from '../redux/onboarding'
+import { URLS } from '../../../utils/constants'
 
 export type OnboardingLocationPermissionScreenProps = {
   onNext: () => void
@@ -54,12 +55,7 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
             <LinkText
               testID="onboarding_locationPermission_iosLink"
               i18nKey="onboarding_locationPermission_iosLink"
-              link={
-                // TODO: move hardcoded urls out of component
-                language === Language.de
-                  ? 'https://support.apple.com/de-de/HT207092'
-                  : 'https://support.apple.com/en-us/HT207092'
-              }
+              link={language === Language.de ? URLS.IOS_DE_LOCATION_PERMISSION : URLS.IOS_EN_LOCATION_PERMISSION}
             />
           </View>
           <View style={styles.linkContainer}>
@@ -67,10 +63,7 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
               testID="onboarding_locationPermission_androidLink"
               i18nKey="onboarding_locationPermission_androidLink"
               link={
-                // TODO: move hardcoded urls out of component
-                language === Language.de
-                  ? 'https://support.google.com/android/answer/3467281?hl=de'
-                  : 'https://support.google.com/android/answer/3467281?hl=en'
+                language === Language.de ? URLS.ANDROID_DE_LOCATION_PERMISSION : URLS.ANDROID_EN_LOCATION_PERMISSION
               }
             />
           </View>

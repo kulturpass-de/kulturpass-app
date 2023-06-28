@@ -1,4 +1,4 @@
-import { ChildNode, Text as TextNode } from 'domhandler/lib/node'
+import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
 import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native'
@@ -50,35 +50,32 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
 
   const renderInlineLink = (textNode: TextNode, key: string, textStyle?: StyleProp<TextStyle>) => {
     const text = textNode.data
-    // TODO: fix types
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const link = textNode.parent?.attribs?.href
+    let link: string = ''
+
+    if (textNode.parent && textNode.parent.type === ElementType.Tag) {
+      link = textNode.parent?.attribs?.href
+    }
+
     return <InlineTextLink key={key} text={text} link={link} textStyle={textStyle} />
   }
 
-  // TODO: fix types
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const renderElement = (element, key: string, textStyle?: StyleProp<TextStyle>) => {
+  const renderElement = (element: ElementNode, key: string, textStyle?: StyleProp<TextStyle>) => {
     if (element.children.length === 1) {
       const elementKey = key + '-0'
-      switch (element.name) {
-        case 'b':
-          return renderTextNode(element.children[0], elementKey, [textStyle, styles.boldText])
-        case 'i':
-          return renderTextNode(element.children[0], elementKey, [textStyle, styles.italicText])
-        case 'a':
-          return renderInlineLink(element.children[0], elementKey + '-0', textStyle)
-        default:
-          renderNode(element.children[0], elementKey + '-0', textStyle)
+
+      if (element.children[0].type === ElementType.Text) {
+        switch (element.name) {
+          case 'b':
+            return renderTextNode(element.children[0], elementKey, [textStyle, styles.boldText])
+          case 'i':
+            return renderTextNode(element.children[0], elementKey, [textStyle, styles.italicText])
+          case 'a':
+            return renderInlineLink(element.children[0], elementKey + '-0', textStyle)
+        }
       }
     }
 
     // nested text groups need a container
-    // TODO: fix types
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     return <Text key={key}>{element.children.map((c, i: number) => renderNode(c, `child-${i}`, textStyle))}</Text>
   }
 
@@ -107,9 +104,6 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
     return renderNode(document.children[0], '0', style)
   }
 
-  // TODO: fix types
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   return (
     <Text testID={testID} style={style}>
       {document.children.map((c, i) => renderNode(c, 'sub' + i, style))}

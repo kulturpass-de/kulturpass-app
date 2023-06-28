@@ -5,7 +5,7 @@ import { TabsParamList } from './tabs/types'
 import { ModalParamList } from './modal/types'
 
 export type RootStackParams = {
-  Tabs: NavigatorScreenParams<TabsParamList>
+  Tabs: NavigatorScreenParams<TabsParamList> | undefined
   Modal: NavigatorScreenParams<ModalParamList>
 }
 

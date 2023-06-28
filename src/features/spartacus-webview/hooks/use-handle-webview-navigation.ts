@@ -1,11 +1,15 @@
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
-import { BridgeAdapterAPI } from '../services/webview-bridge-adapter/create-bridge-adapter-api'
-import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { useRoute } from '@react-navigation/native'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { HomeRouteName } from '../../../screens/home/home-route'
 import { SearchRouteName } from '../../../screens/search/search-route'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { AppDispatch } from '../../../services/redux/configure-store'
+import { webviewsSlice } from '../../../services/webviews/redux/webviews-slice'
+import { BridgeAdapterAPI } from '../services/webview-bridge-adapter/create-bridge-adapter-api'
+import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
+import { WebViewId } from '../services/webview-bridge-adapter/types'
 
 /**
  * home tab: if the web view encounters a navigation to the search tab,
@@ -14,13 +18,16 @@ import { useModalNavigation } from '../../../navigation/modal/hooks'
  * search tab: if the web view encounters a navigation to the home tab,
  * a navigation to the search tab is triggered instead via the bridge
  */
-export const useHandleWebviewNavigation = (bridgeAdapterApi: BridgeAdapterAPI) => {
+export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterApi: BridgeAdapterAPI) => {
   const modalnavigation = useModalNavigation()
   const route = useRoute()
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     const navigationHandler = (data: SpartacusBridge.EventForwarding.RouterEvent['data']) => {
       const { url } = data
+
+      dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { routerUrl: url } }))
 
       if (url.startsWith('/search') && route.name === HomeRouteName) {
         bridgeAdapterApi.routerNavigate(['/'])
@@ -32,5 +39,5 @@ export const useHandleWebviewNavigation = (bridgeAdapterApi: BridgeAdapterAPI) =
     const subscription = bridgeAdapterApi.onRouterEvents(event => navigationHandler(event.data))
 
     return () => subscription.unsubscribe()
-  }, [bridgeAdapterApi, route.name, modalnavigation])
+  }, [dispatch, webViewId, bridgeAdapterApi, route.name, modalnavigation])
 }

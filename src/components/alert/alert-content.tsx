@@ -24,12 +24,7 @@ export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, c
 
   if (contentHeight === 0) {
     return (
-      <View
-        ref={ref}
-        accessible
-        accessibilityRole="alert"
-        onLayout={onLayout}
-        style={[styles.container, styles.content, style]}>
+      <View ref={ref} accessibilityRole="alert" onLayout={onLayout} style={[styles.container, styles.content, style]}>
         {children}
       </View>
     )
@@ -38,7 +33,6 @@ export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, c
   return (
     <ScrollView
       ref={ref}
-      accessible
       accessibilityRole="alert"
       style={[styles.container, { maxHeight: contentHeight }]}
       contentContainerStyle={[styles.content, style]}>

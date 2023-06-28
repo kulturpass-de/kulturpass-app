@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../../services/redux/configure-store'
+import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
 
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
 import { WebViewId } from './types'
 import { useWebViewBridgeAdapterContext } from './webview-bridge-adapter-provider'
 
-export type WebViewBridgeAdapterState = {
-  isReady?: boolean
-}
-
 export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
   const webViewBridgeAdapter = useWebViewBridgeAdapterContext()
-  const [bridgeAdapterState, setBridgeAdapterState] = useState<WebViewBridgeAdapterState>({})
+  const dispatch = useDispatch<AppDispatch>()
   const webViewRef = useRef<WebView | null>(null)
 
   useEffect(() => {
@@ -43,14 +42,14 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
   useEffect(() => {
     const subscription = bridgeAdapterApi.onBridge(event => {
       if (event.name === 'ready') {
-        setBridgeAdapterState(currentState => ({ ...currentState, isReady: true }))
+        dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { isReady: true } }))
       }
     })
 
     return () => {
       subscription.unsubscribe()
     }
-  }, [bridgeAdapterApi])
+  }, [bridgeAdapterApi, dispatch, webViewId])
 
-  return { webViewRef, onMessage, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState, webViewBridgeAdapter }
+  return { webViewRef, onMessage, bridgeAdapterApi, webViewBridgeAdapter }
 }

@@ -101,9 +101,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
           i18nKey={acceptButtonI18nKey}
         />
         {onDeny && denyButtonI18nKey ? (
-          <View style={styles.denyButton}>
-            <Button onPress={onDeny} testID={buildTestId(denyButtonI18nKey)} i18nKey={denyButtonI18nKey} />
-          </View>
+          <Button onPress={onDeny} testID={buildTestId(denyButtonI18nKey)} i18nKey={denyButtonI18nKey} />
         ) : (
           <View style={styles.buttonSpacer} />
         )}
@@ -142,11 +140,7 @@ export const styles = StyleSheet.create({
   linkContainer: {
     paddingTop: spacing[6],
   },
-  denyButton: {
-    paddingTop: spacing[5],
-  },
   buttonSpacer: {
     height: 48,
-    paddingTop: spacing[5],
   },
 })

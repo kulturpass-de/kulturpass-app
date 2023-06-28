@@ -15,7 +15,7 @@ export const VerificationDuplicateHeader: React.FC = () => {
   const identificationStatusDuplicateFaqLink = useFaqLink('IDENTIFICATION_STATUS_DUPLICATE')
 
   return (
-    <View style={styles.container} focusable>
+    <View style={styles.container}>
       <View style={styles.shadow} />
       <View style={styles.innerContainer}>
         <View style={styles.shrink}>

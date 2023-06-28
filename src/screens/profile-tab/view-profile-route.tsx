@@ -23,7 +23,7 @@ export const ViewProfileRoute: React.FC = () => {
   }, [tabsNavigation])
 
   const onPressUpdateProfile = useCallback(() => {
-    tabsNavigation.navigate('Settings', { screen: 'UpdateProfile', params: {} }) // TODO: params
+    tabsNavigation.navigate('Settings', { screen: 'UpdateProfile' })
   }, [tabsNavigation])
 
   const onPressAppInformations = useCallback(() => {

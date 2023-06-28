@@ -22,6 +22,13 @@ export const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     setCdcSession: (state, action: PayloadAction<CdcSessionData>) => ({ ...state, cdc: action.payload }),
+    setCdcIdToken: (state, action: PayloadAction<string>) => {
+      if (!state.cdc) {
+        return state
+      }
+
+      return { ...state, cdc: { ...state.cdc, idToken: action.payload } }
+    },
     clearCdcSession: state => ({ ...state, cdc: null }),
     setCommerceSession: (state, action: PayloadAction<CommerceSessionData>) => {
       return { ...state, commerce: action.payload }

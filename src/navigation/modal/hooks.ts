@@ -1,14 +1,14 @@
 import { NavigatorScreenParams, useNavigation, useRoute } from '@react-navigation/native'
-import { StackScreenProps } from '@react-navigation/stack'
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack'
 
-import { RootStackParams, RootStackScreenProps } from '../types'
+import { RootStackParams } from '../types'
 import { ModalParamList } from './types'
 
 export const useModalRoute = <RouteName extends keyof ModalParamList>() =>
   useRoute<StackScreenProps<ModalParamList, RouteName>['route']>()
 
 export const useModalNavigation = () => {
-  const nav = useNavigation<RootStackScreenProps<keyof RootStackParams>['navigation']>()
+  const nav = useNavigation<StackNavigationProp<RootStackParams>>()
 
   const navigate = (params: NavigatorScreenParams<ModalParamList>) => {
     nav.navigate('Modal', params)
@@ -23,7 +23,9 @@ export const useModalNavigation = () => {
   }
 
   const closeModal = () => {
-    nav.navigate('Tabs' as any)
+    nav.navigate('Tabs', {
+      screen: 'Home',
+    })
   }
 
   return { ...nav, navigate, push, replace, closeModal }

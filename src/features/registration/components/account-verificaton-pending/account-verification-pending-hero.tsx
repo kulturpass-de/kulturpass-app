@@ -56,7 +56,7 @@ export const AccountVerificationHero: React.FC = () => {
     <>
       <LoadingIndicator loading={result.isLoading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
-      <InfoBox focusable>
+      <InfoBox>
         <TranslatedText
           textStyle="HeadlineH4Extrabold"
           textStyleOverrides={{ color: colors.moonDarkest }}

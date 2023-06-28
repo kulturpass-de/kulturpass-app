@@ -1,8 +1,6 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { spacing } from '../../../theme/spacing'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type EidButtonFooterProps = {
@@ -16,15 +14,13 @@ export const EidButtonFooter: React.FC<EidButtonFooterProps> = ({ onNext, nextDi
 
   return (
     <ModalScreenFooter>
-      <View style={styles.buttonPadding}>
-        <Button
-          onPress={onNext}
-          variant="primary"
-          disabled={nextDisabled}
-          testID={buildTestId('eid_next_button')}
-          i18nKey="eid_next_button"
-        />
-      </View>
+      <Button
+        onPress={onNext}
+        variant="primary"
+        disabled={nextDisabled}
+        testID={buildTestId('eid_next_button')}
+        i18nKey="eid_next_button"
+      />
       <Button
         onPress={onCancel}
         variant="white"
@@ -34,9 +30,3 @@ export const EidButtonFooter: React.FC<EidButtonFooterProps> = ({ onNext, nextDi
     </ModalScreenFooter>
   )
 }
-
-const styles = StyleSheet.create({
-  buttonPadding: {
-    paddingBottom: spacing[5],
-  },
-})

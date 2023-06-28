@@ -30,7 +30,7 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
   const shouldShowReservedBalance = validBalance !== undefined && validBalance.reservedBalance > 0
 
   return (
-    <View style={styles.container} focusable>
+    <View style={styles.container}>
       {firstName ? (
         <TranslatedText
           accessibilityRole="header"

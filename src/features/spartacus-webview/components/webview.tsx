@@ -1,16 +1,10 @@
 import React, { useCallback, useEffect } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
-import {
-  getCdcSessionData,
-  getCommerceSessionData,
-  getIsUserLoggedIn,
-} from '../../../services/auth/store/auth-selectors'
 import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
-import { AppDispatch } from '../../../services/redux/configure-store'
 import { colors } from '../../../theme/colors'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
@@ -29,6 +23,7 @@ import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapt
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
 import { openLink } from '../../../utils/links/utils'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
+import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offline-android'
 
 type SpartacusWebViewProps = {
   webViewId: WebViewId
@@ -51,8 +46,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
-  const { onMessage, webViewRef, bridgeAdapterApi, bridgeAdapterState, setBridgeAdapterState, webViewBridgeAdapter } =
-    useWebViewBridgeAdapter(webViewId)
+  const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
 
   const origin = useOrigin(url)
 
@@ -75,47 +69,40 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   )
   const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 
-  const { errorCode, resetError, handleError, handleHttpError } = useHandleWebviewErrors()
+  const { errorCode, resetError, handleError, handleHttpError } = useHandleWebviewErrors(bridgeAdapterApi)
 
   const reload = useCallback(() => {
     resetError()
     webViewRef.current?.reload()
   }, [resetError, webViewRef])
 
-  const onLoadStart = useCallback(() => {
-    if (bridgeAdapterState.isReady) {
-      setBridgeAdapterState({ ...bridgeAdapterState, isReady: false })
-    }
-  }, [bridgeAdapterState, setBridgeAdapterState])
-
-  const dispatch = useDispatch<AppDispatch>()
-  const isUserLoggedIn = useSelector(getIsUserLoggedIn)
-  const cdcSessionData = useSelector(getCdcSessionData)
-  const commerceSessionData = useSelector(getCommerceSessionData)
-  useWebViewAuthSync(
-    bridgeAdapterApi,
-    bridgeAdapterState,
-    dispatch,
-    isUserLoggedIn,
-    cdcSessionData,
-    commerceSessionData,
-  )
+  useWebViewAuthSync(webViewId, bridgeAdapterApi)
 
   const currentUserLocation = useSelector(getCurrentUserLocation)
-  useWebViewLocationSync(bridgeAdapterApi, bridgeAdapterState, currentUserLocation)
+  useWebViewLocationSync(webViewId, bridgeAdapterApi, currentUserLocation)
 
   useOpenProductDetail(bridgeAdapterApi)
 
-  useHandleWebviewNavigation(bridgeAdapterApi)
+  useHandleWebviewNavigation(webViewId, bridgeAdapterApi)
 
   useWebViewScrollToTop(webViewRef)
 
   useWebViewLanguageSync(webViewRef, language)
 
-  const { setContentOffset } = useWebViewContentOffset(webViewRef, contentOffset)
+  const { onLoadProgress } = useHandleWebviewOfflineAndroid(webViewRef)
+
+  const {
+    applyWebviewDocumentBodyOffset,
+    outerContainerMarginTop,
+    innerContainerNegativeMarginTop,
+    adjustContainerOffsetMargins,
+  } = useWebViewContentOffset(webViewRef, contentOffset)
 
   const { onScroll, onTouchEnd, onTouchStart } = useWebviewAndroidPullToRefresh({
-    onScroll: props.onScroll,
+    onScroll: event => {
+      adjustContainerOffsetMargins(event)
+      props.onScroll?.(event)
+    },
     webViewRef,
   })
 
@@ -138,37 +125,42 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   }, [navigation, uri, webViewBridgeAdapter, webViewId])
 
   return (
-    <View style={styles.container}>
-      <AccountVerifiedWebViewHandler bridgeAdapterApi={bridgeAdapterApi} />
-      <WebView
-        onShouldStartLoadWithRequest={handleShouldLoadRequest}
-        startInLoadingState
-        pullToRefreshEnabled
-        onError={handleError}
-        onHttpError={handleHttpError}
-        renderLoading={renderLoading}
-        source={{ uri }}
-        ref={webViewRef}
-        onMessage={onMessage}
-        {...props}
-        onLoadEnd={setContentOffset}
-        onLoadStart={onLoadStart}
-        style={[styles.webview, style]}
-        onScroll={onScroll}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      />
-      {errorCode !== undefined ? (
-        <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />
-      ) : null}
-    </View>
+    <Animated.View style={[styles.container, { marginTop: outerContainerMarginTop.current }]}>
+      <Animated.View style={[styles.inner, { marginTop: innerContainerNegativeMarginTop.current }]}>
+        <AccountVerifiedWebViewHandler bridgeAdapterApi={bridgeAdapterApi} />
+        <WebView
+          onShouldStartLoadWithRequest={handleShouldLoadRequest}
+          startInLoadingState
+          pullToRefreshEnabled
+          onError={handleError}
+          onHttpError={handleHttpError}
+          renderLoading={renderLoading}
+          source={{ uri }}
+          ref={webViewRef}
+          onMessage={onMessage}
+          {...props}
+          onLoadProgress={onLoadProgress}
+          onLoadEnd={applyWebviewDocumentBodyOffset}
+          style={[styles.webview, style]}
+          onScroll={onScroll}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        />
+        {errorCode !== undefined ? (
+          <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />
+        ) : null}
+      </Animated.View>
+    </Animated.View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    position: 'relative',
+    overflow: 'hidden',
+    height: '100%',
+  },
+  inner: {
+    height: '100%',
   },
   webview: {
     backgroundColor: colors.basicBackground,

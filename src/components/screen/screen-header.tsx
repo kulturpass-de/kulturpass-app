@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
     paddingTop: 36,
     paddingLeft: 16,
     paddingBottom: 12,
-    marginBottom: 0,
+    columnGap: 14,
   },
   containerBorderBottom: {
     paddingBottom: 11,
     borderBottomWidth: 1,
     borderBottomColor: '#F2F4F5',
   },
-  backButton: { width: 24, height: 24, marginRight: 14 },
+  backButton: { width: 24, height: 24 },
   closeButton: { width: 24, height: 24, marginRight: 14 },
   title: {
     flex: 1,

@@ -4,13 +4,9 @@ import { WebViewBridgeAdapter } from './webview-bridge-adapter'
 
 export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapter, webViewId: WebViewId) => {
   const authLogin = async (commerceAccessToken: string) => {
-    const result = await webViewBridgeAdapter.callBridgeFunction(
-      webViewId,
-      SpartacusBridge.FunctionCall.Target.AuthLogin,
-      [{ access_token: commerceAccessToken }],
-    )
-    webViewBridgeAdapter.reload(webViewId)
-    return result
+    return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.AuthLogin, [
+      { access_token: commerceAccessToken },
+    ])
   }
 
   const authLogout = async () => {
@@ -29,12 +25,20 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     )
   }
 
+  const onMobileAppEvents = (callback: (object: WebViewEvents['MobileApp']) => void) => {
+    return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.MobileApp, callback)
+  }
+
   const onRouterEvents = (callback: (object: WebViewEvents['router.events']) => void) => {
     return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.RouterEvents, callback)
   }
 
   const onBridge = (callback: (object: WebViewEvents['bridge']) => void) => {
     return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.Bridge, callback)
+  }
+
+  const onAuth = (callback: (object: WebViewEvents['auth']) => void) => {
+    return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.Auth, callback)
   }
 
   const onAuthIsUserLoggedIn = (callback: (object: WebViewEvents['auth.isUserLoggedIn']) => void) => {
@@ -52,7 +56,9 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     geolocationSetLocation,
     onRouterEvents,
     onBridge,
+    onAuth,
     onAuthIsUserLoggedIn,
+    onMobileAppEvents,
   }
 }
 

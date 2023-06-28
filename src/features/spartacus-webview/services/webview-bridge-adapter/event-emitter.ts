@@ -7,6 +7,11 @@ export type Subscription = {
 export class EventEmitter<EventMap extends {}> {
   protected eventEmitter = new ReactNativeEventEmitter()
 
+  public constructor() {
+    //TODO: figure out a way to have less event emitters
+    this.eventEmitter.setMaxListeners(20)
+  }
+
   public addListener<EventType extends Extract<keyof EventMap, string>>(
     eventType: EventType,
     listener: (params: EventMap[EventType]) => void,

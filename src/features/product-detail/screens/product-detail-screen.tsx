@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
@@ -53,6 +53,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   const productDetailHeaderHeightProps = useProductDetailHeaderHeight()
 
   useFocusEffect(setFocus)
+  useEffect(setFocus, [setFocus, productDetail])
 
   return (
     <ModalScreen whiteBottom testID={testID}>

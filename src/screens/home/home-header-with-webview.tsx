@@ -1,21 +1,20 @@
-import React from 'react'
-import { PropsWithChildren, useEffect, useState } from 'react'
-import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
-import { useWebViewBridgeAdapter } from '../../features/spartacus-webview/services/webview-bridge-adapter/use-webview-bridge-adapter'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-export const HomeHeaderWithWebView = ({ children }: PropsWithChildren) => {
-  const { bridgeAdapterApi } = useWebViewBridgeAdapter(WebViewId.Home)
+import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
+import { selectWebViewState } from '../../services/webviews/redux/webviews-slice'
+
+export const HomeHeaderWithWebView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showHeader, setShowHeader] = useState(true)
+  const { routerUrl: url } = useSelector(state => selectWebViewState(state, WebViewId.Home))
 
   useEffect(() => {
-    const subscription = bridgeAdapterApi.onRouterEvents(event => {
-      const url = event.data.url
-      // TODO: /product -> better would be to intercept the routing to /product when the user clicks a product
-      setShowHeader(url === '/' || url.startsWith('/homepage') || url.startsWith('/product'))
-    })
+    if (!url) {
+      return
+    }
 
-    return () => subscription.unsubscribe()
-  }, [bridgeAdapterApi])
+    setShowHeader(url === '/' || url.startsWith('/homepage') || url.startsWith('/product'))
+  }, [url])
 
   if (showHeader) {
     return <>{children}</>

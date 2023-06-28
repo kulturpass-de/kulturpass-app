@@ -7,6 +7,7 @@ import { buildTestId } from '../../../services/test-id/test-id'
 import { AppProviders, serverHandlersRequired, StoreProvider } from '../../../services/testing/test-utils'
 import { ProductDetailFooter } from './product-detail-footer'
 import { GetProfileResponseBody } from '../../../services/api/types/commerce/commerce-get-profile'
+import { NavigationContainer } from '@react-navigation/native'
 
 export const server = setupServer(
   ...serverHandlersRequired,
@@ -33,7 +34,9 @@ afterAll(() => server.close())
 const renderComponent = (children: React.ReactNode) => {
   render(
     <AppProviders>
-      <StoreProvider withLoginSession>{children}</StoreProvider>
+      <StoreProvider withLoginSession>
+        <NavigationContainer>{children}</NavigationContainer>
+      </StoreProvider>
     </AppProviders>,
   )
 }

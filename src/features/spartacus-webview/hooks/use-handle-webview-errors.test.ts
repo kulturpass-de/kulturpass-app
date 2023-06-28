@@ -3,6 +3,7 @@ import { useHandleWebviewErrors } from './use-handle-webview-errors'
 import { Platform } from 'react-native'
 import { act } from 'react-test-renderer'
 import { ERR_NO_INTERNET } from '../components/webview-error-view'
+import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 
 describe('useHandleWebviewErrors', () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe('useHandleWebviewErrors', () => {
   test('should handle error accordingly on ios', async () => {
     Platform.OS = 'ios'
 
-    const { result } = renderHook(() => useHandleWebviewErrors())
+    const { result } = renderHook(() => useHandleWebviewErrors(mockedBridgeAdapterApi))
 
     expect(result.current.errorCode).toBeUndefined()
 
@@ -42,7 +43,7 @@ describe('useHandleWebviewErrors', () => {
   test('should handle error accordingly on android', async () => {
     Platform.OS = 'android'
 
-    const { result } = renderHook(() => useHandleWebviewErrors())
+    const { result } = renderHook(() => useHandleWebviewErrors(mockedBridgeAdapterApi))
 
     expect(result.current.errorCode).toBeUndefined()
 

@@ -7,7 +7,7 @@ import { useTabsNavigation } from '../../navigation/tabs/hooks'
 
 export const UpdateProfileRouteName = 'UpdateProfile'
 
-export type UpdateProfileRouteParams = {}
+export type UpdateProfileRouteParams = undefined
 
 export type UpdateProfileRouteProps = SettingsScreenProps<'UpdateProfile'>
 

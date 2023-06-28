@@ -15,6 +15,7 @@ import { commerceApi } from '../../../services/api/commerce-api'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 import { applyAccessibilityReplacements } from '../../../components/translated-text/accessibility-replacements'
+import { ProductDetailFooterFavoriteButton } from './product-detail-footer-favorite-button'
 
 type ProductDetailFooterProps = {
   onReserve: () => void
@@ -75,14 +76,17 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
         </View>
       ) : null}
       {showReserveButton ? (
-        <View style={[styles.row, styles.rowSpacing]}>
-          <Button
-            widthOption="grow"
-            i18nKey="productDetail_footer_reserve_button"
-            testID={buildTestId('productDetail_footer_reserve_button')}
-            variant="primary"
-            onPress={onReserve}
-          />
+        <View style={styles.rowReserve}>
+          <View style={styles.reserButtonContainer}>
+            <Button
+              widthOption="grow"
+              i18nKey="productDetail_footer_reserve_button"
+              testID={buildTestId('productDetail_footer_reserve_button')}
+              variant="primary"
+              onPress={onReserve}
+            />
+          </View>
+          {selectedOffer?.code && <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} />}
         </View>
       ) : null}
       {showCannotAfford ? (
@@ -126,8 +130,14 @@ const styles = StyleSheet.create({
   rowCentered: {
     alignItems: 'center',
   },
-  rowSpacing: {
+  rowReserve: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: spacing[4],
+    gap: spacing[4],
+  },
+  reserButtonContainer: {
+    flexGrow: 1,
   },
   priceTitle: {
     height: 26,

@@ -99,15 +99,13 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
         </View>
       </ScrollView>
       <ModalScreenFooter>
-        <View style={styles.buttonPadding}>
-          <Button
-            onPress={handlePressDelete}
-            variant="error"
-            disabled={!form.formState.isValid || loading}
-            testID={addTestIdModifier(screenTestId, 'deleteAccount_button')}
-            i18nKey="accountDeletion_confirm_deleteAccount_button"
-          />
-        </View>
+        <Button
+          onPress={handlePressDelete}
+          variant="error"
+          disabled={!form.formState.isValid || loading}
+          testID={addTestIdModifier(screenTestId, 'deleteAccount_button')}
+          i18nKey="accountDeletion_confirm_deleteAccount_button"
+        />
         <Button
           onPress={onClose}
           variant="white"
@@ -144,8 +142,5 @@ export const styles = StyleSheet.create({
   contentText: {
     paddingVertical: spacing[6],
     color: colors.basicBlack,
-  },
-  buttonPadding: {
-    paddingBottom: spacing[5],
   },
 })

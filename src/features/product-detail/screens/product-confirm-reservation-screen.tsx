@@ -121,7 +121,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
         <ProductConfirmOverview productDetail={productDetail} price={selectedOffer.price} />
         <View style={[styles.reservationDetailsContainer]}>
           <View style={styles.reservationDetailsPickup}>
-            <Icon source="Boings" width={20} height={20} style={styles.reservationDetailsPickupIcon} />
+            <Icon source="Boings" width={20} height={20} />
             <TranslatedText
               i18nKey={pickupCopytext}
               testID={buildTestId(pickupCopytext)}
@@ -194,9 +194,7 @@ const styles = StyleSheet.create({
   },
   reservationDetailsPickup: {
     flexDirection: 'row',
-  },
-  reservationDetailsPickupIcon: {
-    marginRight: spacing[2],
+    gap: spacing[2],
   },
   reservationDetailsPickupText: {
     flex: 1,
