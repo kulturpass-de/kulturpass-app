@@ -9,8 +9,6 @@ import { EnvironmentConfigRouteConfig } from '../../screens/developer-settings/e
 import { ModalStackWrapper } from './modal-stack-wrapper'
 import { ModalParamList } from './types'
 import { StorybookRouteConfig } from '../../screens/developer-settings/storybook-route'
-import { OnboardingAboutAppRouteConfig } from '../../features/onboarding/screens/onboarding-about-app-route'
-import { OnboardingLocationPermissionRouteConfig } from '../../features/onboarding/screens/onboarding-location-permission-route'
 import { RegistrationFormRouteConfig } from '../../screens/registration/registration-form-route'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { RegistrationPreferencesRouteConfig } from '../../screens/registration-preferences/registration-preferences-route'
@@ -50,7 +48,6 @@ export const ModalStack: React.FC = () => {
       <StatusBar backgroundColor="#00000000" translucent barStyle={'dark-content'} />
 
       <Stack.Navigator
-        initialRouteName="OnboardingAboutApp"
         detachInactiveScreens
         screenOptions={{
           headerShown: false,
@@ -63,12 +60,6 @@ export const ModalStack: React.FC = () => {
 
         {/* Force Update Routes */}
         <Stack.Screen options={{ gestureEnabled: false }} {...ForceUpdateRouteConfig} />
-
-        {/* Onboarding Routes */}
-        <Stack.Group screenOptions={{ gestureEnabled: false }}>
-          <Stack.Screen {...OnboardingAboutAppRouteConfig} />
-          <Stack.Screen {...OnboardingLocationPermissionRouteConfig} />
-        </Stack.Group>
 
         {/* Registration Routes */}
         <Stack.Screen {...RegistrationConsentRouteConfig} />

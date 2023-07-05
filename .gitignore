@@ -82,3 +82,8 @@ devices.txt
 out/
 compliance_logs/
 gav.json
+
+# ignore: yarn build-android output
+android/app/src/main/assets/index.android.bundle
+android/app/src/main/res/**/src_*
+android/app/src/main/res/**/node_modules_*

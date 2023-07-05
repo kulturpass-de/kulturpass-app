@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.1.0",
-  "buildNumber": "1",
+  "buildNumber": "2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -11,6 +11,7 @@
     "ci": "yarn tsc && yarn lint && yarn test-ci",
     "ios": "react-native run-ios",
     "ios:se": "react-native run-ios --simulator=\"iPhone SE (3rd generation)\"",
+    "build-android": "react-native bundle --platform android --dev true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug",
     "start": "react-native start",
     "test": "jest",
     "test-coverage": "jest --coverage",

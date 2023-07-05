@@ -7,7 +7,7 @@ const createLocationService = (): LocationService => {
   return {
     async requestLocationPermission() {
       if (await this.checkLocationPermission()) {
-        return
+        return true
       }
       let permissionStatus: PermissionStatus
       if (Platform.OS === 'ios') {
@@ -16,13 +16,15 @@ const createLocationService = (): LocationService => {
         permissionStatus = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
       } else {
         console.error('Platform not supported')
-        return
+        return false
       }
 
       if (permissionStatus !== RESULTS.GRANTED) {
         console.log('Location Permission not granted')
-        return
+        return false
       }
+
+      return true
     },
     async checkLocationPermission() {
       if (Platform.OS === 'ios') {

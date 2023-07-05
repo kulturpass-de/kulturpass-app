@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import SystemNavigationBar from 'react-native-system-navigation-bar'
 import 'react-native-get-random-values'
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 
 import { webViewBridgeAdapter } from './features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { WebViewBridgeAdapterContext } from './features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter-provider'
@@ -15,15 +16,17 @@ export const { store, persistor } = setupStore({})
 
 const AppWithProviders = () => {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <WebViewBridgeAdapterContext.Provider value={webViewBridgeAdapter}>
-          <Suspense fallback="loading">
-            <NavigationContainer />
-          </Suspense>
-        </WebViewBridgeAdapterContext.Provider>
-      </PersistGate>
-    </Provider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <WebViewBridgeAdapterContext.Provider value={webViewBridgeAdapter}>
+            <Suspense fallback="loading">
+              <NavigationContainer />
+            </Suspense>
+          </WebViewBridgeAdapterContext.Provider>
+        </PersistGate>
+      </Provider>
+    </SafeAreaProvider>
   )
 }
 

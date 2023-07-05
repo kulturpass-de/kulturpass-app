@@ -1,69 +1,59 @@
-import { act, renderHook } from '@testing-library/react-native'
+import { renderHook } from '@testing-library/react-native'
 
-import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
-import { SpartacusBridge } from './spartacus-bridge'
+import { RootState } from '../../../../services/redux/configure-store'
+import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { WebViewId } from './types'
 import { useWebViewLocationSync } from './use-webview-location-sync'
 import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 
-describe.skip('useWebViewLocationSync', () => {
+describe('useWebViewLocationSync', () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  describe('userLocationState is undefined', () => {
-    const userLocationState: Parameters<typeof useWebViewLocationSync>[2] = undefined
+  const undefinedUserLocationState: Parameters<typeof useWebViewLocationSync>[2] = undefined
+  const definedUserLocationState = { coords: { latitude: 5, longitude: 10 } } as Parameters<
+    typeof useWebViewLocationSync
+  >[2]
 
-    it('should geolocationSetLocation when bridge is ready', () => {
-      const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
-
-      renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, userLocationState))
-
-      act(() => {
-        sendAuthIsUserLoggedIn.current?.({
-          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-          value: true,
-        })
-      })
-
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(1)
+  it('should not geolocationSetLocation when bridge is not ready', () => {
+    const store = configureMockStore({
+      preloadedState: { webviews: { [WebViewId.Home]: { isReady: false } } } as RootState,
     })
 
-    it('should not geolocationSetLocation when bridge is not ready', () => {
-      const sendAuthIsUserLoggedIn = mockListenerOnce(mockedBridgeAdapterApi.onAuthIsUserLoggedIn)
+    renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, undefinedUserLocationState), {
+      wrapper: store.wrapper,
+    }).unmount()
 
-      renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, userLocationState))
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(0)
 
-      act(() => {
-        sendAuthIsUserLoggedIn.current?.({
-          source: SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn,
-          value: true,
-        })
-      })
+    renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, definedUserLocationState), {
+      wrapper: store.wrapper,
+    }).unmount()
 
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(0)
-    })
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(0)
   })
 
-  describe('userLocationState is defined', () => {
-    const userLocationState = {
-      coords: { latitude: 5, longitude: 10 },
-    } as Parameters<typeof useWebViewLocationSync>[2]
-
-    it('should geolocationSetLocation when bridge is ready', () => {
-      renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, userLocationState))
-
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(1)
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledWith(
-        userLocationState?.coords.latitude,
-        userLocationState?.coords.longitude,
-      )
+  it('should geolocationSetLocation when bridge is ready', () => {
+    const store = configureMockStore({
+      preloadedState: { webviews: { [WebViewId.Home]: { isReady: true } } } as RootState,
     })
 
-    it('should not geolocationSetLocation when bridge is not ready', () => {
-      renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, userLocationState))
+    renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, undefinedUserLocationState), {
+      wrapper: store.wrapper,
+    }).unmount()
 
-      expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(0)
-    })
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(1)
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledWith()
+
+    renderHook(() => useWebViewLocationSync(WebViewId.Home, mockedBridgeAdapterApi, definedUserLocationState), {
+      wrapper: store.wrapper,
+    }).unmount()
+
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledTimes(2)
+    expect(mockedBridgeAdapterApi.geolocationSetLocation).toBeCalledWith(
+      definedUserLocationState?.coords.latitude,
+      definedUserLocationState?.coords.longitude,
+    )
   })
 })

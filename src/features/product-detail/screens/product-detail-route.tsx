@@ -45,7 +45,7 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, naviga
     modalNavigation.navigate({ screen: 'OfferSelection', params: { productCode, randomMode } })
   }, [modalNavigation, productCode, randomMode])
 
-  const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
+  const { data: productDetail, error, isFetching } = useQueryProductDetail(productCode)
 
   const selectedOffer = useSelectedOrClosestOffer(productDetail, offerId)
 
@@ -61,7 +61,7 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, naviga
   }, [productCode, selectedOffer, modalNavigation])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
-    !isLoading ? error ?? randomProductResult.error : undefined,
+    !isFetching ? error ?? randomProductResult.error : undefined,
   )
 
   const handleDismissErrorAndClose = useCallback(() => {
@@ -71,9 +71,9 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, naviga
 
   return (
     <>
-      <LoadingIndicator loading={isLoading || randomProductResult.isLoading} />
+      <LoadingIndicator loading={isFetching || randomProductResult.isFetching} />
       <ErrorAlert error={visibleError} onDismiss={handleDismissErrorAndClose} />
-      {productDetail ? (
+      {productDetail && productDetail.code === productCode ? (
         <ProductDetailScreen
           onClose={onClose}
           onOfferSelection={onOfferSelection}

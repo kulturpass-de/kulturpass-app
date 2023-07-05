@@ -17,14 +17,6 @@ import {
   EnvironmentConfigRouteParams,
 } from '../../screens/developer-settings/environment-config-route'
 import { StorybookRouteName, StorybookRouteParams } from '../../screens/developer-settings/storybook-route'
-import {
-  OnboardingAboutAppRouteName,
-  OnboardingAboutAppRouteParams,
-} from '../../features/onboarding/screens/onboarding-about-app-route'
-import {
-  OnboardingLocationPermissionRouteName,
-  OnboardingLocationPermissionRouteParams,
-} from '../../features/onboarding/screens/onboarding-location-permission-route'
 import { RootStackParams, RootStackScreenProps } from '../types'
 import {
   ProductDetailRouteName,
@@ -119,9 +111,6 @@ export type ModalParamList = {
   [ForgotPasswordRouteName]: ForgotPasswordRouteParams
 
   [ForceUpdateRouteName]: ForceUpdateRouteParams
-
-  [OnboardingAboutAppRouteName]: OnboardingAboutAppRouteParams
-  [OnboardingLocationPermissionRouteName]: OnboardingLocationPermissionRouteParams
 
   [RegistrationConsentRouteName]: RegistrationConsentRouteParams
   [RegistrationDataPrivacyRouteName]: RegistrationDataPrivacyRouteParams

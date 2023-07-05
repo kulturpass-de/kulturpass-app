@@ -52,7 +52,7 @@ export const ErrorAlert = ({ error, onDismiss, hideErrorCode = false }: ErrorAle
           <AlertMessage
             i18nKey="error_alert_message_details"
             i18nParams={{ errorCode: errorWithCode?.errorCode, detailCode: errorWithCode?.detailCode }}
-            testID={buildTestId('error_alert_message')}
+            testID={buildTestId('error_alert_message_details')}
           />
         ) : null}
         <AlertButtonDismiss i18nKey="error_alert_cta" testID={buildTestId('error_alert_cta')} />

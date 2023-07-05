@@ -74,3 +74,15 @@ export const getRegistrationToken = createSelector(getCdcSessionData, data => da
 export const getCommerceSessionData = createSelector(getAuthState, auth => auth.commerce)
 
 export const getCommerceAccessToken = createSelector(getCommerceSessionData, data => data?.access_token)
+
+export const selectValidCommerceAccessToken = createSelector([getCommerceSessionData], commerceSessionData => {
+  if (!commerceSessionData) {
+    return null
+  }
+
+  const { access_token, token_valid_until } = commerceSessionData
+
+  const isValid = (token_valid_until && token_valid_until > Date.now()) || false
+
+  return isValid ? access_token : null
+})

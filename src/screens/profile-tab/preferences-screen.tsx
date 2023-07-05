@@ -20,6 +20,7 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
   const { buildTestId } = useTestIdBuilder()
   const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
   const { setAccountInfo, accountInfo } = useUserInfo()
+  const [getIsValidPostalCode] = commerceApi.useLazyGetIsValidPostalCodeQuery()
 
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
@@ -49,6 +50,7 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
           userPreferences={accountInfo.data?.data}
           availableCategories={preferenceCategories.data?.categories}
           submitButtonI18nKey="preferences_form_profile_edit_submit"
+          getIsValidPostalCode={getIsValidPostalCode}
         />
       </Screen>
     </>

@@ -29,6 +29,10 @@ import { GetRandomProductParams, GetRandomProductResponse } from './types/commer
 import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
 import { PostRevokeAuthTokenParams, PostRevokeAuthTokenResponse } from './types/commerce/commerce-post-revoke-token'
 import { sendCommerceRevokeOauthTokenRequest } from './commerce/send-commerce-revoke-oauth-token-request'
+import {
+  GetPostalCodeIsValidParams,
+  GetPostalCodeIsValidResponse,
+} from './types/commerce/commerce-get-postal-code-is-valid'
 
 const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 
@@ -36,8 +40,24 @@ export const commerceApi = createRtkApi({
   ...dontRemoveOtherwiseJestTestsWillNotClose,
   reducerPath: 'commerceApi',
   baseQuery: repeatRequestIfInvalidToken<unknown>(axiosBaseQuery),
-  tagTypes: ['profile', 'reservations', 'reservation-detail', 'favorites', 'product-detail', 'language'],
+  tagTypes: [
+    'profile',
+    'reservations',
+    'reservation-detail',
+    'favorites',
+    'product-detail',
+    'language',
+    'valid-postal-code',
+  ],
   endpoints: builder => ({
+    getIsValidPostalCode: builder.query<GetPostalCodeIsValidResponse, GetPostalCodeIsValidParams>({
+      providesTags: ['valid-postal-code'],
+      queryFn: sendCommerceGetRequest(params => {
+        return {
+          path: `geolocation/postalcode/${params.postalCode}`,
+        }
+      }),
+    }),
     postAuthToken: builder.mutation<PostAuthTokenResponse, PostAuthTokenParams>({
       invalidatesTags: ['profile', 'favorites', 'reservations', 'reservation-detail'],
       queryFn: sendCommerceOauthTokenRequest(params => ({

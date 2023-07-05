@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { OnboardingParamList } from '../../../navigation/onboarding/types'
 
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
@@ -11,13 +13,11 @@ export const OnboardingAboutAppRouteName = 'OnboardingAboutApp'
 export type OnboardingAboutAppRouteParams = undefined
 
 export const OnboardingAboutAppRoute: React.FC = () => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<OnboardingParamList>>()
 
   const onNext = useCallback(() => {
-    modalNavigation.navigate({
-      screen: OnboardingLocationPermissionRouteConfig.name,
-    })
-  }, [modalNavigation])
+    navigation.navigate(OnboardingLocationPermissionRouteConfig.name)
+  }, [navigation])
 
   return <OnboardingAboutAppScreen onNext={onNext} />
 }

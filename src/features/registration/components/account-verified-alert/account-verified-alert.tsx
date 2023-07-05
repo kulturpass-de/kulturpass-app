@@ -1,4 +1,5 @@
-import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
@@ -24,7 +25,7 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
   testID = 'account_verified_alert',
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
-  const navigation = useNavigation<NavigationProp<RootStackParams, 'Tabs'>>()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const dispatch = useDispatch<AppDispatch>()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)

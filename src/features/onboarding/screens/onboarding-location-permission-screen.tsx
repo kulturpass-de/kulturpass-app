@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+
 import { LinkText } from '../../../components/link-text/link-text'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 
@@ -10,9 +12,8 @@ import { Language } from '../../../services/translation/types'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { OnboardingScreen } from '../components/onboarding-screen'
-import { useDispatch } from 'react-redux'
-import { setShowOnboardingOnStartup } from '../redux/onboarding'
 import { URLS } from '../../../utils/constants'
+import { userSlice } from '../../../services/user/redux/user-slice'
 
 export type OnboardingLocationPermissionScreenProps = {
   onNext: () => void
@@ -23,14 +24,16 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
 
   const onAccept = useCallback(async () => {
     try {
-      await locationService.requestLocationPermission()
+      const granted = await locationService.requestLocationPermission()
+      if (!granted) {
+        dispatch(userSlice.actions.setUserDeniedLocationServices(true))
+      }
     } catch (e) {
       // Location permission not granted
     } finally {
-      dispatch(setShowOnboardingOnStartup(false))
       onNext()
     }
-  }, [dispatch, onNext])
+  }, [onNext, dispatch])
 
   const { buildTestId } = useTestIdBuilder()
 

@@ -1,8 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { act, renderHook } from '@testing-library/react-native'
 
+import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
+import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
 import { SpartacusBridge } from './spartacus-bridge'
 import { WebViewId } from './types'
 import { useWebViewBridgeAdapter } from './use-webview-bridge-adapter'
@@ -13,22 +13,19 @@ jest.mock('./create-bridge-adapter-api', () => ({
   createBridgeAdapterApi: () => mockedBridgeAdapterApi,
 }))
 
-describe.skip('useWebViewBridgeAdapter', () => {
+describe('useWebViewBridgeAdapter', () => {
+  const store = configureMockStore()
+
   afterEach(() => {
     jest.clearAllMocks()
+    store.clearActions()
   })
 
   describe('bridgeAdapterState.isReady', () => {
-    it('should be falsy initially', () => {
-      const { result } = renderHook(() => useWebViewBridgeAdapter('myWebViewId' as WebViewId))
-
-      expect(result.current.bridgeAdapterState.isReady).toBeFalsy()
-    })
-
-    it('should be set to true after receiveing Bridge EventForwarding', () => {
+    it('should setWebViewState onBridge ready', () => {
       const sendBridge = mockListenerOnce(mockedBridgeAdapterApi.onBridge)
 
-      const { result } = renderHook(() => useWebViewBridgeAdapter('myWebViewId' as WebViewId))
+      renderHook(() => useWebViewBridgeAdapter(WebViewId.Home), { wrapper: store.wrapper })
 
       act(() => {
         sendBridge.current?.({
@@ -38,7 +35,12 @@ describe.skip('useWebViewBridgeAdapter', () => {
         })
       })
 
-      expect(result.current.bridgeAdapterState.isReady).toBe(true)
+      store.expectActions([
+        {
+          type: webviewsSlice.actions.setWebViewState.type,
+          payload: { webViewId: WebViewId.Home, state: { isReady: true } },
+        },
+      ])
     })
   })
 })

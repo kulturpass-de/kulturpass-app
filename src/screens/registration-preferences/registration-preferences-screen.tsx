@@ -22,6 +22,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
+  const [getIsValidPostalCode] = commerceApi.useLazyGetIsValidPostalCodeQuery()
   const setAccountInfo = useSetAccountInfo(regToken)
 
   const onSubmit = useCallback(
@@ -46,6 +47,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
           onPressSubmit={onSubmit}
           availableCategories={preferenceCategories.data?.categories}
           submitButtonI18nKey="preferences_form_registration_submit"
+          getIsValidPostalCode={getIsValidPostalCode}
         />
       </ModalScreen>
     </>

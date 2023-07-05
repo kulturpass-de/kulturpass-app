@@ -1,10 +1,9 @@
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 
-import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
+import { setShowOnboardingOnStartup } from '../redux/onboarding'
 import { OnboardingLocationPermissionScreen } from './onboarding-location-permission-screen'
 
 export const OnboardingLocationPermissionRouteName = 'OnboardingLocationPermission'
@@ -12,14 +11,11 @@ export const OnboardingLocationPermissionRouteName = 'OnboardingLocationPermissi
 export type OnboardingLocationPermissionRouteParams = undefined
 
 export const OnboardingLocationPermissionRoute: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const dispatch = useDispatch()
 
   const onNext = useCallback(() => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Tabs' }],
-    })
-  }, [navigation])
+    dispatch(setShowOnboardingOnStartup(false))
+  }, [dispatch])
 
   return <OnboardingLocationPermissionScreen onNext={onNext} />
 }

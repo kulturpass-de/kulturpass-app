@@ -1,7 +1,6 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { WebViewId } from '../../../features/spartacus-webview/services/webview-bridge-adapter/types'
-import { RootState } from '../../redux/configure-store'
 
 export type WebViewState = {
   isLoggedIn: boolean | null
@@ -49,10 +48,3 @@ export const webviewsSlice = createSlice({
     },
   },
 })
-
-const selectWebviewsState = (state: RootState) => state.webviews
-
-export const selectWebViewState = createSelector(
-  [selectWebviewsState, (state, webViewId: WebViewId) => webViewId],
-  (webviewsState, webViewId) => webviewsState[webViewId],
-)

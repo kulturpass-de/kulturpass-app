@@ -23,9 +23,7 @@ export const useModalNavigation = () => {
   }
 
   const closeModal = () => {
-    nav.navigate('Tabs', {
-      screen: 'Home',
-    })
+    nav.navigate('Tabs')
   }
 
   return { ...nav, navigate, push, replace, closeModal }

@@ -1,3 +1,4 @@
+import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { z } from 'zod'
 
 import { AvailableTranslations } from '../../../components/translated-text/types'
@@ -9,6 +10,7 @@ import {
 } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
+import { commerceApi } from '../../../services/api/commerce-api'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
 
@@ -30,14 +32,42 @@ export const DATE_SCHEMA = (t: TranslationFunction) => {
 
 export const POSTAL_CODE_PATTERN = /^[0-9]{5}$/
 
-export const POSTAL_CODE_SCHEMA = (t: TranslationFunction, isRequired?: boolean) => {
+export const POSTAL_CODE_SCHEMA = (
+  t: TranslationFunction,
+  validatePostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>,
+  isRequired?: boolean,
+) => {
   let schema = z.string().trim()
 
   if (isRequired) {
     schema = schema.nonempty()
   }
 
-  return schema.regex(POSTAL_CODE_PATTERN, { message: t('form_error_not_valid_postal_code') })
+  return schema
+    .regex(POSTAL_CODE_PATTERN, { message: t('form_error_not_valid_postal_code') })
+    .superRefine(async (postalCode, ctx) => {
+      if (postalCode.length < 5) {
+        return z.NEVER
+      }
+
+      try {
+        const result = await validatePostalCode({ postalCode })
+
+        if (result.isError) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t('form_error_not_valid_postal_code_verified'),
+          })
+        }
+      } catch (error) {
+        console.log(error)
+
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: t('form_error_not_valid_postal_code_verified'),
+        })
+      }
+    })
 }
 
 export type TranslationArgs = { key: AvailableTranslations; values?: Record<string, string> }

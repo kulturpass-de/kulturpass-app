@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
+import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
@@ -25,6 +26,7 @@ import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categorie
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
+import { commerceApi } from '../../../services/api/commerce-api'
 
 export type PreferencesFormData = {
   postalCode: string
@@ -38,6 +40,7 @@ export type PreferencesProps = {
   userPreferences?: AccountInfoData | null
   onPressSubmit: (preferences: AccountInfoData) => Promise<void>
   submitButtonI18nKey: AvailableTranslations
+  getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
 }
 
 export const Preferences: React.FC<PreferencesProps> = ({
@@ -47,6 +50,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
   userPreferences,
   onPressSubmit,
   submitButtonI18nKey,
+  getIsValidPostalCode,
 }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
@@ -55,9 +59,10 @@ export const Preferences: React.FC<PreferencesProps> = ({
 
   const form = useForm<PreferencesFormData>({
     shouldFocusError: false,
+    mode: 'onChange',
     resolver: zodResolver(
       z.object({
-        postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, true)),
+        postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, getIsValidPostalCode, true)),
         categories: z.string().array().min(0),
       }),
     ),
@@ -170,6 +175,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
                 labelI18nKey="preferences_postal_code_input"
                 testID={buildTestId('preferences_form_postal_code')}
                 control={form.control}
+                maxLength={5}
                 keyboardType="number-pad"
               />
               <TranslatedText
