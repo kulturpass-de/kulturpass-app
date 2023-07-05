@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
-import FastImage from 'react-native-fast-image'
 import { Animated, LayoutChangeEvent, Pressable, StyleSheet, View, ViewStyle } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
 import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
 import { UseProductDetailHeaderHeightReturnType } from '../hooks/use-product-detail-header-height'
 

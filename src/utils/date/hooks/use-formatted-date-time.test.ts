@@ -1,5 +1,4 @@
 import { renderHook } from '@testing-library/react-native'
-
 import { translation } from '../../../services/translation/translation'
 import { useFormattedDateTime } from './use-formatted-date-time'
 

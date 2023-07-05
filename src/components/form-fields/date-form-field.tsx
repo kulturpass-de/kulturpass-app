@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { Pressable, StyleSheet, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native'
 import DatePicker, { type DatePickerProps } from 'react-native-date-picker'
-
 import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'

@@ -1,6 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-
+import React from 'react'
 import { ERR_NO_INTERNET, WebviewErrorView } from './webview-error-view'
 
 const componentMeta: ComponentMeta<typeof WebviewErrorView> = {

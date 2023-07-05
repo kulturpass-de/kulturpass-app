@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
-
 import { colors } from '../../theme/colors'
 import { LoadingAnimation } from '../loading-animation/loading-animation'
 

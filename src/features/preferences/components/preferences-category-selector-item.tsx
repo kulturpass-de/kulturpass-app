@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
-
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'

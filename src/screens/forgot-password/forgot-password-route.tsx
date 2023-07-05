@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react'
-
 import { useModalNavigation } from '../../navigation/modal/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { cdcApi } from '../../services/api/cdc-api'
 import { modalCardStyle } from '../../theme/utils'
 import { ForgotPasswordScreen } from './forgot-password-screen'
 import { ForgotPasswordSuccessScreen } from './forgot-password-success-screen'
-import { cdcApi } from '../../services/api/cdc-api'
 
 export const ForgotPasswordRouteName = 'ForgotPassword'
 

@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { useTabsNavigation } from '../../navigation/tabs/hooks'
-
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { ChangeLanguageScreen } from './change-language-screen'
 

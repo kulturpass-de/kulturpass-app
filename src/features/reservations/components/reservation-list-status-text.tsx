@@ -1,11 +1,6 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Icon, IconProps } from '../../../components/icon/icon'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
-import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import {
   DELIVERY_SCENARIO_IN_APP_VOUCHER,
   DELIVERY_SCENARIO_PICKUP,
@@ -17,6 +12,11 @@ import {
   ORDER_STATUS_RECEIVED,
   ORDER_STATUS_SHIPPING,
 } from '../../../services/api/types/commerce/commerce-get-reservations'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
+import { textStyles } from '../../../theme/typography'
 
 export type ReservationListStatusTextProps = {
   status: string

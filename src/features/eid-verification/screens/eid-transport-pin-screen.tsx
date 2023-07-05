@@ -1,17 +1,16 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-
+import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { PinInput } from '../components/pin-input'
-import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
+import { PinInput } from '../components/pin-input'
 import { usePinFormValidation } from '../hooks/use-pin-form-validation'
 
 export type EidTransportPinScreenProps = {

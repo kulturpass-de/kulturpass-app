@@ -1,5 +1,4 @@
 import { Action, AnyAction } from '@reduxjs/toolkit'
-
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { RootState } from '../../../redux/configure-store'
 import { configureMockStore } from '../../../testing/configure-mock-store'

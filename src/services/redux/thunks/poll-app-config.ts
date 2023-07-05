@@ -1,5 +1,4 @@
 import { QueryActionCreatorResult } from '@reduxjs/toolkit/dist/query/core/buildInitiate'
-
 import { commerceApi } from '../../api/commerce-api'
 import { createThunk } from '../utils/create-thunk'
 

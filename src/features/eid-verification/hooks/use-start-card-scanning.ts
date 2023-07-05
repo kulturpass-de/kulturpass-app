@@ -1,6 +1,3 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-
 import {
   AA2CommandService,
   AA2Messages,
@@ -9,8 +6,11 @@ import {
   ReaderData,
   Simulator,
 } from '@sap/react-native-ausweisapp2-wrapper'
+import { useCallback, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
+import { useSelector } from 'react-redux'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import {
   AA2AcceptTimeout,
   AA2CardDeactivated,
@@ -27,7 +27,6 @@ import {
 import { Flow } from '../types'
 import { generateSimulatedCard } from '../utils'
 import { useStartAA2ChangePin } from './use-start-change-pin'
-import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 type StartCardScanningParams = {
   flow: Flow
@@ -230,6 +229,10 @@ export const useStartCardScanning = ({
       }
 
       if (isTimeoutError(e)) {
+        if (Platform.OS === 'ios' && !simulateCard) {
+          // As the Timeout Error is not thrown by the SDK, we need to interrupt the ios scanning dialog
+          AA2CommandService.interrupt()
+        }
         onError(new AA2Timeout())
       } else {
         onError(new UnknownError())
@@ -237,7 +240,7 @@ export const useStartCardScanning = ({
     } finally {
       setIsLoading(false)
     }
-  }, [enterCan, enterPin, enterPuk, flow, handleInitialScan, onError, startChangePin])
+  }, [enterCan, enterPin, enterPuk, flow, handleInitialScan, onError, simulateCard, startChangePin])
 
   return { startScanning, isLoading }
 }

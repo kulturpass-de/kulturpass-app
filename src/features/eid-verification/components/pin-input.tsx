@@ -15,12 +15,12 @@ import {
   ViewStyle,
 } from 'react-native'
 import { Icon } from '../../../components/icon/icon'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { colors } from '../../../theme/colors'
 import { HITSLOP_PIN } from '../../../theme/constants'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { FormFieldContainer } from '../../form-validation/components/form-field-container'
-import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 
 export type PinInputProps = {
   value?: string

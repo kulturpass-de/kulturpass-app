@@ -1,10 +1,9 @@
-import React from 'react'
 import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
-
+import React from 'react'
 import { buildTestId } from '../../services/test-id/test-id'
-import { LogInScreen } from './log-in-screen'
-import t from '../../services/translation/i18n/de.json'
 import { renderScreen } from '../../services/testing/test-utils'
+import t from '../../services/translation/i18n/de.json'
+import { LogInScreen } from './log-in-screen'
 
 const renderLoginScreen = ({ afterLogin }: { afterLogin?: () => Promise<void> } = {}) => {
   const mockAfterClose = jest.fn()

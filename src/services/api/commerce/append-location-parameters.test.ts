@@ -1,5 +1,5 @@
-import { appendLocationParameters } from './append-location-parameters'
 import { RootState } from '../../redux/configure-store'
+import { appendLocationParameters } from './append-location-parameters'
 
 describe('append-location-parameters', () => {
   it('should append userLocation according to the given rootState', async () => {

@@ -1,14 +1,13 @@
 import React, { PropsWithChildren } from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { type FieldError } from 'react-hook-form'
-
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon } from '../../../components/icon/icon'
-import { textStyles } from '../../../theme/typography'
-import { useTranslation } from '../../../services/translation/translation'
-import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { AvailableTranslations } from '../../../components/translated-text/types'
-import { spacing } from '../../../theme/spacing'
+import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
+import { textStyles } from '../../../theme/typography'
 
 export type FormFieldContainerProps = PropsWithChildren<{
   testID: TestId

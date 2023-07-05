@@ -1,5 +1,4 @@
 import { AppState, AppStateStatus } from 'react-native'
-
 import { AppStore } from '../configure-store'
 import { appCoreSlice } from '../slices/app-core'
 

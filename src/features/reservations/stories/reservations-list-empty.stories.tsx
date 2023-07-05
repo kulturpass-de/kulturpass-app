@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { ReservationsListEmpty } from '../components/reservations-list-empty'
 
 const componentMeta: ComponentMeta<typeof ReservationsListEmpty> = {

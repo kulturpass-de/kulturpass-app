@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from 'axios'
-
 import { createHttpErrorFromStatusCode, NetworkError, UnknownError } from '../../errors/errors'
+import { logger } from '../../logger'
 import { AxiosBaseQueryFn } from './types'
 
 const AXIOS_TIMEOUT = 15000
@@ -8,7 +8,11 @@ const AXIOS_TIMEOUT = 15000
 export const axiosBaseQuery = <Result>(): AxiosBaseQueryFn<Result> => {
   return async args => {
     try {
+      logger.logRequest(args.url, args)
+
       const result = await axios({ ...args, timeout: AXIOS_TIMEOUT })
+
+      logger.logResponse(args.url, result.data)
 
       return { data: result.data }
     } catch (error: any) {

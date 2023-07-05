@@ -1,20 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
-import { useTestIdBuilder } from '../../../../services/test-id/test-id'
-import { colors } from '../../../../theme/colors'
-import { TranslatedText } from '../../../../components/translated-text/translated-text'
-import { Icon } from '../../../../components/icon/icon'
 import { Button } from '../../../../components/button/button'
+import { Icon } from '../../../../components/icon/icon'
+import { InfoBox } from '../../../../components/info-box/info-box'
+import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
+import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
-import { ErrorAlert } from '../../../form-validation/components/error-alert'
-import { spacing } from '../../../../theme/spacing'
-import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
+import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useUserInfo } from '../../../../services/user/use-user-info'
-import { InfoBox } from '../../../../components/info-box/info-box'
+import { colors } from '../../../../theme/colors'
+import { spacing } from '../../../../theme/spacing'
+import { ErrorAlert } from '../../../form-validation/components/error-alert'
 
 const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 

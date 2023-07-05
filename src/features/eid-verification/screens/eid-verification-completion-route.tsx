@@ -1,13 +1,13 @@
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useEffect } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { logger } from '../../../services/logger'
 import { modalCardStyle } from '../../../theme/utils'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidVerificationCompletionScreen } from './eid-verification-completion-screen'
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
-import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 export const EidVerificationCompletionRouteName = 'EidVerificationCompletion'
 
@@ -26,7 +26,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
     try {
       AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {
-      console.log(e)
+      logger.log(e)
     }
   }, [modalNavigation])
 

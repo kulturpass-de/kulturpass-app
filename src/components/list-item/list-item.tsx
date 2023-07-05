@@ -1,12 +1,12 @@
 import React, { ReactNode, useMemo } from 'react'
 import { AccessibilityState, Pressable, StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { SvgImage } from '../svg-image/svg-image'
 import { Icon } from '../icon/icon'
-import { useTranslation } from '../../services/translation/translation'
+import { SvgImage } from '../svg-image/svg-image'
 
 export type ListItemProps = {
   title: string

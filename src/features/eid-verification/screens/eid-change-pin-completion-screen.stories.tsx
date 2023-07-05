@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { logger } from '../../../services/logger'
 import { EidChangePinCompletionScreen } from './eid-change-pin-completion-screen'
 
 const componentMeta: ComponentMeta<typeof EidChangePinCompletionScreen> = {
@@ -16,10 +17,10 @@ export const Basic: ComponentStory<typeof EidChangePinCompletionScreen> = () => 
     <View style={styles.container}>
       <EidChangePinCompletionScreen
         onNext={() => {
-          console.log('onNext')
+          logger.log('onNext')
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
       />
     </View>

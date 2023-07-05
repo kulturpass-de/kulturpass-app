@@ -1,19 +1,18 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-
+import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
+import { ScreenContent } from '../../components/screen/screen-content'
 import { environmentConfigurations } from '../../services/environment-configuration/environment-configuration'
+import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-environment-configuration'
+import { changeEnvironment } from '../../services/environment-configuration/redux/thunks/change-environment'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { changeEnvironment } from '../../services/environment-configuration/redux/thunks/change-environment'
-import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
-import { Icon } from '../../components/icon/icon'
 import { spacing } from '../../theme/spacing'
-import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-environment-configuration'
 
 export type EnvironmentConfigScreenProps = {
   onHeaderPressBack: () => void

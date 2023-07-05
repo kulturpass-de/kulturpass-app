@@ -1,7 +1,7 @@
-import React from 'react'
-
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { SvgImage } from './svg-image'
+
 export default {
   title: 'SvgImage',
   component: SvgImage,

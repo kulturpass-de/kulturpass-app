@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-
 import { callCdcWithApiKey } from './cdc/call-cdc-with-api-key'
 import { callCdcWithCustomSessionInfoSigned } from './cdc/call-cdc-with-custom-session-info-signed'
 import { callCdcWithSessionInfoSigned } from './cdc/call-cdc-with-session-info-signed'

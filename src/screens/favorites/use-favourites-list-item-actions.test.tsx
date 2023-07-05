@@ -3,7 +3,6 @@ import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { act } from 'react-test-renderer'
-
 import { AppProviders, serverHandlersRequired, StoreProvider } from '../../services/testing/test-utils'
 import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 

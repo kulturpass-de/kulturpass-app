@@ -1,8 +1,7 @@
 import i18n, { type i18n as i18nType } from 'i18next'
-import { initReactI18next } from 'react-i18next'
 import AsyncStoragePlugin from 'i18next-react-native-async-storage'
+import { initReactI18next } from 'react-i18next'
 import { z } from 'zod'
-
 import { resources, defaultNS, fallbackLng } from './setup'
 
 let instance: i18nType | undefined

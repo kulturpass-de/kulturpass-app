@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import React, { useCallback, useState } from 'react'
 import { LayoutChangeEvent, ScrollView, StyleSheet, View, type ViewProps } from 'react-native'
-
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 

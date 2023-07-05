@@ -1,5 +1,4 @@
 import rnEncryptedStorage from 'react-native-encrypted-storage'
-
 import { createSecureStorage } from './secure-storage'
 
 describe('create-secure-storage', () => {

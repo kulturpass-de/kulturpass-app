@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-native'
 import { mockListenerOnce } from '../../../services/testing/mock-listener-once'
 import { ProductDetailRouteConfig } from '../../product-detail/screens/product-detail-route'
+import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewEvents } from '../services/webview-bridge-adapter/types'
-import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 import { useOpenProductDetail } from './use-open-product-detail'
 
 const mockedRouterEvent: WebViewEvents['router.events'] = {

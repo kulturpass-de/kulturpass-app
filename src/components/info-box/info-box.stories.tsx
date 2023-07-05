@@ -1,7 +1,7 @@
-import React from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
-import { InfoBox } from './info-box'
+import React from 'react'
 import { Text } from 'react-native'
+import { InfoBox } from './info-box'
 
 type InfoBoxType = typeof InfoBox
 

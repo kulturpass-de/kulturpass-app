@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-
 import { cdcApi } from '../api/cdc-api'
 import { AccountsSetAccountInfoSignedRequestParams } from '../api/types'
 import { getCdcSessionData } from '../auth/store/auth-selectors'

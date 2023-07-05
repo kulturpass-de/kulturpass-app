@@ -69,6 +69,7 @@ const getStories = () => {
     "./src/features/eid-verification/screens/eid-can-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-can-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-change-pin-completion-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-change-pin-completion-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-new-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-new-pin-screen.stories.tsx"),
+    "./src/features/eid-verification/screens/eid-nfc-not-supported-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-nfc-not-supported-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-pin-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-puk-inoperative-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-inoperative-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-puk-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-screen.stories.tsx"),

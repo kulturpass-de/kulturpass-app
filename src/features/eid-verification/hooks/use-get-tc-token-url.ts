@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../services/redux/configure-store'
 import { useCallback } from 'react'
-import { useGetAccountInfoLazyQuery } from '../../../services/user/use-get-account-info-lazy-query'
+import { useSelector } from 'react-redux'
 import { getCdcSessionData } from '../../../services/auth/store/auth-selectors'
-import { UnknownError } from '../../../services/errors/errors'
 import { useEnvironmentConfiguration } from '../../../services/environment-configuration/hooks/use-environment-configuration'
+import { UnknownError } from '../../../services/errors/errors'
+import { RootState } from '../../../services/redux/configure-store'
+import { useGetAccountInfoLazyQuery } from '../../../services/user/use-get-account-info-lazy-query'
 
 export const useGetTcTokenUrl = () => {
   const sessionData = useSelector(getCdcSessionData)

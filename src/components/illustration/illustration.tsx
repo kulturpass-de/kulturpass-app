@@ -10,7 +10,9 @@ export type IllustrationType =
   | 'verify-mail'
   | 'registration-finished'
   | 'eid'
-  | 'eid-scan'
+  | 'eid-card-positioning-ios'
+  | 'eid-card-positioning-android'
+  | 'eid-nfc-disabled'
   | 'success'
   | 'budget-received'
   | 'empty-state-reservations'
@@ -62,8 +64,12 @@ function requireImage(type: IllustrationType): ImageSourcePropType {
       return require('./imgs/registration-finished.png')
     case 'eid':
       return require('./imgs/eid.png')
-    case 'eid-scan':
-      return require('./imgs/eid-scan.png')
+    case 'eid-card-positioning-ios':
+      return require('./imgs/eid-card-positioning-ios.png')
+    case 'eid-card-positioning-android':
+      return require('./imgs/eid-card-positioning-android.png')
+    case 'eid-nfc-disabled':
+      return require('./imgs/eid-nfc-disabled.png')
     case 'success':
       return require('./imgs/success.png')
     case 'budget-received':

@@ -1,13 +1,12 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { HttpStatusUnauthorizedError } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
+import * as sessionService from '../../session/session-service'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { axiosBaseQuery } from '../common/base-query'
 import { repeatRequestIfInvalidToken } from './repeat-request-if-invalid-token'
-import * as sessionService from '../../session/session-service'
 
 const server = setupServer()
 

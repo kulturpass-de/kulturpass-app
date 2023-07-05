@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react'
-
 import { useModalNavigation } from '../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../navigation/modal/types'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'

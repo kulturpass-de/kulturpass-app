@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-
 import { commerceApi } from '../../../services/api/commerce-api'
 
 export const useQueryProductDetail = (productCode?: string) => {

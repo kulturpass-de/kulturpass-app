@@ -1,7 +1,6 @@
 import { BaseQueryExtraOptions, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { BaseQueryApi as RtkBaseQueryApi } from '@reduxjs/toolkit/query/react'
 import { AxiosRequestConfig } from 'axios'
-
 import { ErrorWithCode } from '../../errors/errors'
 
 export type BaseQueryArg = Record<string, any>

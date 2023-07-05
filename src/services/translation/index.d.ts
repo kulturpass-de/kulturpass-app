@@ -1,5 +1,4 @@
 import 'i18next'
-
 import { resources, defaultNS, fallbackLng } from './setup'
 
 declare module 'i18next' {

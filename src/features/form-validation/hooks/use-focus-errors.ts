@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import type { FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { AccessibilityInfo } from 'react-native'
-
 import { useTranslation } from '../../../services/translation/translation'
 
 export const FORM_HAS_ERRORS_ANNOUNCEMENT_DURATION = 2000

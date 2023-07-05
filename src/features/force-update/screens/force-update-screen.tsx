@@ -1,12 +1,11 @@
 import React from 'react'
-
 import { Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { LinkText } from '../../../components/link-text/link-text'
+import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { ModalScreen } from '../../../components/modal-screen/modal-screen'
-import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
-import { LinkText } from '../../../components/link-text/link-text'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 

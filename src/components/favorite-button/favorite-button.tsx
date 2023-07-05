@@ -1,6 +1,5 @@
 import React from 'react'
 import { Pressable, PressableProps } from 'react-native'
-
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HITSLOP } from '../../theme/constants'

@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { HomeScreen } from './home-screen'
 

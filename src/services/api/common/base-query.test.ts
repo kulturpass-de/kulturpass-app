@@ -1,6 +1,5 @@
 import { BaseQueryApi as RtkBaseQueryApi } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
-
 import { HttpError, NetworkError, UnknownError } from '../../errors/errors'
 import { axiosBaseQuery } from './base-query'
 

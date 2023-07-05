@@ -4,10 +4,10 @@ import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { colors } from '../../../../theme/colors'
 import { textStyles } from '../../../../theme/typography'
-import { StagedEventProductDetail } from '../../types/product-detail'
-import { ProductDetailSection } from '../product-detail-section'
-import { Address } from '../address'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
+import { StagedEventProductDetail } from '../../types/product-detail'
+import { Address } from '../address'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductStagedEventDetailProps = {
   productDetail: StagedEventProductDetail

@@ -1,11 +1,10 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native'
-
 import { AccountsRegisterResponse } from '../../services/api/types'
 import * as authLoginModule from '../../services/auth/store/thunks/auth-login'
 import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'

@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { FlatList, StyleSheet, View, ListRenderItem } from 'react-native'
-
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Offer } from '../../../services/api/types/commerce/api-types'

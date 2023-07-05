@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-native'
-import { useHandleWebviewErrors } from './use-handle-webview-errors'
 import { Platform } from 'react-native'
 import { act } from 'react-test-renderer'
 import { ERR_NO_INTERNET } from '../components/webview-error-view'
 import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
+import { useHandleWebviewErrors } from './use-handle-webview-errors'
 
 describe('useHandleWebviewErrors', () => {
   beforeEach(() => {

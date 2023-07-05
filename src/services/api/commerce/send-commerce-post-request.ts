@@ -1,5 +1,4 @@
 import { AxiosHeaders, AxiosRequestConfig } from 'axios'
-
 import { getAuthState } from '../../auth/store/auth-selectors'
 import { ErrorWithCode } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'

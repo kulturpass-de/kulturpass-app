@@ -1,5 +1,4 @@
 import { AxiosHeaders, AxiosRequestConfig } from 'axios'
-
 import { getAuthState } from '../../auth/store/auth-selectors'
 import { RootState } from '../../redux/configure-store'
 import { CreateQueryFn } from '../common/types'

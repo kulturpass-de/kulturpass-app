@@ -6,8 +6,8 @@ import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { ReservationsTabsParamList } from './reservations-screen'
 import { isDeviceTextScaled } from '../../theme/utils'
+import { ReservationsTabsParamList } from './reservations-screen'
 
 type ReservationsTabItemProps = {
   route: MaterialTopTabBarProps['state']['routes'][0]

@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-
 import { cdcApi } from '../api/cdc-api'
 
 export const useGetAccountInfoLazyQuery = () => {

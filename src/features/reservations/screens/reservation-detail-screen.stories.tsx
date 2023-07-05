@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ReservationDetailScreen } from './reservation-detail-screen'
 import { Offer, Order } from '../../../services/api/types/commerce/api-types'
 import { ProductDetail, ProductTypes } from '../../product-detail/types/product-detail'
+import { ReservationDetailScreen } from './reservation-detail-screen'
 
 const componentMeta: ComponentMeta<typeof ReservationDetailScreen> = {
   title: 'Pickup Reservation Detail Screen',

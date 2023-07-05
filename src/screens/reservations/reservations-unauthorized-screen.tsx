@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button } from '../../components/button/button'
 import { Illustration } from '../../components/illustration/illustration'
-
 import { Screen } from '../../components/screen/screen'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { ScreenHeader } from '../../components/screen/screen-header'

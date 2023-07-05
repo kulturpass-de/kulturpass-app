@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import { colors } from '../../theme/colors'
-import { IconProps } from '../icon/icon'
+import { spacing } from '../../theme/spacing'
 import { Button, ButtonProps } from '../button/button'
 import { ButtonTypeStyle } from '../button/button-style'
-import { spacing } from '../../theme/spacing'
+import { IconProps } from '../icon/icon'
 
 export type TryAgainButtonProps = Omit<ButtonProps, 'buttonVariantStyleOverrides' | 'variant' | 'icon'> & {
   // Used to update random values

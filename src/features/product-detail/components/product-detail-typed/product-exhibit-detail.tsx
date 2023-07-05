@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
-import { ExhibitProductDetail } from '../../types/product-detail'
+import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { Language } from '../../../../services/translation/types'
-import { textStyles } from '../../../../theme/typography'
-import { ProductDetailSection } from '../product-detail-section'
-import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { colors } from '../../../../theme/colors'
+import { textStyles } from '../../../../theme/typography'
+import { ExhibitProductDetail } from '../../types/product-detail'
 import { Address } from '../address'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductExhibitDetailProps = {
   productDetail: ExhibitProductDetail

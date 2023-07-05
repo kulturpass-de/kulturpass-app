@@ -1,24 +1,24 @@
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { Button } from '../../components/button/button'
+import { Icon } from '../../components/icon/icon'
+import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
-import { ListItem } from '../../components/list-item/list-item'
-import { Icon } from '../../components/icon/icon'
-import { RootState } from '../../services/redux/configure-store'
-import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
-import { TranslatedText } from '../../components/translated-text/translated-text'
-import { spacing } from '../../theme/spacing'
-import { useTranslation } from '../../services/translation/translation'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { Button } from '../../components/button/button'
-import { useModalNavigation } from '../../navigation/modal/hooks'
-import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
-import { colors } from '../../theme/colors'
-import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { ScreenContent } from '../../components/screen/screen-content'
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
+import { TranslatedText } from '../../components/translated-text/translated-text'
+import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
+import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
+import { useModalNavigation } from '../../navigation/modal/hooks'
+import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
+import { logger } from '../../services/logger'
+import { RootState } from '../../services/redux/configure-store'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 export type DeveloperMenuScreenProps = {
   onHeaderPressClose: () => void
@@ -67,7 +67,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
     try {
       await AA2CommandService.cancel()
     } catch (e) {
-      console.log(`Could not cancel AA2 Flow: ${e}`)
+      logger.log(`Could not cancel AA2 Flow: ${e}`)
     }
   }, [])
 

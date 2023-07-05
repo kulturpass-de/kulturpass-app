@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { logger } from '../../../services/logger'
 import { EidPukScreen } from './eid-puk-screen'
 
 const componentMeta: ComponentMeta<typeof EidPukScreen> = {
@@ -16,10 +17,10 @@ export const Basic: ComponentStory<typeof EidPukScreen> = () => {
     <View style={styles.container}>
       <EidPukScreen
         onNext={puk => {
-          console.log({ puk })
+          logger.log({ puk })
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
         retry={false}
       />
@@ -32,10 +33,10 @@ export const Error: ComponentStory<typeof EidPukScreen> = () => {
     <View style={styles.container}>
       <EidPukScreen
         onNext={puk => {
-          console.log({ puk })
+          logger.log({ puk })
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
         retry={true}
       />

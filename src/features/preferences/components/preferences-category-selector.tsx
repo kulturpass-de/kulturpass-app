@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from 'react'
 import { type LayoutChangeEvent, type LayoutRectangle, StyleSheet, View } from 'react-native'
-
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
-
 import { spacing } from '../../../theme/spacing'
-import { PreferencesCategorySelectorItem } from './preferences-category-selector-item'
-import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
 import { isDeviceTextScaled } from '../../../theme/utils'
+import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
+import { PreferencesCategorySelectorItem } from './preferences-category-selector-item'
 
 export type PreferencesCategorySelectorProps = {
   testID: TestId

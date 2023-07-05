@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 export type DividerProps = {
   marginTop?: number

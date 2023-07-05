@@ -1,12 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { combineReducers } from '@reduxjs/toolkit'
 import * as ReduxPersist from 'redux-persist'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { cardSimulationSlice } from '../../features/eid-verification/redux/simulated-card'
 import { onboardingSlice } from '../../features/onboarding/redux/onboarding'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
-import { appCoreSlice } from './slices/app-core'
 import { locationSlice } from '../location/redux/location-slice'
-import { cardSimulationSlice } from '../../features/eid-verification/redux/simulated-card'
+import { appCoreSlice } from './slices/app-core'
 
 /**
  * Store anything else here that should persist

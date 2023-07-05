@@ -1,5 +1,5 @@
-import { ErrorWithCode } from '../../services/errors/errors'
 import { AA2Messages, Auth, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
+import { ErrorWithCode } from '../../services/errors/errors'
 
 export enum AA2ErrorCode {
   AA2_ERROR = 'AA2_ERROR',

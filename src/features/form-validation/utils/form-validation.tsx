@@ -1,16 +1,17 @@
 import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { z } from 'zod'
-
 import { AvailableTranslations } from '../../../components/translated-text/types'
+import { commerceApi } from '../../../services/api/commerce-api'
 import {
+  CdcAccountDeletionRequestedError,
   CdcAccountDisabledError,
   CdcInvalidLoginIdError,
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
 } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
+import { logger } from '../../../services/logger'
 import { TranslationFunction } from '../../../services/translation/translation'
-import { commerceApi } from '../../../services/api/commerce-api'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
 
@@ -60,7 +61,7 @@ export const POSTAL_CODE_SCHEMA = (
           })
         }
       } catch (error) {
-        console.log(error)
+        logger.log(error)
 
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -109,6 +110,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'cdc_account_disabled_title' },
           message: { key: 'cdc_account_disabled_message' },
+        }
+      }
+      case CdcAccountDeletionRequestedError: {
+        return {
+          title: { key: 'cdc_account_deletion_requested_title' },
+          message: { key: 'cdc_account_deletion_requested_message' },
         }
       }
       case CdcInvalidLoginIdError: {

@@ -1,5 +1,4 @@
 import { ActionReducerMapBuilder, AsyncThunk } from '@reduxjs/toolkit'
-
 import { AsyncThunkConfig } from './create-thunk'
 
 /**

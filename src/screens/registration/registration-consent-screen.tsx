@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-
 import { Button } from '../../components/button/button'
 import { Checkbox } from '../../components/checkbox/checkbox'
 import { LinkText } from '../../components/link-text/link-text'

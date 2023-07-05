@@ -1,14 +1,13 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IllustrationType } from '../../../components/illustration/illustration'
-
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
 import { ReservationList } from './reservation-list'
 import { ReservationsListEmpty } from './reservations-list-empty'
-import { spacing } from '../../../theme/spacing'
 
 type ReservationsListTabContentProps = {
   orderEntries: Order[]

@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react'
-
-import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { useTranslation } from '../../services/translation/translation'
-import { useUserInfo } from '../../services/user/use-user-info'
+import { Preferences } from '../../features/preferences/components/preferences'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
-import { Preferences } from '../../features/preferences/components/preferences'
-import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
+import { useUserInfo } from '../../services/user/use-user-info'
 
 export type PreferencesScreenProps = {
   afterSubmitTriggered: () => void

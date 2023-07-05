@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
-
 import { cdcApi } from '../../../services/api/cdc-api'
 import {
   getCdcSessionEmail,

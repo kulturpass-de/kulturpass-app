@@ -3,7 +3,6 @@ import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
-
 import { openLink } from '../../utils/links/utils'
 
 type InlineTextLinkProps = {

@@ -1,6 +1,5 @@
 import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { AxiosHeaders } from 'axios'
-
 import { authCommerceRefreshSession } from '../../auth/store/thunks/auth-commerce-refresh-session'
 import { authLogoutWithoutErrors } from '../../auth/store/thunks/auth-logout'
 import { getEnvironmentConfig } from '../../environment-configuration/utils'

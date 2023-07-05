@@ -1,6 +1,5 @@
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-
 import { FavoritesRouteName, FavoritesRouteParams } from '../../screens/favorites/favorites-route'
 import { HomeRouteName, HomeRouteParams } from '../../screens/home/home-route'
 import { ReservationsRouteName, ReservationsRouteParams } from '../../screens/reservations/reservations-route'

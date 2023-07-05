@@ -1,29 +1,31 @@
-import { RefObject, useEffect } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import WebView from 'react-native-webview'
 
 export const useWebViewLanguageSync = (webViewRef: RefObject<WebView<{}> | null>, language: string) => {
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
+
   useEffect(() => {
     // This is intentionally wrapped. Don't remove it
     const languageWrappedWithQuotationMarks = `"${language}"`
+    const locationReloadCall = isFirstLoad ? '' : 'location.reload();'
 
     webViewRef.current?.injectJavaScript(`
-      function setLanguageIfNotAlreadySet() {
-        const currentLanguage = localStorage.getItem("spartacus⚿⚿language");
-        if (currentLanguage !== '${languageWrappedWithQuotationMarks}') {
+      function setLanguage() {
+        try {
           localStorage.setItem("spartacus⚿⚿language", '${languageWrappedWithQuotationMarks}');
-          location.reload();
-        }
+          ${locationReloadCall}
+        } catch (e) { }
       }
 
       // Without this, we get the warning from webkit:
       // "The operation is insecure."
       // See: https://stackoverflow.com/questions/43320932/getting-error-securityerror-dom-exception-18-the-operation-is-insecure-when
       if (document.readyState === 'complete') {
-        setLanguageIfNotAlreadySet()
+        setLanguage()
       } else {
         document.onreadystatechange = () => {
           if (document.readyState === 'complete') {
-            setLanguageIfNotAlreadySet()
+            setLanguage()
           }
         };
       }
@@ -31,5 +33,9 @@ export const useWebViewLanguageSync = (webViewRef: RefObject<WebView<{}> | null>
       // Don't remove
       true;
     `)
-  }, [webViewRef, language])
+
+    if (isFirstLoad) {
+      setIsFirstLoad(false)
+    }
+  }, [webViewRef, language, isFirstLoad])
 }

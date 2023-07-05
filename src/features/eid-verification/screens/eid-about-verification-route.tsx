@@ -1,17 +1,16 @@
 import { SerializedError } from '@reduxjs/toolkit'
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
+import { EidErrorAlert } from '../components/eid-error-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidAboutServiceProviderRouteName } from './eid-about-service-provider-route'
 import { EidAboutVerificationScreen } from './eid-about-verification-screen'
-import { EidErrorAlert } from '../components/eid-error-alert'
 import { EidNFCNotSupportedRouteName } from './eid-nfc-not-supported-route'
-import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export const EidAboutVerificationRouteName = 'EidAboutVerification'
 

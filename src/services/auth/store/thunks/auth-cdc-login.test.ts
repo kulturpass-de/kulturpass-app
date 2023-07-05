@@ -1,9 +1,8 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { cdcApi } from '../../../api/cdc-api'
-import * as sessionService from '../../../session/session-service'
 import { ErrorWithCode } from '../../../errors/errors'
+import * as sessionService from '../../../session/session-service'
 import { configureMockStore } from '../../../testing/configure-mock-store'
 import { authSlice } from '../auth-slice'
 import { cdcLoginResponseToSessionData } from '../utils'

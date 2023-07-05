@@ -4,12 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 export type EidChangePinCompletionScreenProps = {
   onNext: () => void

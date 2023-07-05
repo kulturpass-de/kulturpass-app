@@ -1,7 +1,8 @@
 import { Platform } from 'react-native'
-import { check, PERMISSIONS, RESULTS, request, PermissionStatus } from 'react-native-permissions'
-import { LocationService } from './types'
 import Geolocation, { GeoPosition } from 'react-native-geolocation-service'
+import { check, PERMISSIONS, RESULTS, request, PermissionStatus } from 'react-native-permissions'
+import { logger } from '../../services/logger'
+import { LocationService } from './types'
 
 const createLocationService = (): LocationService => {
   return {
@@ -20,7 +21,7 @@ const createLocationService = (): LocationService => {
       }
 
       if (permissionStatus !== RESULTS.GRANTED) {
-        console.log('Location Permission not granted')
+        logger.log('Location Permission not granted')
         return false
       }
 

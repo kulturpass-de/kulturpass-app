@@ -1,8 +1,8 @@
 import React from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { WebviewSkeleton } from '../../../components/svg-image/svgs'
-import { spacing } from '../../../theme/spacing'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
 
 export type WebviewLoadingIndicatorProps = {
   contentOffset?: number

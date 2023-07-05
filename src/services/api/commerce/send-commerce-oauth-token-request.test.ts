@@ -1,5 +1,4 @@
 import { AxiosHeaders } from 'axios'
-
 import { RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { jestFn } from '../../testing/jest-fn'

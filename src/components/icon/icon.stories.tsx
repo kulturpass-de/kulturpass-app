@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { Icon } from './icon'
 
 const componentMeta: ComponentMeta<typeof Icon> = {

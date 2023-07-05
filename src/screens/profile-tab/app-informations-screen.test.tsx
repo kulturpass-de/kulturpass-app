@@ -1,9 +1,7 @@
 /*  eslint-disable react/jsx-no-bind */
-
-import React from 'react'
-import { render, screen } from '@testing-library/react-native'
 import { NavigationContainer } from '@react-navigation/native'
-
+import { render, screen } from '@testing-library/react-native'
+import React from 'react'
 import { buildTestId } from '../../services/test-id/test-id'
 import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
 import { AppInformationsScreen } from './app-informations-screen'

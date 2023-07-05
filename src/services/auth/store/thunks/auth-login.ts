@@ -1,6 +1,6 @@
 import { createThunk } from '../../../redux/utils/create-thunk'
-import { authCdcLogin } from './auth-cdc-login'
 import { userSlice } from '../../../user/redux/user-slice'
+import { authCdcLogin } from './auth-cdc-login'
 import { authCommerceLogin } from './auth-commerce-login'
 import { authLogoutWithoutErrors } from './auth-logout'
 

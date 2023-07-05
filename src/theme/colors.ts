@@ -42,18 +42,20 @@ export const colors = {
   basicBlack: '#0C0016',
   basicBackground: '#F3F3F7',
 
-  transparentPrimaryLight50: '#367fff80',
+  transparentPrimaryLight50: '#367fff7F',
   transparentPrimaryLight20: '#367fff33',
-  transparentPrimaryLightest50: '#D7D3FE80',
-  transparentBlack30: '#0C00161E',
+  transparentPrimaryLightest50: '#D7D3FE7F',
+
   transparentBlack80: '#0C0016CC',
   transparentBlack70: '#0C0016B3',
-  transparentBlack45: '#0C00162D',
+  transparentBlack60: '#0C001699',
+  transparentBlack50: '#0C00167F',
   transparentBlack40: '#0C001666',
-  transparentBlack60: '#0C00163C',
-  transparentWhite100: '#FFFFFF00',
-  transparentWhite45: '#FFFFFF2D',
-  transparentWhite50: '#FFFFFF80',
+  transparentBlack30: '#0C00164D',
+
   transparentWhite80: '#FFFFFFCC',
+  transparentWhite50: '#FFFFFF7F',
+  transparentWhite00: '#FFFFFF00',
+
   transparentMoonDarker80: '#202325CC',
 } as const

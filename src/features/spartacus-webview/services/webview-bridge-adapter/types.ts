@@ -1,5 +1,4 @@
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
-
 import { ValueOf } from '../../../../utils/types'
 import { Subscription } from './event-emitter'
 import { SpartacusBridge } from './spartacus-bridge'

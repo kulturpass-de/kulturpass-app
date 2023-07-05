@@ -1,16 +1,15 @@
 import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-
+import { Icon } from '../../components/icon/icon'
+import { ListItem } from '../../components/list-item/list-item'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { useTranslation } from '../../services/translation/translation'
-import { Language } from '../../services/translation/types'
-import { ListItem } from '../../components/list-item/list-item'
-import { StyleSheet, View } from 'react-native'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { Icon } from '../../components/icon/icon'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AppDispatch } from '../../services/redux/configure-store'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
+import { Language } from '../../services/translation/types'
 
 export type ChangeLanguageScreenProps = {
   onHeaderPressClose: () => void

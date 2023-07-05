@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Icon } from '../../../components/icon/icon'
+import { InfoBox } from '../../../components/info-box/info-box'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { InfoBox } from '../../../components/info-box/info-box'
 import { EidAboutVerificationRouteName } from '../screens/eid-about-verification-route'
 
 export const EidIdentifyButton: React.FC = () => {

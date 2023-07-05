@@ -1,15 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
-import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { EidPukScreen } from './eid-puk-screen'
 import { EidErrorAlert } from '../components/eid-error-alert'
+import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { Flow } from '../types'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
+import { EidPukScreen } from './eid-puk-screen'
 
 export const EidPukRouteName = 'EidPuk'
 

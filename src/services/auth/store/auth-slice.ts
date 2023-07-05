@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-import { CdcSessionData, CommerceSessionData } from '../../session/types'
 import { addIsLoadingAsyncThunkCases } from '../../redux/utils/add-is-loading-async-thunk-cases'
+import { CdcSessionData, CommerceSessionData } from '../../session/types'
 import { authLogin } from './thunks/auth-login'
 import { authLogout } from './thunks/auth-logout'
 

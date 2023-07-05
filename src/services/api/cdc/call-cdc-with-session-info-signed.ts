@@ -1,14 +1,14 @@
 import { getCdcSessionData } from '../../auth/store/auth-selectors'
 import { getCurrentEnvironmentConfigurationName } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { ErrorWithCode } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
 import { CreateQueryFn } from '../common/types'
 import { calculateSignature } from '../utils/calculate-signature'
+import { encodeBodyPayload } from '../utils/encode-body-payload'
 import { appendCdcDefaultParameters } from './append-cdc-default-parameters'
 import { buildCdcApiUrl } from './build-cdc-api-url'
-import { encodeBodyPayload } from '../utils/encode-body-payload'
 import { sendCdcPostRequest } from './send-cdc-post-request'
-import { getEnvironmentConfig } from '../../environment-configuration/utils'
 
 export const callCdcWithSessionInfoSigned: CreateQueryFn<{
   path: string

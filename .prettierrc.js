@@ -16,5 +16,6 @@ module.exports = {
         "semi": true
       }
     },
-  ]
+  ],
+  importOrder: ["<THIRD_PARTY_MODULES>", "^[./]"]
 };

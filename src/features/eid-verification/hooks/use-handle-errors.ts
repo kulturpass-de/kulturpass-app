@@ -1,4 +1,7 @@
+import { useIsFocused } from '@react-navigation/native'
+import { AA2Messages, FailureCodes, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
 import { useEffect } from 'react'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import {
   AA2AuthError,
@@ -9,11 +12,8 @@ import {
   extractDetailCode,
   isErrorUserCancellation,
 } from '../errors'
-import { useIsFocused } from '@react-navigation/native'
-import { useCloseFlow } from './use-close-flow'
-import { AA2Messages, FailureCodes, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
+import { useCloseFlow } from './use-close-flow'
 
 //TODO: Refactor flow logic in hooks - also consider changes on the native aa2 library
 

@@ -1,30 +1,29 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { DateFormField } from '../../components/form-fields/date-form-field'
+import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
-import {
-  getRandomLastName,
-  getSimulateCard,
-  getSimulatedCardDate,
-  getSimulatedCardName,
-} from '../../features/eid-verification/redux/simulated-card-selectors'
+import { ScreenContent } from '../../components/screen/screen-content'
+import { TranslatedText } from '../../components/translated-text/translated-text'
 import {
   setRandomLastName,
   setSimulateCard,
   setSimulatedCardDate,
   setSimulatedCardName,
 } from '../../features/eid-verification/redux/simulated-card'
-import { TranslatedText } from '../../components/translated-text/translated-text'
-import { spacing } from '../../theme/spacing'
+import {
+  getRandomLastName,
+  getSimulateCard,
+  getSimulatedCardDate,
+  getSimulatedCardName,
+} from '../../features/eid-verification/redux/simulated-card-selectors'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
-import { Icon } from '../../components/icon/icon'
-import { DateFormField } from '../../components/form-fields/date-form-field'
+import { spacing } from '../../theme/spacing'
 
 export type SimulationCardConfigScreenProps = {
   onHeaderPressBack: () => void

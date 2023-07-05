@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { EMailLink } from './e-mail-link'
 
 const componentMeta: ComponentMeta<typeof EMailLink> = {

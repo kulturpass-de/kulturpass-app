@@ -1,6 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { z } from 'zod'
-
 import { RootState } from '../configure-store'
 import { AppConfigSchema } from '../utils/app-config-schema'
 

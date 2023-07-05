@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
-
 import {
   FormFieldContainer,
   FormFieldContainerProps,

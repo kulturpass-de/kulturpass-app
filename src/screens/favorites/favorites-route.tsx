@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useModalNavigation } from '../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { LogInRouteConfig } from '../log-in/log-in-route'

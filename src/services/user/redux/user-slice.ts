@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 import { AccountInfo } from '../../api/types'
 
 export type UserState = {

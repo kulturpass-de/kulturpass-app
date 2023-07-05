@@ -1,16 +1,15 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
+import { Button } from '../../components/button/button'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
+import { ScreenContent } from '../../components/screen/screen-content'
+import { commerceApi } from '../../services/api/commerce-api'
 import { RootState } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { ScreenContent } from '../../components/screen/screen-content'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { commerceApi } from '../../services/api/commerce-api'
-import { Button } from '../../components/button/button'
 
 export type AppConfigScreenProps = {
   onHeaderPressBack: () => void

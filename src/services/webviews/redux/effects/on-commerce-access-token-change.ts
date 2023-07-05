@@ -1,4 +1,5 @@
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
+import { logger } from '../../../logger'
 import { AppStartListening, ListenerEffect, ListenerPredicate } from '../../../redux/listener-middleware'
 import { webviewsValidateSession } from '../thunks/webviews-validate-session'
 
@@ -11,6 +12,8 @@ export const onCommerceAccessTokenChangePredicate: ListenerPredicate = (action, 
 
 export const onCommerceAccessTokenChangeEffect: ListenerEffect = async (action, listenerApi) => {
   const promises = Object.values(WebViewId).map(async webViewId => {
+    logger.log('onCommerceAccessTokenChangeEffect', webViewId, 'will call webviewsValidateSession')
+
     await listenerApi.dispatch(webviewsValidateSession(webViewId)).unwrap()
   })
 

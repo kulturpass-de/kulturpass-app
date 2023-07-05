@@ -1,7 +1,7 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-import { Screen } from './screen'
+import React from 'react'
 import { Text } from 'react-native'
+import { Screen } from './screen'
 
 const componentMeta: ComponentMeta<typeof Screen> = {
   title: 'Screen',

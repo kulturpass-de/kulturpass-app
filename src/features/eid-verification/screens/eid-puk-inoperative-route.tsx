@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
-import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { EidPukInoperativeScreen } from './eid-puk-inoperative-screen'
 import { EidErrorAlert } from '../components/eid-error-alert'
 import { useCancelFlow } from '../hooks/use-cancel-flow'
+import { useHandleGestures } from '../hooks/use-handle-gestures'
+import { EidPukInoperativeScreen } from './eid-puk-inoperative-screen'
 
 export const EidPukInoperativeRouteName = 'EidPukInoperative'
 

@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { Edge, SafeAreaView } from 'react-native-safe-area-context'
-
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 

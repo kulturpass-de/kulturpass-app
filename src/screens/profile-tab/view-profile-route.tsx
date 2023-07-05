@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react'
-
+import { env } from '../../env'
 import { useModalNavigation } from '../../navigation/modal/hooks'
 import { useTabsNavigation } from '../../navigation/tabs/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { ViewProfileScreen } from './view-profile-screen'
-import { env } from '../../env'
 
 export const ViewProfileRouteName = 'ViewProfile'
 

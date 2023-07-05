@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { z } from 'zod'
-
+import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { PinInput } from '../components/pin-input'
-import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
+import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
-import { useTranslation } from '../../../services/translation/translation'
-import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
+import { PinInput } from '../components/pin-input'
 
 export type EidNewPinScreenProps = {
   onNext: (newPin: string) => void

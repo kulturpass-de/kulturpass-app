@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { logger } from '../../../services/logger'
 import { EidTransportPinScreen } from './eid-transport-pin-screen'
 
 const componentMeta: ComponentMeta<typeof EidTransportPinScreen> = {
@@ -16,10 +17,10 @@ export const Basic: ComponentStory<typeof EidTransportPinScreen> = () => {
     <View style={styles.container}>
       <EidTransportPinScreen
         onNext={can => {
-          console.log({ can })
+          logger.log({ can })
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
       />
     </View>
@@ -31,10 +32,10 @@ export const Retry: ComponentStory<typeof EidTransportPinScreen> = () => {
     <View style={styles.container}>
       <EidTransportPinScreen
         onNext={can => {
-          console.log({ can })
+          logger.log({ can })
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
         retryCounter={2}
       />

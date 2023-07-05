@@ -1,5 +1,4 @@
 import { Mutex } from 'async-mutex'
-
 import { PostAuthTokenResponse } from '../../../api/types'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { getAccountInfo } from '../../../user/redux/thunks/get-account-info'

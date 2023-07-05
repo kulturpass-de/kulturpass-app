@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { logger } from '../../../services/logger'
 import { EidPukInoperativeScreen } from './eid-puk-inoperative-screen'
 
 const componentMeta: ComponentMeta<typeof EidPukInoperativeScreen> = {
@@ -16,7 +17,7 @@ export const Basic: ComponentStory<typeof EidPukInoperativeScreen> = () => {
     <View style={styles.container}>
       <EidPukInoperativeScreen
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
       />
     </View>

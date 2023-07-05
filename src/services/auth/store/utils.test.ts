@@ -1,5 +1,5 @@
-import { CdcSessionData } from '../../session/types'
 import { AccountsLoginResponse } from '../../api/types'
+import { CdcSessionData } from '../../session/types'
 import { cdcLoginResponseToSessionData, isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'
 
 describe('cdcLoginResponseToSessionData', () => {

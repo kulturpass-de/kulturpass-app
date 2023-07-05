@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
@@ -9,7 +10,6 @@ import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { OfferSelectionScreen } from './offer-selection-screen'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const OfferSelectionRouteName = 'OfferSelection'
 

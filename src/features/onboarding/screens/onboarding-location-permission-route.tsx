@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { setShowOnboardingOnStartup } from '../redux/onboarding'

@@ -1,13 +1,12 @@
-import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
+import React from 'react'
+import { GetProfileResponseBody } from '../../../services/api/types/commerce/commerce-get-profile'
 import { buildTestId } from '../../../services/test-id/test-id'
 import { AppProviders, serverHandlersRequired, StoreProvider } from '../../../services/testing/test-utils'
 import { ProductDetailFooter } from './product-detail-footer'
-import { GetProfileResponseBody } from '../../../services/api/types/commerce/commerce-get-profile'
-import { NavigationContainer } from '@react-navigation/native'
 
 export const server = setupServer(
   ...serverHandlersRequired,

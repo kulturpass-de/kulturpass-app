@@ -1,8 +1,8 @@
 import React from 'react'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { VoucherProductDetail } from '../../types/product-detail'
-import { ProductDetailSection } from '../product-detail-section'
 import { Address } from '../address'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductVoucherDetailProps = {
   productDetail: VoucherProductDetail

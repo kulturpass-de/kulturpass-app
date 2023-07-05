@@ -1,7 +1,6 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { mapCcErrorCodeToError } from './cc-errors'
 import { mapCdcErrorCodeToError } from './cdc-errors'
-
 import { ErrorWithCode, mapAppErrorCodeToError, UnknownError } from './errors'
 
 export const toErrorWithCode = (serializedError: SerializedError | undefined): ErrorWithCode | undefined => {

@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { ProductDetail } from '../types/product-detail'
 

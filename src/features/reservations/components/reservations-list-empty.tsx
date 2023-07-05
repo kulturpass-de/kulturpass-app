@@ -1,11 +1,11 @@
-import { StyleSheet, View } from 'react-native'
 import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Illustration, IllustrationType } from '../../../components/illustration/illustration'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
-import { spacing } from '../../../theme/spacing'
-import { Illustration, IllustrationType } from '../../../components/illustration/illustration'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
 
 export type ReservationsListEmptyProps = {
   testID: TestId

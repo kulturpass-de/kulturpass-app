@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text } from 'react-native'
-import { textStyles } from '../../theme/typography'
 import { colors } from '../../theme/colors'
+import { textStyles } from '../../theme/typography'
 import { sendMail } from '../../utils/links/utils'
 
 export type EMailLinkProps = {

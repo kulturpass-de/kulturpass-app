@@ -1,5 +1,5 @@
-import { buildCommerceApiUrl } from './build-commerce-api-url'
 import { RootState } from '../../redux/configure-store'
+import { buildCommerceApiUrl } from './build-commerce-api-url'
 
 jest.mock('../../environment-configuration/utils', () => {
   return {

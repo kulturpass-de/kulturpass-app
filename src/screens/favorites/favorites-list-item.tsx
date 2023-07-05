@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
-
 import { FavoriteButton } from '../../components/favorite-button/favorite-button'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'

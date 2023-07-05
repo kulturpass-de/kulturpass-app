@@ -1,7 +1,7 @@
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import { v4 as uuid } from 'uuid'
-
 import { env } from '../../../../env'
+import { logger } from '../../../../services/logger'
 import {
   BridgeFCNonParsableJson,
   BridgeFCSameWebViewId,
@@ -48,6 +48,8 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
       WebViewFunctions[WebViewFunctionName]['arguments']
     > = { target, arguments: args, id: uuid() }
 
+    logger.log('WebViewBridgeAdapter', webViewId, 'callBridgeFunction', request)
+
     const script = `window.postMessage(${JSON.stringify(JSON.stringify(request))}); true;`
 
     webView.injectJavaScript(script)
@@ -88,6 +90,8 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
       const { message, name: type } = error as Error
       throw new BridgeFCNonParsableJson(undefined, message, type)
     }
+
+    logger.log('WebViewBridgeAdapter', webViewId, 'webviewMessageHandler', object)
 
     if (isAnyWebViewEvent(object)) {
       this.eventEmitter.emit('handleWebViewEvent', { webViewId, object })

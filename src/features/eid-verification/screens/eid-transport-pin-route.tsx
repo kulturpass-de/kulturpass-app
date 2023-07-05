@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
-import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { EidTransportPinScreen } from './eid-transport-pin-screen'
-import { EidNewPinRouteName } from './eid-new-pin-route'
 import { EidErrorAlert } from '../components/eid-error-alert'
+import { useHandleGestures } from '../hooks/use-handle-gestures'
+import { EidNewPinRouteName } from './eid-new-pin-route'
+import { EidTransportPinScreen } from './eid-transport-pin-screen'
 
 export const EidTransportPinRouteName = 'EidTransportPin'
 

@@ -1,5 +1,5 @@
-import { appendLanguageParameters } from './append-language-parameters'
 import { translation } from '../../translation/translation'
+import { appendLanguageParameters } from './append-language-parameters'
 
 describe('append-language-parameters', () => {
   it('should append lang property based on translation.language', async () => {

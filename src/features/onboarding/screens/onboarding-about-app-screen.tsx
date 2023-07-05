@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { OnboardingScreen } from '../components/onboarding-screen'
 
 export type OnboardingAboutAppScreenProps = {

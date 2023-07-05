@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-
 import { Button } from '../../components/button/button'
 import { Illustration } from '../../components/illustration/illustration'
 import { LinkText } from '../../components/link-text/link-text'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
@@ -12,9 +12,8 @@ import { AvailableTranslations, AvailableTextStyles } from '../../components/tra
 import { addTestIdModifier, buildTestId, TestId } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { RegistrationDataPrivacyCancelAlert } from './registration-data-privacy-cancel-alert'
-import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from '../../utils/links/hooks/use-localized-environment-url'
+import { RegistrationDataPrivacyCancelAlert } from './registration-data-privacy-cancel-alert'
 
 export type RegistrationDataPrivacyScreenProps = {
   onHeaderClose: () => void

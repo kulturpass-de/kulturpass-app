@@ -1,5 +1,4 @@
 import { Action } from '@reduxjs/toolkit'
-
 import * as enforceAppConfigMinVersionModule from '../../../features/force-update/utils/enforce-app-config-min-version'
 import { ErrorWithCode } from '../../errors/errors'
 import { configureMockStore } from '../../testing/configure-mock-store'

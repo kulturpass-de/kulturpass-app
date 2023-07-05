@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { useCallback } from 'react'
 import { FlatList, FlatListProps, ListRenderItem, StyleSheet } from 'react-native'
-
+import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { FavoritesEmptyScreen } from './favorites-empty-screen'
 import { FavoritesListItem, ITEM_HEIGHT } from './favorites-list-item'
 import { FavoritesListItemSeparator } from './favorites-list-item-separator'
-import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
-import { FavoritesEmptyScreen } from './favorites-empty-screen'
 
 export type FavoritesListProps = {
   favourites: FavouritesItem[]

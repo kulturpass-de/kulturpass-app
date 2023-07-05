@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
-import { Alert } from './alert'
-import { AlertContent } from './alert-content'
-import { AlertTitle } from './alert-title'
-import { AlertMessage } from './alert-message'
-import { AlertButtonDismiss } from './alert-button-dismiss'
+import React, { useState } from 'react'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { Alert } from './alert'
+import { AlertButtonDismiss } from './alert-button-dismiss'
+import { AlertContent } from './alert-content'
+import { AlertMessage } from './alert-message'
+import { AlertTitle } from './alert-title'
 
 const componentMeta: ComponentMeta<typeof Alert> = {
   title: 'Alert',

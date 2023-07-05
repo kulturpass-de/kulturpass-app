@@ -1,17 +1,16 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
 import { Button } from '../../../components/button/button'
+import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
+import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Price, Refunds } from '../../../services/api/types/commerce/api-types'
+import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
-import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 
 export type ReservationDetailFooterProps = {
   cancellable?: boolean

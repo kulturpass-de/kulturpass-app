@@ -1,5 +1,4 @@
 import { AxiosHeaders } from 'axios'
-
 import { ErrorWithCode } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'

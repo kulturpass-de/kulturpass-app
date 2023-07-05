@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { ForceUpdateScreen } from './force-update-screen'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
 
 export const ForceUpdateRouteName = 'ForceUpdate'
 

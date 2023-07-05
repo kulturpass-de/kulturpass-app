@@ -1,16 +1,15 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
-import * as sessionService from '../../../session/session-service'
 import { ErrorWithCode } from '../../../errors/errors'
-import { userSlice } from '../../../user/redux/user-slice'
+import { RootState } from '../../../redux/configure-store'
+import * as sessionService from '../../../session/session-service'
 import { configureMockStore } from '../../../testing/configure-mock-store'
+import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogout } from './auth-cdc-logout'
 import { authCommerceLogout } from './auth-commerce-logout'
 import { authLogout, authLogoutWithoutErrors } from './auth-logout'
-import { RootState } from '../../../redux/configure-store'
 
 const server = setupServer()
 

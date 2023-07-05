@@ -1,14 +1,13 @@
+import isEqual from 'lodash.isequal'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import isEqual from 'lodash.isequal'
-
+import { commerceApi } from '../api/commerce-api'
 import { getCdcSessionData, getIsUserLoggedIn } from '../auth/store/auth-selectors'
 import { AppDispatch } from '../redux/configure-store'
 import { selectUserPreferences } from './redux/user-selectors'
 import { userSlice } from './redux/user-slice'
 import { useGetAccountInfo } from './use-get-account-info'
 import { useSetAccountInfo } from './use-set-account-info'
-import { commerceApi } from '../api/commerce-api'
 
 export const useUserInfo = (regToken?: string) => {
   const dispatch = useDispatch<AppDispatch>()

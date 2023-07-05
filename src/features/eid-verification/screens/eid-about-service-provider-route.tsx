@@ -1,16 +1,15 @@
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-
+import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
+import { EidErrorAlert } from '../components/eid-error-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidAboutServiceProviderScreen } from './eid-about-service-provider-screen'
-import { EidErrorAlert } from '../components/eid-error-alert'
-import { ModalScreenProps } from '../../../navigation/modal/types'
-import { EidServiceProviderDetailsRouteName } from './eid-service-provider-details-route'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
-import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
+import { EidServiceProviderDetailsRouteName } from './eid-service-provider-details-route'
 
 export const EidAboutServiceProviderRouteName = 'EidAboutServiceProvider'
 

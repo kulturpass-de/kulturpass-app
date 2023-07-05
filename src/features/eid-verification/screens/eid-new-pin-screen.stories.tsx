@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { logger } from '../../../services/logger'
 import { EidNewPinScreen } from './eid-new-pin-screen'
 
 const componentMeta: ComponentMeta<typeof EidNewPinScreen> = {
@@ -16,10 +17,10 @@ export const Basic: ComponentStory<typeof EidNewPinScreen> = () => {
     <View style={styles.container}>
       <EidNewPinScreen
         onNext={can => {
-          console.log({ can })
+          logger.log({ can })
         }}
         onClose={() => {
-          console.log('onClose')
+          logger.log('onClose')
         }}
       />
     </View>

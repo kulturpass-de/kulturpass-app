@@ -4,19 +4,20 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { AvailableTranslations } from '../../../components/translated-text/types'
+import { ErrorWithCode } from '../../../services/errors/errors'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ScanInProgressModal } from '../components/scan-in-progress-modal'
 import { useStartCardScanning } from '../hooks/use-start-card-scanning'
 import { Flow } from '../types'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
-import { ScanInProgressModal } from '../components/scan-in-progress-modal'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
-import { ErrorWithCode } from '../../../services/errors/errors'
 
 export type EidInsertCardScreenProps = {
   flow: Flow
@@ -78,6 +79,9 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
     }
   }, [errorModalVisible, isLoading])
 
+  const illustrationAltI18nKey: AvailableTranslations =
+    Platform.OS === 'ios' ? 'eid_cardPositioning_ios_image_alt' : 'eid_cardPositioning_android_image_alt'
+
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_insertCard')}>
       {loadingModal}
@@ -87,7 +91,11 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
         onPressClose={onClose}
       />
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
-        <Illustration i18nKey="eid_insertCard_image_alt" testID="eid_insertCard_image_alt" type="eid-scan" />
+        <Illustration
+          i18nKey={illustrationAltI18nKey}
+          testID={illustrationAltI18nKey}
+          type={Platform.OS === 'ios' ? 'eid-card-positioning-ios' : 'eid-card-positioning-android'}
+        />
         <View style={styles.contentContainer}>
           <TranslatedText
             textStyleOverrides={styles.contentTitle}

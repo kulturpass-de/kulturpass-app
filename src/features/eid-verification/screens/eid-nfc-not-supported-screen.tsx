@@ -1,17 +1,17 @@
 import React from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
-import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type EidNFCNotSupportedScreenProps = {
   onClose: () => void
@@ -39,14 +39,6 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
             i18nKey="eid_nfcNotSupported_content_title"
             textStyle="HeadlineH4Extrabold"
           />
-          {Platform.OS === 'android' ? (
-            <TranslatedText
-              textStyleOverrides={styles.contentText}
-              testID={addTestIdModifier(screenTestId, 'activateNfc_android_text')}
-              i18nKey="eid_nfcNotSupported_activateNfc_android_text"
-              textStyle="BodyRegular"
-            />
-          ) : null}
           <TranslatedText
             textStyleOverrides={styles.contentText}
             testID={addTestIdModifier(screenTestId, 'content_text')}
@@ -66,7 +58,7 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
         <Button
           onPress={onClose}
           variant="primary"
-          testID={buildTestId('eid_nfcNotSupported_ok_button')}
+          testID={addTestIdModifier(screenTestId, 'ok_button')}
           i18nKey="eid_nfcNotSupported_ok_button"
         />
       </ModalScreenFooter>

@@ -1,6 +1,5 @@
 import { BaseQueryExtraOptions } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import { AxiosHeaders, AxiosRequestConfig } from 'axios'
-
 import { CdcResponseErrorSchema, createCdcErrorFromSchema } from '../../errors/cdc-errors'
 import { AxiosBaseQueryFn, BaseQueryApi } from '../common/types'
 

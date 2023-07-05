@@ -1,8 +1,8 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import { colors } from '../../theme/colors'
-import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
+import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
 
 export const baseButtonStyle = StyleSheet.create({
   pressed: {
@@ -111,7 +111,7 @@ export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
     disabledContainer: {
       backgroundColor: colors.moonDarkest,
       opacity: 0.55,
-      borderColor: colors.transparentBlack45,
+      borderColor: colors.transparentBlack50,
     },
     disabledShadow: {},
     disabledText: {},
@@ -133,12 +133,12 @@ export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
     pressedShadow: {},
     pressedText: {},
     disabledContainer: {
-      backgroundColor: colors.transparentWhite45,
-      borderColor: colors.transparentBlack45,
+      backgroundColor: colors.basicWhite,
+      borderColor: colors.transparentBlack50,
     },
     disabledShadow: {},
     disabledText: {
-      color: colors.transparentBlack45,
+      color: colors.transparentBlack50,
     },
   }),
   tertiary: StyleSheet.create({
@@ -194,18 +194,18 @@ export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
     pressedShadow: {},
     pressedText: {},
     disabledContainer: {
-      borderColor: colors.transparentWhite45,
-      backgroundColor: colors.transparentWhite45,
+      borderColor: colors.basicWhite,
+      backgroundColor: colors.basicWhite,
     },
     disabledShadow: {},
     disabledText: {
-      color: colors.transparentBlack45,
+      color: colors.transparentBlack50,
     },
   }),
   transparent: StyleSheet.create({
     baseContainer: {
-      backgroundColor: colors.transparentWhite100,
-      borderColor: colors.transparentWhite100,
+      backgroundColor: colors.transparentWhite00,
+      borderColor: colors.transparentWhite00,
     },
     baseShadow: {
       display: 'none',
@@ -221,7 +221,7 @@ export const buttonVariantStyles: Record<ButtonVariant, ButtonTypeStyle> = {
     disabledContainer: {},
     disabledShadow: {},
     disabledText: {
-      color: colors.transparentBlack45,
+      color: colors.transparentBlack50,
     },
   }),
   error: StyleSheet.create({

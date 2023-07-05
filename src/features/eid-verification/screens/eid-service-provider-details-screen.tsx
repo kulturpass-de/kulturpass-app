@@ -1,15 +1,15 @@
+import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { spacing } from '../../../theme/spacing'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 
 export type EidServiceProviderDetailsScreenProps = {
   certificate: Certificate

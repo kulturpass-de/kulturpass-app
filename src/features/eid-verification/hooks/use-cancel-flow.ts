@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
+import { useCallback } from 'react'
+import { logger } from '../../../services/logger'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 /**
@@ -11,7 +12,7 @@ export const useCancelFlow = () => {
     try {
       await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {
-      console.log(e)
+      logger.log(e)
     }
   }, [])
 

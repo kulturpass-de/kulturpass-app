@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { colors } from '../../../theme/colors'

@@ -1,12 +1,11 @@
 import { configureStore, isPlain, Middleware } from '@reduxjs/toolkit'
 import { persistStore } from 'redux-persist'
-
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { ErrorWithCode } from '../errors/errors'
-import { rootReducer } from './root-reducer'
-import { reduxPersistIgnoredActions } from './persist-reducer'
 import { listenerMiddleware } from './listener-middleware'
+import { reduxPersistIgnoredActions } from './persist-reducer'
+import { rootReducer } from './root-reducer'
 import { subscribeToAppState } from './subscriptions/subscribe-to-app-state'
 import { subscribeToTranslationLanguageChanged } from './subscriptions/subscribe-to-translation-language-changed'
 

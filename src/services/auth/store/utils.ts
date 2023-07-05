@@ -1,6 +1,6 @@
-import { CdcSessionData } from '../../session/types'
-import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
 import { CDC_SESSION_EXPIRATION_INIFINITE } from '../../api/cdc-api'
+import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
+import { CdcSessionData } from '../../session/types'
 
 export const isNotEmptyString = (s?: string) => {
   return s && typeof s === 'string' && s.length > 0 ? true : false

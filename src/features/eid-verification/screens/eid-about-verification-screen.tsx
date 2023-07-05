@@ -1,4 +1,5 @@
 import { SerializedError } from '@reduxjs/toolkit'
+import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -6,23 +7,22 @@ import { Button } from '../../../components/button/button'
 import { Icon } from '../../../components/icon/icon'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { ErrorWithCode } from '../../../services/errors/errors'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
-import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
-import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
-import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import {
   getCdcDpsDocumentUrl,
   useLocalizedEnvironmentUrl,
 } from '../../../utils/links/hooks/use-localized-environment-url'
+import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
+import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRights, certificate: Certificate) => void

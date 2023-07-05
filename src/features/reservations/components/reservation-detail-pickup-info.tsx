@@ -1,19 +1,18 @@
+import Clipboard from '@react-native-clipboard/clipboard'
 import React, { useCallback, useState } from 'react'
 import { Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
-import Clipboard from '@react-native-clipboard/clipboard'
-
 import { Button } from '../../../components/button/button'
 import { Icon } from '../../../components/icon/icon'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
+import { HITSLOP } from '../../../theme/constants'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { colors } from '../../../theme/colors'
-import { useTranslation } from '../../../services/translation/translation'
 import { openLink } from '../../../utils/links/utils'
-import { HITSLOP } from '../../../theme/constants'
 
 export type ReservationDetailPickupInfoProps = {
   orderEntry: OrderEntry

@@ -1,6 +1,6 @@
+import { useIsFocused } from '@react-navigation/native'
 import { useEffect } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { useIsFocused } from '@react-navigation/native'
 
 /**
  * Handle back and pull down gesture on Modal

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { selectWebViewState } from '../../services/webviews/redux/webviews-selectors'
 

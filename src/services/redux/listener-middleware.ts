@@ -6,7 +6,6 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit'
 import { GuardedType } from '@reduxjs/toolkit/dist/listenerMiddleware/types'
-
 import { addUserEffects } from '../user/redux/effects'
 import { addWebviewsEffects } from '../webviews/redux/effects'
 import { AppDispatch, RootState } from './configure-store'

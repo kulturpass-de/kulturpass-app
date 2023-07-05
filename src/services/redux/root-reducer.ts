@@ -1,5 +1,4 @@
 import { combineReducers } from '@reduxjs/toolkit'
-
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { authSlice } from '../auth/store/auth-slice'

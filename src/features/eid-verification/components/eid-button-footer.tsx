@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '../../../components/button/button'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 
 export type EidButtonFooterProps = {
   onNext: () => void

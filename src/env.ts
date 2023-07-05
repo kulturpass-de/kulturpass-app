@@ -1,4 +1,11 @@
-import { BRIDGE_FC_DEFAULT_TIMEOUT_MS, DEV_MENU, ENVIRONMENTS, AA2_DEVELOPER_MODE, DEBUG_TRANSLATION } from '@env'
+import {
+  BRIDGE_FC_DEFAULT_TIMEOUT_MS,
+  DEV_MENU,
+  ENVIRONMENTS,
+  AA2_DEVELOPER_MODE,
+  DEBUG_TRANSLATION,
+  DEBUG_SKIP_REQUEST_LOGGING,
+} from '@env'
 
 if (DEV_MENU === undefined) {
   console.warn('Env variable DEV_MENU is missing. Set to false instead.')
@@ -18,4 +25,5 @@ export const env = {
   ENVIRONMENTS,
   AA2_DEVELOPER_MODE: (AA2_DEVELOPER_MODE ?? 'false') === 'true',
   DEBUG_TRANSLATION: (DEBUG_TRANSLATION ?? 'false') === 'true',
+  DEBUG_SKIP_REQUEST_LOGGING: (DEBUG_SKIP_REQUEST_LOGGING ?? 'false') === 'true',
 }

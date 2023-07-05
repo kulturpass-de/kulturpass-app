@@ -1,14 +1,13 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-
 import { Icon } from '../../../components/icon/icon'
 import { LinkTextInline } from '../../../components/link-text/link-text-inline'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { buildTestId } from '../../../services/test-id/test-id'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export const VerificationDuplicateHeader: React.FC = () => {
   const { firstName } = useUserInfo()

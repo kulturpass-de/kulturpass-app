@@ -1,5 +1,5 @@
-import React from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import React from 'react'
 import { StatusBar } from 'react-native'
 import { OnboardingAboutAppRouteConfig } from '../features/onboarding/screens/onboarding-about-app-route'
 import { OnboardingLocationPermissionRouteConfig } from '../features/onboarding/screens/onboarding-location-permission-route'

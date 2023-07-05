@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 type InfoBoxProps = PropsWithChildren<{
   containerStyle?: StyleProp<ViewStyle>

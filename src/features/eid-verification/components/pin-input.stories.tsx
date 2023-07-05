@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React, { useState } from 'react'
 import { PinInput } from './pin-input'
 
 const componentMeta: ComponentMeta<typeof PinInput> = {

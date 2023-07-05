@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 import { useTranslation as useI18nTranslation } from 'react-i18next'
-
 import { env } from '../../env'
 import { createTranslation } from './create-translation'
 import { fallbackLng } from './setup'

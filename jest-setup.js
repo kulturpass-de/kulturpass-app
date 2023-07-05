@@ -43,7 +43,7 @@ jest.mock('./src/env', () => {
   return {
     env: {
       BRIDGE_FC_DEFAULT_TIMEOUT_MS: 1000,
-      DEV_MENU: true,
+      DEV_MENU: false,
       AA2_DEVELOPER_MODE: true,
       DEBUG_TRANSLATION: false,
       ENVIRONMENTS: JSON.stringify({

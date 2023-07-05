@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { modalCardStyle } from '../../../theme/utils'
-import { commerceApi } from '../../../services/api/commerce-api'
-import { ReservationDetailScreen } from './reservation-detail-screen'
 import { useQueryProductDetail } from '../../product-detail/hooks/use-query-product-detail'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { ReservationDetailScreen } from './reservation-detail-screen'
 
 export const ReservationDetailRouteName = 'ReservationDetail'
 

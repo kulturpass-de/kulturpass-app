@@ -1,5 +1,4 @@
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
-
 import { BridgeFCNonParsableJson, BridgeFCTimeout, BridgeFCUnknown, BridgeFCUnknownTypeResponse } from './errors'
 import { WebViewFunctions, WebViewId } from './types'
 import { WebViewBridgeAdapter } from './webview-bridge-adapter'

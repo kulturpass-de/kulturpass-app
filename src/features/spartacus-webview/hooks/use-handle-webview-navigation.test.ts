@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-native'
-
 import { configureMockStore } from '../../../services/testing/configure-mock-store'
 import { mockListenerOnce } from '../../../services/testing/mock-listener-once'
 import { webviewsSlice } from '../../../services/webviews/redux/webviews-slice'
+import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewEvents, WebViewId } from '../services/webview-bridge-adapter/types'
-import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 import { useHandleWebviewNavigation } from './use-handle-webview-navigation'
 
 const mockedRouterSearchEvent: WebViewEvents['router.events'] = {

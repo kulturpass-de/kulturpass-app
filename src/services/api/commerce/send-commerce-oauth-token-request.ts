@@ -1,9 +1,8 @@
 import { AxiosHeaders, AxiosRequestConfig } from 'axios'
-
 import { getCurrentEnvironmentConfigurationName } from '../../environment-configuration/redux/environment-configuration-selectors'
+import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { RootState } from '../../redux/configure-store'
 import { CreateQueryFn } from '../common/types'
-import { getEnvironmentConfig } from '../../environment-configuration/utils'
 
 export const sendCommerceOauthTokenRequest: CreateQueryFn<{
   queryParams: Record<string, any>

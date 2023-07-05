@@ -1,6 +1,5 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'

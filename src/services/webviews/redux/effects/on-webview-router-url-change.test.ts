@@ -1,5 +1,4 @@
 import { Action } from '@reduxjs/toolkit'
-
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { webViewBridgeAdapter } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { RootState } from '../../../redux/configure-store'

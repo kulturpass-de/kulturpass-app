@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
-
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../../theme/utils'
@@ -10,8 +11,6 @@ import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductDetailScreen } from './product-detail-screen'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { commerceApi } from '../../../services/api/commerce-api'
 
 export const ProductDetailRouteName = 'ProductDetail'
 

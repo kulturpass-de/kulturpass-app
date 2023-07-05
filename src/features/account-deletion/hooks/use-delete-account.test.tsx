@@ -1,12 +1,12 @@
 import { renderHook } from '@testing-library/react-native'
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
 import React, { PropsWithChildren } from 'react'
+import { useSelector } from 'react-redux'
 import { act } from 'react-test-renderer'
+import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { StoreProvider } from '../../../services/testing/test-utils'
 import { useDeleteAccount } from './use-delete-account'
-import { setupServer } from 'msw/node'
-import { rest } from 'msw'
-import { useSelector } from 'react-redux'
-import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 
 const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
   return <StoreProvider withLoginSession>{children}</StoreProvider>

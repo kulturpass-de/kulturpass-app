@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit'
-
 import { WebViewId } from '../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { getCdcSessionData, getIsUserLoggedIn, selectValidCommerceAccessToken } from '../../auth/store/auth-selectors'
 import { RootState } from '../../redux/configure-store'

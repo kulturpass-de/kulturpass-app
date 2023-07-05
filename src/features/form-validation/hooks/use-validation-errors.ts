@@ -1,5 +1,4 @@
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
-
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { useTranslation } from '../../../services/translation/translation'
 import { getErrorTranslationKeyFromValidationError } from '../utils/form-validation'

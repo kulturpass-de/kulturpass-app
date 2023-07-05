@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
+import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { FavoritesList, FavoritesListProps } from './favorites-list'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
-import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { useFavouritesOnFocus } from './use-favourites-on-focus'
 
 export type FavoritesScreenProps = {

@@ -1,5 +1,4 @@
 import { AxiosHeaders } from 'axios'
-
 import { ErrorWithCode } from '../../errors/errors'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { jestFn } from '../../testing/jest-fn'

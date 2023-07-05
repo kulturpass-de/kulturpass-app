@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { ProductDetailScreen } from '../screens/product-detail-screen'
 
 const componentMeta: ComponentMeta<typeof ProductDetailScreen> = {

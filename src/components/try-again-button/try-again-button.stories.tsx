@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
+import React, { useCallback, useState } from 'react'
 import { TryAgainButton } from './try-again-button'
 
 const componentMeta: ComponentMeta<typeof TryAgainButton> = {

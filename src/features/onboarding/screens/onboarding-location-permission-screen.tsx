@@ -1,19 +1,17 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-
 import { LinkText } from '../../../components/link-text/link-text'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-
 import { locationService } from '../../../services/location/location-service'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { Language } from '../../../services/translation/types'
+import { userSlice } from '../../../services/user/redux/user-slice'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { OnboardingScreen } from '../components/onboarding-screen'
 import { URLS } from '../../../utils/constants'
-import { userSlice } from '../../../services/user/redux/user-slice'
+import { OnboardingScreen } from '../components/onboarding-screen'
 
 export type OnboardingLocationPermissionScreenProps = {
   onNext: () => void

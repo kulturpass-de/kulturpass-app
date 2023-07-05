@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
@@ -11,7 +11,6 @@ import { ReservationDetailRouteParams } from '../../reservations/screens/reserva
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductConfirmReservationScreen } from './product-confirm-reservation-screen'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 
 export const ProductConfirmReservationRouteName = 'ProductConfirmReservation'
 

@@ -1,10 +1,4 @@
 import { SerializedError } from '@reduxjs/toolkit'
-import { useCallback, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { env } from '../../../env'
-import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import { useTranslation } from '../../../services/translation/translation'
-import { getSimulateCard } from '../redux/simulated-card-selectors'
 import {
   AccessRights,
   Certificate,
@@ -12,9 +6,15 @@ import {
   AA2CommandService,
   AA2WorkflowHelper,
 } from '@sap/react-native-ausweisapp2-wrapper'
-import { AA2Timeout, isTimeoutError } from '../errors'
-import { useGetTcTokenUrl } from './use-get-tc-token-url'
+import { useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { env } from '../../../env'
+import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { useTranslation } from '../../../services/translation/translation'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
+import { AA2Timeout, isTimeoutError } from '../errors'
+import { getSimulateCard } from '../redux/simulated-card-selectors'
+import { useGetTcTokenUrl } from './use-get-tc-token-url'
 
 /**
  * Hook that returns a callback for starting the AA2 Auth flow.

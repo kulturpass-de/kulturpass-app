@@ -1,14 +1,13 @@
-import React, { useCallback } from 'react'
 import { BottomTabBarProps, BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-
+import React, { useCallback } from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { FavoritesRouteConfig } from '../../screens/favorites/favorites-route'
 import { HomeRouteConfig } from '../../screens/home/home-route'
 import { ReservationsRouteConfig } from '../../screens/reservations/reservations-route'
 import { SearchRouteConfig } from '../../screens/search/search-route'
+import { BottomTabBar } from './bottom-tab-bar'
 import { SettingsStack, SettingsStackInitialRouteName } from './settings/settings-stack'
 import { TabsParamList } from './types'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { BottomTabBar } from './bottom-tab-bar'
 
 const BottomTab = createBottomTabNavigator<TabsParamList>()
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { Price } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
@@ -9,7 +10,6 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ReservationListStatusText } from './reservation-list-status-text'
-import { SvgImage } from '../../../components/svg-image/svg-image'
 
 type ReservationsListItemProps = {
   onPress: () => void

@@ -8,7 +8,6 @@ import {
   OnboardingLocationPermissionRouteName,
   OnboardingLocationPermissionRouteParams,
 } from '../../features/onboarding/screens/onboarding-location-permission-route'
-
 import { OnboardingStackParams } from '../types'
 
 export type OnboardingParamList = {

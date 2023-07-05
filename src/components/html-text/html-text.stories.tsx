@@ -1,9 +1,9 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-import { HtmlText } from './html-text'
-import { textStyles } from '../../theme/typography'
-import { colors } from '../../theme/colors'
+import React from 'react'
 import { ScrollView } from 'react-native'
+import { colors } from '../../theme/colors'
+import { textStyles } from '../../theme/typography'
+import { HtmlText } from './html-text'
 
 const basicHtml = `
 <b>bold text</b>

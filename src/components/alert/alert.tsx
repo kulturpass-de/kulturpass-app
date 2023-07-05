@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-no-bind */
-
 import React from 'react'
 import type { PropsWithChildren } from 'react'
 import { Modal, type ModalProps } from 'react-native'
+import { AlertBackdrop } from './alert-backdrop'
 import { AlertContainer } from './alert-container'
 import { AlertContextImpl } from './alert-context'
-import { AlertBackdrop } from './alert-backdrop'
 
 export type AlertProps = ModalProps &
   PropsWithChildren<{

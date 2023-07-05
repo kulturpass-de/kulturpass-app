@@ -1,6 +1,5 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { useCallback, useEffect, useState } from 'react'
-
 import { ErrorWithCode } from './errors'
 
 export const useDismissableError = (error: ErrorWithCode | SerializedError | undefined) => {

@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useCallback, useState } from 'react'
 import { Animated, Easing, LayoutChangeEvent, Platform, StyleSheet, View } from 'react-native'
-import { spacing } from '../../theme/spacing'
-import { colors } from '../../theme/colors'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 export type HomeHeaderShrinkableProps = {
   offset: Animated.Value

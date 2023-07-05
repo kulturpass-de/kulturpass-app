@@ -1,6 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-
+import React from 'react'
 import { ReservationDetailHeader } from './reservation-detail-header'
 
 const onClose = () => {}

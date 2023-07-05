@@ -1,16 +1,15 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
-
 import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
-import { TranslatedText } from '../translated-text/translated-text'
 import { buildTestId } from '../../services/test-id/test-id'
-import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
-import { spacing } from '../../theme/spacing'
-import { UserBudgetBar } from '../user-budget-bar/user-budget-bar'
-import { Icon } from '../icon/icon'
 import { useUserInfo } from '../../services/user/use-user-info'
-import { toValidBalance } from './budget-utils'
 import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
+import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
+import { Icon } from '../icon/icon'
+import { TranslatedText } from '../translated-text/translated-text'
+import { UserBudgetBar } from '../user-budget-bar/user-budget-bar'
+import { toValidBalance } from './budget-utils'
 
 export type HomeBudgetProps = {
   balance: GetProfileResponseBody['balance']

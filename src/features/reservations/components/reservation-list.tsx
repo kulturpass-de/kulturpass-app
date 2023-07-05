@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
 import { Order } from '../../../services/api/types/commerce/api-types'
-
 import { spacing } from '../../../theme/spacing'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationsListItem } from './reservations-list-item'

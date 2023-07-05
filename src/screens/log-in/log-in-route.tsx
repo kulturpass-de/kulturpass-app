@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-
 import { useModalNavigation } from '../../navigation/modal/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { useAuth } from '../../services/auth/use-auth'

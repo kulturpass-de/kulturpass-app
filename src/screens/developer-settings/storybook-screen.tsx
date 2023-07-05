@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { useTestIdBuilder } from '../../services/test-id/test-id'

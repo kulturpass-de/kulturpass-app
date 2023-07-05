@@ -1,14 +1,14 @@
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import { RouteProp } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
+import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
-import { textStyles } from '../../theme/typography'
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
-import { TabsParamList } from './types'
-import { RouteProp } from '@react-navigation/native'
 import { spacing } from '../../theme/spacing'
+import { textStyles } from '../../theme/typography'
+import { TabsParamList } from './types'
 
 type BottomTabItemProps = {
   route: RouteProp<TabsParamList, keyof TabsParamList>

@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react'
-
+import { ScrollView, StyleSheet, View } from 'react-native'
+import pkg from '../../../package.json'
+import { ListItem } from '../../components/list-item/list-item'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { useTranslation } from '../../services/translation/translation'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import pkg from '../../../package.json'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import {
@@ -17,8 +18,6 @@ import {
   getOpenSourceLegalNoticeUrl,
 } from '../../utils/links/hooks/use-localized-environment-url'
 import { openLink } from '../../utils/links/utils'
-import { ListItem } from '../../components/list-item/list-item'
-import { SvgImage } from '../../components/svg-image/svg-image'
 
 export type AppInformationsScreenProps = {
   onPressBackButton?: () => void

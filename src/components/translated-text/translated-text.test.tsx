@@ -1,5 +1,5 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react-native'
+import React from 'react'
 import { translation } from '../../services/translation/translation'
 import { dateFormat } from '../../utils/date/date-format'
 import { TranslatedText } from './translated-text'

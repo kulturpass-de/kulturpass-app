@@ -132,6 +132,14 @@ export const textStyles = StyleSheet.create({
     lineHeight: 18,
     letterSpacing: 0.25,
   },
+  BodySmallSemibold: {
+    fontFamily: typography.primary,
+    fontStyle: 'normal',
+    fontWeight: '600',
+    fontSize: 14.8,
+    lineHeight: 20,
+    letterSpacing: 0.25,
+  },
   BodySmallMedium: {
     fontFamily: typography.primary,
     fontStyle: 'normal',

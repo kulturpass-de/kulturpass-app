@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { LinkText } from '../../../components/link-text/link-text'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 
 export type AboutPinLinkSection = {
   type: 'pin' | 'can' | 'puk'

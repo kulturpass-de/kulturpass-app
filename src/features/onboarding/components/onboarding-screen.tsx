@@ -2,20 +2,20 @@ import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { Illustration, IllustrationType } from '../../../components/illustration/illustration'
+import { LinkText } from '../../../components/link-text/link-text'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { LinkText } from '../../../components/link-text/link-text'
 import {
   useLocalizedEnvironmentUrl,
   getCdcDpsDocumentUrl,
 } from '../../../utils/links/hooks/use-localized-environment-url'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 
 type OnboardingScreenProps = {
   testID: string

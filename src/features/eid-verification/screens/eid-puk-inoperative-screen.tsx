@@ -5,13 +5,13 @@ import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
-import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 
 export type EidPukInoperativeScreenProps = {
   onClose: () => void

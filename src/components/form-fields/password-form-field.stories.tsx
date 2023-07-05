@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
+import React from 'react'
 import { PasswordFormField } from './password-form-field'
 
 const componentMeta: ComponentMeta<typeof PasswordFormField> = {

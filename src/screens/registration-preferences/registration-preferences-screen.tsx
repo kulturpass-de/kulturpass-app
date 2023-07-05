@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react'
-
+import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { Preferences } from '../../features/preferences/components/preferences'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
-import { Preferences } from '../../features/preferences/components/preferences'
-import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useSetAccountInfo } from '../../services/user/use-set-account-info'
 
 export type RegistrationPreferencesScreenProps = {

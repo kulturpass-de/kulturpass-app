@@ -62,6 +62,13 @@ export class CdcAccountDisabledError extends CdcError {
   }
 }
 
+export class CdcAccountDeletionRequestedError extends CdcError {
+  constructor(errorCode: string = 'CDC_ACCOUNT_DELETION_REQUESTED') {
+    super(errorCode)
+    this.detailCode = 'Cdc account deletion requested.'
+  }
+}
+
 export class CdcEmailNotVerifiedError extends CdcError {
   constructor(errorCode: string = 'CDC_EMAIL_NOT_VERIFIED') {
     super(errorCode)

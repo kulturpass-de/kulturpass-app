@@ -1,11 +1,11 @@
-import { StyleSheet, View, ViewStyle } from 'react-native'
-import { AvailableTranslations } from '../translated-text/types'
-import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import React from 'react'
-import { FormFieldWithControlProps } from '../form-fields/form-field-with-control'
-import { spacing } from '../../theme/spacing'
-import { TranslatedText } from '../translated-text/translated-text'
+import { StyleSheet, View, ViewStyle } from 'react-native'
+import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
+import { FormFieldWithControlProps } from '../form-fields/form-field-with-control'
+import { TranslatedText } from '../translated-text/translated-text'
+import { AvailableTranslations } from '../translated-text/types'
 
 export type FormFieldGroupProps = {
   i18nKey: AvailableTranslations

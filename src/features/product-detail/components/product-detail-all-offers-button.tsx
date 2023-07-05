@@ -1,12 +1,12 @@
 import React from 'react'
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { Button } from '../../../components/button/button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
+import { buildTestId } from '../../../services/test-id/test-id'
 import { spacing } from '../../../theme/spacing'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { isPriceWithValue } from '../../../utils/price/utils'
-import { Button } from '../../../components/button/button'
-import { buildTestId } from '../../../services/test-id/test-id'
 
 type ProductDetailAllOffersButtonProps = {
   offers: Offer[]

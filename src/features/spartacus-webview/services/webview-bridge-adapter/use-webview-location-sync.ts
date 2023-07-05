@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-
 import { getCurrentUserLocation } from '../../../../services/location/redux/location-selectors'
 import { selectWebViewState } from '../../../../services/webviews/redux/webviews-selectors'
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'

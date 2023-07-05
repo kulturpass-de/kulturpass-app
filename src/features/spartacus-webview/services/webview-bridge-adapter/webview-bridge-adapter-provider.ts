@@ -1,5 +1,4 @@
 import { createContext, useContext } from 'react'
-
 import { WebViewBridgeAdapter } from './webview-bridge-adapter'
 
 export const WebViewBridgeAdapterContext = createContext<WebViewBridgeAdapter | null>(null)

@@ -8,9 +8,11 @@ import {
   Text,
   View,
 } from 'react-native'
-
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
-import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
+import { useTranslation } from '../../services/translation/translation'
+import { IconProps } from '../icon/icon'
+import { Icon } from '../icon/icon'
+import { AvailableTranslations } from '../translated-text/types'
 import {
   buttonModifierStyle,
   baseButtonStyle,
@@ -18,10 +20,7 @@ import {
   buttonWidthOptionStyle,
   ButtonTypeStyle,
 } from './button-style'
-import { useTranslation } from '../../services/translation/translation'
-import { IconProps } from '../icon/icon'
-import { Icon } from '../icon/icon'
-import { AvailableTranslations } from '../translated-text/types'
+import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
 
 export type ButtonProps = {
   i18nKey: AvailableTranslations

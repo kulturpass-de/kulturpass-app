@@ -1,20 +1,19 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { Alert } from '../../../components/alert/alert'
 import { AlertContent } from '../../../components/alert/alert-content'
 import { AlertTitle } from '../../../components/alert/alert-title'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { ErrorWithCode } from '../../../services/errors/errors'
-import { useHandleErrors } from '../hooks/use-handle-errors'
-import { StyleSheet, Text, View } from 'react-native'
-import { textStyles } from '../../../theme/typography'
-import { colors } from '../../../theme/colors'
-import { spacing } from '../../../theme/spacing'
-import { useCancelFlow } from '../hooks/use-cancel-flow'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { EidAboutVerificationRouteName } from '../screens/eid-about-verification-route'
 import { Button } from '../../../components/button/button'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { ErrorWithCode } from '../../../services/errors/errors'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
+import { textStyles } from '../../../theme/typography'
 import {
   AA2AcceptTimeout,
   AA2BelowMinAge,
@@ -26,8 +25,9 @@ import {
   AA2PseudonymAlreadyInUse,
   AA2Timeout,
 } from '../errors'
-import { useTranslation } from '../../../services/translation/translation'
-import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
+import { useCancelFlow } from '../hooks/use-cancel-flow'
+import { useHandleErrors } from '../hooks/use-handle-errors'
+import { EidAboutVerificationRouteName } from '../screens/eid-about-verification-route'
 
 export type EidErrorAlertProps = {
   error: ErrorWithCode | null

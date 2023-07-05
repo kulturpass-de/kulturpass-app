@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { textStyles } from '../../../theme/typography'
-import { spacing } from '../../../theme/spacing'
-import { colors } from '../../../theme/colors'
+import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
+import { spacing } from '../../../theme/spacing'
+import { textStyles } from '../../../theme/typography'
 import { copyAddressToClipboard } from '../utils'
-import { Icon } from '../../../components/icon/icon'
 
 export type AddressProps = {
   name?: string

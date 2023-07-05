@@ -1,5 +1,4 @@
 import { Action } from '@reduxjs/toolkit'
-
 import { setEnvironmentConfiguration } from '../../environment-configuration/redux/environment-configuration-slice'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { pollAppConfig } from '../thunks/poll-app-config'

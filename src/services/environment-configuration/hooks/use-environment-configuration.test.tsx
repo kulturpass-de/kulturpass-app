@@ -1,11 +1,11 @@
+import { act, renderHook } from '@testing-library/react-native'
 import React from 'react'
 import { PropsWithChildren } from 'react'
+import { useDispatch } from 'react-redux'
 import { StoreProvider } from '../../testing/test-utils'
 import { EnvironmentConfigurationContent } from '../environment-configuration'
-import { act, renderHook } from '@testing-library/react-native'
-import { useEnvironmentConfiguration } from './use-environment-configuration'
-import { useDispatch } from 'react-redux'
 import { setEnvironmentConfiguration } from '../redux/environment-configuration-slice'
+import { useEnvironmentConfiguration } from './use-environment-configuration'
 
 jest.mock('../environment-configuration', () => ({
   environmentConfigurations: {

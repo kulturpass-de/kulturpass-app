@@ -1,15 +1,14 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet, Pressable, Text, TextProps } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
+import { HITSLOP } from '../../theme/constants'
 import { textStyles } from '../../theme/typography'
 import { Icon } from '../icon/icon'
-import { HITSLOP } from '../../theme/constants'
-import { useFocusEffect } from '@react-navigation/native'
-import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 
 const styles = StyleSheet.create({
   container: {

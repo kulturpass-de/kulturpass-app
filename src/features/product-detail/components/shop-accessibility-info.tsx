@@ -1,16 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
-import { Offer } from '../../../services/api/types/commerce/api-types'
-import { ProductDetailSection } from './product-detail-section'
-import { AvailableTranslations } from '../../../components/translated-text/types'
 import { View } from 'react-native'
-import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { Icon, IconProps } from '../../../components/icon/icon'
-import { useTranslation } from '../../../services/translation/translation'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { AvailableTranslations } from '../../../components/translated-text/types'
+import { Offer } from '../../../services/api/types/commerce/api-types'
+import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { colors } from '../../../theme/colors'
+import { ProductDetailSection } from './product-detail-section'
 
 type AccessibilityFeatureCheckableProps = {
   testID: TestId

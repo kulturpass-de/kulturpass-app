@@ -1,14 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-
-import { getAccountVerificationStatus, getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import { EidIdentifyButton } from '../../features/eid-verification/components/eid-identify-button'
 import { HomeBudget } from '../../components/home-budget/home-budget'
-import { AccountVerificationHero } from '../../features/registration/components/account-verificaton-pending/account-verification-pending-hero'
+import { EidIdentifyButton } from '../../features/eid-verification/components/eid-identify-button'
 import { NotYetEntitledHeader } from '../../features/eid-verification/components/not-yet-entitled-header'
 import { VerificationDuplicateHeader } from '../../features/eid-verification/components/verification-duplicate-header'
-import { Profile } from '../../services/api/types/commerce/commerce-get-profile'
+import { AccountVerificationHero } from '../../features/registration/components/account-verificaton-pending/account-verification-pending-hero'
 import { RegisterNowButton } from '../../features/registration/components/register-now-button/register-now-button'
+import { Profile } from '../../services/api/types/commerce/commerce-get-profile'
+import { getAccountVerificationStatus, getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 
 export type HomeHeaderProps = {
   profile?: Profile

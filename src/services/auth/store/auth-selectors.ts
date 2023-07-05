@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit'
-
 import { RootState } from '../../redux/configure-store'
 import { CdcSessionData } from '../../session/types'
 import { isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'

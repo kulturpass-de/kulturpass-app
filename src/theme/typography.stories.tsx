@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
+import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { textStyles } from './typography'
 

@@ -1,13 +1,13 @@
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { logger } from '../../../services/logger'
 import { modalCardStyle } from '../../../theme/utils'
-import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { EidChangePinCompletionScreen } from './eid-change-pin-completion-screen'
-import { EidAboutVerificationRouteName } from './eid-about-verification-route'
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
+import { useHandleGestures } from '../hooks/use-handle-gestures'
+import { EidAboutVerificationRouteName } from './eid-about-verification-route'
+import { EidChangePinCompletionScreen } from './eid-change-pin-completion-screen'
 
 export const EidChangePinCompletionRouteName = 'EidChangePinCompletion'
 
@@ -35,7 +35,7 @@ export const EidChangePinCompletionRoute: React.FC = () => {
     try {
       AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {
-      console.log(e)
+      logger.log(e)
     }
   }, [modalNavigation])
 

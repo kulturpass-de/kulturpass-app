@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ModalScreenFooterPadding } from './modal-screen-footer-padding'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
+import { ModalScreenFooterPadding } from './modal-screen-footer-padding'
 
 export type ModalScreenFooterProps = PropsWithChildren<{
   verticalPadding?: number

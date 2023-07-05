@@ -1,6 +1,5 @@
 import { Action } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
-
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { startup } from '../thunks/startup'
 import { onPersistRehydrate, onPersistRehydrateEffect } from './on-persist-rehydrate'

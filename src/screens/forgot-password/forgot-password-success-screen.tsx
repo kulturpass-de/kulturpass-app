@@ -1,16 +1,15 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { ModalScreen } from '../../components/modal-screen/modal-screen'
-import { ScreenContent } from '../../components/screen/screen-content'
-import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
-import { TranslatedText } from '../../components/translated-text/translated-text'
-
-import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { spacing } from '../../theme/spacing'
 import { Button } from '../../components/button/button'
-import { colors } from '../../theme/colors'
-import { SvgImage } from '../../components/svg-image/svg-image'
+import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
+import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
+import { ScreenContent } from '../../components/screen/screen-content'
+import { SvgImage } from '../../components/svg-image/svg-image'
+import { TranslatedText } from '../../components/translated-text/translated-text'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 export type ForgotPasswordSuccessScreenProps = {
   onHeaderPressClose: () => void

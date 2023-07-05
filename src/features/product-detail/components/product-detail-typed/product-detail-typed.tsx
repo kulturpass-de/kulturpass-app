@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { ProductDetail, ProductTypes } from '../../types/product-detail'
 import { ProductAudioDetail } from './product-audio-detail'
 import { ProductBookDetail } from './product-book-detail'
@@ -7,7 +8,6 @@ import { ProductMusicInstrumentDetail } from './product-music-instrument-detail'
 import { ProductSheetMusicDetail } from './product-sheet-music-detail'
 import { ProductStagedEventDetail } from './product-staged-event-detail'
 import { ProductVoucherDetail } from './product-voucher-detail'
-import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 
 export type ProductDetailTypedProps = {
   productDetail: ProductDetail

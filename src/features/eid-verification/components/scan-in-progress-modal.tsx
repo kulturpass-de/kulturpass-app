@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
-import { spacing } from '../../../theme/spacing'
-import { AlertContent } from '../../../components/alert/alert-content'
 import { AlertBackdrop } from '../../../components/alert/alert-backdrop'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { AlertContent } from '../../../components/alert/alert-content'
 import { LoadingAnimation } from '../../../components/loading-animation/loading-animation'
-import { colors } from '../../../theme/colors'
+import { TranslatedText } from '../../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
+import { colors } from '../../../theme/colors'
+import { spacing } from '../../../theme/spacing'
 
 export type ScanInProgressModalProps = {
   scanning: boolean

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 import { WebViewId } from '../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 
 export type WebViewState = {

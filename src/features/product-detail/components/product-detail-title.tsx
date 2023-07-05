@@ -1,12 +1,11 @@
 import React, { forwardRef } from 'react'
 import { StyleSheet, Text } from 'react-native'
-
-import { ProductDetail, ProductTypes } from '../types/product-detail'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { colors } from '../../../theme/colors'
-import { useTranslation } from '../../../services/translation/translation'
+import { ProductDetail, ProductTypes } from '../types/product-detail'
 
 type ProductDetailTitleProps = {
   productDetail: ProductDetail

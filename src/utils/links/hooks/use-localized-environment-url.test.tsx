@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-native'
-import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from './use-localized-environment-url'
 import React, { PropsWithChildren } from 'react'
-import { StoreProvider } from '../../../services/testing/test-utils'
 import { act } from 'react-test-renderer'
+import { StoreProvider } from '../../../services/testing/test-utils'
 import { translation, useTranslation } from '../../../services/translation/translation'
 import { Language } from '../../../services/translation/types'
+import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from './use-localized-environment-url'
 
 const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
   return <StoreProvider>{children}</StoreProvider>

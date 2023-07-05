@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-native'
-
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
 import { webviewsValidateSession } from '../../../../services/webviews/redux/thunks/webviews-validate-session'
 import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
+import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 import { WebViewEvents, WebViewId } from './types'
 import { useWebViewAuthSync } from './use-webview-auth-sync'
-import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 
 describe('useWebViewAuthSync', () => {
   const store = configureMockStore()

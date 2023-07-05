@@ -1,7 +1,7 @@
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { EnvironmentConfiguration } from '../environment-configuration'
 import { getCurrentEnvironmentConfigurationName } from '../redux/environment-configuration-selectors'
-import { useMemo } from 'react'
 import { getEnvironmentConfig } from '../utils'
 
 export const useEnvironmentConfiguration = (): EnvironmentConfiguration => {

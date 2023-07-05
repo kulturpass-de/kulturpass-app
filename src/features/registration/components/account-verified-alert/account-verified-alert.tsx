@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
-
 import { Alert } from '../../../../components/alert/alert'
 import { AlertContent } from '../../../../components/alert/alert-content'
 import { AlertMessage } from '../../../../components/alert/alert-message'

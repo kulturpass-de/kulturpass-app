@@ -1,11 +1,10 @@
+import { camelCase, startCase } from 'lodash'
 import React, { useMemo } from 'react'
 import { Dimensions } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 import { useTranslation } from '../../services/translation/translation'
 import { AvailableTranslations } from '../translated-text/types'
-
 import * as SVGs from './svgs'
-import { camelCase, startCase } from 'lodash'
 
 const svgKeys = Object.keys(SVGs)
 

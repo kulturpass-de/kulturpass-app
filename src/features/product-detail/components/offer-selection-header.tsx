@@ -1,13 +1,12 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-
 import { Icon } from '../../../components/icon/icon'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { colors } from '../../../theme/colors'
-import { spacing } from '../../../theme/spacing'
 import { HITSLOP } from '../../../theme/constants'
+import { spacing } from '../../../theme/spacing'
 
 type OfferSelectionHeaderProps = {
   imageUrl?: string

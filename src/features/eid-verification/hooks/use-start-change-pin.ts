@@ -1,6 +1,6 @@
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import { useCallback } from 'react'
 import { useTranslation } from '../../../services/translation/translation'
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 /**

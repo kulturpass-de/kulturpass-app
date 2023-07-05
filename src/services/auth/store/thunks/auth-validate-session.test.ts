@@ -1,6 +1,5 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { RootState } from '../../../redux/configure-store'

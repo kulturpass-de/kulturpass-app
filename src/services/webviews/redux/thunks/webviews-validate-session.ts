@@ -1,5 +1,6 @@
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { authCommerceRefreshSession } from '../../../auth/store/thunks/auth-commerce-refresh-session'
+import { logger } from '../../../logger'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { selectWebViewAuthSyncAction } from '../webviews-selectors'
 import { webviewsAuthLogin } from './webviews-auth-login'
@@ -11,6 +12,8 @@ export const webviewsValidateSession = createThunk<void, WebViewId>(
     const state = thunkAPI.getState()
 
     const webViewAuthSyncAction = selectWebViewAuthSyncAction(state, webViewId)
+
+    logger.log('webviewsValidateSession', webViewId, 'webViewAuthSyncAction', webViewAuthSyncAction)
 
     if (webViewAuthSyncAction?.action === 'webviewsAuthLogin') {
       const { validCommerceAccessToken } = webViewAuthSyncAction

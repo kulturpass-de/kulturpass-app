@@ -1,13 +1,12 @@
-import React from 'react'
-import { render, screen, within } from '@testing-library/react-native'
-import { rest } from 'msw'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-
+import { render, screen, within } from '@testing-library/react-native'
+import { rest } from 'msw'
+import React from 'react'
+import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
 import { buildTestId } from '../../services/test-id/test-id'
 import { AppProviders, serverHandlersLoggedIn, setupServer, StoreProvider } from '../../services/testing/test-utils'
 import { HomeScreen } from './home-screen'
-import { GetProfileResponseBody } from '../../services/api/types/commerce/commerce-get-profile'
 
 export const server = setupServer(...serverHandlersLoggedIn)
 

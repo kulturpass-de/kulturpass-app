@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import { WebViewErrorEvent, WebViewHttpErrorEvent } from 'react-native-webview/lib/WebViewTypes'
-import { ERR_NO_INTERNET, ERR_UNKNOWN } from '../components/webview-error-view'
 import { Platform } from 'react-native'
+import { WebViewErrorEvent, WebViewHttpErrorEvent } from 'react-native-webview/lib/WebViewTypes'
+import { logger } from '../../../services/logger'
+import { ERR_NO_INTERNET, ERR_UNKNOWN } from '../components/webview-error-view'
 import { BridgeAdapterAPI } from '../services/webview-bridge-adapter/create-bridge-adapter-api'
 import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 
@@ -10,7 +11,7 @@ export const useHandleWebviewErrors = (bridgeAdapterApi: BridgeAdapterAPI) => {
 
   const handleError = useCallback((event: WebViewErrorEvent) => {
     const { code, description } = event.nativeEvent
-    console.log(`WebView errored with code ${code} - ${description}`)
+    logger.log(`WebView errored with code ${code} - ${description}`)
 
     // Check no internet error
     if (Platform.OS === 'ios' && code === -1009) {
@@ -26,7 +27,7 @@ export const useHandleWebviewErrors = (bridgeAdapterApi: BridgeAdapterAPI) => {
 
   const handleHttpError = useCallback((event: WebViewHttpErrorEvent) => {
     const { statusCode, description } = event.nativeEvent
-    console.log(`WebView errored with http code ${statusCode} - ${description}`)
+    logger.log(`WebView errored with http code ${statusCode} - ${description}`)
     setErrorCode(event.nativeEvent.statusCode)
   }, [])
 

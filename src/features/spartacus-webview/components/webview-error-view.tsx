@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { Illustration } from '../../../components/illustration/illustration'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Button } from '../../../components/button/button'
+import { Illustration } from '../../../components/illustration/illustration'
+import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 

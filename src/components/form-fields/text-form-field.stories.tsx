@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
+import React from 'react'
 import { TextFormField } from './text-form-field'
 
 const componentMeta: ComponentMeta<typeof TextFormField> = {

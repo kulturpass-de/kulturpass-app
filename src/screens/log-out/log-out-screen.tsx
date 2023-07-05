@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Text } from 'react-native'
-
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'

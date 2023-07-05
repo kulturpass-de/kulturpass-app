@@ -3,7 +3,6 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
-
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
 import { WebViewId } from './types'
 import { useWebViewBridgeAdapterContext } from './webview-bridge-adapter-provider'

@@ -1,14 +1,13 @@
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
-
-import { Tabs } from './tabs/tabs'
+import { RootState } from '../services/redux/configure-store'
 import { ModalStack } from './modal/modal-stack'
 import { ModalStackCardOverlay } from './modal/modal-stack-card-overlay'
-import { OnboardingStackParams, RootStackParams } from './types'
-import { RootState } from '../services/redux/configure-store'
 import { OnboardingStack } from './onboarding-stack'
+import { Tabs } from './tabs/tabs'
+import { OnboardingStackParams, RootStackParams } from './types'
 
 const Stack = createStackNavigator<RootStackParams & OnboardingStackParams>()
 

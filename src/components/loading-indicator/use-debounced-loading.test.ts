@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react-native'
-import { useDebouncedLoading } from './use-debounced-loading'
 import { useState } from 'react'
 import { act } from 'react-test-renderer'
+import { useDebouncedLoading } from './use-debounced-loading'
 
 describe('useDebouncedLoading', () => {
   test('Should debounce loading', async () => {

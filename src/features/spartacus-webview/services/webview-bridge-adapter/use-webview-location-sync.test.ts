@@ -1,10 +1,9 @@
 import { renderHook } from '@testing-library/react-native'
-
 import { RootState } from '../../../../services/redux/configure-store'
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
+import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 import { WebViewId } from './types'
 import { useWebViewLocationSync } from './use-webview-location-sync'
-import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 
 describe('useWebViewLocationSync', () => {
   afterEach(() => {

@@ -1,14 +1,13 @@
-import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
+import React from 'react'
 import { buildTestId } from '../../services/test-id/test-id'
-import { LogInRoute } from './log-in-route'
-import t from '../../services/translation/i18n/de.json'
-import { NavigationContainer } from '@react-navigation/native'
 import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
-import { createStackNavigator } from '@react-navigation/stack'
+import t from '../../services/translation/i18n/de.json'
+import { LogInRoute } from './log-in-route'
 
 const renderScreen = () => {
   const Stack = createStackNavigator()

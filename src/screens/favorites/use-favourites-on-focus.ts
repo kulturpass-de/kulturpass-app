@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { useState, useCallback, useRef, useMemo } from 'react'
-
 import { ErrorAlertError } from '../../features/form-validation/components/error-alert'
 import { commerceApi } from '../../services/api/commerce-api'
 import { FavouritesItem } from '../../services/api/types/commerce/api-types'

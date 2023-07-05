@@ -1,8 +1,9 @@
-import { z } from 'zod'
 import yaml from 'js-yaml'
-import environmentConfigurationFileContent from './environment-configuration.yaml'
+import { z } from 'zod'
 import { env } from '../../env'
+import { logger } from '../../services/logger'
 import { LocalizedLinkSchema } from '../../utils/links/hooks/use-localized-environment-url'
+import environmentConfigurationFileContent from './environment-configuration.yaml'
 
 export const AuthSchema = z.object({
   tokenEndpoint: z.string(),
@@ -87,12 +88,12 @@ const readEnvironmentConfiguration = (): EnvironmentConfigurationContent => {
   let environmentConfiguration: unknown
   if (env.ENVIRONMENTS !== undefined) {
     if (__DEV__ && process.env.NODE_ENV !== 'test') {
-      console.log('Using ENVIRONMENTS env variable to read environment configuration')
+      logger.log('Using ENVIRONMENTS env variable to read environment configuration')
     }
     environmentConfiguration = JSON.parse(env.ENVIRONMENTS)
   } else {
     if (__DEV__) {
-      console.log('Using environment-configuration.yaml to read environment configuration')
+      logger.log('Using environment-configuration.yaml to read environment configuration')
     }
     environmentConfiguration = yaml.load(environmentConfigurationFileContent)
   }

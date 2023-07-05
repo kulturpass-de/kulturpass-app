@@ -1,11 +1,11 @@
 import { GeoPosition } from 'react-native-geolocation-service'
-
+import { logger } from '../../../../services/logger'
 import { commerceApi } from '../../../api/commerce-api'
 import { createThunk } from '../../../redux/utils/create-thunk'
+import { getUserDeniedLocationServices } from '../../../user/redux/user-selectors'
 import { locationService } from '../../location-service'
 import { getCurrentUserLocation } from '../location-selectors'
 import { setCurrentUserLocation } from '../location-slice'
-import { getUserDeniedLocationServices } from '../../../user/redux/user-selectors'
 
 export const refreshLocation = createThunk('location/refreshLocation', async (_payload, thunkAPI) => {
   const oldLocation = getCurrentUserLocation(thunkAPI.getState())
@@ -18,7 +18,7 @@ export const refreshLocation = createThunk('location/refreshLocation', async (_p
       currentLocation = await locationService.getCurrentLocation()
     }
   } catch (error: unknown) {
-    console.log('Failed to get current location:', error)
+    logger.log('Failed to get current location:', error)
   }
 
   thunkAPI.dispatch(setCurrentUserLocation(currentLocation))

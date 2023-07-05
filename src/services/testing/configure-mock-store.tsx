@@ -1,7 +1,6 @@
 import { AnyAction, configureStore, isPlain, Middleware, ThunkAction } from '@reduxjs/toolkit'
 import React from 'react'
 import { Provider } from 'react-redux'
-
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { ErrorWithCode } from '../errors/errors'

@@ -1,5 +1,4 @@
 import { REHYDRATE } from 'redux-persist'
-
 import { AppStartListening, ListenerEffect } from '../listener-middleware'
 import { selectIsBootstrapped } from '../slices/app-core'
 import { startup } from '../thunks/startup'

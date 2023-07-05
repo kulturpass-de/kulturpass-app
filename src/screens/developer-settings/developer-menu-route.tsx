@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
 import { useModalNavigation } from '../../navigation/modal/hooks'
-
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../theme/utils'
+import { AppConfigRouteConfig } from './app-config-route'
 import { DeveloperMenuScreen } from './developer-menu-screen'
 import { EnvironmentConfigRouteConfig } from './environment-config-route'
 import { SimulationCardConfigRouteConfig } from './simulation-card-config-route'
 import { StorybookRouteConfig } from './storybook-route'
-import { AppConfigRouteConfig } from './app-config-route'
 
 export const DeveloperMenuRouteName = 'DeveloperMenu'
 

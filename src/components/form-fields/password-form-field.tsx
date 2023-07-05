@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { Pressable, StyleSheet, TextInput, type TextInputProps, type ViewStyle } from 'react-native'
-
 import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'

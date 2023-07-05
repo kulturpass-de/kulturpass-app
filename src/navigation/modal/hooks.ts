@@ -1,6 +1,5 @@
 import { NavigatorScreenParams, useNavigation, useRoute } from '@react-navigation/native'
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack'
-
 import { RootStackParams } from '../types'
 import { ModalParamList } from './types'
 

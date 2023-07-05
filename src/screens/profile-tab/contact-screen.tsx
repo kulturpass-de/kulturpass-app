@@ -1,15 +1,14 @@
 import React from 'react'
-
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { EMailLink } from '../../components/e-mail-link/e-mail-link'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { useTranslation } from '../../services/translation/translation'
-import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { SvgImage } from '../../components/svg-image/svg-image'
-import { EMailLink } from '../../components/e-mail-link/e-mail-link'
 
 export type ContactScreenProps = {
   onPressBackButton?: () => void

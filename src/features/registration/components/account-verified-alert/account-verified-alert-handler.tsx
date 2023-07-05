@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
 import { getCdcSessionData, isUserPending } from '../../../../services/auth/store/auth-selectors'
 import { selectIsInForeground } from '../../../../services/redux/slices/app-core'
 import { useGetAccountInfoLazyQuery } from '../../../../services/user/use-get-account-info-lazy-query'

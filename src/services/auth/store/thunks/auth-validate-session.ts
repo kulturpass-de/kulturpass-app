@@ -1,6 +1,6 @@
 import { createThunk } from '../../../redux/utils/create-thunk'
-import { authLogoutWithoutErrors } from './auth-logout'
 import { getCdcSessionData, getCommerceSessionData, getIsUserLoggedIn } from '../auth-selectors'
+import { authLogoutWithoutErrors } from './auth-logout'
 
 export const authValidateSession = createThunk('auth/validateSession', async (payload, thunkAPI) => {
   const state = thunkAPI.getState()

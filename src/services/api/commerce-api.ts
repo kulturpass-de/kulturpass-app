@@ -1,5 +1,4 @@
 import { createApi as createRtkApi, defaultSerializeQueryArgs } from '@reduxjs/toolkit/query/react'
-
 import { getEnvironmentConfig } from '../environment-configuration/utils'
 import { RootState } from '../redux/configure-store'
 import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
@@ -7,6 +6,7 @@ import { sendCommerceDeleteRequest } from './commerce/send-commerce-delete-reque
 import { sendCommerceGetRequest } from './commerce/send-commerce-get-request'
 import { sendCommerceOauthTokenRequest } from './commerce/send-commerce-oauth-token-request'
 import { sendCommercePostRequest } from './commerce/send-commerce-post-request'
+import { sendCommerceRevokeOauthTokenRequest } from './commerce/send-commerce-revoke-oauth-token-request'
 import { axiosBaseQuery } from './common/base-query'
 import {
   GetFavoritesRequestParams,
@@ -24,15 +24,14 @@ import { CreateReservationParams } from './types/commerce/commerce-create-reserv
 import { DeleteCartEntryParams } from './types/commerce/commerce-delete-cart-entry'
 import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
 import { GetOrderDetailParams, GetOrderDetailResponse } from './types/commerce/commerce-get-order-detail'
-import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-get-profile'
-import { GetRandomProductParams, GetRandomProductResponse } from './types/commerce/commerce-get-random-product'
-import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
-import { PostRevokeAuthTokenParams, PostRevokeAuthTokenResponse } from './types/commerce/commerce-post-revoke-token'
-import { sendCommerceRevokeOauthTokenRequest } from './commerce/send-commerce-revoke-oauth-token-request'
 import {
   GetPostalCodeIsValidParams,
   GetPostalCodeIsValidResponse,
 } from './types/commerce/commerce-get-postal-code-is-valid'
+import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerce/commerce-get-profile'
+import { GetRandomProductParams, GetRandomProductResponse } from './types/commerce/commerce-get-random-product'
+import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
+import { PostRevokeAuthTokenParams, PostRevokeAuthTokenResponse } from './types/commerce/commerce-post-revoke-token'
 
 const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 

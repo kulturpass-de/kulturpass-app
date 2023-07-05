@@ -1,9 +1,8 @@
 import React from 'react'
-
 import { ShopAddress } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { ProductDetailSection } from './product-detail-section'
 import { Address } from './address'
+import { ProductDetailSection } from './product-detail-section'
 
 export type ProductDetailOfferProps = {
   offerInfo: {

@@ -1,12 +1,11 @@
 import { act, renderHook } from '@testing-library/react-native'
-
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { mockListenerOnce } from '../../../../services/testing/mock-listener-once'
 import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
+import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 import { SpartacusBridge } from './spartacus-bridge'
 import { WebViewId } from './types'
 import { useWebViewBridgeAdapter } from './use-webview-bridge-adapter'
-import { mockedBridgeAdapterApi } from './__mocks__/create-bridge-adapter-api'
 
 jest.mock('./webview-bridge-adapter-provider')
 jest.mock('./create-bridge-adapter-api', () => ({

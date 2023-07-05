@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, TextStyle, View } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
 import { colors } from '../../theme/colors'
+import { openLink } from '../../utils/links/utils'
 import { Icon } from '../icon/icon'
 import { TranslatedText, TranslatedTextProps } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
-import { openLink } from '../../utils/links/utils'
-import { useTranslation } from '../../services/translation/translation'
 
 type LinkTextProps = {
   link: string

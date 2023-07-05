@@ -1,6 +1,5 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { type RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
 import { axiosBaseQuery } from '../common/base-query'

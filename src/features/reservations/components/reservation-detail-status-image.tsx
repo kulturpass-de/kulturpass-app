@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { SvgImage, SvgImageType } from '../../../components/svg-image/svg-image'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { buildTestId } from '../../../services/test-id/test-id'

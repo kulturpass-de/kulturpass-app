@@ -1,8 +1,8 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react-native'
-import { HtmlText } from './html-text'
-import { textStyles } from '../../theme/typography'
+import React from 'react'
 import { colors } from '../../theme/colors'
+import { textStyles } from '../../theme/typography'
+import { HtmlText } from './html-text'
 
 const renderHtmlText = (html: string) => {
   render(

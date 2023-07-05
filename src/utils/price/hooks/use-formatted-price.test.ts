@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-native'
 import { Price } from '../../../services/api/types/commerce/api-types'
-import { useFormattedPrice } from './use-formatted-price'
 import { translation } from '../../../services/translation/translation'
+import { useFormattedPrice } from './use-formatted-price'
 
 describe('useFormattedPrice', () => {
   beforeEach(() => {

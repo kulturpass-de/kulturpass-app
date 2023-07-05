@@ -1,6 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-import { ReservationsListItem } from '../components/reservations-list-item'
+import React from 'react'
 import {
   DELIVERY_SCENARIO_IN_APP_VOUCHER,
   DELIVERY_SCENARIO_PICKUP,
@@ -12,6 +11,7 @@ import {
   ORDER_STATUS_RECEIVED,
   ORDER_STATUS_SHIPPING,
 } from '../../../services/api/types/commerce/commerce-get-reservations'
+import { ReservationsListItem } from '../components/reservations-list-item'
 
 const componentMeta: ComponentMeta<typeof ReservationsListItem> = {
   title: 'Reservation List Item',

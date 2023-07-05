@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
 import throttle from 'lodash.throttle'
-
+import { useEffect } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ProductDetailRouteConfig } from '../../product-detail/screens/product-detail-route'
 import { BridgeAdapterAPI } from '../services/webview-bridge-adapter/create-bridge-adapter-api'

@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { FavoritesListItem } from './favorites-list-item'
 
 const componentMeta: ComponentMeta<typeof FavoritesListItem> = {

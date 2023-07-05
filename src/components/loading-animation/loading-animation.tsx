@@ -1,5 +1,5 @@
-import React from 'react'
 import Lottie from 'lottie-react-native'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 
 export const LoadingAnimation: React.FC = () => {

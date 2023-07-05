@@ -1,12 +1,10 @@
 /*  eslint-disable react/jsx-no-bind */
-
-import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-
+import React from 'react'
 import { buildTestId } from '../../../services/test-id/test-id'
 import { AppProviders } from '../../../services/testing/test-utils'
 import { Preferences } from './preferences'
-import { NavigationContainer } from '@react-navigation/native'
 
 const renderScreen = (children: React.ReactNode) => {
   render(

@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
-
+import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { AccountDeletionSuccessfulScreen } from './account-deletion-successful-screen'
-import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 
 export const AccountDeletionSuccessfulRouteName = 'AccountDeletionSuccessful'
 

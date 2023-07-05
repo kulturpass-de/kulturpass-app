@@ -1,11 +1,10 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
-import { userSlice } from '../../../user/redux/user-slice'
 import { configureMockStore } from '../../../testing/configure-mock-store'
+import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogin } from './auth-cdc-login'
 import { authCommerceLogin } from './auth-commerce-login'
 import { authLogin } from './auth-login'

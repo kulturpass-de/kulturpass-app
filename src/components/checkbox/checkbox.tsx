@@ -1,12 +1,12 @@
 import React, { FC, useCallback } from 'react'
 import { Text, StyleSheet, Pressable, View } from 'react-native'
-import { useTranslation } from '../../services/translation/translation'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { Icon } from '../icon/icon'
-import { spacing } from '../../theme/spacing'
 import { AvailableTextStyles, AvailableTranslations } from '../translated-text/types'
-import { colors } from '../../theme/colors'
 
 const DEFAULT_CHECKBOX_FONT: AvailableTextStyles = 'BodySmallRegular'
 

@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { OnboardingParamList } from '../../../navigation/onboarding/types'
-
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { OnboardingAboutAppScreen } from './onboarding-about-app-screen'

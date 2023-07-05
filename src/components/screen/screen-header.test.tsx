@@ -1,8 +1,8 @@
-import React from 'react'
 import { screen } from '@testing-library/react-native'
+import React from 'react'
 import { buildTestId } from '../../services/test-id/test-id'
-import { ScreenHeader } from './screen-header'
 import { renderScreen } from './../../services/testing/test-utils'
+import { ScreenHeader } from './screen-header'
 
 test('Should render ScreenHeader', async () => {
   renderScreen(<ScreenHeader title="Hallo!" testID={buildTestId('screen_header')} />)

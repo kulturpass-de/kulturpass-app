@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { useCallback, useMemo } from 'react'
-
 import { commerceApi } from '../../../services/api/commerce-api'
 import {
   ORDER_STATUS_CANCELLING,

@@ -1,6 +1,6 @@
 import { Mutex } from 'async-mutex'
-
 import { webViewBridgeAdapter } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
+import { logger } from '../../../logger'
 import { AppStartListening, ListenerEffect } from '../../../redux/listener-middleware'
 import { selectWebViewState } from '../webviews-selectors'
 import { webviewsSlice } from '../webviews-slice'
@@ -19,6 +19,8 @@ export const onWebViewRouterUrlChangeEffect: ListenerEffect<
     (currentWebViewState.routerUrl === '/login' && newWebViewState.isLoggedIn)
   ) {
     await mutex.runExclusive(() => {
+      logger.log('onWebViewRouterUrlChangeEffect', webViewId, ' will call webViewBridgeAdapter.reload')
+
       webViewBridgeAdapter.reload(webViewId)
     })
   }

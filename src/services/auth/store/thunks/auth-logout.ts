@@ -1,9 +1,9 @@
+import { cdcApi } from '../../../api/cdc-api'
+import { commerceApi } from '../../../api/commerce-api'
+import { createThunk } from '../../../redux/utils/create-thunk'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogout } from './auth-cdc-logout'
 import { authCommerceLogout } from './auth-commerce-logout'
-import { createThunk } from '../../../redux/utils/create-thunk'
-import { cdcApi } from '../../../api/cdc-api'
-import { commerceApi } from '../../../api/commerce-api'
 
 export const authLogout = createThunk('auth/logout', async (_payload, thunkAPI) => {
   let errors: Array<unknown> = []

@@ -1,6 +1,6 @@
 import { commerceApi } from '../../../api/commerce-api'
-import * as sessionService from '../../../session/session-service'
 import { ErrorWithCode } from '../../../errors/errors'
+import * as sessionService from '../../../session/session-service'
 import { configureMockStore } from '../../../testing/configure-mock-store'
 import { authSlice } from '../auth-slice'
 import { authCommerceLogout } from './auth-commerce-logout'

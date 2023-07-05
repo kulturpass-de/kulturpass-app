@@ -1,5 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
+import React from 'react'
 import { ModalScreenHeader } from './modal-screen-header'
 
 const componentMeta: ComponentMeta<typeof ModalScreenHeader> = {

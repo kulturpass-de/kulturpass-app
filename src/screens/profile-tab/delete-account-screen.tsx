@@ -1,19 +1,18 @@
 import React, { useCallback } from 'react'
-
-import { Screen } from '../../components/screen/screen'
-import { ScreenHeader } from '../../components/screen/screen-header'
-import { useTranslation } from '../../services/translation/translation'
-import { addTestIdModifier, useTestIdBuilder } from '../../services/test-id/test-id'
-import { TranslatedText } from '../../components/translated-text/translated-text'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
+import { Button } from '../../components/button/button'
 import { Illustration } from '../../components/illustration/illustration'
 import { LinkText } from '../../components/link-text/link-text'
-import { Button } from '../../components/button/button'
-import { useModalNavigation } from '../../navigation/modal/hooks'
+import { Screen } from '../../components/screen/screen'
+import { ScreenHeader } from '../../components/screen/screen-header'
+import { TranslatedText } from '../../components/translated-text/translated-text'
 import { AccountDeletionConfirmRouteName } from '../../features/account-deletion/screens/account-deletion-confirm-route'
+import { useModalNavigation } from '../../navigation/modal/hooks'
 import { useFaqLink } from '../../services/faq-configuration/hooks/use-faq-link'
+import { addTestIdModifier, useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
 
 export type DeleteAccountScreenProps = {
   onPressBackButton?: () => void

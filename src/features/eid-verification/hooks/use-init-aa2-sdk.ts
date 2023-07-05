@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { env } from '../../../env'
 import { useIsFocused } from '@react-navigation/native'
 import { AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
+import { useEffect, useState } from 'react'
+import { env } from '../../../env'
 import { ErrorWithCode } from '../../../services/errors/errors'
-import { AA2InitError, AA2Timeout, isTimeoutError } from '../errors'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
+import { AA2InitError, AA2Timeout, isTimeoutError } from '../errors'
 
 /**
  * Initializes the SDK and sets the API Level to 2

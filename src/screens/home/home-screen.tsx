@@ -2,20 +2,19 @@ import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
 import { useSelector } from 'react-redux'
-
-import { useTranslation } from '../../services/translation/translation'
 import { Screen } from '../../components/screen/screen'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
+import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
 import { ErrorWithCode, NetworkError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTranslation } from '../../services/translation/translation'
 import { HomeHeader } from './home-header'
 import { HomeHeaderShrinkable } from './home-header-shrinkable'
 import { HomeHeaderWithWebView } from './home-header-with-webview'
-import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
 
 export type HomeScreenProps = {}
 

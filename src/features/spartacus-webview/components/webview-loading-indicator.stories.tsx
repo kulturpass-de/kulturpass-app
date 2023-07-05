@@ -1,6 +1,5 @@
-import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
-
+import React from 'react'
 import { WebviewLoadingIndicator } from './webview-loading-indicator'
 
 const componentMeta: ComponentMeta<typeof WebviewLoadingIndicator> = {

@@ -1,18 +1,17 @@
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
-
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
+import { EidErrorAlert } from '../components/eid-error-alert'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
 import { EidPinScreen } from './eid-pin-screen'
 import { EidTransportPinRouteName } from './eid-transport-pin-route'
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { EidErrorAlert } from '../components/eid-error-alert'
-import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 
 export const EidPinRouteName = 'EidPin'
 
