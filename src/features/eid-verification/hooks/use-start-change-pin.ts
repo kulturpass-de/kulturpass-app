@@ -1,4 +1,4 @@
-import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2CommandService, WorkflowMessages } from '@sap/react-native-ausweisapp2-wrapper'
 import { useCallback } from 'react'
 import { useTranslation } from '../../../services/translation/translation'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
@@ -10,7 +10,7 @@ export const useStartAA2ChangePin = () => {
   const { t } = useTranslation()
 
   const startChangePin = useCallback(async () => {
-    const messages = {
+    const messages: WorkflowMessages = {
       sessionStarted: t('eid_iosScanDialog_sessionStarted'),
       sessionFailed: t('eid_iosScanDialog_sessionFailed'),
       sessionSucceeded: t('eid_iosScanDialog_sessionSucceeded'),

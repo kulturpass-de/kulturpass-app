@@ -57,7 +57,7 @@ export const ViewProfileRoute: React.FC = () => {
       onPressAppInformations={onPressAppInformations}
       onPressContact={onPressContact}
       onPressDeleteAccount={onPressDeleteAccount}
-      onPressDeveloperMenu={onPressDeveloperMenu}
+      onPressDeveloperMenu={env.DEV_MENU ? onPressDeveloperMenu : undefined}
       onPressLogin={onPressLogin}
     />
   )

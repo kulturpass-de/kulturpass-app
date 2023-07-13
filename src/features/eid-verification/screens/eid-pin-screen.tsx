@@ -70,6 +70,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
               testID={buildTestId('eid_pinView_changeHere_button')}
               i18nKey="eid_pinView_changeHere_button"
               variant="tertiary"
+              widthOption="content"
               modifier="small"
               iconSource="ArrowForward"
               onPress={onChangePin}
@@ -111,5 +112,6 @@ export const styles = StyleSheet.create({
     paddingVertical: spacing[4],
     justifyContent: 'flex-start',
     flexGrow: 1,
+    marginBottom: 65,
   },
 })

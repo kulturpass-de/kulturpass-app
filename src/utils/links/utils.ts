@@ -14,7 +14,20 @@ export const openLink = async (link: string) => {
 }
 
 export const sendMail = async (recipient: string, subject?: string, content?: string) => {
-  const link = `mailto:${recipient}?subject=${strictUriEncode(subject ?? '')}&body=${strictUriEncode(content ?? '')}`
+  let link = `mailto:${recipient}`
 
-  await openLink(link.toString())
+  if (subject) {
+    link += `?subject=${strictUriEncode(subject)}`
+  }
+
+  if (content) {
+    if (subject) {
+      link += '&'
+    } else {
+      link += '?'
+    }
+    link += `body=${strictUriEncode(content)}`
+  }
+
+  await openLink(link)
 }

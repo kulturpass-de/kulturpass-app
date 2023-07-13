@@ -16,12 +16,7 @@ export const baseButtonStyle = StyleSheet.create({
   buttonContainerInner: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  buttonIconLeft: {
-    marginRight: spacing[2],
-  },
-  buttonIconRight: {
-    marginLeft: spacing[2],
+    columnGap: spacing[2],
   },
   buttonIconDisabled: {
     opacity: 0.6,
@@ -56,6 +51,7 @@ export type ButtonModifierStyle = StyleSheet.NamedStyles<{
 export const buttonModifierStyle: Record<ButtonModifier, ButtonModifierStyle> = {
   default: StyleSheet.create({
     size: {
+      paddingVertical: spacing[2],
       paddingHorizontal: spacing[5],
       minHeight: 48,
       borderRadius: spacing[6],

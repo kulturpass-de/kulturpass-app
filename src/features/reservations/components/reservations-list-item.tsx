@@ -46,7 +46,6 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
           resizeMode={FastImage.resizeMode.cover}
           style={styles.image}
           source={{ uri: imageUrl }}
-          defaultSource={require('./dummy-placeholder.png')}
         />
         <View style={styles.contentContainer}>
           <View style={styles.topContainer}>
@@ -173,5 +172,6 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     width: 72,
+    backgroundColor: colors.basicWhite,
   },
 })

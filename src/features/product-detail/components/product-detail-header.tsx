@@ -70,7 +70,6 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
           resizeMode={FastImage.resizeMode.contain}
           style={styles.image}
           source={{ uri: imageUrl }}
-          defaultSource={require('./dummy-placeholder.png')}
         />
         <Animated.View style={[styles.overlay, overlayOpacityStyle]} />
       </Animated.View>
@@ -94,6 +93,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     zIndex: 0,
+    backgroundColor: colors.basicWhite,
   },
   overlay: {
     position: 'absolute',

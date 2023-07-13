@@ -17,6 +17,16 @@ import { useCloseFlow } from './use-close-flow'
 
 //TODO: Refactor flow logic in hooks - also consider changes on the native aa2 library
 
+/**
+ * Hook that handles AusweisApp2 SDK message errors.
+ * As those can happen at any time in the workflow (even without sending a command),
+ * we have to handle them with a always active subscription.
+ * @param onError callback for handling an ErrorWithCode in the UI
+ * @param handleUserCancellation boolean to indicate if we should handle user cancellation errors.
+ * Only used on the card scanning screen, as user cancellation outside of our cancel dialog can only occur there.
+ * @param cancelEidFlowAlertVisible boolean indicating if the cancellation dialog is opened.
+ * User cancellation errors are ignored if this is true.
+ */
 export const useHandleErrors = (
   onError: (error: ErrorWithCode) => void,
   handleUserCancellation: boolean = false,
@@ -33,6 +43,10 @@ export const useHandleErrors = (
 
     const sub = AA2WorkflowHelper.handleError(msg => {
       if (msg.msg === AA2Messages.Auth) {
+        /**
+         * Auth errors can only happen in the Auth workflow.
+         * The Auth Flow failed if we have to handle this message.
+         */
         const majorRes = msg.result?.major
         if (majorRes?.endsWith('#error') === true) {
           if (isErrorUserCancellation(msg)) {
@@ -68,6 +82,10 @@ export const useHandleErrors = (
           onError(new AA2AuthError(msg.error))
         }
       } else if (msg.msg === AA2Messages.ChangePin) {
+        /**
+         * ChangePin errors can only happen in the ChangePin workflow.
+         * The ChangePin Flow failed if we have to handle this message.
+         */
         if (msg.success === false) {
           if (msg.reason === FailureCodes.User_Cancelled) {
             if (handleUserCancellation && !cancelEidFlowAlertVisible) {
@@ -79,10 +97,17 @@ export const useHandleErrors = (
           onError(new AA2AuthErrorResultError(msg.reason))
         }
       } else if (msg.msg === AA2Messages.Reader) {
+        /**
+         * Reader messages can happen as long as the SDK is started.
+         * A deactivated Card was detected if we have to handle this message.
+         */
         if (msg.card?.deactivated === true) {
           onError(new AA2CardDeactivated())
         }
       } else {
+        /**
+         * Handles the following basic errors: BadState, Invalid, UnknownCommand and InternalError.
+         */
         const error = createAA2ErrorFromMessage(msg.msg)
         onError(error)
       }

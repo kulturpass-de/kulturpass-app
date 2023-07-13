@@ -26,7 +26,7 @@ export type ViewProfileScreenProps = {
   onPressAppInformations: () => void
   onPressContact: () => void
   onPressDeleteAccount: () => void
-  onPressDeveloperMenu: () => void
+  onPressDeveloperMenu?: () => void
   onPressLogin: () => void
 }
 
@@ -65,10 +65,6 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
 
   const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl), [faqDocumentUrl])
 
-  const onHeaderPressTitle = useCallback(() => {
-    onPressDeveloperMenu()
-  }, [onPressDeveloperMenu])
-
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { firstName } = useUserInfo()
 
@@ -81,7 +77,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
         <ScreenHeader
           testID={buildTestId('settings_headline')}
           title={firstName ? t('settings_title_withFirstName', { firstName }) : t('settings_title_withoutFirstName')}
-          onPress={onHeaderPressTitle}
+          onPress={onPressDeveloperMenu}
         />
       }>
       <LoadingIndicator loading={loading} />

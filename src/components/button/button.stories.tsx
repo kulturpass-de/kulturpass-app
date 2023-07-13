@@ -27,6 +27,9 @@ export const Tertiary: ComponentStory<typeof Button> = args => <Button {...args}
 export const TertiarySmall: ComponentStory<typeof Button> = args => (
   <Button {...args} variant="tertiary" modifier="small" iconSource="ArrowForward" />
 )
+export const TertiaryWidthContent: ComponentStory<typeof Button> = args => (
+  <Button {...args} variant="tertiary" widthOption="content" iconSource="ArrowForward" />
+)
 
 export const White: ComponentStory<typeof Button> = args => <Button {...args} variant="white" />
 

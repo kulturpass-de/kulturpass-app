@@ -86,6 +86,11 @@ export const useStartCardScanning = ({
   const handleAuth = useCallback(
     (authMsg: Auth) => {
       if (authMsg.url !== undefined) {
+        /**
+         * The Auth workflow succeeded, but the eID backend could still respond
+         * with an errorCode in the query parameters.
+         * This is not handled by the useHandleErrors hook, as this is no Auth Workflow error.
+         */
         const queryError = extractAuthResultUrlQueryError(authMsg)
         if (queryError !== undefined) {
           onError(queryError)
@@ -137,7 +142,6 @@ export const useStartCardScanning = ({
   }, [newPin, onChangePinSuccess, simulateCard])
 
   const enterPin = useCallback(async () => {
-    // Use 30 seconds timeout, because this step can take a long time
     const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
       msTimeout: AA2_TIMEOUTS.SET_PIN,
     })
@@ -171,6 +175,10 @@ export const useStartCardScanning = ({
     handleRetry(result.msg, result.msg === AA2Messages.EnterPuk, result.reader)
   }, [handleRetry, puk])
 
+  /**
+   * Used only on the first scanning screen.
+   * Accepts the Access Rights and navigates to the next screen after scanning the card.
+   */
   const handleInitialScan = useCallback(async () => {
     try {
       const result = await AA2CommandService.accept({
@@ -189,12 +197,14 @@ export const useStartCardScanning = ({
   const startScanning = useCallback(async () => {
     setIsLoading(true)
     try {
+      // Check the current active Workflow.
       const status = await AA2CommandService.getStatus({
         msTimeout: AA2_TIMEOUTS.GET_STATUS,
       })
       var msg = status.state
       if (status.workflow === null) {
         if (flow === 'ChangePin') {
+          // We did not start the ChangePin worklow yet, as this instantly shows the system UI for Card Scanning
           const result = await startChangePin()
           msg = result.msg
         }

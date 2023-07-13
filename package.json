@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
-  "version": "1.1.0",
-  "buildNumber": "3",
+  "version": "1.2.0",
+  "buildNumber": "1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -50,7 +50,7 @@
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/stack": "^6.3.14",
     "@reduxjs/toolkit": "^1.9.3",
-    "@sap/react-native-ausweisapp2-wrapper": "1.1.3",
+    "@sap/react-native-ausweisapp2-wrapper": "1.1.4",
     "appcenter": "^4.4.5",
     "appcenter-crashes": "^4.4.5",
     "async-mutex": "^0.4.0",

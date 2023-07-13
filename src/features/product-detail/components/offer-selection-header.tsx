@@ -26,7 +26,6 @@ export const OfferSelectionHeader: React.FC<OfferSelectionHeaderProps> = ({ imag
         resizeMode={FastImage.resizeMode.cover}
         style={styles.image}
         source={{ uri: imageUrl }}
-        defaultSource={require('./dummy-placeholder.png')}
       />
       <View style={styles.overlay} />
       <View style={styles.buttonContainer}>
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     zIndex: 100,
+    backgroundColor: colors.basicWhite,
   },
   buttonContainer: {
     zIndex: 300,

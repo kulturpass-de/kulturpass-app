@@ -33,6 +33,7 @@ export const useStartAA2Auth = (
   const startAuth = useCallback(async () => {
     setIsLoading(true)
     try {
+      // 1. Check if the required Reader is available
       const isReaderAvailable = await AA2WorkflowHelper.readerIsAvailable(
         simulateCard,
         'NFC',
@@ -46,8 +47,10 @@ export const useStartAA2Auth = (
         }
       }
 
+      // 2. Create the tcTokenUrl pointing to the eID backend.
       const tokenUrl = await getTcTokenUrl()
 
+      // 3. Run the auth workflow in the AusweisApp2 SDK
       const messages: WorkflowMessages = {
         sessionStarted: t('eid_iosScanDialog_sessionStarted'),
         sessionFailed: t('eid_iosScanDialog_sessionFailed'),
@@ -57,7 +60,10 @@ export const useStartAA2Auth = (
       const accessRights = await AA2CommandService.runAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages, {
         msTimeout: AA2_TIMEOUTS.RUN_AUTH,
       })
+
+      // 4. Request the Certificate Information from the AusweisApp2 SDK
       const certificate = await AA2CommandService.getCertificate({ msTimeout: AA2_TIMEOUTS.GET_CERTIFICATE })
+
       onSuccess(accessRights, certificate)
     } catch (e) {
       if (e instanceof ErrorWithCode) {

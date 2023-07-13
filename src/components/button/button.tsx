@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, PropsWithChildren, useCallback, useMemo } from 'react'
 import {
   AccessibilityRole,
   Pressable,
@@ -133,6 +133,17 @@ export const Button: FC<ButtonProps> = ({
   const buttonText = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
   const iconSize = modifier === 'small' ? 20 : 24
 
+  const ContainerWrapper = useCallback(
+    ({ children }: PropsWithChildren) => {
+      if (widthOption === 'content') {
+        return <View>{children}</View>
+      }
+
+      return <React.Fragment>{children}</React.Fragment>
+    },
+    [widthOption],
+  )
+
   return (
     <Pressable
       onPress={onPress}
@@ -145,13 +156,11 @@ export const Button: FC<ButtonProps> = ({
       accessibilityState={disabled ? { disabled: true } : undefined}
       style={[baseButtonStyle.pressed, buttonPressableStyle]}>
       {state => (
-        <>
+        <ContainerWrapper>
           <View style={buttonShadowStyle(state)} />
           <View style={buttonContainerStyle(state)}>
             <View style={baseButtonStyle.buttonContainerInner}>
-              {iconSource && iconPosition === 'left' && (
-                <Icon source={iconSource} width={iconSize} height={iconSize} style={baseButtonStyle.buttonIconLeft} />
-              )}
+              {iconSource && iconPosition === 'left' && <Icon source={iconSource} width={iconSize} height={iconSize} />}
               <Text testID={addTestIdModifier(testID ?? i18nKey, 'text')} style={buttonTextStyle(state.pressed)}>
                 {buttonText}
               </Text>
@@ -160,12 +169,12 @@ export const Button: FC<ButtonProps> = ({
                   source={iconSource}
                   width={iconSize}
                   height={iconSize}
-                  style={[baseButtonStyle.buttonIconRight, disabled ? baseButtonStyle.buttonIconDisabled : undefined]}
+                  style={[disabled ? baseButtonStyle.buttonIconDisabled : undefined]}
                 />
               )}
             </View>
           </View>
-        </>
+        </ContainerWrapper>
       )}
     </Pressable>
   )
