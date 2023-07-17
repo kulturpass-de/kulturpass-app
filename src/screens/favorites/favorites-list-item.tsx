@@ -9,9 +9,9 @@ import { colors } from '../../theme/colors'
 import { HITSLOP_FAVORITES_LIST_ITEM } from '../../theme/constants'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { useFormattedDateTime } from '../../utils/date/hooks/use-formatted-date-time'
 import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
 import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
+import { FavoritesEventDate } from './favorites-event-date'
 import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 
 export type FavoritesListItemProps = {
@@ -32,6 +32,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
     shopDistance,
     offerCount: productOfferCount,
     eventStartDate,
+    eventEndDate,
     lowestOfferPrice,
     seller,
   } = product
@@ -41,7 +42,6 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
   const formattedPrice = useFormattedPrice(lowestOfferPrice)
   const formattedPriceInformation =
     offersCount > 1 ? t('favorites_item_multiple_offers_price', { price: formattedPrice }) : formattedPrice
-  const formattedEventStartDate = useFormattedDateTime(eventStartDate)
 
   const { isFavorite, addToFavourites, removeFromFavorites, toggleIsFavourite, error, resetError } =
     useFavouritesListItemActions(product.code)
@@ -156,17 +156,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
                   )}
                 </View>
                 <View style={styles.informationLine}>
-                  {formattedEventStartDate ? (
-                    <Text
-                      numberOfLines={1}
-                      testID={buildTestId('favorites_item_event_start_date')}
-                      style={styles.informationToken}>
-                      {t('favorites_item_event_start_date', {
-                        date: formattedEventStartDate.date,
-                        time: formattedEventStartDate.time,
-                      })}
-                    </Text>
-                  ) : null}
+                  <FavoritesEventDate startDate={eventStartDate} endDate={eventEndDate} />
                 </View>
                 {formattedPriceInformation ? (
                   <Text

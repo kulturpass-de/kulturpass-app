@@ -1,7 +1,5 @@
 #import "AppDelegate.h"
 
-#import <AppCenterReactNative.h>
-#import <AppCenterReactNativeCrashes.h>
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -13,8 +11,6 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  [AppCenterReactNative register];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   return [super application:application
       didFinishLaunchingWithOptions:launchOptions];

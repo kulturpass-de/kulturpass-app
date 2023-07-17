@@ -136,6 +136,12 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
           <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_code')}>
             {errorCode}
           </Text>
+
+          {intError?.errorDetails ? (
+            <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_details')}>
+              {intError.errorDetails}
+            </Text>
+          ) : null}
         </View>
         <Button
           widthOption="stretch"

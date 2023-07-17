@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { z } from 'zod'
 import { Button } from '../../components/button/button'
 import { FormFieldGroup } from '../../components/form-field-group/form-field-group'
@@ -211,6 +211,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               control={form.control}
               isRequired
               disableAccessibilityForLabel
+              textContentType="password"
             />
             <FormFieldWithControl
               name={'newPassword'}
@@ -220,6 +221,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               control={form.control}
               isRequired
               disableAccessibilityForLabel
+              textContentType="newPassword"
             />
             <FormFieldWithControl
               name={'newPasswordConfirmation'}
@@ -229,6 +231,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               control={form.control}
               isRequired
               disableAccessibilityForLabel
+              textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'newPassword'}
             />
           </FormFieldGroup>
         </ScreenContent>

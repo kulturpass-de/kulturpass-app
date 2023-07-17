@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit'
+import { themeSlice } from '../../theme/redux/theme'
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { authSlice } from '../auth/store/auth-slice'
@@ -14,4 +15,5 @@ export const rootReducer = combineReducers({
   [userSlice.name]: userSlice.reducer,
   [authSlice.name]: authSlice.reducer,
   [webviewsSlice.name]: webviewsSlice.reducer,
+  [themeSlice.name]: themeSlice.reducer,
 })

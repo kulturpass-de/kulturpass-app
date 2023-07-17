@@ -23,7 +23,8 @@ export const useFormattedDateTime = (dateTimeAsString?: string): FormattedDateTi
       dateStyle: 'medium',
     })
 
-    const timeFormat = new Intl.DateTimeFormat(l, {
+    const timeLocale = l === Language.en ? 'en-GB' : l
+    const timeFormat = new Intl.DateTimeFormat(timeLocale, {
       timeStyle: 'short',
     })
 

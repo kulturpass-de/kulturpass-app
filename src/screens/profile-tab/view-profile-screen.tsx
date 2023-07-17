@@ -66,7 +66,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl), [faqDocumentUrl])
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
 
   const SCREEN_TEST_ID = buildTestId('settings')
 
@@ -76,7 +76,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
       header={
         <ScreenHeader
           testID={buildTestId('settings_headline')}
-          title={firstName ? t('settings_title_withFirstName', { firstName }) : t('settings_title_withoutFirstName')}
+          title={name ? t('settings_title_withFirstName', { name }) : t('settings_title_withoutFirstName')}
           onPress={onPressDeveloperMenu}
         />
       }>

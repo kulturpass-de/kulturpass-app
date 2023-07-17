@@ -1,10 +1,12 @@
 import {
   CdcApiErrorResponseBody,
+  CdcEmailNotVerifiedError,
   CdcError,
   CdcResponseErrorSchema,
   CdcStatusValidationError,
   createCdcErrorFromSchema,
   mapCdcErrorCodeToAppErrorCode,
+  mapCdcErrorCodeToError,
 } from './cdc-errors'
 
 test('Should map cdc error code to app error codes', () => {
@@ -111,4 +113,30 @@ test('Should valid register response', () => {
 
   const errorResult = CdcResponseErrorSchema.safeParse(responseJson)
   expect(errorResult.success).toBeFalsy()
+})
+
+const standardErrorBody: CdcApiErrorResponseBody = {
+  callId: 'd8ee05f415bc49649260e38f191e0913',
+  errorCode: 403002,
+  errorDetails:
+    "The requests timestamp skew more than 120 seconds from the server time. Please check you server's time and timezone configuration. Server timestamp: 1689069543, Request timestamp: 1689242313",
+  errorMessage: 'Request has expired',
+  apiVersion: 2,
+  statusCode: 403,
+  statusReason: 'Forbidden',
+  time: '2023-07-11T09:59:03.136Z',
+}
+
+test('Should valid register response 2', () => {
+  const result = mapCdcErrorCodeToError('CDC_EMAIL_NOT_VERIFIED', standardErrorBody)
+
+  expect(result).toBeInstanceOf(CdcEmailNotVerifiedError)
+  expect(result?.errorDetails).toEqual(standardErrorBody.errorDetails)
+})
+
+test('Should ssvalid register response 2', () => {
+  const result = mapCdcErrorCodeToError('CDC_EMAIL_NOT_VERIFIED', undefined)
+
+  expect(result).toBeInstanceOf(CdcEmailNotVerifiedError)
+  expect(result?.errorDetails).toBeUndefined()
 })

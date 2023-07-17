@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 import { Button } from '../../components/button/button'
@@ -114,6 +114,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           keyboardType="email-address"
           isRequired
           disableAccessibilityForLabel
+          textContentType="username"
         />
         <FormFieldWithControl
           name={'password'}
@@ -123,6 +124,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           control={form.control}
           isRequired
           disableAccessibilityForLabel
+          textContentType="password"
         />
         <FormFieldWithControl
           name={'confirmPassword'}
@@ -132,6 +134,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           control={form.control}
           isRequired
           disableAccessibilityForLabel
+          textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'newPassword'}
         />
         <FormFieldWithControl
           name={'firstName'}

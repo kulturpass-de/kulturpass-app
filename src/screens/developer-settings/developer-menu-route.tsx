@@ -3,6 +3,7 @@ import { useModalNavigation } from '../../navigation/modal/hooks'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../theme/utils'
 import { AppConfigRouteConfig } from './app-config-route'
+import { DarkModePreviewRouteConfig } from './dark-mode-preview-route'
 import { DeveloperMenuScreen } from './developer-menu-screen'
 import { EnvironmentConfigRouteConfig } from './environment-config-route'
 import { SimulationCardConfigRouteConfig } from './simulation-card-config-route'
@@ -43,6 +44,12 @@ export const DeveloperMenuRoute: React.FC = () => {
     })
   }, [modalNavigation])
 
+  const onPressDarkThemeConfiguration = useCallback(() => {
+    modalNavigation.navigate({
+      screen: DarkModePreviewRouteConfig.name,
+    })
+  }, [modalNavigation])
+
   return (
     <DeveloperMenuScreen
       onHeaderPressClose={onHeaderPressClose}
@@ -50,6 +57,7 @@ export const DeveloperMenuRoute: React.FC = () => {
       onPressAppConfig={onPressAppConfig}
       onPressCardSimulationConfiguration={onPressCardSimulationConfiguration}
       onPressStorybookConfiguration={onPressStorybookConfiguration}
+      onPressDarkThemeConfiguration={onPressDarkThemeConfiguration}
     />
   )
 }

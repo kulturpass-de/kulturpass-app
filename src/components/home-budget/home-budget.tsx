@@ -16,7 +16,7 @@ export type HomeBudgetProps = {
 }
 
 export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
 
   const formattedPrice = useFormattedPrice(balance.availableBalance)
   const formattedReservedAmount = useFormattedPrice(balance.reservedBalance)
@@ -30,13 +30,13 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
 
   return (
     <View style={styles.container}>
-      {firstName ? (
+      {name ? (
         <TranslatedText
           accessibilityRole="header"
           testID={buildTestId('home_budget_greeting_text')}
           textStyle="BodySmallMedium"
           i18nKey="home_budget_greeting"
-          i18nParams={{ name: firstName }}
+          i18nParams={{ name }}
           textStyleOverrides={{ color: colors.moonDarkest }}
         />
       ) : (

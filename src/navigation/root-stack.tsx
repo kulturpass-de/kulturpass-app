@@ -3,6 +3,7 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from '../services/redux/configure-store'
+import { useTheme } from '../theme/hooks/use-theme'
 import { ModalStack } from './modal/modal-stack'
 import { ModalStackCardOverlay } from './modal/modal-stack-card-overlay'
 import { OnboardingStack } from './onboarding-stack'
@@ -12,6 +13,8 @@ import { OnboardingStackParams, RootStackParams } from './types'
 const Stack = createStackNavigator<RootStackParams & OnboardingStackParams>()
 
 export const RootStackScreen: React.FC = () => {
+  const { barStyle } = useTheme()
+
   const showOnboardingOnStartup = useSelector((state: RootState) => state.persisted.onboarding.showOnboardingOnStartup)
 
   if (showOnboardingOnStartup) {
@@ -34,7 +37,7 @@ export const RootStackScreen: React.FC = () => {
 
   return (
     <>
-      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      <StatusBar backgroundColor="#ffffff" barStyle={barStyle} />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen

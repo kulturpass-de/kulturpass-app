@@ -20,7 +20,7 @@ const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 export const AccountVerificationHero: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
   const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const timerRef = useRef<NodeJS.Timeout>()
@@ -60,8 +60,8 @@ export const AccountVerificationHero: React.FC = () => {
           textStyle="HeadlineH4Extrabold"
           textStyleOverrides={{ color: colors.moonDarkest }}
           testID={buildTestId('account_verification_hero_greeting_text')}
-          i18nKey={firstName ? 'account_verification_hero_greeting' : 'account_verification_hero_greeting_without_name'}
-          i18nParams={isLoggedIn ? { name: firstName } : undefined}
+          i18nKey={name ? 'account_verification_hero_greeting' : 'account_verification_hero_greeting_without_name'}
+          i18nParams={isLoggedIn ? { name } : undefined}
         />
         <View style={styles.content}>
           {canResend ? (

@@ -8,20 +8,26 @@ import {
   HttpStatusBadRequestError,
 } from './errors'
 
+const standardErrorBody = {
+  errorDetails: 'detailed error',
+}
+
 test('Should create HttpStatusBadRequestError', () => {
   const httpError = createHttpErrorFromStatusCode(400)
   expect(httpError instanceof HttpStatusBadRequestError).toBeTruthy()
   expect(httpError instanceof HttpClientError).toBeTruthy()
   expect(httpError instanceof HttpError).toBeTruthy()
   expect(httpError.statusCode).toBe(400)
+  expect(httpError.errorDetails).toBeUndefined()
   expect(httpError.errorCode).toBe('HTTP_STATUS_BAD_REQUEST')
 })
 
 test('Should create HttpClientError', () => {
-  const httpError = createHttpErrorFromStatusCode(408)
+  const httpError = createHttpErrorFromStatusCode(408, standardErrorBody)
   expect(httpError instanceof HttpClientError).toBeTruthy()
   expect(httpError instanceof HttpError).toBeTruthy()
   expect(httpError.statusCode).toBe(408)
+  expect(httpError.errorDetails).toBe(standardErrorBody.errorDetails)
   expect(httpError.errorCode).toBe('HTTP_CLIENT_ERROR')
 })
 
@@ -31,6 +37,7 @@ test('Should create HttpError', () => {
   expect(httpError instanceof HttpServerError).toBeFalsy()
   expect(httpError instanceof HttpError).toBeTruthy()
   expect(httpError.statusCode).toBe(302)
+  expect(httpError.errorDetails).toBeUndefined()
   expect(httpError.errorCode).toBe('HTTP_ERROR')
 })
 
