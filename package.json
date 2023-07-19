@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.2.0",
-  "buildNumber": "2",
+  "buildNumber": "3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -31,7 +31,7 @@
     "tsc": "tsc --noEmit --skipLibCheck",
     "xlint": "yarn tsc && yarn lint && yarn prettier-check",
     "ci-all": "yarn xlint && yarn lint-report",
-    "podinstall": "cd ios && rm Podfile.lock && NO_FLIPPER=0 bundle exec pod install",
+    "podinstall": "cd ios && rm -f Podfile.lock && NO_FLIPPER=0 bundle exec pod install",
     "podinstall-release": "cd ios && rm -f Podfile.lock && NO_FLIPPER=1 bundle exec pod install",
     "reinstall": "rm -rf iod/Pods && rm -rf node_modules && yarn install && yarn podinstall",
     "prestart": "sb-rn-get-stories",
@@ -88,7 +88,7 @@
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.2.2",
-    "semver": "^7.5.0",
+    "semver": "^7.5.4",
     "stream-browserify": "^3.0.0",
     "strict-uri-encode": "^2.0.0",
     "swagger-typescript-api": "^12.0.3",
@@ -189,7 +189,8 @@
     "glob-parent": "5.1.2",
     "ansi-regex": "5.0.1",
     "unset-value": "2.0.1",
-    "fast-xml-parser": "4.2.4"
+    "fast-xml-parser": "4.2.4",
+    "semver": "7.5.4"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",

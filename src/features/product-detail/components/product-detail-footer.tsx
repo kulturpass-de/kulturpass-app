@@ -14,7 +14,6 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
-import { ProductDetailFooterFavoriteButton } from './product-detail-footer-favorite-button'
 
 type ProductDetailFooterProps = {
   onReserve: () => void
@@ -85,7 +84,11 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
               onPress={onReserve}
             />
           </View>
-          {selectedOffer?.code && <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} />}
+          {/*
+            Hidden as long as the add-to-favorites functionality is not implemented
+
+            {selectedOffer?.code && <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} />}
+          */}
         </View>
       ) : null}
       {showCannotAfford ? (

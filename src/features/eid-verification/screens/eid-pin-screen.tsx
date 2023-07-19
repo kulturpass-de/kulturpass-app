@@ -104,14 +104,14 @@ export const styles = StyleSheet.create({
     color: colors.moonDarkest,
   },
   pinView: {
-    paddingTop: spacing[9],
-    paddingBottom: spacing[13],
+    paddingTop: spacing[8],
+    paddingBottom: spacing[9],
     paddingHorizontal: spacing[5],
   },
   changePinButton: {
     paddingVertical: spacing[4],
     justifyContent: 'flex-start',
     flexGrow: 1,
-    marginBottom: 65,
+    marginBottom: spacing[8],
   },
 })

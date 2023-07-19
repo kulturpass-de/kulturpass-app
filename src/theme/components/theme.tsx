@@ -3,11 +3,15 @@ import SystemNavigationBar from 'react-native-system-navigation-bar'
 import { useTheme } from '../hooks/use-theme'
 
 export const Theme: React.FC<PropsWithChildren> = ({ children }) => {
-  const { colorScheme } = useTheme()
+  const { colorScheme, colors } = useTheme()
 
   useEffect(() => {
-    SystemNavigationBar.setNavigationColor('#00000000', colorScheme, 'both')
-  }, [colorScheme])
+    SystemNavigationBar.setNavigationColor(
+      colors.secondaryBackground,
+      colorScheme === 'light' ? 'dark' : 'light',
+      'both',
+    )
+  }, [colorScheme, colors.secondaryBackground])
 
   return <>{children}</>
 }

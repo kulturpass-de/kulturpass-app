@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
-import { Language } from '../../../../services/translation/types'
 import { colors } from '../../../../theme/colors'
 import { textStyles } from '../../../../theme/typography'
+import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { ExhibitProductDetail } from '../../types/product-detail'
 import { Address } from '../address'
 import { ProductDetailSection } from '../product-detail-section'
@@ -14,16 +14,7 @@ export type ProductExhibitDetailProps = {
   testID: TestId
 }
 
-const formatDate = (
-  t: ReturnType<typeof useTranslation>['t'],
-  language: Language,
-  startDateStr?: string,
-  endDateStr?: string,
-) => {
-  const startDate = startDateStr ? new Date(startDateStr).toLocaleDateString(language) : undefined
-  const endDate = endDateStr ? new Date(endDateStr).toLocaleDateString(language) : undefined
-
-  //TODO: How to handle one missing date correctly? Design question
+const formatDate = (t: ReturnType<typeof useTranslation>['t'], startDate?: string, endDate?: string) => {
   if (startDate && endDate) {
     const text = `${startDate} - ${endDate}`
     const accessibilityLabel = t('productDetail_exhibit_duration_contentFromTo', { startDate, endDate })
@@ -38,11 +29,13 @@ const formatDate = (
 }
 
 export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail, testID }) => {
-  const { t, l: language } = useTranslation()
+  const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
   const sectionTestID = addTestIdModifier(testID, 'exhibit')
   const { exhibitStartDate, exhibitEndDate, venue, venueDistance } = productDetail
-  const exhibitDate = formatDate(t, language, exhibitStartDate, exhibitEndDate)
+  const formattedEventStartDate = useFormattedDateTime(exhibitStartDate)
+  const formattedEvenEndDate = useFormattedDateTime(exhibitEndDate)
+  const exhibitDate = formatDate(t, formattedEventStartDate?.date, formattedEvenEndDate?.date)
 
   return (
     <>
