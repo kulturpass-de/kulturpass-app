@@ -19,11 +19,23 @@ export type PasswordFormFieldProps = {
   onChange?: TextInputProps['onChangeText']
   onBlur?: TextInputProps['onBlur']
   value?: TextInputProps['value']
+  textContentType?: TextInputProps['textContentType']
 }
 
 export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldProps>(
   (
-    { testID, labelI18nKey, error, containerStyle, isRequired, disableAccessibilityForLabel, onChange, onBlur, value },
+    {
+      testID,
+      labelI18nKey,
+      error,
+      containerStyle,
+      isRequired,
+      disableAccessibilityForLabel,
+      onChange,
+      onBlur,
+      value,
+      textContentType,
+    },
     ref,
   ) => {
     const { t } = useTranslation()
@@ -49,7 +61,8 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
         secureTextEntry={!state.isPasswordVisible}
         autoComplete="password"
         autoCapitalize="none"
-        autoCorrect={false}>
+        autoCorrect={false}
+        textContentType={textContentType}>
         <Pressable
           style={styles.inputIcon}
           onPress={toggleIsPasswordVisible}

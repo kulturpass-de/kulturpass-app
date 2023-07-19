@@ -141,6 +141,7 @@ export const serverHandlersLoggedIn: ServerHandler[] = [
       ctx.status(200),
       ctx.json({
         firstName: 'Max',
+        name: 'Max Mustermann',
         identificationStatus: 'VERIFIED',
         balanceStatus: 'ENTITLED',
         balance: {

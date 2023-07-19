@@ -33,11 +33,11 @@ export const useUserInfo = (regToken?: string) => {
     }
   }, [isLoggedIn, regToken, accountInfo, userPreferences, dispatch])
 
-  const firstName = useMemo(
+  const name = useMemo(
     // at the time of registration userProfile is not in redux yet, so the first name is empty
-    () => ((isLoggedIn || regToken) && userProfile?.firstName) || '',
+    () => ((isLoggedIn || regToken) && userProfile?.name) || '',
     [isLoggedIn, regToken, userProfile],
   )
 
-  return { firstName, userPreferences, setAccountInfo, accountInfo }
+  return { name, userPreferences, setAccountInfo, accountInfo }
 }

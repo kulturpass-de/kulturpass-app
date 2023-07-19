@@ -13,7 +13,7 @@ import { EidAboutVerificationRouteName } from '../screens/eid-about-verification
 export const EidIdentifyButton: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
   const modalNavigation = useModalNavigation()
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
 
   const startVerification = useCallback(() => {
     modalNavigation.navigate({ screen: EidAboutVerificationRouteName })
@@ -26,7 +26,7 @@ export const EidIdentifyButton: React.FC = () => {
           <TranslatedText
             testID={buildTestId('eid_startVerify_button_title')}
             i18nKey={'eid_startVerify_button_title'}
-            i18nParams={{ name: firstName }}
+            i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.moonDarkest }}
           />

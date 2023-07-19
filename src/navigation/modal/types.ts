@@ -66,6 +66,10 @@ import {
   ReservationDetailRouteParams,
 } from '../../features/reservations/screens/reservation-detail-route'
 import { AppConfigRouteName, AppConfigRouteParams } from '../../screens/developer-settings/app-config-route'
+import {
+  DarkModePreviewRouteName,
+  DarkModePreviewRouteParams,
+} from '../../screens/developer-settings/dark-mode-preview-route'
 import { DeveloperMenuRouteName, DeveloperMenuRouteParams } from '../../screens/developer-settings/developer-menu-route'
 import {
   EnvironmentConfigRouteName,
@@ -145,6 +149,7 @@ export type ModalParamList = {
   [AppConfigRouteName]: AppConfigRouteParams
   [SimulationCardConfigRouteName]: SimulationCardConfigRouteParams
   [StorybookRouteName]: StorybookRouteParams
+  [DarkModePreviewRouteName]: DarkModePreviewRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

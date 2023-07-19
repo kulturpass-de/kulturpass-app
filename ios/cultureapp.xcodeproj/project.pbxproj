@@ -13,7 +13,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2664A5822983BBB10034E29E /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2664A5812983BBB10034E29E /* AppCenter-Config.plist */; };
 		3C5E0867E841463B9ACD3567 /* nunito_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 917595BD0BFA419091823D6E /* nunito_bolditalic.ttf */; };
 		45589818FFCA457D80C08EE7 /* nunito_extralight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A55C8ACBFC8548A79CD0908B /* nunito_extralight.ttf */; };
 		663D385320614BAC97CC69DF /* nunito_blackitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FB499456DB34ED28AB8F09D /* nunito_blackitalic.ttf */; };
@@ -57,7 +56,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = cultureapp/main.m; sourceTree = "<group>"; };
 		1774879B106661F78611ECF7 /* Pods-cultureapp-cultureappTests.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp-cultureappTests.adhoc.xcconfig"; path = "Target Support Files/Pods-cultureapp-cultureappTests/Pods-cultureapp-cultureappTests.adhoc.xcconfig"; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-cultureapp-cultureappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cultureapp-cultureappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2664A5812983BBB10034E29E /* AppCenter-Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "AppCenter-Config.plist"; path = "cultureapp/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		310E41DE5798435E99F9F557 /* nunito_semibolditalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_semibolditalic.ttf; path = ../src/assets/fonts/Nunito/nunito_semibolditalic.ttf; sourceTree = "<group>"; };
 		326D099DA0FF4936B00F6D95 /* nunito_italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_italic.ttf; path = ../src/assets/fonts/Nunito/nunito_italic.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-cultureapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp.debug.xcconfig"; path = "Target Support Files/Pods-cultureapp/Pods-cultureapp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -131,7 +129,6 @@
 			children = (
 				9E486B8A29BB5C1D0008C20A /* cultureapp.entitlements */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				2664A5812983BBB10034E29E /* AppCenter-Config.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -328,7 +325,6 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				2664A5822983BBB10034E29E /* AppCenter-Config.plist in Resources */,
 				87A68A910EE442EB8E491B8C /* nunito_black.ttf in Resources */,
 				663D385320614BAC97CC69DF /* nunito_blackitalic.ttf in Resources */,
 				76F22BE3F90B44608C981D13 /* nunito_bold.ttf in Resources */,

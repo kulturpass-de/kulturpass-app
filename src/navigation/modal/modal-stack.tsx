@@ -22,6 +22,7 @@ import { ProductConfirmReservationRouteConfig } from '../../features/product-det
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { ReservationDetailRouteConfig } from '../../features/reservations/screens/reservation-detail-route'
 import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
+import { DarkModePreviewRouteConfig } from '../../screens/developer-settings/dark-mode-preview-route'
 import { DeveloperMenuRouteConfig } from '../../screens/developer-settings/developer-menu-route'
 import { EnvironmentConfigRouteConfig } from '../../screens/developer-settings/environment-config-route'
 import { SimulationCardConfigRouteConfig } from '../../screens/developer-settings/simulation-card-config-route'
@@ -34,17 +35,20 @@ import { RegistrationSuccessRouteConfig } from '../../screens/registration-succe
 import { RegistrationConsentRouteConfig } from '../../screens/registration/registration-consent-route'
 import { RegistrationDataPrivacyRouteConfig } from '../../screens/registration/registration-data-privacy-route'
 import { RegistrationFormRouteConfig } from '../../screens/registration/registration-form-route'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { ModalStackWrapper } from './modal-stack-wrapper'
 import { ModalParamList } from './types'
 
 const Stack = createStackNavigator<ModalParamList>()
 
 export const ModalStack: React.FC = () => {
+  const { barStyle } = useTheme()
+
   return (
     <ModalStackWrapper>
       {/* Note: Although #00000000 is just "transparent", together with `translucent` - it allows the modals of
       react-nativation to display their backdrop properly on Android */}
-      <StatusBar backgroundColor="#00000000" translucent barStyle={'dark-content'} />
+      <StatusBar backgroundColor="#00000000" translucent barStyle={barStyle} />
 
       <Stack.Navigator
         detachInactiveScreens
@@ -102,6 +106,7 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...AppConfigRouteConfig} />
         <Stack.Screen {...SimulationCardConfigRouteConfig} />
         <Stack.Screen {...StorybookRouteConfig} />
+        <Stack.Screen {...DarkModePreviewRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

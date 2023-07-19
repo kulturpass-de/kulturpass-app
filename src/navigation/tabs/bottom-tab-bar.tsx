@@ -5,7 +5,7 @@ import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-nat
 import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { TabsParamList } from './types'
@@ -19,6 +19,7 @@ type BottomTabItemProps = {
 
 const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigation, accessibilityHint }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const onPress = useCallback(() => {
@@ -58,7 +59,11 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigat
       <View style={styles.tabBarLabelContainer}>
         <Text
           testID={buildTestId(`${routeName}_bottomNavigation_label`)}
-          style={[isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium, styles.tabBarLabel]}>
+          style={[
+            isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium,
+            styles.tabBarLabel,
+            { color: colors.labelColor },
+          ]}>
           {t(`${routeName}_bottomNavigation_label`)}
         </Text>
       </View>
@@ -72,9 +77,18 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
   bottomSafeArea,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
 
   return (
-    <View style={[styles.container, { paddingBottom: bottomSafeArea }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingBottom: bottomSafeArea,
+          borderTopColor: colors.tabBarDivider,
+          backgroundColor: colors.secondaryBackground,
+        },
+      ]}>
       <View style={styles.tabBarStyle}>
         {state.routes.map((route, index) => (
           <BottomTabItem
@@ -96,8 +110,6 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
 const styles = StyleSheet.create({
   container: {
     paddingTop: 5,
-    backgroundColor: colors.basicWhite,
-    borderTopColor: colors.basicBlack,
     borderTopWidth: 2,
   },
   tabBarStyle: {
@@ -110,7 +122,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabBarLabel: {
-    color: colors.basicBlack,
     paddingTop: spacing[0],
     lineHeight: 12,
     flex: 1,

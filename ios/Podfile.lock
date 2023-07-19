@@ -1,16 +1,4 @@
 PODS:
-  - appcenter-core (4.4.5):
-    - AppCenterReactNativeShared (~> 4.0)
-    - React-Core
-  - appcenter-crashes (4.4.5):
-    - AppCenter/Crashes (~> 4.0)
-    - AppCenterReactNativeShared (~> 4.0)
-    - React-Core
-  - AppCenter/Core (4.4.3)
-  - AppCenter/Crashes (4.4.3):
-    - AppCenter/Core
-  - AppCenterReactNativeShared (4.4.5):
-    - AppCenter/Core (= 4.4.3)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -502,8 +490,6 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - appcenter-core (from `../node_modules/appcenter`)
-  - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -588,8 +574,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AppCenter
-    - AppCenterReactNativeShared
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -611,10 +595,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  appcenter-core:
-    :path: "../node_modules/appcenter"
-  appcenter-crashes:
-    :path: "../node_modules/appcenter-crashes"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -729,10 +709,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 3fd04aa1b166e16fdb03ec81dabe488aece83fbd
-  appcenter-core: c593b2e4ac28d6a21b6a217c4a5e6b3de7b0b00f
-  appcenter-crashes: d9ae1c9296974c1c433600fa2f320e0ba1f12bdf
-  AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54

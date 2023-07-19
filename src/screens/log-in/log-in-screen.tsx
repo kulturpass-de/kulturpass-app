@@ -100,6 +100,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           keyboardType="email-address"
           isRequired
           disableAccessibilityForLabel
+          textContentType="username"
         />
         <FormFieldWithControl
           name={'password'}
@@ -110,6 +111,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           containerStyle={style.passwordFormFieldContainerStyle}
           isRequired
           disableAccessibilityForLabel
+          textContentType="password"
         />
         <Pressable
           accessibilityRole="link"

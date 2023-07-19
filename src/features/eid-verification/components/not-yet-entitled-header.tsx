@@ -8,7 +8,7 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export const NotYetEntitledHeader: React.FC = () => {
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
 
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ export const NotYetEntitledHeader: React.FC = () => {
           <TranslatedText
             testID={buildTestId('not_yet_entitled_title')}
             i18nKey="not_yet_entitled_title"
-            i18nParams={{ name: firstName }}
+            i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.moonDarkest }}
           />

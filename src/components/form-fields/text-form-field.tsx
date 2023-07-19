@@ -34,6 +34,7 @@ export type TextFormFieldProps = React.PropsWithChildren<
     | 'value'
     | 'editable'
     | 'maxLength'
+    | 'textContentType'
   >
 >
 
@@ -50,6 +51,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
       onBlur,
       children,
       editable = true,
+      textContentType,
       ...textInputProps
     },
     ref,
@@ -101,6 +103,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
           onBlur={handleBlur}
           onFocus={handleFocus}
           editable={editable}
+          textContentType={textContentType}
           {...textInputProps}
         />
         {children}

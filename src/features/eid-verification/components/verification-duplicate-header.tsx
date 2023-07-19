@@ -10,7 +10,7 @@ import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export const VerificationDuplicateHeader: React.FC = () => {
-  const { firstName } = useUserInfo()
+  const { name } = useUserInfo()
   const identificationStatusDuplicateFaqLink = useFaqLink('IDENTIFICATION_STATUS_DUPLICATE')
 
   return (
@@ -21,7 +21,7 @@ export const VerificationDuplicateHeader: React.FC = () => {
           <TranslatedText
             testID={buildTestId('verification_duplicate_title')}
             i18nKey="verification_duplicate_title"
-            i18nParams={{ name: firstName }}
+            i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.moonDarkest }}
           />

@@ -18,10 +18,9 @@ export type ErrorAlertError = ErrorWithCode | SerializedError
 export type ErrorAlertProps = {
   error: ErrorAlertError | undefined
   onDismiss: (error: undefined) => void
-  hideErrorCode?: boolean
 }
 
-export const ErrorAlert = ({ error, onDismiss, hideErrorCode = false }: ErrorAlertProps) => {
+export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
   const { buildTestId } = useTestIdBuilder()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
@@ -48,11 +47,19 @@ export const ErrorAlert = ({ error, onDismiss, hideErrorCode = false }: ErrorAle
           i18nParams={errorDescription.message.values}
           testID={buildTestId('error_alert_message')}
         />
-        {!hideErrorCode && errorWithCode?.presentableErrorCode ? (
+        {errorWithCode?.presentableErrorCode ? (
           <AlertMessage
             i18nKey="error_alert_message_details"
             i18nParams={{ errorCode: errorWithCode?.errorCode, detailCode: errorWithCode?.detailCode }}
             testID={buildTestId('error_alert_message_details')}
+          />
+        ) : null}
+
+        {errorWithCode?.errorDetails ? (
+          <AlertMessage
+            i18nKey="error_alert_message_details_extra"
+            i18nParams={{ errorDetails: errorWithCode?.errorDetails }}
+            testID={buildTestId('error_alert_message_details_extra')}
           />
         ) : null}
         <AlertButtonDismiss i18nKey="error_alert_cta" testID={buildTestId('error_alert_cta')} />

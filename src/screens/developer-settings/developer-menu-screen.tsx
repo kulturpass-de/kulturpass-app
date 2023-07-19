@@ -26,6 +26,7 @@ export type DeveloperMenuScreenProps = {
   onPressAppConfig: () => void
   onPressCardSimulationConfiguration: () => void
   onPressStorybookConfiguration: () => void
+  onPressDarkThemeConfiguration: () => void
 }
 
 const useOnboardingConfig = () => {
@@ -45,10 +46,12 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onPressAppConfig,
   onPressCardSimulationConfiguration,
   onPressStorybookConfiguration,
+  onPressDarkThemeConfiguration,
 }) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const modalNavigation = useModalNavigation()
+
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
   const [productCode, setProductCode] = useState('')
@@ -119,6 +122,12 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             onValueChange={toggleShowOnboardingOnAppStart}
           />
         </View>
+        <ListItem
+          title="Dark Theme Preview"
+          testID={buildTestId('developerMenu_darkTheme_button')}
+          type="navigation"
+          onPress={onPressDarkThemeConfiguration}
+        />
         <View style={styles.productCodeListItem}>
           <TextInput
             autoCorrect={false}
