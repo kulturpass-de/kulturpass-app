@@ -218,7 +218,7 @@
   "favorites_item_multiple_offers": "mehrere Angebote",
   "favorites_item_multiple_offers_price": "ab {{price}}",
   "favorites_item_event_start_date": "{{date}} | {{time}} Uhr",
-  "favorites_item_event_date_range": "{{dateStart}} | {{dateEnd}}",
+  "favorites_item_event_date_range": "{{dateStart}} - {{dateEnd}}",
   "favorites_no_favorites_title": "Noch keine Favoriten",
   "favorites_no_favorites_hint": "Hier kannst du deine Favoriten sehen",
   "favorites_unauthorized_no_favorites_title": "Melde dich an, um deine Favoriten zu sehen",

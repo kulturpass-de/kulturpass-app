@@ -1,3 +1,4 @@
+import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
