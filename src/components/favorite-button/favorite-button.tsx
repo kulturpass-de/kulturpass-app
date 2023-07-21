@@ -3,7 +3,7 @@ import { Pressable, PressableProps } from 'react-native'
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HITSLOP } from '../../theme/constants'
-import { Icon } from '../icon/icon'
+import { SvgImage } from '../svg-image/svg-image'
 
 export type FavoriteButtonProps = {
   isFavorite: boolean
@@ -20,7 +20,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPr
     // Later when the api is available to re-add the item to favourites - we need to add a Pressable with the same props
     // as the ones on the "remove from favourites" Pressable, with the only difference in
     // `accessibilityLabel={t('favorites_item_add_a11y_label')}`
-    return <Icon source="HeartUnselected" width={36} height={36} />
+    return <SvgImage type="heart-unselected" width={36} height={36} />
   }
 
   return (
@@ -30,7 +30,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPr
       testID={testID}
       onPress={onPress}
       hitSlop={hitSlop || HITSLOP}>
-      <Icon source="HeartSelected" width={36} height={36} />
+      <SvgImage type="heart-selected" width={36} height={36} />
     </Pressable>
   )
 }

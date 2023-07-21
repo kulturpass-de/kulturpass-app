@@ -2,11 +2,11 @@ import React, { useCallback } from 'react'
 import { StyleSheet, Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { DateFormField } from '../../components/form-fields/date-form-field'
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import {
   setRandomLastName,
@@ -22,7 +22,7 @@ import {
 } from '../../features/eid-verification/redux/simulated-card-selectors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type SimulationCardConfigScreenProps = {
@@ -35,6 +35,8 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
   onHeaderPressClose,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
@@ -78,12 +80,12 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
         onPressBack={onHeaderPressBack}
         onPressClose={onHeaderPressClose}
       />
-      <View style={styles.toggleListItem}>
+      <View style={[styles.toggleListItem, { borderBottomColor: colors.listItemBorder }]}>
         <TranslatedText
           i18nKey="developerMenu_simulateCard_label"
           testID={buildTestId('developerMenu_simulateCard_label')}
           textStyle="BodyRegular"
-          textStyleOverrides={styles.text}
+          textStyleOverrides={{ color: colors.labelColor }}
         />
         <Switch
           testID={buildTestId('developerMenu_simulateCard_label')}
@@ -94,12 +96,12 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
       </View>
       {simulateCard ? (
         <ScreenContent>
-          <View style={styles.toggleListItem}>
+          <View style={[styles.toggleListItem, { borderBottomColor: colors.listItemBorder }]}>
             <TranslatedText
               i18nKey="developerMenu_simulateCard_randomLastName_label"
               testID={buildTestId('developerMenu_simulateCard_randomLastName_label')}
               textStyle="BodyRegular"
-              textStyleOverrides={styles.text}
+              textStyleOverrides={{ color: colors.labelColor }}
             />
             <Switch
               testID={buildTestId('developerMenu_simulateCard_randomLastName_label')}
@@ -121,7 +123,7 @@ export const SimulationCardConfigScreen: React.FC<SimulationCardConfigScreenProp
                 key={cardName}
                 icon={
                   cardName === currentSimulationCardName ? (
-                    <Icon source="Chevron" width={24} height={24} />
+                    <SvgImage type="chevron" width={24} height={24} />
                   ) : (
                     <View style={styles.noIcon} />
                   )
@@ -143,9 +145,6 @@ const styles = StyleSheet.create({
   noIcon: {
     width: 24,
   },
-  text: {
-    color: colors.basicBlack,
-  },
   dateField: {
     paddingHorizontal: spacing[5],
     paddingTop: spacing[5],
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[5],
     height: spacing[10],
     borderBottomWidth: 2,
-    borderBottomColor: '#E6E6E6',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

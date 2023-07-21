@@ -117,7 +117,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
               icon={
                 <SvgImage
                   testID={addTestIdModifier(SCREEN_TEST_ID, 'editProfile_icon')}
-                  type="human-sketch"
+                  type="profile"
                   width={24}
                   height={24}
                 />

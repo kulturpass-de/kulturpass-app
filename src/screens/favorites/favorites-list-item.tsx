@@ -5,8 +5,8 @@ import { ErrorAlert } from '../../features/form-validation/components/error-aler
 import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
 import { HITSLOP_FAVORITES_LIST_ITEM } from '../../theme/constants'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
@@ -23,6 +23,7 @@ export const ITEM_HEIGHT = 164
 
 export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { product }, onPress }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const {
@@ -113,14 +114,19 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
                     <Text
                       testID={buildTestId('screens_favorites_favorites_list_item_top_category_name')}
                       numberOfLines={2}
-                      style={styles.categoryName}>
+                      style={[
+                        styles.categoryName,
+                        { color: colors.labelColor, backgroundColor: colors.secondaryBackground },
+                      ]}>
                       {topCategoryName}
                     </Text>
                   ) : null}
                 </>
               )}
               {image?.altText && (
-                <View testID={buildTestId('screens_favorites_favorites_list_item_badge')} style={styles.imageBadge}>
+                <View
+                  testID={buildTestId('screens_favorites_favorites_list_item_badge')}
+                  style={[styles.imageBadge, { backgroundColor: colors.secondaryBackground }]}>
                   <Text
                     numberOfLines={2}
                     style={textStyles.MicroExtraboldCaps}
@@ -134,7 +140,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
               <View style={styles.content}>
                 <Text
                   testID={buildTestId('screens_favorites_favorites_list_item_title')}
-                  style={[textStyles.BodyExtrabold, styles.title]}
+                  style={[textStyles.BodyExtrabold, styles.title, { color: colors.labelColor }]}
                   numberOfLines={2}>
                   {title}
                 </Text>
@@ -143,14 +149,14 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
                     <Text
                       numberOfLines={1}
                       testID={buildTestId('favorites_item_shopInformation')}
-                      style={styles.informationToken}>
+                      style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
                       {shopInformation}
                     </Text>
                   ) : (
                     <Text
                       numberOfLines={1}
                       testID={buildTestId('favorites_item_no_offers')}
-                      style={styles.informationToken}>
+                      style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
                       {t('favorites_item_no_offers')}
                     </Text>
                   )}
@@ -162,7 +168,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite:
                   <Text
                     numberOfLines={1}
                     testID={buildTestId('screens_favorites_favorites_list_item_price')}
-                    style={styles.price}>
+                    style={[styles.price, { color: colors.labelColor }]}>
                     {formattedPriceInformation}
                   </Text>
                 ) : null}
@@ -191,12 +197,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'nowrap',
     alignItems: 'stretch',
-    paddingHorizontal: spacing[5],
     paddingVertical: spacing[5],
   },
   imageContainer: {
     borderRadius: 16,
-    backgroundColor: colors.sunDark,
     height: '100%',
     aspectRatio: 1,
     overflow: 'hidden',
@@ -211,8 +215,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[2] - 2,
     position: 'absolute',
     bottom: spacing[6] - 4,
-    color: colors.moonDarkest,
-    backgroundColor: colors.basicWhite,
   },
   main: {
     marginLeft: spacing[4],
@@ -225,21 +227,15 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: spacing[1],
-    color: colors.moonDarkest,
   },
   informationLine: {
     paddingTop: spacing[1],
     flexDirection: 'row',
     flexWrap: 'nowrap',
   },
-  informationToken: {
-    ...textStyles.BodySmallRegular,
-    color: colors.moonDarkest,
-  },
   price: {
     ...textStyles.HeadlineH4Extrabold,
     marginTop: spacing[2],
-    color: colors.moonDarkest,
   },
   actionContainer: {
     position: 'absolute',
@@ -250,7 +246,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '10%',
     left: 0,
-    backgroundColor: colors.basicWhite,
     paddingHorizontal: spacing[2],
     paddingVertical: spacing[0],
   },

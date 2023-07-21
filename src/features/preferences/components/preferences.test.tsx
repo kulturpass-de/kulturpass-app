@@ -3,14 +3,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { buildTestId } from '../../../services/test-id/test-id'
-import { AppProviders } from '../../../services/testing/test-utils'
+import { AppProviders, StoreProvider } from '../../../services/testing/test-utils'
 import { Preferences } from './preferences'
 
 const renderScreen = (children: React.ReactNode) => {
   render(
-    <NavigationContainer>
-      <AppProviders>{children}</AppProviders>
-    </NavigationContainer>,
+    <StoreProvider>
+      <NavigationContainer>
+        <AppProviders>{children}</AppProviders>
+      </NavigationContainer>
+    </StoreProvider>,
   )
 }
 

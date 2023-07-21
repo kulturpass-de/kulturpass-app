@@ -5,7 +5,7 @@ import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTy
 import { useSelector } from 'react-redux'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { openLink } from '../../../utils/links/utils'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
@@ -45,6 +45,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
+  const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
 
   const origin = useOrigin(url)
@@ -140,7 +141,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           {...props}
           onLoadProgress={onLoadProgress}
           onLoadEnd={applyWebviewDocumentBodyOffset}
-          style={[styles.webview, style]}
+          style={[{ backgroundColor: colors.primaryBackground }, style]}
           onScroll={onScroll}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -160,8 +161,5 @@ const styles = StyleSheet.create({
   },
   inner: {
     height: '100%',
-  },
-  webview: {
-    backgroundColor: colors.basicBackground,
   },
 })

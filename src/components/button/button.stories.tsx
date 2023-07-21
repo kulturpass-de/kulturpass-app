@@ -25,10 +25,10 @@ export const Secondary: ComponentStory<typeof Button> = args => <Button {...args
 
 export const Tertiary: ComponentStory<typeof Button> = args => <Button {...args} variant="tertiary" />
 export const TertiarySmall: ComponentStory<typeof Button> = args => (
-  <Button {...args} variant="tertiary" modifier="small" iconSource="ArrowForward" />
+  <Button {...args} variant="tertiary" modifier="small" iconSource="arrow-right" />
 )
 export const TertiaryWidthContent: ComponentStory<typeof Button> = args => (
-  <Button {...args} variant="tertiary" widthOption="content" iconSource="ArrowForward" />
+  <Button {...args} variant="tertiary" widthOption="content" iconSource="arrow-right" />
 )
 
 export const White: ComponentStory<typeof Button> = args => <Button {...args} variant="white" />
@@ -38,10 +38,9 @@ export const Transparent: ComponentStory<typeof Button> = args => <Button {...ar
 export const VariantStyleOverrides: ComponentStory<typeof Button> = args => (
   <Button
     {...args}
-    buttonVariantStyleOverrides={{
-      baseContainer: {
-        backgroundColor: 'green',
-      },
+    buttonColorOverrides={{
+      text: 'red',
+      containerBackground: 'green',
     }}
   />
 )

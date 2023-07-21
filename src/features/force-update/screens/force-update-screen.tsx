@@ -6,11 +6,12 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export const ForceUpdateScreen: React.FC = () => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const screenTestId = buildTestId('force_update')
   const forceUpdateLinkI18nKey = Platform.OS === 'ios' ? 'force_update_link_ios' : 'force_update_link_android'
@@ -27,12 +28,12 @@ export const ForceUpdateScreen: React.FC = () => {
           height={80}
         />
         <TranslatedText
-          textStyleOverrides={styles.title}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
           textStyle="HeadlineH3Extrabold"
           i18nKey="force_update_content_title"
         />
         <TranslatedText
-          textStyleOverrides={styles.text}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
           textStyle="BodyRegular"
           i18nKey={Platform.OS === 'ios' ? 'force_update_content_text_ios' : 'force_update_content_text_android'}
         />
@@ -59,13 +60,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: colors.basicBlack,
     paddingTop: spacing[9],
     paddingHorizontal: spacing[8],
     textAlign: 'center',
   },
   text: {
-    color: colors.moonDarkest,
     paddingVertical: spacing[6],
     paddingHorizontal: spacing[5],
     textAlign: 'center',

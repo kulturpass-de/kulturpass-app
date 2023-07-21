@@ -3,13 +3,13 @@ import React, { useCallback, useState } from 'react'
 import { Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import { Button } from '../../../components/button/button'
-import { Icon } from '../../../components/icon/icon'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { openLink } from '../../../utils/links/utils'
@@ -20,7 +20,9 @@ export type ReservationDetailPickupInfoProps = {
 
 export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoProps> = ({ orderEntry }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+
   const [state, setState] = useState<{ containerWidth?: number }>({})
 
   const onContainerLayout: NonNullable<ViewProps['onLayout']> = useCallback(event => {
@@ -51,7 +53,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
           <TranslatedText
             i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_headline"
             textStyle="CaptionSemibold"
-            textStyleOverrides={styles.voucherCodeHeadline}
+            textStyleOverrides={[styles.voucherCodeHeadline, { color: colors.labelColor }]}
           />
           <Pressable
             hitSlop={HITSLOP}
@@ -60,9 +62,9 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             testID={buildTestId('reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode')}
             accessibilityRole="button"
             accessibilityLabel={orderEntry.voucherCode}>
-            <Text style={styles.voucherCodeText}>{orderEntry.voucherCode}</Text>
-            <Icon
-              source="Clipboard"
+            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
+            <SvgImage
+              type="clipboard"
               style={styles.voucherCodeCopyIcon}
               accessibilityLabel={t('productDetail_offer_copyToClipboard')}
             />
@@ -73,7 +75,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
         <Button
           variant="tertiary"
           i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
-          iconSource="LinkArrow"
+          iconSource="link-arrow"
           iconPosition="left"
           widthOption="grow"
           bodyStyleOverrides={styles.voucherRedemptionUrlButton}
@@ -96,18 +98,15 @@ const styles = StyleSheet.create({
   voucherCodeHeadline: {
     ...textStyles.CaptionSemibold,
     marginBottom: spacing[2],
-    color: colors.moonDarkest,
   },
   voucherCodeContainer: {
     flexDirection: 'row',
     marginBottom: spacing[6],
-  },
-  voucherCodeText: {
-    ...textStyles.HeadlineH4Extrabold,
-    color: colors.moonDarkest,
+    backgroundColor: 'red',
   },
   voucherCodeCopyIcon: {
     marginLeft: spacing[5],
+    backgroundColor: 'red',
   },
   voucherRedemptionUrlButton: {
     marginBottom: spacing[7],

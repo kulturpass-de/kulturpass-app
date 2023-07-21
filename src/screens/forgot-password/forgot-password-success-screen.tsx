@@ -8,7 +8,7 @@ import { ScreenContent } from '../../components/screen/screen-content'
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type ForgotPasswordSuccessScreenProps = {
@@ -17,6 +17,8 @@ export type ForgotPasswordSuccessScreenProps = {
 }
 export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenProps> = props => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const { onHeaderPressClose, onToLogin } = props
 
   return (
@@ -36,7 +38,7 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
         />
         <TranslatedText
           textStyle="BodyRegular"
-          textStyleOverrides={styles.description}
+          textStyleOverrides={[styles.description, { color: colors.labelColor }]}
           i18nKey="forgotPasswordSuccess_copytext"
           testID={buildTestId('forgotPasswordSuccess_copytext')}
         />
@@ -60,6 +62,5 @@ const styles = StyleSheet.create({
   description: {
     marginBottom: spacing[6],
     textAlign: 'center',
-    color: colors.primaryDark,
   },
 })

@@ -27,7 +27,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
   return (
     <ProductDetailSection
       testID={sectionTestID}
-      iconSource="MapPin"
+      iconSource="map-pin"
       sectionCaptioni18nKey="productDetail_voucher_pickupPoint_caption">
       <Address
         name={voucherPickupPoint.name}

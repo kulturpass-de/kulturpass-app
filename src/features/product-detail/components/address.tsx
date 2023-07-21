@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { Icon } from '../../../components/icon/icon'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { copyAddressToClipboard } from '../utils'
@@ -31,6 +31,7 @@ export const Address: React.FC<AddressProps> = ({
   showDistance = true,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const copyToClipboard = useCallback(() => {
@@ -50,20 +51,20 @@ export const Address: React.FC<AddressProps> = ({
           {name ? (
             <Text
               testID={addTestIdModifier(baseTestId, 'name')}
-              style={[textStyles.BodyBlack, { color: colors.primaryDark }]}>
+              style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
               {name}
             </Text>
           ) : null}
           {street ? (
             <Text
               testID={addTestIdModifier(baseTestId, 'street')}
-              style={[textStyles.BodyRegular, { color: colors.primaryDark }]}>
+              style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
               {street}
             </Text>
           ) : null}
           <Text
             testID={addTestIdModifier(baseTestId, 'city')}
-            style={[textStyles.BodyRegular, { color: colors.primaryDark }]}>
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
             {postalCode} {city}
           </Text>
         </View>
@@ -74,12 +75,14 @@ export const Address: React.FC<AddressProps> = ({
             accessibilityRole="button"
             accessibilityLabel={t('productDetail_offer_copyToClipboard')}
             onPress={copyToClipboard}>
-            {({ pressed }) => <Icon source={pressed ? 'ClipboardCopy' : 'Clipboard'} width={24} height={24} />}
+            {({ pressed }) => <SvgImage type={pressed ? 'copy-clipboard' : 'clipboard'} width={24} height={24} />}
           </Pressable>
         ) : null}
       </View>
       {showDistance && distance ? (
-        <Text testID={addTestIdModifier(baseTestId, 'distance')} style={[textStyles.BodySmallBold, styles.distance]}>
+        <Text
+          testID={addTestIdModifier(baseTestId, 'distance')}
+          style={[textStyles.BodySmallBold, styles.distance, { color: colors.labelColor }]}>
           {t('productDetail_offer_distance', { distance })}
         </Text>
       ) : null}
@@ -90,7 +93,6 @@ export const Address: React.FC<AddressProps> = ({
 const styles = StyleSheet.create({
   distance: {
     paddingTop: spacing[3],
-    color: colors.moonDarkest,
   },
   addressSection: {
     flexDirection: 'row',

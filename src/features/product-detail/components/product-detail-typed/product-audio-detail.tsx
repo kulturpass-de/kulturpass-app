@@ -21,7 +21,7 @@ export const ProductAudioDetail: React.FC<ProductAudioDetailProps> = ({ productD
       {audioFormat ? (
         <ProductDetailSection
           testID={sectionTestID}
-          iconSource="Tag"
+          iconSource="tag"
           sectionCaptioni18nKey="productDetail_audio_caption">
           <ProductDetailEntry i18nKey="productDetail_audio_ean" value={ean} />
           <ProductDetailEntry

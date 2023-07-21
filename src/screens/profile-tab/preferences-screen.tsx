@@ -40,7 +40,6 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
             testID={buildTestId('editPreferences_title')}
             onPressClose={onPressClose}
             screenType="subscreen"
-            borderBottom
           />
         }>
         <Preferences

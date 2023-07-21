@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { environmentConfigurations } from '../../services/environment-configuration/environment-configuration'
 import { useEnvironmentConfiguration } from '../../services/environment-configuration/hooks/use-environment-configuration'
 import { changeEnvironment } from '../../services/environment-configuration/redux/thunks/change-environment'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type EnvironmentConfigScreenProps = {
@@ -24,6 +24,8 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
   onHeaderPressClose,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const dispatch = useDispatch<AppDispatch>()
 
   const currentEnvironmentConfiguration = useEnvironmentConfiguration()
@@ -50,7 +52,7 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
               key={environmentConfigurationItem.name}
               icon={
                 currentEnvironmentConfiguration.name === environmentConfigurationItem.name ? (
-                  <Icon source="Chevron" width={24} height={24} />
+                  <SvgImage type="chevron" width={24} height={24} />
                 ) : (
                   <View style={styles.noIcon} />
                 )
@@ -62,7 +64,11 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
             />
           )
         })}
-        <Text style={styles.currentEnvironmentConfiguration}>
+        <Text
+          style={[
+            styles.currentEnvironmentConfiguration,
+            { color: colors.labelColor, borderColor: colors.labelColor },
+          ]}>
           {JSON.stringify(currentEnvironmentConfiguration, null, 4)}
         </Text>
       </ScreenContent>
@@ -76,9 +82,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing[4],
     paddingHorizontal: spacing[5],
     borderWidth: 1,
-    borderColor: colors.moonDarkest,
     borderRadius: 5,
-    color: colors.moonDarkest,
   },
   noIcon: {
     width: 24,

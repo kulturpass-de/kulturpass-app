@@ -25,7 +25,7 @@ export const ProductDetailOffer: React.FC<ProductDetailOfferProps> = ({
   return (
     <ProductDetailSection
       testID={sectionTestID}
-      iconSource="Coupon"
+      iconSource="coupon"
       sectionCaptioni18nKey="productDetail_offer_caption">
       <Address
         name={offerInfo.shopName}

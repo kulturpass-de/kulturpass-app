@@ -1,12 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Icon } from '../../../components/icon/icon'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Category, Price } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
@@ -25,6 +24,7 @@ const PRODUCT_TYPE_ICON_SIZE = {
 
 export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ productDetail, price }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
 
@@ -36,50 +36,48 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
       : svgForProductType[productDetail.productType]
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.secondaryBackground }]}>
       <View style={styles.topContainer}>
         <View style={styles.textContainer}>
           {category?.name ? (
             <Text
-              style={[textStyles.MicroMediumCaps, styles.categoryText]}
+              style={[textStyles.MicroMediumCaps, styles.categoryText, { color: colors.labelColor }]}
               accessibilityLabel={t('productDetail_confirmReservation_productCategory')}
               testID={buildTestId('productDetail_confirmReservation_productCategory')}>
               {category.name}
             </Text>
           ) : null}
           <Text
-            style={[textStyles.BodyRegular, { color: colors.moonDarkest }]}
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}
             accessibilityLabel={t('productDetail_confirmReservation_productName')}
             numberOfLines={2}
             testID={buildTestId('productDetail_confirmReservation_productName')}>
             {productDetail.name}
           </Text>
         </View>
-        {svgImageType !== undefined ? (
-          <SvgImage
-            type={svgImageType}
-            width={PRODUCT_TYPE_ICON_SIZE.width}
-            height={PRODUCT_TYPE_ICON_SIZE.height}
-            testID={buildTestId('productDetail_confirmReservation_overview')}
-          />
-        ) : null}
+        <SvgImage
+          type={svgImageType ?? 'pic-unknown-2'}
+          width={PRODUCT_TYPE_ICON_SIZE.width}
+          height={PRODUCT_TYPE_ICON_SIZE.height}
+          testID={buildTestId('productDetail_confirmReservation_overview')}
+        />
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.productPriceInfoContainer}>
           {!isVoucherPickup && productDetail.productType === ProductTypes.Voucher ? (
             <>
-              <Icon source="Info" width={16} height={16} />
+              <SvgImage type="info" width={16} height={16} />
               <TranslatedText
                 i18nKey="productDetail_confirmReservation_productPriceInfo"
                 textStyle="CaptionExtrabold"
-                textStyleOverrides={styles.productPriceInfo}
+                textStyleOverrides={(styles.productPriceInfo, { color: colors.labelColor })}
                 testID={buildTestId('productDetail_confirmReservation_productPriceInfo')}
               />
             </>
           ) : null}
         </View>
         <Text
-          style={[textStyles.HeadlineH3Extrabold, styles.productPrice]}
+          style={[textStyles.HeadlineH3Extrabold, styles.productPrice, { color: colors.labelColor }]}
           accessibilityLabel={t('productDetail_confirmReservation_productPrice')}
           testID={buildTestId('productDetail_confirmReservation_productPrice')}>
           {formattedPrice}
@@ -91,7 +89,6 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.basicWhite,
     borderRadius: 16,
     flexDirection: 'column',
     paddingLeft: spacing[5],
@@ -110,7 +107,6 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     paddingBottom: spacing[2],
-    color: colors.moonDarkest,
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -126,7 +122,6 @@ const styles = StyleSheet.create({
     paddingLeft: spacing[2],
   },
   productPrice: {
-    color: colors.moonDarkest,
     paddingHorizontal: spacing[5],
   },
 })

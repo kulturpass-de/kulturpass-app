@@ -161,7 +161,6 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
             testID={buildTestId('updateProfile_headline')}
             onPressClose={onHeaderPressClose}
             screenType="subscreen"
-            borderBottom
           />
         }>
         <ErrorAlert error={visibleError} onDismiss={setVisibleError} />

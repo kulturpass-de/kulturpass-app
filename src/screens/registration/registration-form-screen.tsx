@@ -93,7 +93,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
   })
 
   return (
-    <ModalScreen testID={buildTestId('registration_form')}>
+    <ModalScreen whiteBottom testID={buildTestId('registration_form')}>
       <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader

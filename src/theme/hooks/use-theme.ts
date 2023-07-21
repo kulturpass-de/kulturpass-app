@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { StatusBarStyle, useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'
 import { useSelector } from 'react-redux'
 import { colorMappings as colorMappingsDark } from '../dark/color-mappings'
 import { colorMappings as colorMappingsLight } from '../light/color-mappings'
@@ -24,14 +24,6 @@ export const useTheme = () => {
     return systemColorScheme ?? 'light'
   }, [darkModePreviewEnabled, forcedTheme, systemColorScheme])
 
-  const barStyle: StatusBarStyle = useMemo(() => {
-    if (darkModePreviewEnabled) {
-      return 'dark-content'
-    }
-
-    return colorScheme === 'dark' ? 'light-content' : 'dark-content'
-  }, [colorScheme, darkModePreviewEnabled])
-
   const colors: ColorMappings = useMemo(() => {
     if (colorScheme === 'dark') {
       return colorMappingsDark
@@ -42,7 +34,6 @@ export const useTheme = () => {
 
   return {
     colorScheme,
-    barStyle,
     colors,
   }
 }

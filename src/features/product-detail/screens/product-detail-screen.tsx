@@ -8,7 +8,7 @@ import { TryAgainButton } from '../../../components/try-again-button/try-again-b
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
@@ -42,6 +42,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   randomMode,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
   const scrollY = useRef(new Animated.Value(0)).current
 
   const productImage = useProductImageUrl(productDetail.images, 'zoom')
@@ -88,7 +89,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
               <View style={styles.description}>
                 <HtmlText
                   testID={addTestIdModifier(testID, 'description')}
-                  style={styles.descriptionHtmlText}
+                  style={[textStyles.BodyRegular, { color: colors.labelColor }]}
                   html={productDetail.description}
                 />
               </View>
@@ -149,9 +150,5 @@ const styles = StyleSheet.create({
   },
   description: {
     paddingTop: spacing[7],
-  },
-  descriptionHtmlText: {
-    ...textStyles.BodyRegular,
-    color: colors.moonDarkest,
   },
 })

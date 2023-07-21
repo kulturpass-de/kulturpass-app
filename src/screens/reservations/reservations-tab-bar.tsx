@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { isDeviceTextScaled } from '../../theme/utils'
@@ -25,6 +25,7 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
   accessibilityHint,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const onPress = useCallback(() => {
@@ -62,10 +63,16 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
       accessible>
       <Text
         testID={buildTestId(`reservations_${routeNameLowerCase}_navigation_title`)}
-        style={[styles.tabBarLabel, isFocused ? textStyles.BodyExtrabold : textStyles.BodyMedium]}>
+        style={[
+          styles.tabBarLabel,
+          { color: colors.labelColor },
+          isFocused ? textStyles.BodyExtrabold : textStyles.BodyMedium,
+        ]}>
         {t(`reservations_${routeNameLowerCase}_navigation_title`)}
       </Text>
-      {isFocused ? <View style={styles.tabBarIndicatorStyle} /> : null}
+      {isFocused ? (
+        <View style={[styles.tabBarIndicatorStyle, { backgroundColor: colors.reservationsTabBarIndicator }]} />
+      ) : null}
     </Pressable>
   )
 }
@@ -108,10 +115,8 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     paddingHorizontal: spacing[4],
     paddingBottom: spacing[2],
-    color: colors.moonDarkest,
   },
   tabBarIndicatorStyle: {
-    backgroundColor: colors.moonDarkest,
     height: 2,
     borderRadius: 100,
   },

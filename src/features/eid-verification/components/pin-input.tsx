@@ -14,10 +14,10 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import { Icon } from '../../../components/icon/icon'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
-import { colors } from '../../../theme/colors'
 import { HITSLOP_PIN } from '../../../theme/constants'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { FormFieldContainer } from '../../form-validation/components/form-field-container'
@@ -34,6 +34,8 @@ export type PinInputProps = {
 
 export const PinInput = React.forwardRef<TextInput, PinInputProps>(
   ({ value = '', onChange, pinLength, numRows = 1, testID, error, variant }, externalInputRef) => {
+    const { colors } = useTheme()
+
     const [innerInputRef, setFocusInnerInputRef] = useAccessibilityFocus()
     const [toggleShowPinRef, setFocusToggleShowPinRef] = useAccessibilityFocus()
 
@@ -106,11 +108,11 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
         let borderStyle: ViewStyle
         const selected = index === selectedIndex && focusedIndex !== undefined
         if (selected) {
-          borderStyle = styles.pinFieldFocused
+          borderStyle = { borderColor: colors.textFieldBorderFocused }
         } else if (error !== undefined) {
-          borderStyle = styles.pinFieldError
+          borderStyle = { borderColor: colors.textFieldBorderError }
         } else {
-          borderStyle = styles.pinFieldUnfocused
+          borderStyle = { borderColor: colors.textFieldBorder }
         }
 
         let fieldValue: string | undefined = value[index]
@@ -153,17 +155,37 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
             disabled={index > nextInputIndex}
             // eslint-disable-next-line react/jsx-no-bind
             onPress={onPress}
-            style={[styles.pinField, borderStyle]}>
+            style={[
+              styles.pinField,
+              { backgroundColor: colors.secondaryBackground },
+              borderStyle,
+              styles.pinFieldBorder,
+            ]}>
             <Text
               accessible={false}
-              style={[textStyles.HeadlineH4Bold, styles.pinFieldText, selected && styles.pinFieldFocusedText]}>
+              style={[textStyles.HeadlineH4Bold, { color: colors.labelColor }, selected && styles.pinFieldFocusedText]}>
               {fieldValue}
             </Text>
             {selected && <Caret />}
           </Pressable>
         )
       },
-      [selectedIndex, focusedIndex, error, value, showPin, t, variant, nextInputIndex, innerInputRef],
+      [
+        selectedIndex,
+        focusedIndex,
+        error,
+        value,
+        showPin,
+        t,
+        variant,
+        nextInputIndex,
+        colors.secondaryBackground,
+        colors.labelColor,
+        colors.textFieldBorderFocused,
+        colors.textFieldBorderError,
+        colors.textFieldBorder,
+        innerInputRef,
+      ],
     )
 
     const focusSelectedIndex = useCallback(() => {
@@ -228,11 +250,11 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
               showPin ? `eid_${variant}_form_accessibilityLabel_hide` : `eid_${variant}_form_accessibilityLabel_show`,
             )}
             hitSlop={HITSLOP_PIN}>
-            <Icon
-              source={showPin ? 'ShowPassword' : 'HidePassword'}
+            <SvgImage
+              type={showPin ? 'show-password' : 'hide-password'}
               width={24}
               height={24}
-              tintColor={colors.basicBlack}
+              // tintColor={colors.labelColor}
             />
           </Pressable>
         </View>
@@ -246,6 +268,7 @@ const replaceCharAt = (str: string, pos: number, newChar: string): string => {
 }
 
 const Caret = () => {
+  const { colors } = useTheme()
   const fadeAim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -269,7 +292,7 @@ const Caret = () => {
 
   return (
     <Animated.View style={[styles.caretContainer, { opacity: fadeAim }]}>
-      <View style={styles.caret} />
+      <View style={[styles.caret, { borderLeftColor: colors.textFieldBorderFocused }]} />
     </Animated.View>
   )
 }
@@ -294,7 +317,6 @@ const styles = StyleSheet.create({
   },
   pinField: {
     position: 'relative',
-    backgroundColor: colors.basicWhite,
     borderRadius: 8,
     width: 40,
     minHeight: 56,
@@ -314,28 +336,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   caret: {
-    borderLeftColor: colors.primaryLight,
     borderLeftWidth: 2,
     width: 23,
     height: 26,
   },
-  pinFieldText: {
-    color: colors.moonDarkest,
-  },
-  pinFieldFocused: {
+  pinFieldBorder: {
     borderWidth: 2,
-    borderColor: colors.primaryLight,
   },
   pinFieldFocusedText: {
     opacity: 0.5,
-  },
-  pinFieldUnfocused: {
-    borderWidth: 2,
-    borderColor: colors.basicBlack,
-  },
-  pinFieldError: {
-    borderWidth: 2,
-    borderColor: colors.redBase,
   },
   input: {
     position: 'absolute',

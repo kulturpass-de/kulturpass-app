@@ -10,7 +10,7 @@ import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { AvailableTranslations, AvailableTextStyles } from '../../components/translated-text/types'
 import { addTestIdModifier, buildTestId, TestId } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from '../../utils/links/hooks/use-localized-environment-url'
 import { RegistrationDataPrivacyCancelAlert } from './registration-data-privacy-cancel-alert'
@@ -35,11 +35,17 @@ export const BulletListItem: React.FC<BulletListItemProps> = ({
   textStyle = 'BodyRegular',
   style,
 }) => {
+  const { colors } = useTheme()
   return (
     <View style={[bulletStyles.container, style]}>
       {/* <Icon source={'ArrowBack'} width={24} height={24} /> */}
-      <View style={bulletStyles.bulletPoint} />
-      <TranslatedText testID={testID} i18nKey={i18nKey} textStyle={textStyle} textStyleOverrides={bulletStyles.text} />
+      <View style={[bulletStyles.bulletPoint, { backgroundColor: colors.labelColor }]} />
+      <TranslatedText
+        testID={testID}
+        i18nKey={i18nKey}
+        textStyle={textStyle}
+        textStyleOverrides={{ color: colors.labelColor }}
+      />
     </View>
   )
 }
@@ -54,13 +60,9 @@ const bulletStyles = StyleSheet.create({
   bulletPoint: {
     width: 4,
     height: 4,
-    backgroundColor: colors.basicBlack,
     borderRadius: 2,
     marginRight: spacing[2],
     marginHorizontal: spacing[1],
-  },
-  text: {
-    color: colors.moonDarkest,
   },
 })
 export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScreenProps> = ({
@@ -68,6 +70,7 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
   onContinue,
   onCancelRegistration,
 }) => {
+  const { colors } = useTheme()
   const [showCancelAlert, setShowCancelAlert] = useState(false)
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
@@ -99,13 +102,13 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
           i18nKey="registration_data_privacy_headline"
           textStyle={'HeadlineH3Extrabold'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'headline')}
-          textStyleOverrides={styles.headline}
+          textStyleOverrides={[styles.headline, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="registration_data_privacy_introtext"
           textStyle={'BodyRegular'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'introtext')}
-          textStyleOverrides={styles.introtext}
+          textStyleOverrides={[styles.introtext, { color: colors.labelColor }]}
         />
         <BulletListItem
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item1')}
@@ -135,7 +138,7 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
           i18nKey="registration_data_privacy_copytext"
           textStyle={'BodyRegular'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext')}
-          textStyleOverrides={styles.dataPrivacyCopyText}
+          textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
         />
         <LinkText
           link={dpsDocumentUrl}
@@ -175,16 +178,13 @@ const styles = StyleSheet.create({
   headline: {
     paddingTop: spacing[7],
     paddingBottom: spacing[7],
-    color: colors.basicBlack,
   },
   introtext: {
     paddingBottom: spacing[5],
-    color: colors.moonDarkest,
   },
   dataPrivacyCopyText: {
     paddingTop: spacing[5],
     paddingBottom: spacing[2],
-    color: colors.moonDarkest,
   },
   dataPrivacyLinkText: {
     paddingTop: spacing[2],

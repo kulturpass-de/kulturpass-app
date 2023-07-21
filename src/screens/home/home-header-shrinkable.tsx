@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useCallback, useState } from 'react'
 import { Animated, Easing, LayoutChangeEvent, Platform, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type HomeHeaderShrinkableProps = {
@@ -14,6 +14,7 @@ export const HomeHeaderShrinkable: React.FC<PropsWithChildren<HomeHeaderShrinkab
   onHeight,
   children,
 }) => {
+  const { colors } = useTheme()
   const [height, setHeight] = useState<number>(0)
 
   const translateY = offset.interpolate({
@@ -36,11 +37,19 @@ export const HomeHeaderShrinkable: React.FC<PropsWithChildren<HomeHeaderShrinkab
   return (
     <>
       <Animated.View style={[styles.container, { minHeight: height }, { transform: [{ translateY }] }]}>
-        <View style={styles.innerContainer} onLayout={onLayout}>
+        <View style={[styles.innerContainer, { backgroundColor: colors.primaryBackground }]} onLayout={onLayout}>
           {children}
         </View>
       </Animated.View>
-      {top > 0 ? <View style={[styles.safeArea, { height: top, transform: [{ translateY: -top }] }]} /> : null}
+      {top > 0 ? (
+        <View
+          style={[
+            styles.safeArea,
+            { backgroundColor: colors.primaryBackground },
+            { height: top, transform: [{ translateY: -top }] },
+          ]}
+        />
+      ) : null}
     </>
   )
 }
@@ -63,11 +72,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[2],
     marginHorizontal: spacing[2],
     paddingTop: Platform.OS === 'ios' ? spacing[1] : spacing[4],
-    backgroundColor: colors.basicBackground,
   },
   safeArea: {
     zIndex: 20,
-    backgroundColor: colors.basicBackground,
     position: 'absolute',
     top: 0,
     left: 0,

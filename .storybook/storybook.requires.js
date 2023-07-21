@@ -51,7 +51,6 @@ const getStories = () => {
     "./src/components/form-fields/password-form-field.stories.tsx": require("../src/components/form-fields/password-form-field.stories.tsx"),
     "./src/components/form-fields/text-form-field.stories.tsx": require("../src/components/form-fields/text-form-field.stories.tsx"),
     "./src/components/html-text/html-text.stories.tsx": require("../src/components/html-text/html-text.stories.tsx"),
-    "./src/components/icon/icon.stories.tsx": require("../src/components/icon/icon.stories.tsx"),
     "./src/components/info-box/info-box.stories.tsx": require("../src/components/info-box/info-box.stories.tsx"),
     "./src/components/link-text/link-text.stories.tsx": require("../src/components/link-text/link-text.stories.tsx"),
     "./src/components/list-item/list-item.stories.tsx": require("../src/components/list-item/list-item.stories.tsx"),

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Order } from '../../../services/api/types/commerce/api-types'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { dateFormat } from '../../../utils/date/date-format'
 
@@ -11,6 +11,8 @@ export type ReservationDetailStatusInfoProps = {
 }
 
 export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoProps> = ({ order }) => {
+  const { colors } = useTheme()
+
   const validUntil = order.entries?.[0].voucherValidTo ? new Date(order.entries[0].voucherValidTo) : undefined
   const orderCode = order.consignments?.find(() => true)?.code || `${order.code}-A`
   const reservationDate = order.created ? new Date(order.created) : undefined
@@ -26,7 +28,7 @@ export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoPr
           i18nKey="reservationDetail_statusInfo_validUntil_label"
           i18nParams={{ validUntil, formatParams: { validUntil: dateFormat } }}
           textStyle="CaptionSemibold"
-          textStyleOverrides={styles.validUntil}
+          textStyleOverrides={[styles.validUntil, { color: colors.labelColor }]}
         />
       ) : null}
       {orderCode ? (
@@ -34,7 +36,7 @@ export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoPr
           i18nKey="reservationDetail_statusInfo_orderCode_label"
           i18nParams={{ orderCode }}
           textStyle="CaptionSemibold"
-          textStyleOverrides={styles.orderCode}
+          textStyleOverrides={[styles.orderCode, { color: colors.secondaryLabelColor }]}
         />
       ) : null}
       {reservationDate ? (
@@ -42,7 +44,7 @@ export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoPr
           i18nKey="reservationDetail_statusInfo_reservationDate_label"
           i18nParams={{ reservationDate, formatParams: { reservationDate: dateFormat } }}
           textStyle="CaptionSemibold"
-          textStyleOverrides={styles.reservationDate}
+          textStyleOverrides={[styles.reservationDate, { color: colors.secondaryLabelColor }]}
         />
       ) : null}
     </View>
@@ -58,14 +60,11 @@ const styles = StyleSheet.create({
   },
   validUntil: {
     marginTop: spacing[2],
-    color: colors.moonDarkest,
   },
   orderCode: {
     marginTop: spacing[2],
-    color: colors.moonBase,
   },
   reservationDate: {
     marginTop: spacing[2],
-    color: colors.moonBase,
   },
 })

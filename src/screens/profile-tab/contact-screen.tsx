@@ -7,7 +7,7 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type ContactScreenProps = {
@@ -16,6 +16,7 @@ export type ContactScreenProps = {
 
 export const ContactScreen: React.FC<ContactScreenProps> = ({ onPressBackButton }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
 
   const SCREEN_TEST_ID = buildTestId('contact')
@@ -39,13 +40,13 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onPressBackButton 
           i18nKey="contact_content_contact_title"
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_contact_title')}
           textStyle="HeadlineH4Bold"
-          textStyleOverrides={styles.title}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="contact_content_contact_text"
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_contact_text')}
           textStyle="BodyRegular"
-          textStyleOverrides={styles.text}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
         />
         <EMailLink
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_contact_email_recipient')}
@@ -56,13 +57,13 @@ export const ContactScreen: React.FC<ContactScreenProps> = ({ onPressBackButton 
           i18nKey="contact_content_report_title"
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_report_title')}
           textStyle="HeadlineH4Bold"
-          textStyleOverrides={styles.title}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="contact_content_report_text"
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_report_text')}
           textStyle="BodyRegular"
-          textStyleOverrides={styles.text}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
         />
         <EMailLink
           testID={addTestIdModifier(SCREEN_TEST_ID, 'content_report_email_recipient')}
@@ -85,10 +86,8 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: spacing[8],
-    color: colors.moonDarkest,
   },
   text: {
     paddingVertical: spacing[5],
-    color: colors.moonDarkest,
   },
 })

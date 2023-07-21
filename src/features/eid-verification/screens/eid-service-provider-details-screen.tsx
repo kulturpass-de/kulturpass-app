@@ -7,7 +7,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 
@@ -23,6 +23,7 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
   onClose,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { l: language } = useTranslation()
 
   const subject = `${certificate.description.subjectName}\n${certificate.description.subjectUrl}`
@@ -51,10 +52,10 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
             textStyle="SubtitleSemibold"
             i18nKey="eid_serviceProviderDetails_subject_title"
             testID={buildTestId('eid_serviceProviderDetails_subject_title')}
-            textStyleOverrides={styles.itemTitle}
+            textStyleOverrides={[styles.itemTitle, { color: colors.labelColor }]}
           />
           <Text
-            style={[textStyles.BodyRegular, styles.text]}
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}
             accessible
             testID={buildTestId('eid_serviceProviderDetails_subject_content')}>
             {subject}
@@ -65,10 +66,10 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
             textStyle="SubtitleSemibold"
             i18nKey="eid_serviceProviderDetails_issuer_title"
             testID={buildTestId('eid_serviceProviderDetails_issuer_title')}
-            textStyleOverrides={styles.itemTitle}
+            textStyleOverrides={[styles.itemTitle, { color: colors.labelColor }]}
           />
           <Text
-            style={[textStyles.BodyRegular, styles.text]}
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}
             accessible
             testID={buildTestId('eid_serviceProviderDetails_issuer_content')}>
             {issuer}
@@ -79,10 +80,10 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
             textStyle="SubtitleSemibold"
             i18nKey="eid_serviceProviderDetails_termsOfUsage_title"
             testID={buildTestId('eid_serviceProviderDetails_termsOfUsage_title')}
-            textStyleOverrides={styles.itemTitle}
+            textStyleOverrides={[styles.itemTitle, { color: colors.labelColor }]}
           />
           <Text
-            style={[textStyles.BodyRegular, styles.text]}
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}
             accessible
             testID={buildTestId('eid_serviceProviderDetails_termsOfUsage_content')}>
             {termsOfUsage}
@@ -93,10 +94,10 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
             textStyle="SubtitleSemibold"
             i18nKey="eid_serviceProviderDetails_validity_title"
             testID={buildTestId('eid_serviceProviderDetails_validity_title')}
-            textStyleOverrides={styles.itemTitle}
+            textStyleOverrides={[styles.itemTitle, { color: colors.labelColor }]}
           />
           <Text
-            style={[textStyles.BodyRegular, styles.text]}
+            style={[textStyles.BodyRegular, { color: colors.labelColor }]}
             accessible
             testID={buildTestId('eid_serviceProviderDetails_validity_content')}>
             {validity}
@@ -122,9 +123,5 @@ export const styles = StyleSheet.create({
   },
   itemTitle: {
     paddingBottom: spacing[1],
-    color: colors.basicBlack,
-  },
-  text: {
-    color: colors.basicBlack,
   },
 })

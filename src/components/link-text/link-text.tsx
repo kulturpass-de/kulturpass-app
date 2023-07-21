@@ -2,9 +2,9 @@ import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, TextStyle, View } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { openLink } from '../../utils/links/utils'
-import { Icon } from '../icon/icon'
+import { SvgImage } from '../svg-image/svg-image'
 import { TranslatedText, TranslatedTextProps } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
 
@@ -28,13 +28,14 @@ export const LinkText: React.FC<LinkTextProps> = ({
   flex = true,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const handlePress = useCallback(() => openLink(link), [link])
 
   return (
     <View style={[styles.container, style]}>
-      <Icon width={iconSize} height={iconSize} source="LinkArrow" />
+      <SvgImage width={iconSize} height={iconSize} type="link-arrow" />
       <Pressable
         style={[styles.textPadding, flex ? styles.textFlex : undefined]}
         onPress={handlePress}
@@ -45,7 +46,7 @@ export const LinkText: React.FC<LinkTextProps> = ({
         testID={addTestIdModifier(testID, 'button')}>
         <TranslatedText
           testID={testID}
-          textStyleOverrides={styles.text}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
           textStyle={textStyle ?? 'BodyRegular'}
           i18nKey={i18nKey}
         />
@@ -67,7 +68,6 @@ const styles = StyleSheet.create({
   },
   text: {
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
     textDecorationLine: 'underline',
   },
 })

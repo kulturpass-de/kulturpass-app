@@ -1,16 +1,17 @@
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { Divider } from '../../../components/divider/divider'
 import { HtmlText } from '../../../components/html-text/html-text'
-import { Icon } from '../../../components/icon/icon'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ScreenContent } from '../../../components/screen/screen-content'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
@@ -42,6 +43,8 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   completedReservation,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const [loading, setLoading] = useState(false)
   const [isCancelTriggered, setIsCancelTriggered] = useState(false)
   const [cancelReservation] = commerceApi.useCancelReservationMutation()
@@ -97,13 +100,13 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
       <ReservationDetailHeader onClose={onClose} order={order} />
 
       <ScreenContent>
-        <View style={styles.topContainer}>
+        <View style={[styles.topContainer, { backgroundColor: colors.secondaryBackground }]}>
           {orderStatusTranslattions?.headline ? (
             <TranslatedText
               i18nKey={orderStatusTranslattions.headline}
               testID={buildTestId(orderStatusTranslattions.headline)}
               textStyle={orderStatus === 'READY_FOR_PICKUP' ? 'HeadlineH3Extrabold' : 'HeadlineH4Extrabold'}
-              textStyleOverrides={styles.topContainerHeadline}
+              textStyleOverrides={[styles.topContainerHeadline, { color: colors.labelColor }]}
             />
           ) : null}
           {orderStatus === 'READY_FOR_PICKUP' && orderEntry ? (
@@ -112,19 +115,19 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           {orderStatus !== 'READY_FOR_PICKUP' ? <ReservationDetailStatusImage order={order} /> : null}
           <ReservationDetailStatusInfo order={order} />
         </View>
-        <View style={styles.bottomContainer}>
+        <View style={[styles.bottomContainer, { backgroundColor: colors.primaryBackground }]}>
           {orderStatusTranslattions?.copytext ? (
             <>
               <View style={styles.bottomContainerStatusDescription}>
-                <Icon source={'Boings'} width={24} height={24} style={styles.bottomContainerStatusDescriptionIcon} />
+                <SvgImage type={'boings'} width={24} height={24} style={styles.bottomContainerStatusDescriptionIcon} />
                 <TranslatedText
                   testID={buildTestId('orderStatus')}
                   i18nKey={orderStatusTranslattions.copytext}
                   textStyle="BodySmallBold"
-                  textStyleOverrides={styles.bottomContainerStatusDescriptionText}
+                  textStyleOverrides={[styles.bottomContainerStatusDescriptionText, { color: colors.labelColor }]}
                 />
               </View>
-              <View style={styles.bottomContainerStatusDescriptionSpacer} />
+              <Divider marginBottom={spacing[5]} marginTop={0} />
             </>
           ) : null}
           <ProductDetailTitle productDetail={productDetail} />
@@ -133,7 +136,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           <ProductDetailTyped productDetail={productDetail} />
           <HtmlText
             testID={buildTestId('productDescription')}
-            style={[textStyles.BodyRegular, styles.bottomContainerProductDescription]}
+            style={[textStyles.BodyRegular, styles.bottomContainerProductDescription, { color: colors.labelColor }]}
             html={productDetail.description}
           />
         </View>
@@ -156,21 +159,18 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing[5],
     paddingTop: spacing[5],
     paddingHorizontal: spacing[6],
-    backgroundColor: colors.basicWhite,
     borderRadius: spacing[5],
     alignItems: 'center',
     zIndex: 20,
   },
   topContainerHeadline: {
     marginBottom: spacing[5],
-    color: colors.moonDarkest,
   },
 
   bottomContainer: {
     marginTop: -spacing[5],
     paddingTop: spacing[7],
     paddingHorizontal: spacing[5],
-    backgroundColor: colors.basicBackground,
     zIndex: 10,
   },
   bottomContainerStatusDescription: {
@@ -183,15 +183,8 @@ const styles = StyleSheet.create({
   bottomContainerStatusDescriptionText: {
     flex: 1,
     marginBottom: spacing[5],
-    color: colors.moonDarkest,
-  },
-  bottomContainerStatusDescriptionSpacer: {
-    backgroundColor: colors.transparentBlack30,
-    height: 1,
-    marginBottom: spacing[5],
   },
   bottomContainerProductDescription: {
     paddingVertical: spacing[6],
-    color: colors.moonDarkest,
   },
 })

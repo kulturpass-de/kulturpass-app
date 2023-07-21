@@ -5,14 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
 import { HITSLOP } from '../../theme/constants'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { textStyles } from '../../theme/typography'
-import { Icon } from '../icon/icon'
+import { SvgImage } from '../svg-image/svg-image'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.basicWhite,
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 36,
@@ -20,16 +19,10 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     columnGap: 14,
   },
-  containerBorderBottom: {
-    paddingBottom: 11,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F2F4F5',
-  },
   backButton: { width: 24, height: 24 },
   closeButton: { width: 24, height: 24, marginRight: 14 },
   title: {
     flex: 1,
-    color: colors.moonDarkest,
   },
 })
 
@@ -38,7 +31,6 @@ export type ScreenHeaderProps = {
   testID: string
   onPressBack?: () => void
   onPressClose?: () => void
-  borderBottom?: boolean
   onPress?: TextProps['onPress']
   screenType?: 'screen' | 'subscreen'
 }
@@ -48,24 +40,22 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   testID,
   onPressBack,
   onPressClose,
-  borderBottom,
   screenType = 'screen',
   onPress,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
   const [focusRef, setFocus] = useAccessibilityFocus()
 
   useFocusEffect(setFocus)
-
-  const containerBorderBottomStyle = borderBottom ? styles.containerBorderBottom : {}
 
   const titleFont = screenType === 'screen' ? textStyles.HeadlineH3Extrabold : textStyles.SubtitleExtrabold
 
   return (
     <SafeAreaView
       edges={['top']}
-      style={[styles.container, containerBorderBottomStyle]}
+      style={[styles.container, { backgroundColor: colors.secondaryBackground }]}
       testID={addTestIdModifier(testID, 'header')}>
       {onPressBack && (
         <Pressable
@@ -76,13 +66,13 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           accessibilityLabel={t('back_button')}
           accessibilityRole="button"
           accessible>
-          <Icon source="ArrowBack" />
+          <SvgImage type="arrow-back" width={24} height={24} />
         </Pressable>
       )}
       <Text
         ref={focusRef}
         onPress={onPress}
-        style={[titleFont, styles.title]}
+        style={[titleFont, styles.title, { color: colors.labelColor }]}
         testID={testID}
         accessibilityRole="header"
         accessibilityLabel={title}
@@ -98,7 +88,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           accessibilityLabel={t('close_button')}
           accessibilityRole="button"
           accessible>
-          <Icon source="Close" />
+          <SvgImage type="close" width={24} height={24} />
         </Pressable>
       )}
     </SafeAreaView>

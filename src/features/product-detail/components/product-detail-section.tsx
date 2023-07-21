@@ -1,15 +1,15 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Icon, IconProps } from '../../../components/icon/icon'
+import { SvgImage, SvgImageProps } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export type ProductDetailSectionProps = PropsWithChildren<{
   testID: TestId
-  iconSource: IconProps['source']
+  iconSource: SvgImageProps['type']
   sectionCaptioni18nKey: AvailableTranslations
 }>
 
@@ -19,15 +19,16 @@ export const ProductDetailSection: React.FC<ProductDetailSectionProps> = ({
   iconSource,
   sectionCaptioni18nKey,
 }) => {
+  const { colors } = useTheme()
   return (
     <View style={styles.section}>
-      <Icon source={iconSource} width={24} height={23} />
+      <SvgImage type={iconSource} width={24} height={23} />
       <View style={styles.content}>
         <TranslatedText
           i18nKey={sectionCaptioni18nKey}
           testID={testID}
           textStyle="CaptionSemibold"
-          textStyleOverrides={{ color: colors.moonDarkest }}
+          textStyleOverrides={{ color: colors.labelColor }}
         />
         {children}
       </View>

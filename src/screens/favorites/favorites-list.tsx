@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { FlatList, FlatListProps, ListRenderItem, StyleSheet } from 'react-native'
 import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { spacing } from '../../theme/spacing'
 import { FavoritesEmptyScreen } from './favorites-empty-screen'
 import { FavoritesListItem, ITEM_HEIGHT } from './favorites-list-item'
 import { FavoritesListItemSeparator } from './favorites-list-item-separator'
@@ -53,5 +54,6 @@ export const FavoritesList = ({ favourites, onProductPressed, refreshing, onRefr
 const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
+    paddingHorizontal: spacing[5],
   },
 })

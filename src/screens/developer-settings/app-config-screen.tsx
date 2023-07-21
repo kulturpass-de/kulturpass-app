@@ -8,7 +8,7 @@ import { ScreenContent } from '../../components/screen/screen-content'
 import { commerceApi } from '../../services/api/commerce-api'
 import { RootState } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type AppConfigScreenProps = {
@@ -18,6 +18,7 @@ export type AppConfigScreenProps = {
 
 export const AppConfigScreen: React.FC<AppConfigScreenProps> = ({ onHeaderPressBack, onHeaderPressClose }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const currentAppConfig = useSelector((state: RootState) => state.persisted.appCore.appConfig)
 
@@ -36,14 +37,20 @@ export const AppConfigScreen: React.FC<AppConfigScreenProps> = ({ onHeaderPressB
         onPressClose={onHeaderPressClose}
       />
       <ScreenContent>
-        <View style={styles.buttonListItem}>
+        <View
+          style={[
+            styles.buttonListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
           <Button
             onPress={onPressForceReloadAppConfig}
             testID="appConfig_forceReload_button"
             i18nKey="appConfig_forceReload_button"
           />
         </View>
-        <Text style={styles.currentAppConfig}>{JSON.stringify(currentAppConfig, null, 4)}</Text>
+        <Text style={[styles.currentAppConfig, { borderColor: colors.labelColor, color: colors.labelColor }]}>
+          {JSON.stringify(currentAppConfig, null, 4)}
+        </Text>
       </ScreenContent>
     </ModalScreen>
   )
@@ -55,16 +62,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing[4],
     paddingHorizontal: spacing[5],
     borderWidth: 1,
-    borderColor: colors.moonDarkest,
     borderRadius: 5,
-    color: colors.moonDarkest,
   },
   buttonListItem: {
     flexDirection: 'column',
     paddingHorizontal: spacing[6],
     borderBottomWidth: 2,
-    borderBottomColor: colors.basicBlack,
-    backgroundColor: colors.basicWhite,
     paddingVertical: 12,
   },
 })

@@ -22,7 +22,7 @@ export const ProductMusicInstrumentDetail: React.FC<ProductMusicInstrumentDetail
       {manufacturer ? (
         <ProductDetailSection
           testID={sectionTestID}
-          iconSource="Tag"
+          iconSource="tag"
           sectionCaptioni18nKey="productDetail_musicInstrument_caption">
           <ProductDetailEntry i18nKey="productDetail_musicInstrument_manufacturer" value={manufacturer} />
         </ProductDetailSection>

@@ -10,7 +10,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
@@ -24,6 +24,7 @@ export type EidNewPinScreenProps = {
 
 export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const form = useForm<{ newPin: string; confirmNewPin: string }>({
@@ -68,7 +69,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
             testID={buildTestId('eid_newPinView_content_text')}
             i18nKey="eid_newPinView_content_text"
             textStyle="BodyRegular"
@@ -77,7 +78,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
             testID={buildTestId('eid_newPinView_newPin_title')}
             i18nKey="eid_newPinView_newPin_title"
             textStyle="HeadlineH4Extrabold"
-            textStyleOverrides={{ color: colors.moonDarkest }}
+            textStyleOverrides={{ color: colors.labelColor }}
           />
           <View style={styles.newPinView}>
             <FormFieldWithControl
@@ -93,7 +94,7 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
             testID={buildTestId('eid_newPinView_confirmNewPin_title')}
             i18nKey="eid_newPinView_confirmNewPin_title"
             textStyle="HeadlineH4Extrabold"
-            textStyleOverrides={{ color: colors.moonDarkest }}
+            textStyleOverrides={{ color: colors.labelColor }}
           />
           <View style={styles.confirmPinView}>
             <FormFieldWithControl
@@ -129,7 +130,6 @@ export const styles = StyleSheet.create({
   contentText: {
     paddingVertical: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   newPinView: {
     paddingTop: spacing[9],

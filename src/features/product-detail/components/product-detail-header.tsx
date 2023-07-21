@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
 import { Animated, LayoutChangeEvent, Pressable, StyleSheet, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { Icon } from '../../../components/icon/icon'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { UseProductDetailHeaderHeightReturnType } from '../hooks/use-product-detail-header-height'
 
 type ProductDetailHeaderProps = UseProductDetailHeaderHeightReturnType & {
@@ -22,6 +22,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   onHeaderSetMaxHeight,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const onLayout = useCallback(
@@ -68,10 +69,10 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
           testID={buildTestId('productDetail_header_image')}
           accessibilityLabel={t('productDetail_header_image')}
           resizeMode={FastImage.resizeMode.contain}
-          style={styles.image}
+          style={[styles.image, { backgroundColor: colors.secondaryBackground }]}
           source={{ uri: imageUrl }}
         />
-        <Animated.View style={[styles.overlay, overlayOpacityStyle]} />
+        <Animated.View style={[styles.overlay, { backgroundColor: colors.secondaryBackground }, overlayOpacityStyle]} />
       </Animated.View>
       <Pressable
         hitSlop={HITSLOP}
@@ -80,8 +81,8 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
         accessibilityRole="button"
         accessibilityLabel={t('productDetail_header_closeButton')}
         onPress={onClose}>
-        <View style={styles.closeButton}>
-          <Icon source="Close" width={24} height={24} />
+        <View style={[styles.closeButton, { backgroundColor: colors.secondaryBackground }]}>
+          <SvgImage type="close" width={24} height={24} />
         </View>
       </Pressable>
     </View>
@@ -93,11 +94,9 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     zIndex: 0,
-    backgroundColor: colors.basicWhite,
   },
   overlay: {
     position: 'absolute',
-    backgroundColor: colors.basicWhite,
     top: 0,
     left: 0,
     right: 0,
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     height: 42,
     width: 42,
-    backgroundColor: colors.basicWhite,
     opacity: 0.85,
     alignItems: 'center',
     justifyContent: 'center',

@@ -8,7 +8,7 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { Language } from '../../../services/translation/types'
 import { userSlice } from '../../../services/user/redux/user-slice'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { URLS } from '../../../utils/constants'
 import { OnboardingScreen } from '../components/onboarding-screen'
@@ -18,6 +18,7 @@ export type OnboardingLocationPermissionScreenProps = {
 }
 
 export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPermissionScreenProps> = ({ onNext }) => {
+  const { colors } = useTheme()
   const dispatch = useDispatch()
 
   const onAccept = useCallback(async () => {
@@ -69,7 +70,7 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
             />
           </View>
           <TranslatedText
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
             testID={buildTestId('onboarding_locationPermission_content_additional_text')}
             i18nKey="onboarding_locationPermission_content_additional_text"
             textStyle="BodyRegular"
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   linkContainer: {
     paddingTop: spacing[6],

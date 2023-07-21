@@ -18,7 +18,7 @@ import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
@@ -52,6 +52,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
   getIsValidPostalCode,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const [loading, setLoading] = useState(false)
@@ -135,20 +136,20 @@ export const Preferences: React.FC<PreferencesProps> = ({
         <View style={styles.content}>
           <TranslatedText
             textStyle="HeadlineH4Bold"
-            textStyleOverrides={styles.yourPreferencesTitle}
+            textStyleOverrides={[styles.yourPreferencesTitle, { color: colors.labelColor }]}
             i18nKey="preferences_your_preferences"
             testID={buildTestId('preferences_your_preferences_title')}
           />
           <TranslatedText
             textStyle="BodyRegular"
-            textStyleOverrides={styles.yourPreferencesDescription}
+            textStyleOverrides={[styles.yourPreferencesDescription, { color: colors.labelColor }]}
             i18nKey="preferences_your_preferences_description"
             testID={buildTestId('preferences_your_preferences_description')}
           />
           {withCategoriesLabel ? (
             <TranslatedText
               textStyle="CaptionSemibold"
-              textStyleOverrides={styles.yourPreferencesSelectionTitle}
+              textStyleOverrides={[styles.yourPreferencesSelectionTitle, { color: colors.labelColor }]}
               i18nKey="preferences_your_preferences_selection_title"
               testID={buildTestId('preferences_your_preferences_selection_title')}
             />
@@ -163,7 +164,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
           <View style={styles.postalCodeContainer}>
             <TranslatedText
               textStyle="HeadlineH4Bold"
-              textStyleOverrides={styles.postalCodeTitle}
+              textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
               i18nKey="preferences_postal_code_title"
               testID={buildTestId('preferences_your_preferences_title')}
             />
@@ -179,7 +180,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
               />
               <TranslatedText
                 textStyle="BodyRegular"
-                textStyleOverrides={styles.description}
+                textStyleOverrides={[styles.description, { color: colors.labelColor }]}
                 i18nKey="preferences_location"
                 testID={buildTestId('preferences_location_text')}
               />
@@ -206,14 +207,11 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: spacing[6],
-    color: colors.moonDarkest,
   },
   yourPreferencesTitle: {
     marginBottom: spacing[2],
-    color: colors.moonDarkest,
   },
   yourPreferencesDescription: {
-    color: colors.moonDarkest,
     marginBottom: spacing[5],
   },
   yourPreferencesSelectionTitle: {
@@ -221,13 +219,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: spacing[6] / 2,
     lineHeight: spacing[5],
-    color: colors.moonDarkest,
   },
   postalCodeContainer: {
     marginTop: spacing[5],
   },
   postalCodeTitle: {
     marginBottom: spacing[5],
-    color: colors.moonDarkest,
   },
 })

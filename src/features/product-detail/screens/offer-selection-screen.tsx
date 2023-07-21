@@ -4,7 +4,7 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
 import { OfferSelectionListItem } from '../components/offer-selection-list-item'
@@ -27,6 +27,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   productImageUrl,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const renderOfferSelectionListItem: ListRenderItem<Offer> = useCallback(
     ({ item }) => <OfferSelectionListItem offer={item} onPress={selectOffer} />,
@@ -44,7 +45,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
           ListHeaderComponent={
             <TranslatedText
               i18nKey="offerSelection_title"
-              textStyleOverrides={styles.title}
+              textStyleOverrides={[styles.title, { color: colors.labelColor }]}
               testID={buildTestId('offerSelection_title')}
               textStyle="HeadlineH4Extrabold"
             />
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
   title: {
     paddingBottom: spacing[6],
     marginTop: 18,
-    color: colors.moonDarkest,
   },
   container: {
     paddingHorizontal: spacing[5],

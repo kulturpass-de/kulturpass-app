@@ -9,7 +9,7 @@ import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-he
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import {
   useLocalizedEnvironmentUrl,
@@ -27,6 +27,7 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
   onHeaderPressClose,
   onPressContinue,
 }) => {
+  const { colors } = useTheme()
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
   const eulaDocumentUrl = useLocalizedEnvironmentUrl(getCdcEulaDocumentUrl)
   const [eulaAccepted, setEulaAccepted] = useState(false)
@@ -44,19 +45,19 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
           i18nKey="registration_consent_headline"
           textStyle={'HeadlineH3Extrabold'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'headline')}
-          textStyleOverrides={styles.headline}
+          textStyleOverrides={[styles.headline, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="registration_consent_eula_headline"
           textStyle={'BodyMedium'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_headline')}
-          textStyleOverrides={styles.eulaHeadline}
+          textStyleOverrides={[styles.eulaHeadline, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="registration_consent_eula_copytext"
           textStyle={'BodySmallRegular'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_copytext')}
-          textStyleOverrides={styles.eulaCopytext}
+          textStyleOverrides={[styles.eulaCopytext, { color: colors.labelColor }]}
         />
         <LinkText
           link={eulaDocumentUrl}
@@ -76,7 +77,7 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
           i18nKey="registration_consent_data_privacy_copytext"
           textStyle={'BodySmallRegular'}
           testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_copytext')}
-          textStyleOverrides={styles.dataPrivacyCopyText}
+          textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
         />
         <LinkText
           link={dpsDocumentUrl}
@@ -111,15 +112,12 @@ const styles = StyleSheet.create({
   },
   headline: {
     paddingBottom: spacing[6],
-    color: colors.basicBlack,
   },
   eulaHeadline: {
     paddingBottom: spacing[5],
-    color: colors.moonDarkest,
   },
   eulaCopytext: {
     paddingBottom: spacing[5],
-    color: colors.moonDarkest,
   },
   eulaLinkText: {
     paddingBottom: spacing[5],
@@ -127,7 +125,6 @@ const styles = StyleSheet.create({
   dataPrivacyCopyText: {
     paddingTop: spacing[6],
     paddingBottom: spacing[5],
-    color: colors.moonDarkest,
   },
   dataPrivacyLinkText: {
     paddingBottom: spacing[5],

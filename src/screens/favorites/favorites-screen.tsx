@@ -31,9 +31,7 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({ onFavoritePres
       <ErrorAlert error={error} onDismiss={resetError} />
       <Screen
         testID={buildTestId('favorites')}
-        header={
-          <ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />
-        }>
+        header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} />}>
         <FavoritesList
           favourites={favourites}
           onProductPressed={onProductPressed}

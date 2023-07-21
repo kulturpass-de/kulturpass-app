@@ -10,7 +10,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import {
   useLocalizedEnvironmentUrl,
@@ -47,6 +47,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   additionalContent,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const screenTestID = buildTestId(testID)
 
@@ -74,13 +75,13 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={buildTestId(contentTitleI18nKey)}
             i18nKey={contentTitleI18nKey}
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
             testID={buildTestId(contentTextI18nKey)}
             i18nKey={contentTextI18nKey}
             textStyle="BodyRegular"
@@ -130,12 +131,10 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     flexWrap: 'wrap',
     textAlign: 'center',
-    color: colors.moonDarkest,
   },
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   linkContainer: {
     paddingTop: spacing[6],

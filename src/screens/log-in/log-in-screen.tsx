@@ -20,7 +20,7 @@ import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 
 export type LoginFormData = {
   email: string
@@ -42,6 +42,8 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   afterLogin,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
+
   const [loading, setLoading] = useState(false)
 
   const form = useForm<LoginFormData>({
@@ -121,7 +123,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             i18nKey="login_form_forgotPassword"
             testID={buildTestId('login_form_forgotPassword')}
             textStyle="CaptionSemibold"
-            textStyleOverrides={style.forgotPasswordText}
+            textStyleOverrides={[style.forgotPasswordText, { color: colors.labelColor }]}
           />
         </Pressable>
         <View style={style.formLoginButton}>
@@ -138,7 +140,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             i18nKey="login_form_noAccount_title"
             testID={buildTestId('login_form_noAccount_title')}
             textStyle="HeadlineH4Bold"
-            textStyleOverrides={style.noAccounTitle}
+            textStyleOverrides={[style.noAccountTitle, { color: colors.labelColor }]}
           />
         </View>
         <View style={style.registerText}>
@@ -146,7 +148,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             i18nKey="login_form_noAccount_text"
             testID={buildTestId('login_form_noAccount_text')}
             textStyle="BodySmallRegular"
-            textStyleOverrides={style.noAccounText}
+            textStyleOverrides={[style.noAccountText, { color: colors.labelColor }]}
           />
         </View>
         <View style={style.registerButton}>
@@ -174,7 +176,6 @@ const style = StyleSheet.create({
     marginTop: 24,
   },
   forgotPasswordText: {
-    color: colors.moonDarkest,
     textDecorationLine: 'underline',
   },
   registerTitle: {
@@ -187,12 +188,10 @@ const style = StyleSheet.create({
     marginTop: 32,
     marginBottom: 40,
   },
-  noAccounTitle: {
-    color: colors.moonDarkest,
+  noAccountTitle: {
     textAlign: 'center',
   },
-  noAccounText: {
-    color: colors.moonDarkest,
+  noAccountText: {
     textAlign: 'center',
   },
 })

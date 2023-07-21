@@ -17,7 +17,7 @@ export const ProductSheetMusicDetail: React.FC<ProductSheetMusicDetailProps> = (
   return (
     <ProductDetailSection
       testID={sectionTestID}
-      iconSource="Music"
+      iconSource="music"
       sectionCaptioni18nKey="productDetail_sheetMusic_caption">
       <ProductDetailEntry i18nKey="productDetail_sheetMusic_isbn" value={isbn} />
       {arrangement ? <ProductDetailEntry i18nKey="productDetail_sheetMusic_arrangement" value={arrangement} /> : null}

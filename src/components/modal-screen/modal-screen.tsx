@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { View, StyleSheet, StatusBar, KeyboardAvoidingView, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 
 export type ModalScreenProps = PropsWithChildren<{
   testID: TestId
@@ -11,6 +11,7 @@ export type ModalScreenProps = PropsWithChildren<{
 
 export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whiteBottom = false }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   /**
    * StatusBar height should be taken into consideration on Android, it is `null` on iOS
@@ -23,7 +24,9 @@ export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whit
   const { top, bottom } = useSafeAreaInsets()
 
   return (
-    <View style={[styles.container]} testID={addTestIdModifier(testID, 'screen')}>
+    <View
+      style={[styles.container, { backgroundColor: colors.primaryBackground }]}
+      testID={addTestIdModifier(testID, 'screen')}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={StatusBarHeight + top}
@@ -33,7 +36,7 @@ export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whit
       <View
         style={[
           styles.bottomPadding,
-          { height: bottom, backgroundColor: whiteBottom ? colors.basicWhite : colors.basicBackground },
+          { height: bottom, backgroundColor: whiteBottom ? colors.secondaryBackground : colors.primaryBackground },
         ]}
       />
     </View>
@@ -42,7 +45,6 @@ export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whit
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.basicBackground,
     height: '100%',
   },
   keyboardAvoidingView: {

@@ -35,20 +35,17 @@ import { RegistrationSuccessRouteConfig } from '../../screens/registration-succe
 import { RegistrationConsentRouteConfig } from '../../screens/registration/registration-consent-route'
 import { RegistrationDataPrivacyRouteConfig } from '../../screens/registration/registration-data-privacy-route'
 import { RegistrationFormRouteConfig } from '../../screens/registration/registration-form-route'
-import { useTheme } from '../../theme/hooks/use-theme'
 import { ModalStackWrapper } from './modal-stack-wrapper'
 import { ModalParamList } from './types'
 
 const Stack = createStackNavigator<ModalParamList>()
 
 export const ModalStack: React.FC = () => {
-  const { barStyle } = useTheme()
-
   return (
     <ModalStackWrapper>
       {/* Note: Although #00000000 is just "transparent", together with `translucent` - it allows the modals of
       react-nativation to display their backdrop properly on Android */}
-      <StatusBar backgroundColor="#00000000" translucent barStyle={barStyle} />
+      <StatusBar backgroundColor="#00000000" translucent />
 
       <Stack.Navigator
         detachInactiveScreens

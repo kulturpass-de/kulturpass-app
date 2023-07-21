@@ -19,7 +19,7 @@ import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type ForgotPasswordFormData = {
@@ -32,7 +32,9 @@ export type ForgotPasswordScreenProps = {
 }
 export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHeaderPressClose, onFormSubmit }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
+
   const [loading, setLoading] = useState(false)
 
   const form = useForm<ForgotPasswordFormData>({
@@ -78,7 +80,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
       <ScreenContent style={styles.screenContent}>
         <TranslatedText
           textStyle="BodyRegular"
-          textStyleOverrides={styles.description}
+          textStyleOverrides={[styles.description, { color: colors.labelColor }]}
           i18nKey="forgotPassword_copytext"
           testID={buildTestId('forgotPassword_copytext')}
         />
@@ -119,6 +121,5 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: spacing[6],
-    color: colors.moonDarkest,
   },
 })

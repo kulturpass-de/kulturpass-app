@@ -10,7 +10,7 @@ import { Offer } from '../../../services/api/types/commerce/api-types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
@@ -22,6 +22,7 @@ type ProductDetailFooterProps = {
 
 export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onReserve, selectedOffer }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
@@ -53,7 +54,9 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
   }
 
   return (
-    <View style={styles.container} testID={buildTestId('productDetail_footer')}>
+    <View
+      style={[styles.container, { backgroundColor: colors.secondaryBackground, borderTopColor: colors.footerBorder }]}
+      testID={buildTestId('productDetail_footer')}>
       {showPrice && formattedPrice ? (
         <View
           style={styles.row}
@@ -61,13 +64,13 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           accessibilityLabel={t('productDetail_footer_priceTitle') + applyAccessibilityReplacements(formattedPrice)}>
           <Text
             testID={buildTestId('productDetail_footer_priceTitle')}
-            style={[textStyles.CaptionExtrabold, styles.priceTitle]}
+            style={[textStyles.CaptionExtrabold, styles.priceTitle, { color: colors.labelColor }]}
             accessibilityElementsHidden>
             {t('productDetail_footer_priceTitle')}
           </Text>
           <Text
             testID={buildTestId('productDetail_footer_price')}
-            style={[textStyles.HeadlineH3Extrabold, { color: colors.moonDarkest }]}
+            style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}
             accessibilityElementsHidden>
             {formattedPrice}
           </Text>
@@ -101,13 +104,20 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
               i18nKey="productDetail_footer_cannot_afford"
               i18nParams={{ availableBalance: availableBalanceFormatted }}
               customComponents={{
-                mark: <Text style={[styles.cannotAffordMarkedBalance, styles.discountAvailableBalance]} />,
+                mark: (
+                  <Text
+                    style={[
+                      { color: colors.emphasizedPriceColor, backgroundColor: colors.emphasizedPriceBackground },
+                      styles.discountAvailableBalance,
+                    ]}
+                  />
+                ),
               }}
             />
           </View>
           <Text
             testID={buildTestId('productDetail_footer_price')}
-            style={[textStyles.HeadlineH3Extrabold, { color: colors.moonDarkest }]}>
+            style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}>
             {formattedPrice}
           </Text>
         </View>
@@ -121,9 +131,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing[5],
     paddingTop: spacing[4],
-    borderTopColor: colors.moonDarkest,
     borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
   row: {
     flexDirection: 'row',
@@ -144,15 +152,10 @@ const styles = StyleSheet.create({
   priceTitle: {
     height: 26,
     alignSelf: 'center',
-    color: colors.moonDarkest,
   },
   cannotAffordContainer: {
     flex: 1,
     paddingRight: spacing[6],
-  },
-  cannotAffordMarkedBalance: {
-    color: colors.basicWhite,
-    backgroundColor: colors.primaryDarkest,
   },
   discount: {
     lineHeight: 19,

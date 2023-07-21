@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { Button } from '../../../components/button/button'
-import { Icon } from '../../../components/icon/icon'
 import { LinkText } from '../../../components/link-text/link-text'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ScreenContent } from '../../../components/screen/screen-content'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
@@ -15,7 +15,7 @@ import { useDismissableError } from '../../../services/errors/use-dismissable-er
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
@@ -46,6 +46,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   selectedOffer,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
 
@@ -90,20 +91,20 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
           <TranslatedText
             i18nKey="productDetail_confirmReservation_title"
             textStyle="HeadlineH3Extrabold"
-            textStyleOverrides={styles.title}
+            textStyleOverrides={[styles.title, { color: colors.labelColor }]}
             testID={buildTestId('productDetail_confirmReservation_title')}
           />
         </View>
         <View style={styles.subtitleContainer}>
           <Text
-            style={[textStyles.BodyExtrabold, styles.subtitleBody]}
+            style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}
             accessibilityLabel={t('productDetail_confirmReservation_subtitle') + ' ' + selectedOffer.shopName}
             accessibilityHint={t('productDetail_confirmReservation_supplierName')}
             testID={buildTestId('productDetail_confirmReservation_supplierName')}>
             <TranslatedText
               i18nKey="productDetail_confirmReservation_subtitle"
               textStyle="BodyRegular"
-              textStyleOverrides={styles.subtitlePrefix}
+              textStyleOverrides={{ color: colors.labelColor }}
               testID={buildTestId('productDetail_confirmReservation_subtitle')}
             />
             {' ' + selectedOffer.shopName}
@@ -113,19 +114,19 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
           <TranslatedText
             i18nKey="productDetail_confirmReservation_description"
             textStyle="BodySmallRegular"
-            textStyleOverrides={styles.subtitleDescription}
+            textStyleOverrides={{ color: colors.labelColor }}
             testID={buildTestId('productDetail_confirmReservation_description')}
           />
         </View>
         <ProductConfirmOverview productDetail={productDetail} price={selectedOffer.price} />
         <View style={[styles.reservationDetailsContainer]}>
           <View style={styles.reservationDetailsPickup}>
-            <Icon source="Boings" width={20} height={20} />
+            <SvgImage type="boings" width={20} height={20} />
             <TranslatedText
               i18nKey={pickupCopytext}
               testID={buildTestId(pickupCopytext)}
               textStyle="BodySmallBold"
-              textStyleOverrides={styles.reservationDetailsPickupText}
+              textStyleOverrides={[styles.reservationDetailsPickupText, { color: colors.labelColor }]}
             />
           </View>
           <LinkText
@@ -167,22 +168,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing[5],
   },
   title: {
-    color: colors.moonDarker,
     textAlign: 'center',
   },
   subtitleContainer: {
     justifyContent: 'center',
     flexDirection: 'row',
     marginBottom: spacing[6],
-  },
-  subtitlePrefix: {
-    color: colors.moonDarkest,
-  },
-  subtitleBody: {
-    color: colors.moonDarkest,
-  },
-  subtitleDescription: {
-    color: colors.moonDarkest,
   },
   descriptionContainer: {
     marginBottom: spacing[5],
@@ -198,7 +189,6 @@ const styles = StyleSheet.create({
   reservationDetailsPickupText: {
     flex: 1,
     marginBottom: spacing[5],
-    color: colors.moonDarkest,
   },
   reservationDetailsLink: {
     marginBottom: spacing[4],

@@ -8,7 +8,7 @@ import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-he
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type RegistrationSuccessScreenProps = {
@@ -17,6 +17,7 @@ export type RegistrationSuccessScreenProps = {
 
 export const RegistrationSuccessScreen: React.FC<RegistrationSuccessScreenProps> = ({ onConfirmation }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('registration_success')}>
@@ -35,13 +36,13 @@ export const RegistrationSuccessScreen: React.FC<RegistrationSuccessScreenProps>
       <ScreenContent style={styles.textContainer}>
         <TranslatedText
           textStyle="HeadlineH3Extrabold"
-          textStyleOverrides={styles.textHero}
+          textStyleOverrides={[styles.textHero, { color: colors.labelColor }]}
           i18nKey="registration_success_hero_text"
           testID={buildTestId('registration_success_hero_text')}
         />
         <TranslatedText
           textStyle="BodyRegular"
-          textStyleOverrides={styles.textTodoInformation}
+          textStyleOverrides={[styles.textTodoInformation, { color: colors.labelColor }]}
           i18nKey="registration_success_todo_information"
           testID={buildTestId('registration_success_todo_information')}
         />
@@ -71,12 +72,10 @@ const styles = StyleSheet.create({
   textHero: {
     alignSelf: 'center',
     marginVertical: spacing[6],
-    color: colors.basicBlack,
   },
   textTodoInformation: {
     alignSelf: 'center',
     textAlign: 'center',
     marginBottom: spacing[6],
-    color: colors.moonDarkest,
   },
 })

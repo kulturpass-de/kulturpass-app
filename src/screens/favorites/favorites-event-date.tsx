@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { Text } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { textStyles } from '../../theme/typography'
 import { useFormattedDateTime } from '../../utils/date/hooks/use-formatted-date-time'
 
@@ -13,6 +13,7 @@ export type FavoritesEventDateProps = {
 
 export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDateProps) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const formattedEventStartDate = useFormattedDateTime(startDate)
@@ -22,7 +23,10 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
 
   if (eventEndsOnSameDay && formattedEventStartDate) {
     return (
-      <Text numberOfLines={1} testID={buildTestId('favorites_item_event_start_date')} style={styles.informationToken}>
+      <Text
+        numberOfLines={1}
+        testID={buildTestId('favorites_item_event_start_date')}
+        style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
         {t('favorites_item_event_start_date', {
           date: formattedEventStartDate.date,
           time: formattedEventStartDate.time,
@@ -33,7 +37,10 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
 
   if (!eventEndsOnSameDay && formattedEventStartDate && formattedEvenEndDate) {
     return (
-      <Text numberOfLines={1} testID={buildTestId('favorites_item_event_date')} style={styles.informationToken}>
+      <Text
+        numberOfLines={1}
+        testID={buildTestId('favorites_item_event_date')}
+        style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
         {t('favorites_item_event_date_range', {
           dateStart: formattedEventStartDate.date,
           dateEnd: formattedEvenEndDate.date,
@@ -44,10 +51,3 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
 
   return null
 }
-
-const styles = StyleSheet.create({
-  informationToken: {
-    ...textStyles.BodySmallRegular,
-    color: colors.moonDarkest,
-  },
-})

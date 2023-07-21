@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding='utf-8' standalone='no'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <color name="kulturpass_accessibility_focus">#0059F5</color>
-    <!-- Base text color as defined in colors.basicBlack -->
-    <color name="kulturpass_basic_black">#0C0016</color>
+    <!-- Base text color as defined in colors.moonDarkest -->
+    <color name="kulturpass_moon_darkest">#0C0016</color>
+    <!-- Base text color as defined in colors.sunLightest -->
+    <color name="kulturpass_sun_lightest">#F2F2F2</color>
 </resources>

@@ -1,15 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
-import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
+import { StyleSheet, TextInput, TextInputProps } from 'react-native'
 import {
   FormFieldContainer,
   FormFieldContainerProps,
 } from '../../features/form-validation/components/form-field-container'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
+import { toTransparentColor } from '../../theme/utils'
 import { AvailableTranslations } from '../translated-text/types'
 
 export type TextFormFieldProps = React.PropsWithChildren<
@@ -57,6 +58,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     ref,
   ) => {
     const { t } = useTranslation()
+    const { colors } = useTheme()
     const { addTestIdModifier } = useTestIdBuilder()
     const [state, setState] = useState<{ isFocused?: boolean }>({})
     const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
@@ -73,15 +75,15 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
       setState(currentState => ({ ...currentState, isFocused: true }))
     }, [])
 
-    const borderColor: StyleProp<TextStyle> = useMemo(() => {
+    const borderColor: string = useMemo(() => {
       if (error) {
-        return { borderColor: colors.redBase }
+        return colors.textFieldBorderError
       } else if (state.isFocused) {
-        return { borderColor: colors.primaryLight }
+        return colors.textFieldBorderFocused
       } else {
-        return { borderColor: colors.moonDarkest }
+        return colors.textFieldBorder
       }
-    }, [state.isFocused, error])
+    }, [error, state.isFocused, colors.textFieldBorderError, colors.textFieldBorderFocused, colors.textFieldBorder])
 
     return (
       <FormFieldContainer
@@ -93,9 +95,17 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
         isRequired={isRequired}>
         <TextInput
           ref={ref}
-          placeholderTextColor={colors.moonBase}
+          placeholderTextColor={colors.textFieldPlaceholder}
           onChangeText={onChange}
-          style={[textStyles.BodyRegular, styles.textInput, borderColor, !editable ? styles.textInputDisabled : {}]}
+          style={[
+            textStyles.BodyRegular,
+            styles.textInput,
+            {
+              color: toTransparentColor(colors.labelColor, 0.4, !editable),
+              backgroundColor: toTransparentColor(colors.secondaryBackground, 0.4, !editable),
+              borderColor: toTransparentColor(borderColor, 0.5, !editable),
+            },
+          ]}
           testID={addTestIdModifier(testID, 'input')}
           accessibilityLabel={t(labelI18nKey)}
           accessibilityHint={accessibilityHint}
@@ -119,12 +129,5 @@ const styles = StyleSheet.create({
     paddingRight: spacing[4],
     borderWidth: spacing[0],
     borderRadius: spacing[2],
-    color: colors.moonDarkest,
-    backgroundColor: colors.basicWhite,
-  },
-  textInputDisabled: {
-    color: colors.transparentBlack40,
-    borderColor: colors.transparentBlack40,
-    backgroundColor: colors.transparentWhite50,
   },
 })

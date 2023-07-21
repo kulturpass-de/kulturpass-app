@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, TextInput, type TextInputProps, type ViewStyle }
 import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'
-import { Icon } from '../icon/icon'
+import { SvgImage } from '../svg-image/svg-image'
 import { type AvailableTranslations } from '../translated-text/types'
 import { TextFormField } from './text-form-field'
 
@@ -70,7 +70,7 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
           accessibilityRole="button"
           accessibilityLabel={t(state.isPasswordVisible ? 'login_form_password_hide' : 'login_form_password_show')}
           testID={addTestIdModifier(testID, 'showPasswordButton')}>
-          <Icon source={state.isPasswordVisible ? 'ShowPassword' : 'HidePassword'} width={24} height={24} />
+          <SvgImage type={state.isPasswordVisible ? 'show-password' : 'hide-password'} width={24} height={24} />
         </Pressable>
       </TextFormField>
     )

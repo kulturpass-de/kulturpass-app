@@ -3,7 +3,7 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-n
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { buttonStyleForPreferenceCategory } from './preferences-category-styles'
@@ -25,6 +25,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
   onSelect,
   style,
 }) => {
+  const { colors, colorScheme } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
 
   const onPress = useCallback(() => {
@@ -33,7 +34,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
     }
   }, [isSelectable, onSelect, category])
 
-  const buttonStyle = buttonStyleForPreferenceCategory(category.id)
+  const buttonStyle = buttonStyleForPreferenceCategory(category.id, colorScheme)
   const selectedStyle = useMemo(
     () => ({ backgroundColor: buttonStyle?.selectedBgColor }),
     [buttonStyle?.selectedBgColor],
@@ -49,10 +50,13 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
       accessible>
       {({ pressed }) => (
         <>
-          {(isSelected || pressed) && <View style={styles.shadow} />}
+          {(isSelected || pressed) && (
+            <View style={[styles.shadow, { backgroundColor: colors.preferencesCategoryShadow }]} />
+          )}
           <View
             style={[
               styles.container,
+              { backgroundColor: colors.secondaryBackground, borderColor: colors.preferencesCategoryBorder },
               (isSelected || pressed) && selectedStyle,
               !isSelectable && styles.disabled,
               style,
@@ -65,7 +69,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
               />
             </View>
             <View style={styles.content}>
-              <Text style={[textStyles.CaptionExtrabold, styles.text]}>{category.name}</Text>
+              <Text style={[textStyles.CaptionExtrabold, { color: colors.labelColor }]}>{category.name}</Text>
             </View>
           </View>
         </>
@@ -79,12 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 64,
     borderRadius: 10,
-    backgroundColor: colors.basicWhite,
     flexDirection: 'row',
     flexWrap: 'nowrap',
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: colors.basicBlack,
     zIndex: 1,
   },
   disabled: {
@@ -94,7 +96,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 3,
     left: 3,
-    backgroundColor: colors.basicBlack,
     borderRadius: 10,
     width: '100%',
     height: '100%',
@@ -103,9 +104,6 @@ const styles = StyleSheet.create({
   image: {
     zIndex: 2,
     left: -7,
-  },
-  text: {
-    color: colors.moonDarkest,
   },
   content: {
     zIndex: 20,

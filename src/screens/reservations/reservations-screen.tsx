@@ -1,6 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import React, { useCallback, useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
@@ -10,7 +9,7 @@ import { Order } from '../../services/api/types/commerce/api-types'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { ReservationsTabBar } from './reservations-tab-bar'
 
 export type ReservationsTabsParamList = {
@@ -26,6 +25,7 @@ export type ReservationsScreenProps = {
 
 export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReservationPressed }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const screenTestId = buildTestId('reservations')
 
@@ -59,15 +59,9 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
   return (
     <Screen
       testID={screenTestId}
-      header={
-        <ScreenHeader
-          testID={addTestIdModifier(screenTestId, 'headline')}
-          title={t('reservations_headline')}
-          borderBottom
-        />
-      }>
+      header={<ScreenHeader testID={addTestIdModifier(screenTestId, 'headline')} title={t('reservations_headline')} />}>
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
-      <Tab.Navigator tabBar={ReservationsTabBar} style={styles.navigator}>
+      <Tab.Navigator tabBar={ReservationsTabBar} sceneContainerStyle={{ backgroundColor: colors.primaryBackground }}>
         <Tab.Screen name="PendingReservations">
           {() => (
             <ReservationsListTabContent
@@ -104,9 +98,3 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
     </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  navigator: {
-    backgroundColor: colors.basicBackground,
-  },
-})

@@ -3,11 +3,11 @@ import React, { useCallback, useState } from 'react'
 import { StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../components/button/button'
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
@@ -17,7 +17,7 @@ import { logger } from '../../services/logger'
 import { RootState } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type DeveloperMenuScreenProps = {
@@ -40,6 +40,8 @@ const useOnboardingConfig = () => {
   return { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart }
 }
 
+const CogIcon = () => <SvgImage type="cog" width={29} height={24} />
+
 export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onHeaderPressClose,
   onPressEnvironmentConfiguration,
@@ -48,8 +50,10 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onPressStorybookConfiguration,
   onPressDarkThemeConfiguration,
 }) => {
+  const { colors } = useTheme()
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
+
   const modalNavigation = useModalNavigation()
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
@@ -89,14 +93,14 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
       />
       <ScreenContent>
         <ListItem
-          icon={<Icon source="Cog" width={29} height={24} />}
+          icon={<CogIcon />}
           title="Environment Configuration"
           testID={buildTestId('developerMenu_environmentConfiguration_button')}
           type="navigation"
           onPress={onPressEnvironmentConfiguration}
         />
         <ListItem
-          icon={<Icon source="Cog" width={29} height={24} />}
+          icon={<CogIcon />}
           title="App Config"
           testID={buildTestId('developerMenu_appConfig_button')}
           type="navigation"
@@ -108,12 +112,16 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressStorybookConfiguration}
         />
-        <View style={styles.toggleListItem}>
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
           <TranslatedText
             i18nKey="developerMenu_showOnboarding_label"
             testID={buildTestId('developerMenu_showOnboarding_label')}
             textStyle="BodyRegular"
-            textStyleOverrides={styles.textColor}
+            textStyleOverrides={{ color: colors.labelColor }}
           />
           <Switch
             testID={buildTestId('developerMenu_showOnboarding_switch')}
@@ -128,11 +136,18 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressDarkThemeConfiguration}
         />
-        <View style={styles.productCodeListItem}>
+        <View
+          style={[
+            styles.productCodeListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
           <TextInput
             autoCorrect={false}
             autoCapitalize="none"
-            style={styles.productCodeTextInput}
+            style={[
+              styles.productCodeTextInput,
+              { borderColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+            ]}
             onChangeText={setProductCode}
             value={productCode}
           />
@@ -143,14 +158,18 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           />
         </View>
         <ListItem
-          icon={<Icon source="Cog" width={29} height={24} />}
+          icon={<CogIcon />}
           title="Card Simulation"
           testID={buildTestId('developerMenu_cardSimulation_button')}
           type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
         {isLoggedIn ? (
-          <View style={styles.productCodeListItem}>
+          <View
+            style={[
+              styles.productCodeListItem,
+              { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+            ]}>
             <Button
               onPress={startEidFlow}
               testID="developerMenu_startEidFlow_button"
@@ -158,7 +177,11 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             />
           </View>
         ) : null}
-        <View style={styles.productCodeListItem}>
+        <View
+          style={[
+            styles.productCodeListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
           <Button
             onPress={cancelEidFlow}
             testID="developerMenu_cancelEidFlow_button"
@@ -175,8 +198,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[6],
     height: spacing[10],
     borderBottomWidth: 2,
-    borderBottomColor: colors.basicBlack,
-    backgroundColor: colors.basicWhite,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -185,20 +206,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: spacing[6],
     borderBottomWidth: 2,
-    borderBottomColor: colors.basicBlack,
-    backgroundColor: colors.basicWhite,
     paddingVertical: 12,
   },
   productCodeTextInput: {
     height: 48,
     paddingHorizontal: spacing[6],
     marginBottom: 12,
-    backgroundColor: colors.basicWhite,
     borderWidth: 2,
-    borderColor: colors.basicBlack,
     borderRadius: 8,
-  },
-  textColor: {
-    color: colors.moonDarkest,
   },
 })

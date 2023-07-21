@@ -1,11 +1,11 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { Icon } from '../../../components/icon/icon'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import BackdropLarge0 from '../assets/backdrop-large-0.svg'
 import BackdropLarge1 from '../assets/backdrop-large-1.svg'
@@ -31,6 +31,7 @@ export type ReservationDetailHeaderProps = {
 
 export const ReservationDetailHeader: React.FC<ReservationDetailHeaderProps> = ({ order, onClose }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const orderHasBarcode = order.status === 'READY_FOR_PICKUP' && order.entries?.find(() => true)?.barcodeData
@@ -48,12 +49,12 @@ export const ReservationDetailHeader: React.FC<ReservationDetailHeaderProps> = (
       <View style={styles.content}>
         <Pressable
           hitSlop={HITSLOP}
-          style={styles.closeButton}
+          style={[styles.closeButton, { backgroundColor: colors.secondaryBackground }]}
           testID={buildTestId('reservationDetail_header_deliveryScenario_pickup_closeButton')}
           accessibilityRole="button"
           accessibilityLabel={t('reservationDetail_header_deliveryScenario_pickup_closeButton')}
           onPress={onClose}>
-          <Icon source="Close" width={24} height={24} />
+          <SvgImage type="close" width={24} />
         </Pressable>
       </View>
     </View>
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     height: spacing[8],
     width: spacing[8],
-    backgroundColor: colors.basicWhite,
     opacity: 0.85,
     alignItems: 'center',
     justifyContent: 'center',

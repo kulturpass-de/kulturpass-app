@@ -11,7 +11,7 @@ import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import {
@@ -43,7 +43,9 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   handleUserCancellation = false,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
+
   const modalNavigation = useModalNavigation()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
@@ -120,25 +122,32 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
           textStyle="BodyRegular"
           i18nKey="error_alert_message_fallback"
           testID={buildTestId('error_alert_message')}
+          textStyleOverrides={{ color: colors.labelColor }}
         />
         <View style={styles.content}>
           {errorMessage ? (
-            <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_message_detail')}>
+            <Text
+              style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
+              testID={buildTestId('error_alert_message_detail')}>
               {errorMessage}
             </Text>
           ) : (
             <TranslatedText
               i18nKey="eid_error_try_again_message"
               textStyle="BodyRegular"
-              textStyleOverrides={styles.message}
+              textStyleOverrides={[styles.message, { color: colors.labelColor }]}
             />
           )}
-          <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_code')}>
+          <Text
+            style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
+            testID={buildTestId('error_alert_code')}>
             {errorCode}
           </Text>
 
           {intError?.errorDetails ? (
-            <Text style={[textStyles.BodyRegular, styles.message]} testID={buildTestId('error_alert_details')}>
+            <Text
+              style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
+              testID={buildTestId('error_alert_details')}>
               {intError.errorDetails}
             </Text>
           ) : null}
@@ -165,7 +174,6 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
 const styles = StyleSheet.create({
   message: {
     textAlign: 'center',
-    color: colors.moonDarker,
   },
   content: {
     marginBottom: spacing[6],

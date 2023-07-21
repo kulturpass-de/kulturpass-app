@@ -11,7 +11,7 @@ import { useModalNavigation } from '../../navigation/modal/hooks'
 import { useFaqLink } from '../../services/faq-configuration/hooks/use-faq-link'
 import { addTestIdModifier, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type DeleteAccountScreenProps = {
@@ -20,6 +20,7 @@ export type DeleteAccountScreenProps = {
 
 export const DeleteAccountScreen: React.FC<DeleteAccountScreenProps> = ({ onPressBackButton }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
   const deleteAccountFaqLink = useFaqLink('ACCOUNT_DELETE')
   const modalNavigation = useModalNavigation()
@@ -50,13 +51,13 @@ export const DeleteAccountScreen: React.FC<DeleteAccountScreenProps> = ({ onPres
             i18nKey="deleteAccount_content_title"
             testID={addTestIdModifier(SCREEN_TEST_ID, 'content_title')}
             textStyle="HeadlineH3Extrabold"
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
           />
           <TranslatedText
             i18nKey="deleteAccount_content_text"
             testID={addTestIdModifier(SCREEN_TEST_ID, 'content_text')}
             textStyle="BodyRegular"
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
           />
           <LinkText
             i18nKey="deleteAccount_content_link"
@@ -82,11 +83,9 @@ const styles = StyleSheet.create({
   },
   contentTitle: {
     paddingTop: spacing[6],
-    color: colors.moonDarkest,
   },
   contentText: {
     paddingVertical: spacing[7],
-    color: colors.moonDarkest,
   },
   spacer: {
     minHeight: spacing[6],

@@ -15,7 +15,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
@@ -28,6 +28,7 @@ export type AccountDeletionConfirmScreenProps = {
 
 export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
   const [visibleError, setVisibleError] = useState<ErrorWithCode | undefined>()
 
   const { deleteAccount, loading } = useDeleteAccount()
@@ -75,7 +76,7 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={addTestIdModifier(screenTestId, 'content_title')}
             i18nKey="accountDeletion_confirm_content_title"
             textStyle="HeadlineH3Extrabold"
@@ -84,7 +85,7 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
             i18nKey="accountDeletion_confirm_content_text"
             textStyle="BodyBold"
             testID={addTestIdModifier(screenTestId, 'content_text')}
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
           />
           <FormFieldWithControl
             name={'password'}
@@ -134,13 +135,11 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[6],
     flexWrap: 'wrap',
     textAlign: 'center',
-    color: colors.basicBlack,
   },
   passwordFormFieldContainerStyle: {
     paddingBottom: spacing[2],
   },
   contentText: {
     paddingVertical: spacing[6],
-    color: colors.basicBlack,
   },
 })

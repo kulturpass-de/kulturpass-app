@@ -8,7 +8,7 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import {
   useLocalizedEnvironmentUrl,
@@ -25,7 +25,9 @@ export type AppInformationsScreenProps = {
 
 export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ onPressBackButton }) => {
   const { t } = useTranslation()
+  const { colors, colorScheme } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
   const eulaDocumentUrl = useLocalizedEnvironmentUrl(getCdcEulaDocumentUrl)
   const imprintUrl = useLocalizedEnvironmentUrl(getImprintUrl)
@@ -80,15 +82,17 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
           <TranslatedText
             testID={buildTestId('app_informations_version')}
             textStyle="CaptionSemibold"
-            textStyleOverrides={styles.appVersionText}
+            textStyleOverrides={[styles.appVersionText, { color: colors.labelColor }]}
             i18nKey="app_informations_app_version"
             i18nParams={{ version: `${pkg.version} (${pkg.buildNumber})` }}
           />
         </View>
         <View style={styles.spacer} />
-        <View style={styles.logo}>
-          <SvgImage screenWidthRelativeSize={0.346} type="transparent-logo" />
-        </View>
+        {colorScheme === 'light' ? (
+          <View style={styles.logo}>
+            <SvgImage screenWidthRelativeSize={0.346} type="transparent-logo" />
+          </View>
+        ) : null}
       </ScrollView>
     </Screen>
   )
@@ -103,7 +107,6 @@ const styles = StyleSheet.create({
   appVersionText: {
     textAlign: 'center',
     paddingTop: spacing[6],
-    color: colors.primaryDark,
   },
   spacer: {
     flexGrow: 1,

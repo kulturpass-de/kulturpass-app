@@ -13,7 +13,7 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { ScanInProgressModal } from '../components/scan-in-progress-modal'
 import { useStartCardScanning } from '../hooks/use-start-card-scanning'
@@ -51,6 +51,8 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   errorModalVisible,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
 
   const { isLoading, startScanning } = useStartCardScanning({
@@ -98,13 +100,13 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={buildTestId('eid_insertCard_content_title')}
             i18nKey="eid_insertCard_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
             testID={buildTestId('eid_insertCard_content_text')}
             i18nKey={Platform.OS === 'ios' ? 'eid_insertCard_content_text_ios' : 'eid_insertCard_content_text_android'}
             textStyle="BodyRegular"
@@ -146,11 +148,9 @@ export const styles = StyleSheet.create({
   contentTitle: {
     paddingTop: spacing[7],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   contentText: {
     paddingVertical: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
 })

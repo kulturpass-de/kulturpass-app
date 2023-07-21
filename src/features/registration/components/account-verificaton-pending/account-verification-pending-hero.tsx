@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Button } from '../../../../components/button/button'
-import { Icon } from '../../../../components/icon/icon'
 import { InfoBox } from '../../../../components/info-box/info-box'
 import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
+import { SvgImage } from '../../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useUserInfo } from '../../../../services/user/use-user-info'
-import { colors } from '../../../../theme/colors'
+import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
 import { ErrorAlert } from '../../../form-validation/components/error-alert'
 
@@ -19,6 +19,8 @@ const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 
 export const AccountVerificationHero: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
@@ -58,7 +60,7 @@ export const AccountVerificationHero: React.FC = () => {
       <InfoBox>
         <TranslatedText
           textStyle="HeadlineH4Extrabold"
-          textStyleOverrides={{ color: colors.moonDarkest }}
+          textStyleOverrides={{ color: colors.labelColor }}
           testID={buildTestId('account_verification_hero_greeting_text')}
           i18nKey={name ? 'account_verification_hero_greeting' : 'account_verification_hero_greeting_without_name'}
           i18nParams={isLoggedIn ? { name } : undefined}
@@ -66,9 +68,9 @@ export const AccountVerificationHero: React.FC = () => {
         <View style={styles.content}>
           {canResend ? (
             <>
-              <Icon source="Mail" width={36} height={36} />
+              <SvgImage type="mail" width={36} height={36} />
               <TranslatedText
-                textStyleOverrides={styles.text}
+                textStyleOverrides={[styles.text, { color: colors.labelColor }]}
                 testID={buildTestId('account_verification_description_text')}
                 i18nKey="account_verification_description"
                 textStyle="BodySmallMedium"
@@ -76,9 +78,9 @@ export const AccountVerificationHero: React.FC = () => {
             </>
           ) : (
             <>
-              <Icon source="Checkmark" width={36} height={36} />
+              <SvgImage type="checkmark" width={36} height={36} />
               <TranslatedText
-                textStyleOverrides={styles.text}
+                textStyleOverrides={[styles.text, { color: colors.labelColor }]}
                 testID={buildTestId('account_verification_description_success_text')}
                 i18nKey="account_verification_description_success"
                 textStyle="BodySmallMedium"
@@ -111,6 +113,5 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: 'wrap',
     marginLeft: spacing[2],
-    color: colors.moonDarkest,
   },
 })

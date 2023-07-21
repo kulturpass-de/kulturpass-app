@@ -8,7 +8,7 @@ import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export type AccountDeletionSuccessfulScreenProps = {
@@ -17,7 +17,7 @@ export type AccountDeletionSuccessfulScreenProps = {
 
 export const AccountDeletionSuccessfulScreen: React.FC<AccountDeletionSuccessfulScreenProps> = ({ onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-
+  const { colors } = useTheme()
   const screenTestId = buildTestId('accountDeletion_successful')
 
   return (
@@ -35,13 +35,13 @@ export const AccountDeletionSuccessfulScreen: React.FC<AccountDeletionSuccessful
         />
         <View style={styles.contentTitleContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={addTestIdModifier(screenTestId, 'content_title')}
             i18nKey="accountDeletion_successful_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
             testID={addTestIdModifier(screenTestId, 'content_text')}
             i18nKey="accountDeletion_successful_content_text"
             textStyle="BodyRegular"
@@ -78,12 +78,10 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     flexWrap: 'wrap',
     textAlign: 'center',
-    color: colors.basicBlack,
   },
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
     textAlign: 'center',
-    color: colors.moonDarkest,
   },
 })

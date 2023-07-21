@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Image, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
+import { requireIllustrationImage as requireIllustrationImageDark } from '../../theme/dark/illustrations'
+import { useTheme } from '../../theme/hooks/use-theme'
+import { requireIllustrationImage as requireIllustrationImageLight } from '../../theme/light/illustrations'
 import { AvailableTranslations } from '../translated-text/types'
 
 export type IllustrationType =
@@ -37,54 +40,16 @@ export const Illustration: React.FC<IllustrationProps> = ({
     width: '100%',
   },
 }) => {
+  const { colorScheme } = useTheme()
   const { t } = useTranslation()
 
-  return (
-    <Image
-      testID={testID}
-      accessible={true}
-      accessibilityLabel={t(i18nKey)}
-      style={style}
-      source={requireImage(type)}
-    />
-  )
-}
+  const source: ImageSourcePropType = useMemo(() => {
+    if (colorScheme === 'dark') {
+      return requireIllustrationImageDark(type)
+    } else {
+      return requireIllustrationImageLight(type)
+    }
+  }, [colorScheme, type])
 
-function requireImage(type: IllustrationType): ImageSourcePropType {
-  switch (type) {
-    case 'onboarding':
-      return require('./imgs/onboarding.png')
-    case 'localisation-consent':
-      return require('./imgs/localisation-consent.png')
-    case 'data-privacy':
-      return require('./imgs/data-privacy.png')
-    case 'verify-mail':
-      return require('./imgs/verify-mail.png')
-    case 'registration-finished':
-      return require('./imgs/registration-finished.png')
-    case 'eid':
-      return require('./imgs/eid.png')
-    case 'eid-card-positioning-ios':
-      return require('./imgs/eid-card-positioning-ios.png')
-    case 'eid-card-positioning-android':
-      return require('./imgs/eid-card-positioning-android.png')
-    case 'eid-nfc-disabled':
-      return require('./imgs/eid-nfc-disabled.png')
-    case 'success':
-      return require('./imgs/success.png')
-    case 'budget-received':
-      return require('./imgs/budget-received.png')
-    case 'empty-state-reservations':
-      return require('./imgs/empty-state-reservations.png')
-    case 'empty-state-reservations-closed':
-      return require('./imgs/empty-state-reservations-closed.png')
-    case 'favorites-empty-state':
-      return require('./imgs/favorites-empty-state.png')
-    case 'stop-sign':
-      return require('./imgs/stop-sign.png')
-    case 'delete-account':
-      return require('./imgs/delete-account.png')
-    case 'no-network':
-      return require('./imgs/no-network.png')
-  }
+  return <Image testID={testID} accessible={true} accessibilityLabel={t(i18nKey)} style={style} source={source} />
 }

@@ -17,7 +17,7 @@ export const ProductBookDetail: React.FC<ProductBookDetailProps> = ({ productDet
   const { t } = useTranslation()
 
   return (
-    <ProductDetailSection testID={sectionTestID} iconSource="Book" sectionCaptioni18nKey="productDetail_book_caption">
+    <ProductDetailSection testID={sectionTestID} iconSource="book" sectionCaptioni18nKey="productDetail_book_caption">
       <ProductDetailEntry i18nKey="productDetail_book_isbn" value={isbn} />
       <ProductDetailEntry i18nKey="productDetail_book_publisher" value={publisher} />
       {language ? <ProductDetailEntry i18nKey="productDetail_book_language" value={language} /> : null}

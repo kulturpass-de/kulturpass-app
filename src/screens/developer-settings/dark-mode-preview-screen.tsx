@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Switch, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { setDarkThemePreviewEnabled, setForcedTheme } from '../../theme/redux/theme'
 import { getDarkThemePreviewEnabled, getForcedTheme } from '../../theme/redux/theme-selectors'
 import { spacing } from '../../theme/spacing'
@@ -24,6 +24,8 @@ export const DarkModePreviewScreen: React.FC<DarkModePreviewScreenProps> = ({
   onHeaderPressClose,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
@@ -49,12 +51,12 @@ export const DarkModePreviewScreen: React.FC<DarkModePreviewScreenProps> = ({
         onPressBack={onHeaderPressBack}
         onPressClose={onHeaderPressClose}
       />
-      <View style={styles.toggleListItem}>
+      <View style={[styles.toggleListItem, { borderBottomColor: colors.listItemBorder }]}>
         <TranslatedText
           i18nKey="developerMenu_darkTheme_label"
           testID={buildTestId('developerMenu_darkTheme_label')}
           textStyle="BodyRegular"
-          textStyleOverrides={styles.text}
+          textStyleOverrides={{ color: colors.labelColor }}
         />
         <Switch
           testID={buildTestId('developerMenu_darkTheme_label')}
@@ -67,7 +69,7 @@ export const DarkModePreviewScreen: React.FC<DarkModePreviewScreenProps> = ({
         <ScreenContent>
           <ListItem
             icon={
-              forcedTheme === null ? <Icon source="Chevron" width={24} height={24} /> : <View style={styles.noIcon} />
+              forcedTheme === null ? <SvgImage type="chevron" width={24} height={24} /> : <View style={styles.noIcon} />
             }
             title={t('developerMenu_darkTheme_systemSettings_label')}
             testID={buildTestId('developerMenu_darkTheme_systemSettings_button')}
@@ -77,7 +79,7 @@ export const DarkModePreviewScreen: React.FC<DarkModePreviewScreenProps> = ({
           <ListItem
             icon={
               forcedTheme === 'light' ? (
-                <Icon source="Chevron" width={24} height={24} />
+                <SvgImage type="chevron" width={24} height={24} />
               ) : (
                 <View style={styles.noIcon} />
               )
@@ -89,7 +91,11 @@ export const DarkModePreviewScreen: React.FC<DarkModePreviewScreenProps> = ({
           />
           <ListItem
             icon={
-              forcedTheme === 'dark' ? <Icon source="Chevron" width={24} height={24} /> : <View style={styles.noIcon} />
+              forcedTheme === 'dark' ? (
+                <SvgImage type="chevron" width={24} height={24} />
+              ) : (
+                <View style={styles.noIcon} />
+              )
             }
             title={t('developerMenu_darkTheme_darkTheme_label')}
             testID={buildTestId('developerMenu_darkTheme_darkTheme_button')}
@@ -106,14 +112,10 @@ const styles = StyleSheet.create({
   noIcon: {
     width: 24,
   },
-  text: {
-    color: colors.basicBlack,
-  },
   toggleListItem: {
     paddingHorizontal: spacing[5],
     height: spacing[10],
     borderBottomWidth: 2,
-    borderBottomColor: '#E6E6E6',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

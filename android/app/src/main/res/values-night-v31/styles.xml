@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/SplashTheme</item>
+    </style>
+</resources>

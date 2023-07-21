@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
-import { colors } from '../../../../theme/colors'
+import { useTheme } from '../../../../theme/hooks/use-theme'
 import { textStyles } from '../../../../theme/typography'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { ExhibitProductDetail } from '../../types/product-detail'
@@ -30,7 +30,9 @@ const formatDate = (t: ReturnType<typeof useTranslation>['t'], startDate?: strin
 
 export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail, testID }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+
   const sectionTestID = addTestIdModifier(testID, 'exhibit')
   const { exhibitStartDate, exhibitEndDate, venue, venueDistance } = productDetail
   const formattedEventStartDate = useFormattedDateTime(exhibitStartDate)
@@ -42,7 +44,7 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
       {venue ? (
         <ProductDetailSection
           testID={addTestIdModifier(sectionTestID, 'location')}
-          iconSource="MapPin"
+          iconSource="map-pin"
           sectionCaptioni18nKey="productDetail_exhibit_location_caption">
           <Address
             name={venue.name}
@@ -59,13 +61,13 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
       {exhibitStartDate || exhibitEndDate ? (
         <ProductDetailSection
           testID={addTestIdModifier(sectionTestID, 'duration')}
-          iconSource="Calendar"
+          iconSource="calendar"
           sectionCaptioni18nKey="productDetail_exhibit_duration_caption">
           <Text
             accessibilityLabel={exhibitDate.accessibilityLabel}
             accessible
             testID={addTestIdModifier(sectionTestID, 'duration_content')}
-            style={[textStyles.BodyBlack, styles.colorMoonDarkest]}>
+            style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
             {exhibitDate.text}
           </Text>
         </ProductDetailSection>
@@ -73,9 +75,3 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  colorMoonDarkest: {
-    color: colors.moonDarkest,
-  },
-})

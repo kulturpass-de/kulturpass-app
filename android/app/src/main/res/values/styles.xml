@@ -16,9 +16,7 @@
             @android:color/transparent
         </item>
         <item name="android:windowBackground">@drawable/splashscreen</item>
-        <!-- Explicitly disable dark mode -->
-        <item name="android:forceDarkAllowed">false</item>
-        <item name="android:textColor">@color/kulturpass_basic_black</item>
+        <item name="android:textColor">@color/kulturpass_moon_darkest</item>
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">

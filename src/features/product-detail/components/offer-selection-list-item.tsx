@@ -4,7 +4,7 @@ import { Button } from '../../../components/button/button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
@@ -16,7 +16,9 @@ type OfferSelectionListItemProps = {
 
 export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ offer, onPress }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+
   const formattedPrice = useFormattedPrice(offer.price)
   const onButtonPress = useCallback(() => {
     onPress(offer.id)
@@ -40,18 +42,20 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
       <View style={styles.titleContainer}>
         <Text
           testID={buildTestId('offerSelection_offer_shopName')}
-          style={[textStyles.SubtitleExtrabold, styles.shopName]}>
+          style={[textStyles.SubtitleExtrabold, styles.shopName, { color: colors.labelColor }]}>
           {offer.shopName}
         </Text>
         {formattedPrice ? (
           <Text
             testID={buildTestId('offerSelection_offer_price')}
-            style={[textStyles.SubtitleBlack, { color: colors.basicBlack }]}>
+            style={[textStyles.SubtitleBlack, { color: colors.labelColor }]}>
             {formattedPrice}
           </Text>
         ) : null}
       </View>
-      <Text testID={buildTestId('offerSelection_offer_address')} style={[textStyles.BodyRegular, styles.address]}>
+      <Text
+        testID={buildTestId('offerSelection_offer_address')}
+        style={[textStyles.BodyRegular, styles.address, { color: colors.labelColor }]}>
         {addressText}
       </Text>
       <Button
@@ -75,12 +79,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   shopName: {
-    color: colors.basicBlack,
     flex: 1,
   },
   address: {
     marginTop: spacing[1],
     marginBottom: 18,
-    color: colors.moonDarkest,
   },
 })

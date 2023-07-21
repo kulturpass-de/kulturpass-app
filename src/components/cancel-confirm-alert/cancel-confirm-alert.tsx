@@ -8,7 +8,7 @@ import { Button } from '../../components/button/button'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { AvailableTranslations } from '../translated-text/types'
 
@@ -31,6 +31,7 @@ export const CancelConfirmAlert: React.FC<CancelConfirmAlertProps> = ({
   ...i18n
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -39,7 +40,7 @@ export const CancelConfirmAlert: React.FC<CancelConfirmAlertProps> = ({
       <AlertContent ref={focusRef} style={styles.container}>
         <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey={i18n.i18nKeyTitle} />
         <TranslatedText
-          textStyleOverrides={styles.text}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
           testID={addTestIdModifier(testID, 'text')}
           i18nKey={i18n.i18nKeyText}
           textStyle="BodyRegular"
@@ -71,6 +72,5 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     textAlign: 'center',
     marginBottom: spacing[6],
-    color: colors.moonDarker,
   },
 })

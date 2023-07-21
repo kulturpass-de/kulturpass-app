@@ -3,10 +3,11 @@ import { StyleSheet, View } from 'react-native'
 import { Illustration } from '../../components/illustration/illustration'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export const FavoritesEmptyScreen: React.FC = () => {
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   return (
@@ -18,13 +19,13 @@ export const FavoritesEmptyScreen: React.FC = () => {
       />
       <TranslatedText
         textStyle="HeadlineH4Extrabold"
-        textStyleOverrides={styles.title}
+        textStyleOverrides={[styles.title, { color: colors.labelColor }]}
         i18nKey="favorites_empty_no_favorites_title"
         testID={buildTestId('favorites_empty_no_favorites_title')}
       />
       <TranslatedText
         textStyle="BodyRegular"
-        textStyleOverrides={styles.hint}
+        textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
         i18nKey="favorites_empty_no_favorites_hint"
         testID={buildTestId('favorites_empty_no_favorites_hint')}
       />
@@ -41,13 +42,11 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: spacing[6],
     textAlign: 'center',
-    color: colors.basicBlack,
   },
   hint: {
     marginTop: spacing[2],
     paddingHorizontal: spacing[5],
     marginBottom: spacing[6],
     textAlign: 'center',
-    color: colors.primaryDark,
   },
 })

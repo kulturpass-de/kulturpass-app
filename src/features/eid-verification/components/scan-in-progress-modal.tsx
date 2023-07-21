@@ -6,13 +6,14 @@ import { AlertContent } from '../../../components/alert/alert-content'
 import { LoadingAnimation } from '../../../components/loading-animation/loading-animation'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export type ScanInProgressModalProps = {
   scanning: boolean
 }
 export const ScanInProgressModal: React.FC<ScanInProgressModalProps> = ({ scanning }) => {
+  const { colors } = useTheme()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -22,12 +23,12 @@ export const ScanInProgressModal: React.FC<ScanInProgressModalProps> = ({ scanni
         <AlertBackdrop />
         <AlertContent ref={focusRef}>
           <TranslatedText
-            textStyleOverrides={styles.title}
+            textStyleOverrides={{ color: colors.labelColor }}
             i18nKey="eid_insertCard_android_scanModal_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.text}
+            textStyleOverrides={[styles.text, { color: colors.labelColor }]}
             i18nKey="eid_insertCard_android_scanModal_text"
             textStyle="BodyRegular"
           />
@@ -45,14 +46,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: spacing[5],
-    backgroundColor: '#39393957',
-  },
-  title: {
-    color: colors.moonDarkest,
   },
   text: {
     paddingTop: spacing[3],
     paddingBottom: spacing[6],
-    color: colors.moonDarkest,
   },
 })

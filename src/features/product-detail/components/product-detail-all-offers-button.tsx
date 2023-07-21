@@ -35,7 +35,7 @@ export const ProductDetailAllOffersButton: React.FC<ProductDetailAllOffersButton
         modifier="small"
         i18nKey="productDetail_allOffers_button"
         i18nParams={{ price: formattedPrice }}
-        iconSource="ArrowForward"
+        iconSource="arrow-right"
         onPress={onPress}
       />
     </View>

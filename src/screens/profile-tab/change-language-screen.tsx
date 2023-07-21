@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { Icon } from '../../components/icon/icon'
 import { ListItem } from '../../components/list-item/list-item'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
+import { SvgImage } from '../../components/svg-image/svg-image'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
@@ -41,7 +41,7 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
       {ls.map(language => (
         <ListItem
           key={language}
-          icon={l === language ? <Icon source="Check" width={24} height={24} /> : <View style={styles.noIcon} />}
+          icon={l === language ? <SvgImage type="check" width={24} height={24} /> : <View style={styles.noIcon} />}
           title={t(`language_${language}`)}
           testID={buildTestId(`language_${language}`)}
           onPress={onLanguageSelection(language)}

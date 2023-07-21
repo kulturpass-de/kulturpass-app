@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { View } from 'react-native'
-import { Icon, IconProps } from '../../../components/icon/icon'
+import { SvgImage, SvgImageProps } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { ProductDetailSection } from './product-detail-section'
@@ -21,21 +21,23 @@ type AccessibilityFeatureCheckableProps = {
 
 const AccessibilityFeatureCheckable: React.FC<AccessibilityFeatureCheckableProps> = ({ testID, checked, ...props }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+
   const labelI18nKey = checked ? props.enabledLabel_i18nKey : props.disabledLabel_i18nKey
-  const iconSource: IconProps['source'] = checked ? 'Check' : 'Close'
+  const iconSource: SvgImageProps['type'] = checked ? 'check' : 'close'
   const iconLabel = checked
     ? t('productDetail_offer_accessibility_feature_enabled')
     : t('productDetail_offer_accessibility_feature_disabled')
 
   return (
     <View testID={testID} style={styles.featureCheckable}>
-      <Icon source={iconSource} width={24} height={24} accessibilityLabel={iconLabel} />
+      <SvgImage type={iconSource} width={24} height={24} accessibilityLabel={iconLabel} />
       <TranslatedText
         testID={buildTestId(labelI18nKey)}
         i18nKey={labelI18nKey}
         textStyle="BodyBold"
-        textStyleOverrides={styles.textBase}
+        textStyleOverrides={{ color: colors.labelColor }}
       />
     </View>
   )
@@ -49,6 +51,7 @@ type AccessibilityFeatureTextProps = {
 
 const AccessibilityFeatureText: React.FC<AccessibilityFeatureTextProps> = ({ testID, label_i18nKey, text }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   return (
     <View testID={testID} style={styles.featureText}>
@@ -57,10 +60,10 @@ const AccessibilityFeatureText: React.FC<AccessibilityFeatureTextProps> = ({ tes
           testID={buildTestId(label_i18nKey)}
           i18nKey={label_i18nKey}
           textStyle="BodyBold"
-          textStyleOverrides={styles.textBase}
+          textStyleOverrides={{ color: colors.labelColor }}
         />
       ) : null}
-      <Text testID={addTestIdModifier(testID, 'text')} style={[styles.featureTextData, styles.textBase]}>
+      <Text testID={addTestIdModifier(testID, 'text')} style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
         {text}
       </Text>
     </View>
@@ -78,13 +81,14 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
 
   const { t } = useTranslation()
   const { addTestIdModifier } = useTestIdBuilder()
+
   const accessibilityOfferCleaned = accessibilityOffer?.trim() ?? null
   const accessibilityOfferOthersCleaned = accessibilityOfferOthers?.trim() ?? null
 
   return (
     <ProductDetailSection
       testID={testID}
-      iconSource="HumanSketch"
+      iconSource="human-sketch"
       sectionCaptioni18nKey="productDetail_offer_accessibility_caption">
       <View style={styles.container}>
         {accessibilityWheelchairShop !== undefined ? (
@@ -132,9 +136,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: spacing[3],
   },
-  textBase: {
-    color: colors.moonDarkest,
-  },
   featureCheckable: {
     marginTop: spacing[2],
     gap: spacing[3],
@@ -143,8 +144,5 @@ const styles = StyleSheet.create({
   featureText: {
     marginTop: spacing[5],
     flexDirection: 'column',
-  },
-  featureTextData: {
-    ...textStyles.BodyRegular,
   },
 })

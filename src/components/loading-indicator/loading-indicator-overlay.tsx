@@ -1,15 +1,14 @@
 import React from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
-import { colors } from '../../theme/colors'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { LoadingAnimation } from '../loading-animation/loading-animation'
 
 export const LoadingIndicatorOverlay: React.FC = () => {
-  const { barStyle } = useTheme()
+  const { colors } = useTheme()
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={colors.transparentWhite80} translucent barStyle={barStyle} />
+    <View style={[styles.container, { backgroundColor: colors.alertBackdrop }]}>
+      <StatusBar backgroundColor={colors.alertBackdrop} translucent />
       <LoadingAnimation />
     </View>
   )
@@ -21,6 +20,5 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.transparentWhite80,
   },
 })

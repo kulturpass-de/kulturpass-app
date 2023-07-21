@@ -7,7 +7,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { Price, Refunds } from '../../../services/api/types/commerce/api-types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
@@ -32,6 +32,7 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   isCancelTriggered,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const formattedPrice = useFormattedPrice(price)
   const formattedRefundAmount = useFormattedPrice(refunds?.refundAmount)
@@ -42,7 +43,9 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   const noop = useCallback(() => {}, [])
 
   return (
-    <View testID={buildTestId('reservationDetail_footer')} style={styles.container}>
+    <View
+      testID={buildTestId('reservationDetail_footer')}
+      style={[styles.container, { backgroundColor: colors.secondaryBackground, borderTopColor: colors.footerBorder }]}>
       {formattedPrice ? (
         <View style={styles.rowPrice}>
           {hasRefunds ? (
@@ -54,9 +57,16 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
                 refundAmount: formattedRefundAmount,
               }}
               textStyle="CaptionSemibold"
-              textStyleOverrides={styles.priceTitle}
+              textStyleOverrides={[styles.priceTitle, { color: colors.labelColor }]}
               customComponents={{
-                em: <Text style={styles.refundEmph} />,
+                em: (
+                  <Text
+                    style={[
+                      textStyles.CaptionSemibold,
+                      { color: colors.emphasizedPriceColor, backgroundColor: colors.emphasizedPriceBackground },
+                    ]}
+                  />
+                ),
               }}
             />
           ) : (
@@ -64,12 +74,12 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
               i18nKey="reservationDetail_footer_priceTitle"
               testID={buildTestId('reservationDetail_footer_priceTitle')}
               textStyle="CaptionExtrabold"
-              textStyleOverrides={styles.priceTitle}
+              textStyleOverrides={[styles.priceTitle, { color: colors.labelColor }]}
             />
           )}
           <Text
             testID={buildTestId('reservationDetail_footer_price')}
-            style={[textStyles.HeadlineH3Extrabold, styles.price]}>
+            style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}>
             {formattedPrice}
           </Text>
         </View>
@@ -107,9 +117,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing[5],
     paddingTop: spacing[4],
-    borderTopColor: colors.moonDarkest,
     borderTopWidth: 2,
-    backgroundColor: colors.basicWhite,
   },
   rowPrice: {
     flexDirection: 'row',
@@ -118,9 +126,6 @@ const styles = StyleSheet.create({
     height: spacing[9],
     gap: spacing[5],
   },
-  price: {
-    color: colors.moonDarkest,
-  },
   rowActions: {
     marginTop: spacing[4],
     flexDirection: 'row',
@@ -128,13 +133,7 @@ const styles = StyleSheet.create({
   },
   priceTitle: {
     lineHeight: 19,
-    color: colors.moonDarkest,
     flexShrink: 1,
     flexWrap: 'wrap',
-  },
-  refundEmph: {
-    ...textStyles.CaptionSemibold,
-    color: colors.basicWhite,
-    backgroundColor: colors.primaryDarkest,
   },
 })
