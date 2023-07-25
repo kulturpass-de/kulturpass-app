@@ -21,7 +21,7 @@ jobs:
         - name: Build
           env:
             SAP_ARTIFACTORY_URL: ${{ secrets.SAP_ARTIFACTORY_URL }}
-            PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN: ${{ secrets.SAP_ARTIFACTORY_TOKEN }}
+            SAP_ARTIFACTORY_TOKEN: ${{ secrets.SAP_ARTIFACTORY_TOKEN }}
           run: |
             printenv
             bundle exec fastlane ios build_community
