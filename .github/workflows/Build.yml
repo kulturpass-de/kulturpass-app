@@ -19,5 +19,8 @@ jobs:
         - name: Install dependencies
           run: bundle install
         - name: Build
+          env:
+              SAP_ARTIFACTORY_URL: '${{ secrets.SAP_ARTIFACTORY_URL }}'
+              PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN: '${{ secrets.PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN }}'
           run: |
             bundle exec fastlane ios build_community
