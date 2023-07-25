@@ -10,17 +10,11 @@ platform :ios do
   end
   
   desc "Build project (Community)"
-  lane :build_community do
+  lane :build do
       ENV["RCT_NO_LAUNCH_PACKAGER"] = "1"
       ENV["NO_FLIPPER"] = "1"
       sh("echo 'DEV_MENU='true'' >> '../.env'")
       sh("echo 'AA2_DEVELOPER_MODE='true'' >> '../.env'")
-      
-      cocoapods(
-          clean_install: true,
-          use_bundle_exec: true,
-          podfile: "./ios/Podfile"
-      )
 
       build_ios_app(
           export_method: "ad-hoc",
