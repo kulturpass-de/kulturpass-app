@@ -78,7 +78,7 @@ jobs:
           if: steps.cache-pod-dependencies.outputs.cache-hit != 'true'
           run: |
             cd ios
-            NO_FLIPPER=1 bundle exec pod install"
+            NO_FLIPPER=1 bundle exec pod install
         - name: Save Pod Dependencies
           uses: actions/cache/save@v3
           if: steps.cache-Pod-dependencies.outputs.cache-hit != 'true'
