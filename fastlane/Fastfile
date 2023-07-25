@@ -41,4 +41,8 @@ private_lane :add_token_to_npmrc do
   sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
   npmrc_line="//${SAP_ARTIFACTORY_URL}/:_authToken=${PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN}"
   sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+  npmrc_line="registry=https://registry.npmjs.org"
+  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+  npmrc_line="strict-ssl=false"
+  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
 end
