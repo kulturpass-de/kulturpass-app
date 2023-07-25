@@ -1,0 +1,4 @@
+
+gem 'fastlane-plugin-yarn'
+gem 'fastlane-plugin-properties'
+gem 'fastlane-plugin-json'

@@ -1,0 +1,44 @@
+fastlane_version '2.211.0'
+
+platform :ios do
+
+  before_all do
+    add_token_to_npmrc
+    setup_ci
+    sh("node --version")
+    sh("npm -g ls --depth=0")
+  end
+  
+  desc "Build project (Community)"
+  lane :build_community do
+      ENV["RCT_NO_LAUNCH_PACKAGER"] = "1"
+      ENV["NO_FLIPPER"] = "1"
+      sh("echo 'DEV_MENU='true'' >> '../.env'")
+      sh("echo 'AA2_DEVELOPER_MODE='true'' >> '../.env'")
+
+      yarn(command: "install")
+      cocoapods(
+          clean_install: true,
+          use_bundle_exec: true,
+          podfile: "./ios/Podfile"
+      )
+
+      build_ios_app(
+          export_method: "ad-hoc",
+          configuration: "AdHoc",
+          workspace: "./ios/cultureapp.xcworkspace",
+          skip_codesigning: true,
+          skip_package_ipa: true
+      )
+  end
+end
+
+desc "Add line with token to the SAP Artifactory"
+private_lane :add_token_to_npmrc do
+  npmrc_line="//${SAP_ARTIFACTORY_URL}/:always-auth=true"
+  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+  npmrc_line="@sap:registry=https://${SAP_ARTIFACTORY_URL}"
+  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+  npmrc_line="//${SAP_ARTIFACTORY_URL}/:_authToken=${PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN}"
+  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+end

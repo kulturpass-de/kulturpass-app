@@ -1,0 +1,26 @@
+# Defaults for fastlane scan
+# All available options can be found here:
+#  https://docs.fastlane.tools/actions/gym/#parameters
+# or by running:
+#  fastlane action gym
+
+# Specify default tools
+use_system_scm(true)
+
+# Where to put the results
+output_directory("build")
+buildlog_path("compliance_logs")
+
+# Don't use Xcode default path -> easier to pass to other actions like snapshot
+derived_data_path("out")
+
+# Ensure clean build & test
+clean(true)
+
+# Ensure that profile from Configuration/<Method>ExportOptions.plist is used
+#skip_profile_detection(true)
+
+# Project names
+workspace('./ios/cultureapp.xcworkspace')
+scheme('cultureapp')
+output_name('cultureapp')

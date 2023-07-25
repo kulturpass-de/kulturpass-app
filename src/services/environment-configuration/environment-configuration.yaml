@@ -1,0 +1,4 @@
+$schema: https://kulturpass.sap.com/json-schema/environment-config.yml
+data:
+  - name: prod
+    build: v1.0.1
