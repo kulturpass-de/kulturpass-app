@@ -33,7 +33,7 @@ platform :ios do
 end
 
 desc "Add line with token to the SAP Artifactory"
-private_lane :add_token_to_npmrc do
+lane :add_token_to_npmrc do
   sh(
     command: "echo '//'#{ENV["SAP_ARTIFACTORY_URL"]}'/:always-auth=true' >> '../.npmrc'",
     log: false
