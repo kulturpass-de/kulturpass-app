@@ -15,7 +15,7 @@ platform :ios do
       ENV["NO_FLIPPER"] = "1"
       sh("echo 'DEV_MENU='true'' >> '../.env'")
       sh("echo 'AA2_DEVELOPER_MODE='true'' >> '../.env'")
-
+      
       yarn(command: "install")
       cocoapods(
           clean_install: true,
@@ -35,14 +35,16 @@ end
 
 desc "Add line with token to the SAP Artifactory"
 private_lane :add_token_to_npmrc do
-  npmrc_line="//${SAP_ARTIFACTORY_URL}/:always-auth=true"
-  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
-  npmrc_line="@sap:registry=https://${SAP_ARTIFACTORY_URL}"
-  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
-  npmrc_line="//${SAP_ARTIFACTORY_URL}/:_authToken=${PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN}"
-  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
-  npmrc_line="registry=https://registry.npmjs.org"
-  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
-  npmrc_line="strict-ssl=false"
-  sh("echo '\n#{npmrc_line}' >> '../.npmrc'")
+  sh(
+    command: "echo '//'#{ENV["SAP_ARTIFACTORY_URL"]}'/:always-auth=true' >> '../.npmrc'",
+    log: false
+  )
+  sh(
+    command: "echo '//'#{ENV["SAP_ARTIFACTORY_URL"]}'/:_authToken=${SAP_ARTIFACTORY_TOKEN}' >> '../.npmrc'",
+    log: false
+  )
+  sh(
+    command: "echo '@sap:registry=https://'#{ENV["SAP_ARTIFACTORY_URL"]}'/' >> '../.npmrc'",
+    log: false
+  )
 end
