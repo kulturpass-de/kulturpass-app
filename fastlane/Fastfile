@@ -16,7 +16,6 @@ platform :ios do
       sh("echo 'DEV_MENU='true'' >> '../.env'")
       sh("echo 'AA2_DEVELOPER_MODE='true'' >> '../.env'")
       
-      yarn(command: "install")
       cocoapods(
           clean_install: true,
           use_bundle_exec: true,

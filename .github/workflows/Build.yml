@@ -16,12 +16,83 @@ jobs:
         - uses: ruby/setup-ruby@v1
           with:
             ruby-version: '3.2.1'
-        - name: Install dependencies
+        - name: Restore Bundle Dependencies
+          uses: actions/cache@v2
+          id: cache-bundle-dependencies
+          env:
+            cache-name: cache-bundle-dependencies-v1
+          with:
+            path: |
+              vendor
+              .bundle
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}       
+        - name: Install Bundle Dependencies
+          if: steps.cache-bundle-dependencies.outputs.cache-hit != 'true'
           run: bundle install
+        - name: Save Bundle Dependencies
+          uses: actions/cache@v2
+          if: steps.cache-bundle-dependencies.outputs.cache-hit != 'true'
+          env:
+            cache-name: cache-bundle-dependencies-v1
+          with:
+            path: |
+              vendor
+              bundle
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
+        - name: Restore Yarn Dependencies
+          uses: actions/cache@v2
+          id: cache-yarn-dependencies
+          env:
+            cache-name: cache-yarn-dependencies-v1
+          with:
+            path: |
+              node_modules
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}    
+        - name: Install Yarn Dependencies
+          if: steps.cache-yarn-dependencies.outputs.cache-hit != 'true'
+          run: yarn install
+        - name: Save Yarn Dependencies
+          uses: actions/cache@v2
+          if: steps.cache-yarn-dependencies.outputs.cache-hit != 'true'
+          env:
+            cache-name: cache-yarn-dependencies-v1
+          with:
+            path: |
+              node_modules
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+  build:
+    runs-on: macos-13
+    steps:
+        - name: Check out repository code
+          uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: '18.16.0'
+        - uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: '3.2.1'
+        - name: Restore Bundle Dependencies
+          uses: actions/cache@v2
+          id: cache-bundle-dependencies
+          env:
+            cache-name: cache-bundle-dependencies-v1
+          with:
+            path: |
+              vendor
+              .bundle
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
+        - name: Restore Yarn Dependencies
+          uses: actions/cache@v2
+          id: cache-yarn-dependencies
+          env:
+            cache-name: cache-yarn-dependencies-v1
+          with:
+            path: |
+              node_modules
+            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
         - name: Build
           env:
             SAP_ARTIFACTORY_URL: ${{ secrets.SAP_ARTIFACTORY_URL }}
             SAP_ARTIFACTORY_TOKEN: ${{ secrets.SAP_ARTIFACTORY_TOKEN }}
           run: |
-            printenv
             bundle exec fastlane ios build_community
