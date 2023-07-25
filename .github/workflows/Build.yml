@@ -9,8 +9,8 @@ jobs:
     runs-on: macos-13
     steps:
         - name: Check out repository code
-          uses: actions/checkout@v2
-        - uses: actions/setup-node@v1
+          uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
           with:
             node-version: '18.16.0'
         - uses: ruby/setup-ruby@v1
@@ -20,7 +20,7 @@ jobs:
           run: bundle install
         - name: Build
           env:
-              SAP_ARTIFACTORY_URL: '${{ secrets.SAP_ARTIFACTORY_URL }}'
-              PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN: '${{ secrets.PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN }}'
+              SAP_ARTIFACTORY_URL: ${{ secrets.SAP_ARTIFACTORY_URL }}
+              PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN: ${{ secrets.PIPER_VAULTCREDENTIAL_IDENTITY_TOKEN }}
           run: |
             bundle exec fastlane ios build_community
