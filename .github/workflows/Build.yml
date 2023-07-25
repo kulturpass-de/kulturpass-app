@@ -1,0 +1,20 @@
+name: Build
+on: workflow_dispatch
+
+jobs:
+  dependencies:
+    runs-on: macos-13
+    steps:
+        - name: Check out repository code
+          uses: actions/checkout@v2
+        - uses: actions/setup-node@v1
+          with:
+            node-version: "18.16.0"
+        - uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: "3.2.1"
+        - name: Install dependencies
+          run: bundle install
+        - name: Build
+          run: |
+            bundle exec fastlane ios build_community
