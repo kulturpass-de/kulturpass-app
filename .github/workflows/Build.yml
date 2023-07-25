@@ -81,13 +81,13 @@ jobs:
             NO_FLIPPER=1 bundle exec pod install
         - name: Save Pod Dependencies
           uses: actions/cache/save@v3
-          if: steps.cache-Pod-dependencies.outputs.cache-hit != 'true'
+          if: steps.cache-pod-dependencies.outputs.cache-hit != 'true'
           env:
             cache-name: cache-pod-dependencies-v1
           with:
             path: |
               ios/Pods
-            key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('ios/Podfile.lock') }}
+            key: ${{ steps.cache-pod-dependencies.outputs.cache-primary-key }}
   build:
     runs-on: macos-13
     needs: dependencies
