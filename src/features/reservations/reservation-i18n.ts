@@ -60,10 +60,13 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
     return { headline: undefined, copytext: undefined }
   }
 
-  if (productDetail.productType === ProductTypes.Voucher && orderStatus === 'READY_FOR_PICKUP') {
-    if (productDetail.isVoucherPickupRequired) {
+  if (orderStatus === 'READY_FOR_PICKUP') {
+    const { fulfillmentOption } = productDetail
+    if (fulfillmentOption === 'REDEMPTION_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
-    } else {
+    } else if (fulfillmentOption === 'PICKUP_CODE') {
+      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
+    } else if (fulfillmentOption === 'VENDOR_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_NOT_REQUIRED_VOUCHER
     }
   }

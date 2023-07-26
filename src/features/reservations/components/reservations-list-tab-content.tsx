@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IllustrationType } from '../../../components/illustration/illustration'
 import { AvailableTranslations } from '../../../components/translated-text/types'
-import { Order } from '../../../services/api/types/commerce/api-types'
+import { OrderHistory } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -10,7 +10,7 @@ import { ReservationList } from './reservation-list'
 import { ReservationsListEmpty } from './reservations-list-empty'
 
 type ReservationsListTabContentProps = {
-  orderEntries: Order[]
+  orderEntries: OrderHistory[]
   refetch: () => void
   isLoading: boolean
   testID: string
@@ -19,7 +19,7 @@ type ReservationsListTabContentProps = {
   i18nIllustrationAltKey: AvailableTranslations
   illustrationType: IllustrationType
   completedReservations: boolean
-  onOrderPressed: (order: Order) => void
+  onOrderPressed: (order: OrderHistory) => void
 }
 
 export const ReservationsListTabContent: React.FC<ReservationsListTabContentProps> = ({

@@ -21,7 +21,10 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
 
   const eventEndsOnSameDay = endDate?.split('T')[0] === startDate?.split('T')[0]
 
-  if (eventEndsOnSameDay && formattedEventStartDate) {
+  if (
+    (formattedEventStartDate && formattedEvenEndDate === undefined) ||
+    (eventEndsOnSameDay && formattedEventStartDate)
+  ) {
     return (
       <Text
         numberOfLines={1}

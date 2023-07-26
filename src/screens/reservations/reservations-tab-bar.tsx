@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     paddingHorizontal: spacing[4],
     paddingBottom: spacing[2],
+    alignSelf: 'center',
   },
   tabBarIndicatorStyle: {
     height: 2,

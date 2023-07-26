@@ -1,4 +1,4 @@
-import { Balance } from '../../services/api/types/commerce/api-types'
+import { CustomerBalance } from '../../services/api/types/commerce/api-types'
 
 export type ValidBalance = {
   grantedBalance: number
@@ -6,7 +6,7 @@ export type ValidBalance = {
   reservedBalance: number
 }
 
-export const toValidBalance = (balance: Balance): ValidBalance | undefined => {
+export const toValidBalance = (balance: CustomerBalance): ValidBalance | undefined => {
   if (
     balance.grantedBalance?.value !== undefined &&
     balance.availableBalance?.value !== undefined &&

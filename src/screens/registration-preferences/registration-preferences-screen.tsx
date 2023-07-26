@@ -3,6 +3,7 @@ import { LoadingIndicator } from '../../components/loading-indicator/loading-ind
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { Preferences } from '../../features/preferences/components/preferences'
+import { usePreferences } from '../../features/preferences/hooks/use-preferences'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
@@ -23,6 +24,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
   const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
   const [getIsValidPostalCode] = commerceApi.useLazyGetIsValidPostalCodeQuery()
   const setAccountInfo = useSetAccountInfo(regToken)
+  const preferencesForm = usePreferences({ getIsValidPostalCode })
 
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
@@ -43,6 +45,7 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
         />
         <Preferences
           inModal
+          form={preferencesForm}
           onPressSubmit={onSubmit}
           availableCategories={preferenceCategories.data?.categories}
           submitButtonI18nKey="preferences_form_registration_submit"

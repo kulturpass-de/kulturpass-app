@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { type FieldError } from 'react-hook-form'
-import { StyleSheet, TextInput, TextInputProps } from 'react-native'
+import { Platform, StyleSheet, TextInput, TextInputProps } from 'react-native'
 import {
   FormFieldContainer,
   FormFieldContainerProps,
@@ -104,6 +104,10 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
               color: toTransparentColor(colors.labelColor, 0.4, !editable),
               backgroundColor: toTransparentColor(colors.secondaryBackground, 0.4, !editable),
               borderColor: toTransparentColor(borderColor, 0.5, !editable),
+            },
+            Platform.OS === 'ios' && {
+              // fix line break issue. https://github.com/facebook/react-native/issues/28012
+              lineHeight: undefined,
             },
           ]}
           testID={addTestIdModifier(testID, 'input')}

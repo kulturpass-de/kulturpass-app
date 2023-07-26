@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
 import { FavoriteButton } from '../../components/favorite-button/favorite-button'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
-import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
+import { Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HITSLOP_FAVORITES_LIST_ITEM } from '../../theme/constants'
@@ -15,13 +15,13 @@ import { FavoritesEventDate } from './favorites-event-date'
 import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 
 export type FavoritesListItemProps = {
-  favourite: FavouritesItem
+  product: Product
   onPress?: (product: Product) => void
 }
 
 export const ITEM_HEIGHT = 164
 
-export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ favourite: { product }, onPress }) => {
+export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, onPress }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()

@@ -17,6 +17,9 @@ export type PreferencesCategorySelectorItemProps = {
   style?: StyleProp<ViewStyle>
 }
 
+const SHIFT_LEFT = -7
+const SHIFT_LEFT_IMAGE_SCALE = -6
+
 export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelectorItemProps> = ({
   testID,
   isSelected,
@@ -61,14 +64,14 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
               !isSelectable && styles.disabled,
               style,
             ]}>
-            <View style={styles.image}>
+            <View style={[styles.image, { left: SHIFT_LEFT }]}>
               <SvgImage
                 type={buttonStyle.svgImageType}
                 screenWidthRelativeSize={0.17}
                 testID={addTestIdModifier(testID, 'image')}
               />
             </View>
-            <View style={styles.content}>
+            <View style={[styles.content, { transform: [{ translateX: SHIFT_LEFT + SHIFT_LEFT_IMAGE_SCALE }] }]}>
               <Text style={[textStyles.CaptionExtrabold, { color: colors.labelColor }]}>{category.name}</Text>
             </View>
           </View>
@@ -103,13 +106,14 @@ const styles = StyleSheet.create({
   },
   image: {
     zIndex: 2,
-    left: -7,
+    left: SHIFT_LEFT,
   },
   content: {
     zIndex: 20,
     minHeight: 64,
     padding: spacing[4] / 2,
-    paddingRight: spacing[5],
+    paddingRight: spacing[5] + SHIFT_LEFT + SHIFT_LEFT_IMAGE_SCALE,
+    paddingLeft: spacing[2],
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',

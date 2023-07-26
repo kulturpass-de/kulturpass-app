@@ -1,7 +1,8 @@
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2Messages, FailureCodes, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
 import { useEffect } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { EidParamList } from '../../../navigation/eid/types'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import {
   AA2AuthError,
@@ -33,7 +34,7 @@ export const useHandleErrors = (
   cancelEidFlowAlertVisible: boolean = false,
 ) => {
   const isFocused = useIsFocused()
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList>>()
   const { closeFlow } = useCloseFlow()
 
   useEffect(() => {
@@ -70,9 +71,7 @@ export const useHandleErrors = (
           }
 
           if (msg.result?.reason === FailureCodes.Establish_Pace_Channel_Puk_Inoperative) {
-            modalNavigation.replace({
-              screen: EidPukInoperativeRouteName,
-            })
+            navigation.replace(EidPukInoperativeRouteName)
             return
           }
 
@@ -114,5 +113,5 @@ export const useHandleErrors = (
     })
 
     return () => sub.unsubscribe()
-  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, modalNavigation])
+  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, navigation])
 }

@@ -34,7 +34,8 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
   const { addTestIdModifier } = useTestIdBuilder()
 
   const sectionTestID = addTestIdModifier(testID, 'exhibit')
-  const { exhibitStartDate, exhibitEndDate, venue, venueDistance } = productDetail
+  const { exhibitStartDate, exhibitEndDate, venue, venueDistance, eventDateTime } = productDetail
+  const formattedEventDateTime = useFormattedDateTime(eventDateTime)
   const formattedEventStartDate = useFormattedDateTime(exhibitStartDate)
   const formattedEvenEndDate = useFormattedDateTime(exhibitEndDate)
   const exhibitDate = formatDate(t, formattedEventStartDate?.date, formattedEvenEndDate?.date)
@@ -56,6 +57,21 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
             showCopyToClipboard
             baseTestId={addTestIdModifier(sectionTestID, 'location')}
           />
+        </ProductDetailSection>
+      ) : null}
+      {formattedEventDateTime ? (
+        <ProductDetailSection
+          testID={addTestIdModifier(sectionTestID, 'time')}
+          iconSource="calendar"
+          sectionCaptioni18nKey="productDetail_exhibit_time_caption">
+          <Text
+            testID={addTestIdModifier(sectionTestID, 'time_value')}
+            style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
+            {t('productDetail_exhibit_time_value', {
+              date: formattedEventDateTime.date,
+              time: formattedEventDateTime.time,
+            })}
+          </Text>
         </ProductDetailSection>
       ) : null}
       {exhibitStartDate || exhibitEndDate ? (

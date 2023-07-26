@@ -15,9 +15,17 @@ type LinkTextInlineProps = {
   style?: TextStyle
   iconSize?: number
   textStyle?: TranslatedTextProps['textStyle']
+  textStyleOverrides?: TranslatedTextProps['textStyleOverrides']
 }
 
-export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, iconSize = 24, textStyle, style }) => {
+export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
+  link,
+  i18nKey,
+  iconSize,
+  textStyle,
+  textStyleOverrides,
+  style,
+}) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -34,10 +42,12 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, i
       accessibilityLabel={t(i18nKey)}
       accessible>
       <Text style={[styles.container, style]}>
-        <SvgImage width={iconSize} height={iconSize} type="link-arrow" style={styles.icon} />
+        {iconSize !== undefined && (
+          <SvgImage width={iconSize} height={iconSize} type="link-arrow" style={styles.icon} />
+        )}
         <TranslatedText
           testID={linkTestId}
-          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }, textStyleOverrides]}
           textStyle={textStyle ?? 'BodyRegular'}
           i18nKey={i18nKey}
         />

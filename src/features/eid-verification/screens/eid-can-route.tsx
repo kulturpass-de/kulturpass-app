@@ -1,6 +1,7 @@
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
@@ -17,24 +18,21 @@ export type EidCanRouteParams = {
   retry: boolean
 }
 
-export type EidCanRouteProps = ModalScreenProps<'EidCan'>
+export type EidCanRouteProps = EidScreenProps<'EidCan'>
 
 export const EidCanRoute: React.FC<EidCanRouteProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidCan'>>()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
   const flow = route.params.flow
 
   const onNext = useCallback(
     (can: string) => {
-      modalNavigation.navigate({
-        screen: EidInsertCardRouteName,
-        params: {
-          flow,
-          can,
-        },
+      navigation.navigate(EidInsertCardRouteName, {
+        flow,
+        can,
       })
     },
-    [flow, modalNavigation],
+    [flow, navigation],
   )
 
   const onClose = useCallback(() => {

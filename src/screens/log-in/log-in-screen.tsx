@@ -21,6 +21,7 @@ import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
+import { spacing } from '../../theme/spacing'
 
 export type LoginFormData = {
   email: string
@@ -81,7 +82,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   })
 
   return (
-    <ModalScreen testID={buildTestId('login')}>
+    <ModalScreen testID={buildTestId('login')} withoutBottomSafeArea>
       <LoadingIndicator loading={loading} />
       <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
@@ -126,15 +127,20 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             textStyleOverrides={[style.forgotPasswordText, { color: colors.labelColor }]}
           />
         </Pressable>
-        <View style={style.formLoginButton}>
-          <Button
-            disabled={!form.formState.isDirty}
-            testID={buildTestId('login_button')}
-            i18nKey="login_button"
-            onPress={onPressLoginButton}
-          />
-        </View>
-
+        <Button
+          bodyStyleOverrides={style.formLoginButton}
+          disabled={!form.formState.isDirty}
+          testID={buildTestId('login_button')}
+          i18nKey="login_button"
+          onPress={onPressLoginButton}
+        />
+        <Button
+          bodyStyleOverrides={style.formForgotPasswordButton}
+          testID={buildTestId('login_forgotPassword_button')}
+          i18nKey="login_form_forgotPassword"
+          variant="transparent"
+          onPress={afterForgotPassword}
+        />
         <View style={style.registerTitle}>
           <TranslatedText
             i18nKey="login_form_noAccount_title"
@@ -166,27 +172,29 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
 
 const style = StyleSheet.create({
   screenContent: {
-    paddingTop: 32,
-    paddingHorizontal: 16,
+    paddingTop: spacing[10],
+    paddingHorizontal: spacing[5],
   },
   passwordFormFieldContainerStyle: {
-    marginBottom: 8,
+    marginBottom: spacing[2],
   },
   formLoginButton: {
-    marginTop: 24,
+    marginTop: spacing[6],
+  },
+  formForgotPasswordButton: {
+    marginTop: spacing[1],
   },
   forgotPasswordText: {
     textDecorationLine: 'underline',
   },
   registerTitle: {
-    marginTop: 40,
+    marginTop: spacing[9],
   },
   registerText: {
-    marginTop: 8,
+    marginTop: spacing[5],
   },
   registerButton: {
-    marginTop: 32,
-    marginBottom: 40,
+    marginTop: spacing[5],
   },
   noAccountTitle: {
     textAlign: 'center',

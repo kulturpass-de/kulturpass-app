@@ -8,46 +8,6 @@ import {
   AccountDeletionSuccessfulRouteName,
   AccountDeletionSuccessfulRouteParams,
 } from '../../features/account-deletion/screens/account-deletion-successful-route'
-import {
-  EidAboutServiceProviderRouteName,
-  EidAboutServiceProviderRouteParams,
-} from '../../features/eid-verification/screens/eid-about-service-provider-route'
-import {
-  EidAboutVerificationRouteName,
-  EidAboutVerificationRouteParams,
-} from '../../features/eid-verification/screens/eid-about-verification-route'
-import { EidCanRouteName, EidCanRouteParams } from '../../features/eid-verification/screens/eid-can-route'
-import {
-  EidChangePinCompletionRouteName,
-  EidChangePinCompletionRouteParams,
-} from '../../features/eid-verification/screens/eid-change-pin-completion-route'
-import {
-  EidInsertCardRouteName,
-  EidInsertCardRouteParams,
-} from '../../features/eid-verification/screens/eid-insert-card-route'
-import { EidNewPinRouteName, EidNewPinRouteParams } from '../../features/eid-verification/screens/eid-new-pin-route'
-import {
-  EidNFCNotSupportedRouteName,
-  EidNFCNotSupportedRouteParams,
-} from '../../features/eid-verification/screens/eid-nfc-not-supported-route'
-import { EidPinRouteName, EidPinRouteParams } from '../../features/eid-verification/screens/eid-pin-route'
-import {
-  EidPukInoperativeRouteName,
-  EidPukInoperativeRouteParams,
-} from '../../features/eid-verification/screens/eid-puk-inoperative-route'
-import { EidPukRouteName, EidPukRouteParams } from '../../features/eid-verification/screens/eid-puk-route'
-import {
-  EidServiceProviderDetailsRouteName,
-  EidServiceProviderDetailsRouteParams,
-} from '../../features/eid-verification/screens/eid-service-provider-details-route'
-import {
-  EidTransportPinRouteName,
-  EidTransportPinRouteParams,
-} from '../../features/eid-verification/screens/eid-transport-pin-route'
-import {
-  EidVerificationCompletionRouteName,
-  EidVerificationCompletionRouteParams,
-} from '../../features/eid-verification/screens/eid-verification-completion-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
 import {
   OfferSelectionRouteName,
@@ -127,20 +87,6 @@ export type ModalParamList = {
   [ProductDetailRouteName]: ProductDetailRouteParams
   [OfferSelectionRouteName]: OfferSelectionRouteParams
   [ProductConfirmReservationRouteName]: ProductConfirmReservationRouteParams
-
-  [EidAboutVerificationRouteName]: EidAboutVerificationRouteParams
-  [EidAboutServiceProviderRouteName]: EidAboutServiceProviderRouteParams
-  [EidServiceProviderDetailsRouteName]: EidServiceProviderDetailsRouteParams
-  [EidInsertCardRouteName]: EidInsertCardRouteParams
-  [EidPinRouteName]: EidPinRouteParams
-  [EidTransportPinRouteName]: EidTransportPinRouteParams
-  [EidNewPinRouteName]: EidNewPinRouteParams
-  [EidCanRouteName]: EidCanRouteParams
-  [EidPukRouteName]: EidPukRouteParams
-  [EidVerificationCompletionRouteName]: EidVerificationCompletionRouteParams
-  [EidChangePinCompletionRouteName]: EidChangePinCompletionRouteParams
-  [EidNFCNotSupportedRouteName]: EidNFCNotSupportedRouteParams
-  [EidPukInoperativeRouteName]: EidPukInoperativeRouteParams
 
   [ReservationDetailRouteName]: ReservationDetailRouteParams
 

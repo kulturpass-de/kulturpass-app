@@ -1,9 +1,11 @@
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { InfoBox } from '../../../components/info-box/info-box'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { RootStackParams } from '../../../navigation/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -12,14 +14,13 @@ import { EidAboutVerificationRouteName } from '../screens/eid-about-verification
 
 export const EidIdentifyButton: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const { colors } = useTheme()
-
-  const modalNavigation = useModalNavigation()
   const { name } = useUserInfo()
 
   const startVerification = useCallback(() => {
-    modalNavigation.navigate({ screen: EidAboutVerificationRouteName })
-  }, [modalNavigation])
+    navigation.navigate('Eid', { screen: EidAboutVerificationRouteName })
+  }, [navigation])
 
   return (
     <Pressable onPress={startVerification} accessible accessibilityRole="button">

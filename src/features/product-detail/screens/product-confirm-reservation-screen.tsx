@@ -6,9 +6,7 @@ import { LoadingIndicator } from '../../../components/loading-indicator/loading-
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ScreenContent } from '../../../components/screen/screen-content'
-import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
@@ -27,8 +25,8 @@ import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
 import { ProductConfirmOverview } from '../components/product-confirm-overview'
-import { ProductDetail, ProductTypes } from '../types/product-detail'
-import { isProductVoucherPickup } from '../utils'
+import { ProductDetail } from '../types/product-detail'
+import { ReservationPickup } from './reservation-pickup'
 
 export type ProductConfirmReservationScreenProps = {
   onBack: () => void
@@ -70,13 +68,6 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   const { visibleError, onDismissVisibleError } = useDismissableError(
     !reservationMutationResult.isLoading ? reservationMutationResult.error : undefined,
   )
-
-  let pickupCopytext: AvailableTranslations = 'productDetail_confirmReservation_product_pickup'
-  if (productDetail.productType === ProductTypes.Voucher) {
-    pickupCopytext = isProductVoucherPickup(productDetail)
-      ? 'productDetail_confirmReservation_voucher_pickupRequired'
-      : 'productDetail_confirmReservation_voucher_pickupNotRequired'
-  }
 
   const displayErrorAlert =
     reservationMutationResult.isError || (reservationMutationResult.isSuccess && !reservationMutationResult.data.code)
@@ -120,15 +111,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
         </View>
         <ProductConfirmOverview productDetail={productDetail} price={selectedOffer.price} />
         <View style={[styles.reservationDetailsContainer]}>
-          <View style={styles.reservationDetailsPickup}>
-            <SvgImage type="boings" width={20} height={20} />
-            <TranslatedText
-              i18nKey={pickupCopytext}
-              testID={buildTestId(pickupCopytext)}
-              textStyle="BodySmallBold"
-              textStyleOverrides={[styles.reservationDetailsPickupText, { color: colors.labelColor }]}
-            />
-          </View>
+          <ReservationPickup productDetail={productDetail} />
           <LinkText
             i18nKey="productDetail_confirmReservation_aboutReservationsFaqLink"
             testID={buildTestId('productDetail_confirmReservation_aboutReservationsFaqLink')}
@@ -181,14 +164,6 @@ const styles = StyleSheet.create({
   },
   reservationDetailsContainer: {
     paddingTop: spacing[8],
-  },
-  reservationDetailsPickup: {
-    flexDirection: 'row',
-    gap: spacing[2],
-  },
-  reservationDetailsPickupText: {
-    flex: 1,
-    marginBottom: spacing[5],
   },
   reservationDetailsLink: {
     marginBottom: spacing[4],

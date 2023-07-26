@@ -48,6 +48,10 @@ export type ProductDetailBase<ProductType extends ProductTypes> = {
    * The active offers for this product
    */
   offers?: Array<Offer>
+  /**
+   * If it is required to pickup the voucher from the vendor or it is available digitally through the app
+   */
+  fulfillmentOption?: 'PICKUP_CODE' | 'REDEMPTION_CODE' | 'VENDOR_CODE'
 }
 
 export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
@@ -104,6 +108,14 @@ export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
 }
 
 export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
+  /**
+   * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
+   */
+  eventDateTime?: string
+  /**
+   * the length of the event in minutes
+   */
+  durationInMins?: number
   /**
    * The starting date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
    */
@@ -196,10 +208,6 @@ export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
    * The location distance
    */
   venueDistance?: string
-  /**
-   * If it is required to pickup the voucher from the vendor or it is available digitally through the app
-   */
-  isVoucherPickupRequired?: boolean
 }
 
 export type PriceWithValue = Required<Pick<Price, 'value' | 'currencyIso'>>

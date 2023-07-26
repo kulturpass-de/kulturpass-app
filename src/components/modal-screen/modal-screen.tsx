@@ -7,9 +7,15 @@ import { useTheme } from '../../theme/hooks/use-theme'
 export type ModalScreenProps = PropsWithChildren<{
   testID: TestId
   whiteBottom?: boolean
+  withoutBottomSafeArea?: boolean
 }>
 
-export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whiteBottom = false }) => {
+export const ModalScreen: React.FC<ModalScreenProps> = ({
+  children,
+  testID,
+  whiteBottom = false,
+  withoutBottomSafeArea = false,
+}) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
 
@@ -33,12 +39,14 @@ export const ModalScreen: React.FC<ModalScreenProps> = ({ children, testID, whit
         style={styles.keyboardAvoidingView}>
         {children}
       </KeyboardAvoidingView>
-      <View
-        style={[
-          styles.bottomPadding,
-          { height: bottom, backgroundColor: whiteBottom ? colors.secondaryBackground : colors.primaryBackground },
-        ]}
-      />
+      {!withoutBottomSafeArea ? (
+        <View
+          style={[
+            styles.bottomPadding,
+            { height: bottom, backgroundColor: whiteBottom ? colors.secondaryBackground : colors.primaryBackground },
+          ]}
+        />
+      ) : null}
     </View>
   )
 }

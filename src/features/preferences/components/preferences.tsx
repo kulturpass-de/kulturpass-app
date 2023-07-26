@@ -1,9 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
-import { z } from 'zod'
 import { Button } from '../../../components/button/button'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { TextFormField } from '../../../components/form-fields/text-form-field'
@@ -17,13 +14,12 @@ import { AccountInfoData, PreferenceCategory } from '../../../services/api/types
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../form-validation/hooks/use-validation-errors'
-import { POSTAL_CODE_SCHEMA } from '../../form-validation/utils/form-validation'
+import { UsePreferencesReturnType } from '../hooks/use-preferences'
 import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
 import { PreferencesCategorySelector } from './preferences-category-selector'
 
@@ -40,6 +36,7 @@ export type PreferencesProps = {
   onPressSubmit: (preferences: AccountInfoData) => Promise<void>
   submitButtonI18nKey: AvailableTranslations
   getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
+  form: UsePreferencesReturnType
 }
 
 export const Preferences: React.FC<PreferencesProps> = ({
@@ -49,28 +46,12 @@ export const Preferences: React.FC<PreferencesProps> = ({
   userPreferences,
   onPressSubmit,
   submitButtonI18nKey,
-  getIsValidPostalCode,
+  form,
 }) => {
-  const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const [loading, setLoading] = useState(false)
-
-  const form = useForm<PreferencesFormData>({
-    shouldFocusError: false,
-    mode: 'onChange',
-    resolver: zodResolver(
-      z.object({
-        postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, getIsValidPostalCode, true)),
-        categories: z.string().array().min(0),
-      }),
-    ),
-    defaultValues: {
-      postalCode: '',
-      categories: [],
-    },
-  })
 
   useEffect(() => {
     if (!userPreferences) {
@@ -166,7 +147,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
               textStyle="HeadlineH4Bold"
               textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
               i18nKey="preferences_postal_code_title"
-              testID={buildTestId('preferences_your_preferences_title')}
+              testID={buildTestId('preferences_postal_code_title')}
             />
             <View>
               <FormFieldWithControl

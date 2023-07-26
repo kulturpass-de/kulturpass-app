@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -12,13 +14,13 @@ export const EidPukInoperativeRouteName = 'EidPukInoperative'
 export type EidPukInoperativeRouteParams = undefined
 
 export const EidPukInoperativeRoute: React.FC = () => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const cancelFlow = useCancelFlow()
 
   const onClose = useCallback(async () => {
     await cancelFlow()
-    modalNavigation.closeModal()
-  }, [cancelFlow, modalNavigation])
+    navigation.navigate('Tabs')
+  }, [cancelFlow, navigation])
 
   useHandleGestures(onClose)
 

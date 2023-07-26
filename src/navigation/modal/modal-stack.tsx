@@ -3,19 +3,6 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
-import { EidAboutServiceProviderRouteConfig } from '../../features/eid-verification/screens/eid-about-service-provider-route'
-import { EidAboutVerificationRouteConfig } from '../../features/eid-verification/screens/eid-about-verification-route'
-import { EidCanRouteConfig } from '../../features/eid-verification/screens/eid-can-route'
-import { EidChangePinCompletionRouteConfig } from '../../features/eid-verification/screens/eid-change-pin-completion-route'
-import { EidInsertCardRouteConfig } from '../../features/eid-verification/screens/eid-insert-card-route'
-import { EidNewPinRouteConfig } from '../../features/eid-verification/screens/eid-new-pin-route'
-import { EidNFCNotSupportedRouteConfig } from '../../features/eid-verification/screens/eid-nfc-not-supported-route'
-import { EidPinRouteConfig } from '../../features/eid-verification/screens/eid-pin-route'
-import { EidPukInoperativeRouteConfig } from '../../features/eid-verification/screens/eid-puk-inoperative-route'
-import { EidPukRouteConfig } from '../../features/eid-verification/screens/eid-puk-route'
-import { EidServiceProviderDetailsRouteConfig } from '../../features/eid-verification/screens/eid-service-provider-details-route'
-import { EidTransportPinRouteConfig } from '../../features/eid-verification/screens/eid-transport-pin-route'
-import { EidVerificationCompletionRouteConfig } from '../../features/eid-verification/screens/eid-verification-completion-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
 import { OfferSelectionRouteConfig } from '../../features/product-detail/screens/offer-selection-route'
 import { ProductConfirmReservationRouteConfig } from '../../features/product-detail/screens/product-confirm-reservation-route'
@@ -76,23 +63,6 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...ProductDetailRouteConfig} />
         <Stack.Screen {...OfferSelectionRouteConfig} />
         <Stack.Screen {...ProductConfirmReservationRouteConfig} />
-
-        {/* eID Verification */}
-        <Stack.Group screenOptions={{ gestureEnabled: false, detachPreviousScreen: true }}>
-          <Stack.Screen {...EidAboutVerificationRouteConfig} />
-          <Stack.Screen {...EidAboutServiceProviderRouteConfig} />
-          <Stack.Screen {...EidInsertCardRouteConfig} />
-          <Stack.Screen {...EidPinRouteConfig} />
-          <Stack.Screen {...EidCanRouteConfig} />
-          <Stack.Screen {...EidPukRouteConfig} />
-          <Stack.Screen {...EidTransportPinRouteConfig} />
-          <Stack.Screen {...EidNewPinRouteConfig} />
-          <Stack.Screen {...EidVerificationCompletionRouteConfig} />
-          <Stack.Screen {...EidChangePinCompletionRouteConfig} />
-          <Stack.Screen {...EidNFCNotSupportedRouteConfig} />
-          <Stack.Screen {...EidPukInoperativeRouteConfig} />
-        </Stack.Group>
-        <Stack.Screen {...EidServiceProviderDetailsRouteConfig} />
 
         {/* Reservation Detail Routes */}
         <Stack.Screen {...ReservationDetailRouteConfig} />

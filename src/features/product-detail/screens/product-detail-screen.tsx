@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/core'
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Divider } from '../../../components/divider/divider'
@@ -21,6 +21,7 @@ import { ProductDetailTyped } from '../components/product-detail-typed'
 import { ShopAccessibilityInfo } from '../components/shop-accessibility-info'
 import { useProductDetailHeaderHeight } from '../hooks/use-product-detail-header-height'
 import { ProductDetail } from '../types/product-detail'
+import { useDismissSwipingDown } from './use-dismiss-swiping-down'
 
 export type ProductDetailScreenProps = {
   productDetail: ProductDetail
@@ -55,9 +56,14 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   useFocusEffect(setFocus)
   useEffect(setFocus, [setFocus, productDetail])
 
+  const swipingDown = useDismissSwipingDown({
+    scrollY,
+    productDetailHeaderHeightProps,
+  })
+
   return (
     <ModalScreen whiteBottom testID={testID}>
-      <View style={[styles.scrollContainer, { paddingTop: productDetailHeaderHeightProps.headerMinHeight }]}>
+      <View style={[styles.scrollContainer, swipingDown.containerStyle]}>
         <ProductDetailHeader
           {...productDetailHeaderHeightProps}
           scrollY={scrollY}
@@ -73,9 +79,12 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
               })}
               contentContainerStyle={[
                 styles.scrollView,
+                swipingDown.isEnabled && styles.scrollViewGestureEnabled,
+                !swipingDown.isEnabled && {
+                  marginTop: productDetailHeaderHeightProps.headerHeightDiff,
+                },
                 {
                   paddingBottom: productDetailHeaderHeightProps.headerHeightDiff + spacing[7],
-                  marginTop: productDetailHeaderHeightProps.headerHeightDiff,
                 },
               ]}>
               <ProductDetailTitle productDetail={productDetail} ref={focusRef} />
@@ -147,6 +156,9 @@ const styles = StyleSheet.create({
     paddingTop: spacing[7],
     paddingHorizontal: spacing[5],
     alignItems: 'flex-start',
+  },
+  scrollViewGestureEnabled: {
+    marginTop: 0,
   },
   description: {
     paddingTop: spacing[7],

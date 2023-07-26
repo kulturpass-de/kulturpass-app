@@ -10,7 +10,7 @@ import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ProductDetail, ProductTypes } from '../types/product-detail'
-import { isProductVoucherPickup, svgForProductType, svgForVoucherCategory } from '../utils'
+import { svgForProductType, svgForVoucherCategory } from '../utils'
 
 export type ProductConfirmOverviewProps = {
   productDetail: ProductDetail
@@ -29,7 +29,6 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
   const formattedPrice = useFormattedPrice(price)
 
   const category: Category | undefined = productDetail.categories[0]
-  const isVoucherPickup = isProductVoucherPickup(productDetail)
   const svgImageType =
     productDetail.productType === ProductTypes.Voucher && category.code
       ? svgForVoucherCategory[category.code]
@@ -64,7 +63,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.productPriceInfoContainer}>
-          {!isVoucherPickup && productDetail.productType === ProductTypes.Voucher ? (
+          {productDetail.fulfillmentOption !== 'PICKUP_CODE' && productDetail.productType === ProductTypes.Voucher ? (
             <>
               <SvgImage type="info" width={16} height={16} />
               <TranslatedText

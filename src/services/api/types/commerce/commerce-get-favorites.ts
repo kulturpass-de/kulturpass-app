@@ -1,7 +1,5 @@
-import { FavouritesItem } from './api-types'
+import { FavouritesEntryList } from './api-types'
 
 export type GetFavoritesRequestParams = void
 
-export type GetFavoritesResponse = {
-  favouritesItems: FavouritesItem[]
-}
+export type GetFavoritesResponse = FavouritesEntryList

@@ -20,7 +20,7 @@ export const colorMappings: ColorMappings = {
   budgetBarReserved: colors.secondaryBase,
   budgetBarAvailable: colors.basicBlack,
   listItemBorder: colors.basicBlack,
-  footerBorder: colors.basicWhite,
+  footerBorder: colors.moonDarkest,
   reservationsTabBarIndicator: colors.moonDarkest,
   textFieldPlaceholder: colors.moonBase,
   textFieldBorder: colors.moonDarkest,
@@ -58,10 +58,10 @@ export const reservationListStatusTextColors: ReservationListStatusTextColors = 
 export const buttonColorMappings: ButtonColorMappings = {
   primary: {
     containerBackground: colors.moonDarkest,
-    containerBorder: colors.moonDarkest,
     text: colors.basicWhite,
     containerBackgroundPressed: toTransparentColor(colors.moonDarkest, 0.7),
-    opacityDisabled: 0.55,
+    containerBorderPressed: colors.moonDarkest,
+    containerBackgroundDisabled: toTransparentColor(colors.moonDarkest, 0.55),
   },
   secondary: {
     containerBackground: colors.basicWhite,

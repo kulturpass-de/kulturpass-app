@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
-import { Order } from '../../../services/api/types/commerce/api-types'
+import { OrderHistory } from '../../../services/api/types/commerce/api-types'
 import { spacing } from '../../../theme/spacing'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationsListItem } from './reservations-list-item'
 
 type ReservationListProps = {
-  orderEntries: Order[]
-  onOrderPressed: (order: Order) => void
+  orderEntries: OrderHistory[]
+  onOrderPressed: (order: OrderHistory) => void
   onRefresh: () => void
   loading: boolean
   completedReservations: boolean
@@ -15,8 +15,8 @@ type ReservationListProps = {
 }
 
 type ListItemProps = {
-  item: Order
-  onOrderPressed: (item: Order) => void
+  item: OrderHistory
+  onOrderPressed: (item: OrderHistory) => void
   completedReservations: boolean
 }
 
@@ -49,7 +49,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
   completedReservations,
   listEmptyComponent,
 }) => {
-  const renderItem: ListRenderItem<Order> = useCallback(
+  const renderItem: ListRenderItem<OrderHistory> = useCallback(
     ({ item }) => (
       <ListItem
         key={item.code}

@@ -23,11 +23,11 @@ export const useFavouritesListItemActions = (productCode?: string) => {
        * solution.
        */
       const favorites = await getFavorites(undefined, false)
-      const favorite = favorites.data?.favouritesItems.find(
+      const favorite = favorites.data?.favouritesItems?.find(
         currentFavorite => currentFavorite.product?.code === productCode,
       )
 
-      if (!favorite) {
+      if (!favorite || favorite.cartId === undefined || favorite.entryNumber === undefined) {
         return
       }
 

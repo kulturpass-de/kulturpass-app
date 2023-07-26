@@ -58,10 +58,10 @@ export const reservationListStatusTextColors: ReservationListStatusTextColors = 
 export const buttonColorMappings: ButtonColorMappings = {
   primary: {
     containerBackground: colors.sunLightest,
-    containerBorder: colors.sunLightest,
     text: colors.newMoonDarker,
     containerBackgroundPressed: colors.sunLighter,
-    opacityDisabled: 0.55,
+    containerBorderPressed: colors.sunLightest,
+    containerBackgroundDisabled: toTransparentColor(colors.sunLightest, 0.55),
   },
   secondary: {
     containerBackground: colors.newMoonDarker,

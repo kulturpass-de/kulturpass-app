@@ -2,10 +2,10 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useState, useCallback, useRef, useMemo } from 'react'
 import { ErrorAlertError } from '../../features/form-validation/components/error-alert'
 import { commerceApi } from '../../services/api/commerce-api'
-import { FavouritesItem } from '../../services/api/types/commerce/api-types'
+import { FavouritesEntry } from '../../services/api/types/commerce/api-types'
 
 export type UseFavouritesOnFocusResult = {
-  favourites: FavouritesItem[]
+  favourites: FavouritesEntry[]
   reloadFavourites: () => Promise<void>
   isLoading: boolean
   error: ErrorAlertError | undefined
@@ -19,7 +19,7 @@ export const useFavouritesOnFocus = (): UseFavouritesOnFocusResult => {
 
   const favourites = useMemo(() => {
     const sortedFavorites = data?.favouritesItems ? [...data.favouritesItems] : []
-    sortedFavorites.sort((f1, f2) => f1.entryNumber - f2.entryNumber)
+    sortedFavorites.sort((f1, f2) => (f1.entryNumber ?? 0) - (f2.entryNumber ?? 0))
     return sortedFavorites.filter(favorite => !!favorite.product)
   }, [data])
 

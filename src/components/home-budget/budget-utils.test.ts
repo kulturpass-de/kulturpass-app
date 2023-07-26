@@ -1,9 +1,9 @@
-import { Balance } from '../../services/api/types/commerce/api-types'
+import { CustomerBalance } from '../../services/api/types/commerce/api-types'
 import { toValidBalance } from './budget-utils'
 
 describe('HomeBudget budget utils', () => {
   test('toValidBalance', () => {
-    const balance: Balance = {
+    const balance: CustomerBalance = {
       grantedBalance: {
         value: 10,
       },
@@ -20,7 +20,7 @@ describe('HomeBudget budget utils', () => {
     expect(validBalance?.availableBalance).toBe(3)
     expect(validBalance?.reservedBalance).toBe(7)
 
-    const emptyBalance: Balance = {
+    const emptyBalance: CustomerBalance = {
       grantedBalance: {
         value: undefined,
       },
@@ -35,7 +35,7 @@ describe('HomeBudget budget utils', () => {
     const emptyValidBalance = toValidBalance(emptyBalance)
     expect(emptyValidBalance).toBeUndefined()
 
-    const noBalance: Balance = {
+    const noBalance: CustomerBalance = {
       grantedBalance: {
         value: 10,
       },

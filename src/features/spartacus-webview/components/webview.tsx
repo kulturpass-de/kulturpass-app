@@ -145,6 +145,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           onScroll={onScroll}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          autoManageStatusBarEnabled={false}
         />
         {errorCode !== undefined ? (
           <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />

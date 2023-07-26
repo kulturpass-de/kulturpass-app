@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Switch, TextInput, View } from 'react-native'
@@ -12,6 +14,7 @@ import { TranslatedText } from '../../components/translated-text/translated-text
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { useModalNavigation } from '../../navigation/modal/hooks'
+import { RootStackParams } from '../../navigation/types'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { logger } from '../../services/logger'
 import { RootState } from '../../services/redux/configure-store'
@@ -53,7 +56,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
-
+  const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const modalNavigation = useModalNavigation()
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
@@ -79,13 +82,13 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   }, [])
 
   const startEidFlow = useCallback(() => {
-    modalNavigation.navigate({ screen: 'EidAboutVerification' })
-  }, [modalNavigation])
+    navigation.navigate('Eid', { screen: 'EidAboutVerification' })
+  }, [navigation])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
 
   return (
-    <ModalScreen testID={buildTestId('developerMenu')}>
+    <ModalScreen testID={buildTestId('developerMenu')} withoutBottomSafeArea>
       <ModalScreenHeader
         titleI18nKey="developerMenu_headline_title"
         testID={buildTestId('developerMenu_headline_title')}

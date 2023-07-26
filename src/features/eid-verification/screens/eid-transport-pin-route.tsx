@@ -1,6 +1,7 @@
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
@@ -15,22 +16,19 @@ export type EidTransportPinRouteParams = {
   retryCounter?: number
 }
 
-export type EidTransportPinRouteProps = ModalScreenProps<'EidTransportPin'>
+export type EidTransportPinRouteProps = EidScreenProps<'EidTransportPin'>
 
 export const EidTransportPinRoute: React.FC<EidTransportPinRouteProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidTransportPin'>>()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(
     (pin: string) => {
-      modalNavigation.navigate({
-        screen: EidNewPinRouteName,
-        params: {
-          pin,
-        },
+      navigation.navigate(EidNewPinRouteName, {
+        pin,
       })
     },
-    [modalNavigation],
+    [navigation],
   )
 
   const onClose = useCallback(() => {

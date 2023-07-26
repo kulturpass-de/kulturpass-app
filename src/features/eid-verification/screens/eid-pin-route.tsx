@@ -1,8 +1,9 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
@@ -19,24 +20,21 @@ export type EidPinRouteParams = {
   retryCounter?: number
 }
 
-export type EidPinRouteProps = ModalScreenProps<'EidPin'>
+export type EidPinRouteProps = EidScreenProps<'EidPin'>
 
 export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidCan'>>()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const onNext = useCallback(
     (pin: string) => {
-      modalNavigation.navigate({
-        screen: EidInsertCardRouteName,
-        params: {
-          flow: 'Auth',
-          pin,
-        },
+      navigation.navigate(EidInsertCardRouteName, {
+        flow: 'Auth',
+        pin,
       })
     },
-    [modalNavigation],
+    [navigation],
   )
 
   const onChangePin = useCallback(async () => {
@@ -48,13 +46,10 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
     } finally {
       setIsLoading(false)
     }
-    modalNavigation.navigate({
-      screen: EidTransportPinRouteName,
-      params: {
-        retryCounter: route.params.retryCounter,
-      },
+    navigation.navigate(EidTransportPinRouteName, {
+      retryCounter: route.params.retryCounter,
     })
-  }, [modalNavigation, route.params.retryCounter])
+  }, [navigation, route.params.retryCounter])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)

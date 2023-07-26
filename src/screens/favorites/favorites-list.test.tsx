@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { render, screen } from '@testing-library/react-native'
 import React from 'react'
-import { FavouritesItem } from '../../services/api/types/commerce/api-types'
+import { FavouritesEntry } from '../../services/api/types/commerce/api-types'
 import { StoreProvider } from '../../services/testing/test-utils'
 import { FavoritesList } from './favorites-list'
 
 test('Should display list of favorites', async () => {
-  const favourites: FavouritesItem[] = [
+  const favourites: FavouritesEntry[] = [
     {
       cartId: 'cart1',
       entryNumber: 0,

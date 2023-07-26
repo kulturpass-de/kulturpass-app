@@ -1,12 +1,13 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { logger } from '../../../services/logger'
 import { modalCardStyle } from '../../../theme/utils'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { EidAboutVerificationRouteName } from './eid-about-verification-route'
 import { EidChangePinCompletionScreen } from './eid-change-pin-completion-screen'
 
 export const EidChangePinCompletionRouteName = 'EidChangePinCompletion'
@@ -14,30 +15,20 @@ export const EidChangePinCompletionRouteName = 'EidChangePinCompletion'
 export type EidChangePinCompletionRouteParams = undefined
 
 export const EidChangePinCompletionRoute: React.FC = () => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
 
   const onNext = useCallback(() => {
-    modalNavigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Modal',
-          state: {
-            routes: [{ name: EidAboutVerificationRouteName }],
-          },
-        },
-      ],
-    })
-  }, [modalNavigation])
+    navigation.replace('Eid')
+  }, [navigation])
 
-  const onClose = useCallback(() => {
-    modalNavigation.closeModal()
+  const onClose = useCallback(async () => {
+    navigation.navigate('Tabs')
     try {
-      AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
+      await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {
       logger.log(e)
     }
-  }, [modalNavigation])
+  }, [navigation])
 
   useHandleGestures(onClose)
 

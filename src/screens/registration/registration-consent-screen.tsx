@@ -8,7 +8,7 @@ import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-fo
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import {
@@ -21,54 +21,57 @@ export type RegistrationConsentScreenProps = {
   onHeaderPressClose: () => void
   onPressContinue: () => void
 }
-const SCREEN_TEST_ID = 'registration_consent'
 
 export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps> = ({
   onHeaderPressClose,
   onPressContinue,
 }) => {
   const { colors } = useTheme()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
   const eulaDocumentUrl = useLocalizedEnvironmentUrl(getCdcEulaDocumentUrl)
   const [eulaAccepted, setEulaAccepted] = useState(false)
   const [dataPricacyAccepted, setDataPricacyAccepted] = useState(false)
 
+  const screenTestId = buildTestId('registration_consent')
+
   return (
-    <ModalScreen whiteBottom testID={SCREEN_TEST_ID}>
+    <ModalScreen whiteBottom testID={screenTestId}>
       <ModalScreenHeader
         titleI18nKey="registration_consent_screen_title"
-        testID={buildTestId('registration_consent_screen_title')}
+        testID={addTestIdModifier(screenTestId, 'screen_title')}
         onPressClose={onHeaderPressClose}
       />
       <ScreenContent style={styles.screenContent}>
         <TranslatedText
           i18nKey="registration_consent_headline"
           textStyle={'HeadlineH3Extrabold'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'headline')}
+          testID={addTestIdModifier(screenTestId, 'headline')}
           textStyleOverrides={[styles.headline, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="registration_consent_eula_headline"
           textStyle={'BodyMedium'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_headline')}
+          testID={addTestIdModifier(screenTestId, 'eula_headline')}
           textStyleOverrides={[styles.eulaHeadline, { color: colors.labelColor }]}
         />
         <TranslatedText
           i18nKey="registration_consent_eula_copytext"
           textStyle={'BodySmallRegular'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_copytext')}
+          testID={addTestIdModifier(screenTestId, 'eula_copytext')}
           textStyleOverrides={[styles.eulaCopytext, { color: colors.labelColor }]}
         />
         <LinkText
           link={eulaDocumentUrl}
           i18nKey="registration_consent_eula_linktext"
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_linktext')}
+          testID={addTestIdModifier(screenTestId, 'eula_linktext')}
           textStyle="BodyMedium"
           style={styles.eulaLinkText}
         />
         <Checkbox
           i18nKey="registration_consent_eula_checkbox"
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'eula_checkbox')}
+          testID={addTestIdModifier(screenTestId, 'eula_checkbox')}
           onChange={setEulaAccepted}
           selected={eulaAccepted}
         />
@@ -76,19 +79,19 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
         <TranslatedText
           i18nKey="registration_consent_data_privacy_copytext"
           textStyle={'BodySmallRegular'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_copytext')}
+          testID={addTestIdModifier(screenTestId, 'data_privacy_copytext')}
           textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
         />
         <LinkText
           link={dpsDocumentUrl}
           i18nKey="registration_consent_data_privacy_linktext"
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_linktext')}
+          testID={addTestIdModifier(screenTestId, 'data_privacy_linktext')}
           textStyle="BodyMedium"
           style={styles.dataPrivacyLinkText}
         />
         <Checkbox
           i18nKey="registration_consent_data_privacy_checkbox"
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'data_privacy_checkbox')}
+          testID={addTestIdModifier(screenTestId, 'data_privacy_checkbox')}
           onChange={setDataPricacyAccepted}
           selected={dataPricacyAccepted}
         />
@@ -97,7 +100,7 @@ export const RegistrationConsentScreen: React.FC<RegistrationConsentScreenProps>
         <Button
           disabled={!(eulaAccepted && dataPricacyAccepted)}
           i18nKey="registration_consent_submit"
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'submit')}
+          testID={addTestIdModifier(screenTestId, 'submit')}
           onPress={onPressContinue}
         />
       </ModalScreenFooter>

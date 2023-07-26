@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useCallback } from 'react'
 import { FlatList, FlatListProps, ListRenderItem, StyleSheet } from 'react-native'
-import { FavouritesItem, Product } from '../../services/api/types/commerce/api-types'
+import { FavouritesEntry, Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { spacing } from '../../theme/spacing'
 import { FavoritesEmptyScreen } from './favorites-empty-screen'
@@ -9,16 +9,19 @@ import { FavoritesListItem, ITEM_HEIGHT } from './favorites-list-item'
 import { FavoritesListItemSeparator } from './favorites-list-item-separator'
 
 export type FavoritesListProps = {
-  favourites: FavouritesItem[]
+  favourites: FavouritesEntry[]
   onProductPressed?: (product: Product) => void
-} & Pick<FlatListProps<FavouritesItem>, 'onRefresh' | 'refreshing'>
+} & Pick<FlatListProps<FavouritesEntry>, 'onRefresh' | 'refreshing'>
 
 export const FavoritesList = ({ favourites, onProductPressed, refreshing, onRefresh }: FavoritesListProps) => {
   const { buildTestId } = useTestIdBuilder()
 
-  const renderItem = useCallback<ListRenderItem<FavouritesItem>>(
+  const renderItem = useCallback<ListRenderItem<FavouritesEntry>>(
     ({ item: favourite }) => {
-      return <FavoritesListItem onPress={onProductPressed} favourite={favourite} />
+      if (favourite.product === undefined) {
+        return null
+      }
+      return <FavoritesListItem onPress={onProductPressed} product={favourite.product} />
     },
     [onProductPressed],
   )
@@ -31,8 +34,8 @@ export const FavoritesList = ({ favourites, onProductPressed, refreshing, onRefr
     }
   }, [])
 
-  const keyExtractor = useCallback((favorite: FavouritesItem) => {
-    return `${favorite.product.code}`
+  const keyExtractor = useCallback((favorite: FavouritesEntry) => {
+    return `${favorite.product?.code}`
   }, [])
 
   return (

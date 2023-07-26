@@ -1,18 +1,20 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { RootStackParams } from '../../../navigation/types'
 import { useCancelFlow } from './use-cancel-flow'
 
 export const useCloseFlow = () => {
   const [loading, setLoading] = useState(false)
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const cancelFlow = useCancelFlow()
 
   const closeFlow = useCallback(async () => {
     setLoading(true)
     await cancelFlow()
-    modalNavigation.closeModal()
+    navigation.navigate('Tabs')
     setLoading(false)
-  }, [cancelFlow, modalNavigation])
+  }, [cancelFlow, navigation])
 
   return { closeFlow, loading }
 }
