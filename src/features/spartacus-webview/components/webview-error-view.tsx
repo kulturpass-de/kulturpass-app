@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export const ERR_NO_INTERNET = 'ERR_NO_INTERNET'
+export const ERR_503 = 503
 export const ERR_UNKNOWN = 'ERR_UNKNOWN'
 
 export type WebviewErrorViewProps = {
@@ -18,19 +20,37 @@ export type WebviewErrorViewProps = {
 
 export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, errorCode, style }) => {
   const { buildTestId } = useTestIdBuilder()
+
+  const { titleI18nKey, subtitleI18nKey } = useMemo((): {
+    titleI18nKey: AvailableTranslations
+    subtitleI18nKey: AvailableTranslations
+  } => {
+    switch (errorCode) {
+      case ERR_NO_INTERNET:
+        return {
+          titleI18nKey: 'webview_error_noInternet_title',
+          subtitleI18nKey: 'webview_error_noInternet_subtitle',
+        }
+      case ERR_503:
+        return {
+          titleI18nKey: 'webview_error_503_title',
+          subtitleI18nKey: 'webview_error_503_subtitle',
+        }
+      default:
+        return {
+          titleI18nKey: 'webview_error_generic_title',
+          subtitleI18nKey: 'webview_error_generic_subtitle',
+        }
+    }
+  }, [errorCode])
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={[styles.content, style]}>
       <Illustration i18nKey="noNetwork_image_alt" testID={buildTestId('webView_noNetwork_image')} type="no-network" />
       <View style={styles.contentContainer}>
+        <TranslatedText i18nKey={titleI18nKey} textStyleOverrides={styles.title} textStyle="HeadlineH4Extrabold" />
         <TranslatedText
-          i18nKey={errorCode === ERR_NO_INTERNET ? 'webview_error_noInternet_title' : 'webview_error_generic_title'}
-          textStyleOverrides={styles.title}
-          textStyle="HeadlineH4Extrabold"
-        />
-        <TranslatedText
-          i18nKey={
-            errorCode === ERR_NO_INTERNET ? 'webview_error_noInternet_subtitle' : 'webview_error_generic_subtitle'
-          }
+          i18nKey={subtitleI18nKey}
           i18nParams={{ errorCode }}
           textStyleOverrides={styles.subtitle}
           textStyle="BodyRegular"
@@ -63,6 +83,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.basicBlack,
+    textAlign: 'center',
     paddingBottom: spacing[2],
   },
   subtitle: {
