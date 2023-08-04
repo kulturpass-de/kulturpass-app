@@ -41,7 +41,12 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
   useEffect(() => {
     const subscription = bridgeAdapterApi.onBridge(event => {
       if (event.name === 'ready') {
-        dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { isReady: true } }))
+        dispatch(
+          webviewsSlice.actions.setWebViewState({
+            webViewId,
+            state: { isReady: true, previousSubmittedUserLocationState: null },
+          }),
+        )
       }
     })
 

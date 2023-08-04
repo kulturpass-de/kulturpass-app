@@ -2,11 +2,11 @@ import React, { useCallback, useEffect } from 'react'
 import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
-import { useSelector } from 'react-redux'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { openLink } from '../../../utils/links/utils'
+import { ProductDetailRouteConfig } from '../../product-detail/screens/product-detail-route'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
@@ -20,7 +20,6 @@ import { WebViewId } from '../services/webview-bridge-adapter/types'
 import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapter/use-webview-android-pull-to-refresh'
 import { useWebViewAuthSync } from '../services/webview-bridge-adapter/use-webview-auth-sync'
 import { useWebViewBridgeAdapter } from '../services/webview-bridge-adapter/use-webview-bridge-adapter'
-import { useWebViewLocationSync } from '../services/webview-bridge-adapter/use-webview-location-sync'
 import { WebviewErrorView } from './webview-error-view'
 import { WebviewLoadingIndicator } from './webview-loading-indicator'
 
@@ -47,12 +46,29 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 }) => {
   const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
+  const modalNavigation = useModalNavigation()
 
   const origin = useOrigin(url)
 
   const handleShouldLoadRequest: OnShouldStartLoadWithRequest = useCallback(
     e => {
       let isSamePage: boolean
+      // TODO: Cleanup / Deduplicate code with useOpenProductDetail hook
+      // Fixes PDP opened in banner subpage not working properly (home screen is white after)
+      if (webViewId === WebViewId.Home && e.url.startsWith(origin)) {
+        const productCode = e.url.match(/.*\/product\/([^?/]+)/)?.[1]
+        if (productCode) {
+          const isRandomMode = e.url.includes('randomMode=true')
+          modalNavigation.navigate({
+            screen: ProductDetailRouteConfig.name,
+            params: {
+              productCode: productCode,
+              randomMode: isRandomMode,
+            },
+          })
+          return false
+        }
+      }
       if (Platform.OS === 'ios') {
         // iOS invokes this function for each text/html request. Therefore using mainDocumentURL (iOS only)
         isSamePage = e.mainDocumentURL?.startsWith(origin) === true
@@ -65,7 +81,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       }
       return isSamePage
     },
-    [origin],
+    [modalNavigation, origin, webViewId],
   )
   const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 
@@ -77,9 +93,6 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   }, [resetError, webViewRef])
 
   useWebViewAuthSync(webViewId, bridgeAdapterApi)
-
-  const currentUserLocation = useSelector(getCurrentUserLocation)
-  useWebViewLocationSync(webViewId, bridgeAdapterApi, currentUserLocation)
 
   useOpenProductDetail(bridgeAdapterApi)
 
