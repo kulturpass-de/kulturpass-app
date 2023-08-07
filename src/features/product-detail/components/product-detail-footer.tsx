@@ -99,7 +99,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
           <View style={styles.cannotAffordContainer}>
             <TranslatedText
               textStyle="CaptionSemibold"
-              textStyleOverrides={styles.discount}
+              textStyleOverrides={[styles.discount, { color: colors.labelColor }]}
               testID={buildTestId('productDetail_footer_cannot_afford_text')}
               i18nKey="productDetail_footer_cannot_afford"
               i18nParams={{ availableBalance: availableBalanceFormatted }}

@@ -51,7 +51,6 @@ export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, e
       contentContainerStyle={[styles.content, style]}>
       <Illustration i18nKey="noNetwork_image_alt" testID={buildTestId('webView_noNetwork_image')} type="no-network" />
       <View style={styles.contentContainer}>
-        <TranslatedText i18nKey={titleI18nKey} textStyleOverrides={styles.title} textStyle="HeadlineH4Extrabold" />
         <TranslatedText
           i18nKey={titleI18nKey}
           textStyleOverrides={[styles.title, { color: colors.labelColor }]}
