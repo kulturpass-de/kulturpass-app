@@ -179,7 +179,7 @@ export const useStartCardScanning = ({
    * Used only on the first scanning screen.
    * Accepts the Access Rights and navigates to the next screen after scanning the card.
    */
-  const handleInitialScan = useCallback(async () => {
+  const handleInitialAuthScan = useCallback(async () => {
     try {
       const result = await AA2CommandService.accept({
         msTimeout: AA2_TIMEOUTS.ACCEPT,
@@ -194,6 +194,20 @@ export const useStartCardScanning = ({
     }
   }, [handleRetry, onError])
 
+  /**
+   * Used for the first changePin scanning screen.
+   * Starts Change Pin and navigates to the next screen after scanning the card.
+   */
+
+  /**
+   * Used only on the first scanning screen.
+   * Accepts the Access Rights and navigates to the next screen after scanning the card.
+   */
+  const handleInitialChangePinScan = useCallback(async () => {
+    const result = await startChangePin()
+    handleRetry(result.msg, false, result.reader)
+  }, [handleRetry, startChangePin])
+
   const startScanning = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -205,14 +219,13 @@ export const useStartCardScanning = ({
       if (status.workflow === null) {
         if (flow === 'ChangePin') {
           // We did not start the ChangePin worklow yet, as this instantly shows the system UI for Card Scanning
-          const result = await startChangePin()
-          msg = result.msg
+          return await handleInitialChangePinScan()
         }
       }
 
       switch (msg) {
         case AA2Messages.AccessRights:
-          return await handleInitialScan()
+          return await handleInitialAuthScan()
         case AA2Messages.EnterPin:
           return await enterPin()
         case AA2Messages.EnterCan:
@@ -250,7 +263,7 @@ export const useStartCardScanning = ({
     } finally {
       setIsLoading(false)
     }
-  }, [enterCan, enterPin, enterPuk, flow, handleInitialScan, onError, simulateCard, startChangePin])
+  }, [enterCan, enterPin, enterPuk, flow, handleInitialAuthScan, handleInitialChangePinScan, onError, simulateCard])
 
   return { startScanning, isLoading }
 }

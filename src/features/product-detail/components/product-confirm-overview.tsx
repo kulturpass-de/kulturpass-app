@@ -63,13 +63,13 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.productPriceInfoContainer}>
-          {productDetail.fulfillmentOption !== 'PICKUP_CODE' && productDetail.productType === ProductTypes.Voucher ? (
+          {productDetail.fulfillmentOption === 'VENDOR_CODE' ? (
             <>
               <SvgImage type="info" width={16} height={16} />
               <TranslatedText
                 i18nKey="productDetail_confirmReservation_productPriceInfo"
                 textStyle="CaptionExtrabold"
-                textStyleOverrides={(styles.productPriceInfo, { color: colors.labelColor })}
+                textStyleOverrides={[styles.productPriceInfo, { color: colors.labelColor }]}
                 testID={buildTestId('productDetail_confirmReservation_productPriceInfo')}
               />
             </>

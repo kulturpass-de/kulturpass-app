@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -43,6 +44,13 @@ export const EidNewPinScreen: React.FC<EidNewPinScreenProps> = ({ onNext, onClos
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
   })
+
+  useFocusEffect(
+    useCallback(() => {
+      form.setValue('newPin', '')
+      form.setValue('confirmNewPin', '')
+    }, [form]),
+  )
 
   useFocusErrors(form)
 
