@@ -367,7 +367,7 @@
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupRequired_voucher_headline": "Reservierung",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupRequired_voucher_copytext": "Löse den Wert-Code beim Anbieter ein. Wenn du die Reservierung jetzt noch stornieren möchtest, setze dich bitte mit dem Anbieter in Verbindung.",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupNotRequired_voucher_headline": "Reservierung",
-  "reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupNotRequired_voucher_copytext": "Dein Anbieter-Code ist fertig. Je nach Anbieter kannst du diesen Anbietercode auf einer der Online-Plattformen des Anbieters oder auf der Website des Anbieters einlösen. Sollte noch ein Restguthaben vorhanden sein, wird dir dieses nach Einlösung des Anbieter-Codes vom Anbieter erstattet.",
+  "reservationDetail_header_deliveryScenario_pickup_orderStatus_ready_for_pickupNotRequired_voucher_copytext": "Löse den Wert-Code beim Anbieter ein. Wenn du die Reservierung jetzt noch stornieren möchtest, setze dich bitte mit dem Anbieter in Verbindung.",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_received_headline": "Abgeholt",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_received_copytext": "Deine Bestellung wurde abgeholt.",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_headline": "Wert-Code eingelöst",

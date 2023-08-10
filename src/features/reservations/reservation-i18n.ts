@@ -65,7 +65,7 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
     if (fulfillmentOption === 'REDEMPTION_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
     } else if (fulfillmentOption === 'PICKUP_CODE') {
-      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
+      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP
     } else if (fulfillmentOption === 'VENDOR_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_NOT_REQUIRED_VOUCHER
     }

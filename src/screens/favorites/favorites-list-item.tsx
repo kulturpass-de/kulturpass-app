@@ -39,7 +39,14 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
   } = product
   const { imageUrl, image } = useProductImageUrl(images, 'product')
   const offersCount = productOfferCount ?? 0
-  const shopName = offersCount > 1 ? t('favorites_item_multiple_offers') : seller
+  let shopName: string | undefined
+  if (offersCount > 1) {
+    shopName = t('favorites_item_multiple_offers')
+  } else if (product.offersSummary?.bestOffer?.shopName) {
+    shopName = product.offersSummary?.bestOffer?.shopName
+  } else {
+    shopName = seller
+  }
   const formattedPrice = useFormattedPrice(lowestOfferPrice)
   const formattedPriceInformation =
     offersCount > 1 ? t('favorites_item_multiple_offers_price', { price: formattedPrice }) : formattedPrice
