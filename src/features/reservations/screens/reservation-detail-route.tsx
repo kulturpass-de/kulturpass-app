@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { PdpScreenProps } from '../../../navigation/pdp/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Order } from '../../../services/api/types/commerce/api-types'
@@ -16,7 +16,7 @@ export type ReservationDetailRouteParams = {
   completedReservation?: boolean
 }
 
-type ReservationDetailProps = ModalScreenProps<'ReservationDetail'>
+type ReservationDetailProps = PdpScreenProps<'ReservationDetail'>
 
 export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route }) => {
   const modalNavigation = useModalNavigation()

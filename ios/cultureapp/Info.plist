@@ -143,7 +143,7 @@
 				<array>
 					<dict>
 						<key>SPKI-SHA256-BASE64</key>
-						<string>2clfDj1TmOYxzoOEnriKY6PcoXhaVUDDR8D6mK84RN8=</string>
+						<string>Me+zT8frLdroBg4WR2MXgrPuJ6lXRjiDeaj4VT5RYVI=</string>
 					</dict>
 				</array>
 			</dict>
@@ -193,6 +193,15 @@
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
 	<array>
 		<string>E80704007F00070302</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>https</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

@@ -12,7 +12,6 @@ import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
 import { EidPinScreen } from './eid-pin-screen'
-import { EidTransportPinRouteName } from './eid-transport-pin-route'
 
 export const EidPinRouteName = 'EidPin'
 
@@ -46,10 +45,10 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
     } finally {
       setIsLoading(false)
     }
-    navigation.navigate(EidTransportPinRouteName, {
-      retryCounter: route.params.retryCounter,
+    navigation.navigate(EidInsertCardRouteName, {
+      flow: 'ChangePin',
     })
-  }, [navigation, route.params.retryCounter])
+  }, [navigation])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)

@@ -17,11 +17,11 @@ const getPickupTextTranslationKey = (
 ): AvailableTranslations | null => {
   switch (fulfillmentOption) {
     case 'PICKUP_CODE':
-      return 'productDetail_confirmReservation_voucher_pickupRequired'
+      return 'productDetail_confirmReservation_product_pickup'
     case 'VENDOR_CODE':
       return 'productDetail_confirmReservation_voucher_pickupNotRequired'
     case 'REDEMPTION_CODE':
-      return 'productDetail_confirmReservation_product_pickup'
+      return 'productDetail_confirmReservation_voucher_pickupRequired'
   }
   return null
 }

@@ -81,10 +81,12 @@ export const commerceApi = createRtkApi({
     }),
     getProductDetail: builder.query<GetProductDetailResponse, GetProductDetailParams>({
       queryFn: sendCommerceGetRequest(params => {
+        const { location } = params
         return {
           path: `products/geospatial/${params.productCode}`,
           appendLanguageQueryParams: true,
           appendLocationQueryParams: true,
+          location,
         }
       }),
       providesTags: (result, error, arg) => [{ type: 'product-detail', id: arg.productCode }],
@@ -175,10 +177,19 @@ export const commerceApi = createRtkApi({
         return { url, appendNoCacheHeader: true }
       }),
     }),
+    addProductToCart: builder.mutation<undefined, DeleteCartEntryParams>({
+      invalidatesTags: ['favorites'],
+      queryFn: sendCommercePostRequest(params => ({
+        path: 'users/current/favourites/entry',
+        bodyPayload: {
+          product: { code: params.productCode },
+        },
+      })),
+    }),
     removeProductFromCart: builder.mutation<undefined, DeleteCartEntryParams>({
       invalidatesTags: ['favorites'],
       queryFn: sendCommerceDeleteRequest(params => ({
-        path: `users/current/carts/${params.cartId}/entries/${params.entryNumber}`,
+        path: `users/current/favourites/entry/${params.productCode}`,
       })),
     }),
   }),

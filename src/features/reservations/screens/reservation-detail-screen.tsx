@@ -8,7 +8,7 @@ import { ScreenContent } from '../../../components/screen/screen-content'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
-import { Order } from '../../../services/api/types/commerce/api-types'
+import { Offer, Order } from '../../../services/api/types/commerce/api-types'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -18,6 +18,7 @@ import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { ProductDetailOffer } from '../../product-detail/components/product-detail-offer'
 import { ProductDetailTitle } from '../../product-detail/components/product-detail-title'
 import { ProductDetailTyped } from '../../product-detail/components/product-detail-typed'
+import { ShopAccessibilityInfo } from '../../product-detail/components/shop-accessibility-info'
 import { ProductDetail } from '../../product-detail/types/product-detail'
 import { ConfirmCancellationAlert } from '../components/confirm-cancellation-alert'
 import { ReservationDetailFooter } from '../components/reservation-detail-footer'
@@ -85,7 +86,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   if (!productDetail || !orderEntry) {
     return null
   }
-
+  const selectedOffer: Offer | undefined = productDetail.offers?.find(offer => offer.id === orderEntry.offerId)
   const orderStatusTranslattions = getReservationOrderTranslations(productDetail, orderStatus)
 
   return (
@@ -139,6 +140,12 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
             style={[textStyles.BodyRegular, styles.bottomContainerProductDescription, { color: colors.labelColor }]}
             html={productDetail.description}
           />
+          {selectedOffer ? (
+            <>
+              <Divider marginBottom={0} />
+              <ShopAccessibilityInfo testID={buildTestId('accessibility')} selectedOffer={selectedOffer} />
+            </>
+          ) : null}
         </View>
       </ScreenContent>
       <ReservationDetailFooter
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
     marginTop: -spacing[5],
     paddingTop: spacing[7],
     paddingHorizontal: spacing[5],
+    paddingBottom: spacing[6],
     zIndex: 10,
   },
   bottomContainerStatusDescription: {
@@ -185,6 +193,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing[5],
   },
   bottomContainerProductDescription: {
-    paddingVertical: spacing[6],
+    paddingTop: spacing[6],
   },
 })

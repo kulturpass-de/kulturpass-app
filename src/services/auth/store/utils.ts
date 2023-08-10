@@ -1,5 +1,6 @@
 import { CDC_SESSION_EXPIRATION_INIFINITE } from '../../api/cdc-api'
 import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
+import { AccountsFinalizeRegistrationResponse } from '../../api/types/cdc/accounts/cdc-accounts-finalize-registration'
 import { CdcSessionData } from '../../session/types'
 
 export const isNotEmptyString = (s?: string) => {
@@ -30,7 +31,9 @@ export const isExpiresInValid = (n: number | undefined) => {
   return n > 0
 }
 
-export const cdcLoginResponseToSessionData = (cdcLoginResponse: AccountsLoginResponse) => {
+export const cdcLoginResponseToSessionData = (
+  cdcLoginResponse: AccountsLoginResponse | AccountsFinalizeRegistrationResponse,
+) => {
   const { firstName, email } = cdcLoginResponse.profile
   const sessionValidity =
     cdcLoginResponse.sessionInfo.expires_in !== undefined

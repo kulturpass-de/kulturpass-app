@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { useEffect, useState } from 'react'
 import { Animated, Platform } from 'react-native'
 import { ModalParamList } from '../../../navigation/modal/types'
+import { PdpParamList } from '../../../navigation/pdp/types'
 import { UseProductDetailHeaderHeightReturnType } from '../hooks/use-product-detail-header-height'
 
 export type UseDismissSwipingDownProps = {
@@ -26,7 +27,7 @@ export const useDismissSwipingDown = ({ productDetailHeaderHeightProps, scrollY 
     return () => scrollY.removeListener(id)
   }, [scrollY])
 
-  const navigation = useNavigation<StackNavigationProp<ModalParamList, 'ProductDetail'>>()
+  const navigation = useNavigation<StackNavigationProp<PdpParamList, 'ProductDetail'>>()
   useEffect(() => {
     if (Platform.OS !== 'ios') {
       // The swipe down dismiss feature is only available on iOS

@@ -12,7 +12,7 @@ export type ProductDetailFooterFavoriteButtonProps = {
 
 export const ProductDetailFooterFavoriteButton = ({ productCode }: ProductDetailFooterFavoriteButtonProps) => {
   const isFavorite = useIsFavorite(productCode)
-  const { toggleIsFavourite, error, resetError } = useFavouritesListItemActions(productCode)
+  const { toggleIsFavourite, error, resetError } = useFavouritesListItemActions(productCode, isFavorite)
 
   return (
     <>

@@ -1,6 +1,9 @@
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useModalNavigation } from '../../navigation/modal/hooks'
+import { RootStackParams } from '../../navigation/types'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { LogInRouteConfig } from '../log-in/log-in-route'
@@ -12,6 +15,7 @@ export const ReservationsRouteName = 'Reservations'
 export type ReservationsRouteParams = undefined
 
 export const ReservationsRoute: React.FC = () => {
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const modalNavigation = useModalNavigation()
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const onSignInRequested: ReservationsUnauthorizedScreenProps['onSignInRequested'] = useCallback(() => {
@@ -22,9 +26,9 @@ export const ReservationsRoute: React.FC = () => {
 
   const onReservationPressed: ReservationsScreenProps['onReservationPressed'] = useCallback(
     (orderCode, completedReservation) => {
-      modalNavigation.navigate({ screen: 'ReservationDetail', params: { orderCode, completedReservation } })
+      rootNavigation.replace('PDP', { screen: 'ReservationDetail', params: { orderCode, completedReservation } })
     },
-    [modalNavigation],
+    [rootNavigation],
   )
 
   return isLoggedIn ? (

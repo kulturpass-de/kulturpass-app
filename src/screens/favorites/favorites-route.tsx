@@ -1,6 +1,9 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useModalNavigation } from '../../navigation/modal/hooks'
+import { RootStackParams } from '../../navigation/types'
 import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { LogInRouteConfig } from '../log-in/log-in-route'
@@ -12,6 +15,7 @@ export const FavoritesRouteName = 'Favorites'
 export type FavoritesRouteParams = undefined
 
 export const FavoritesRoute: React.FC = () => {
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const modalNavigation = useModalNavigation()
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const onSignInRequested: FavoritesUnauthorizedScreenProps['onSignInRequested'] = useCallback(() => {
@@ -22,9 +26,9 @@ export const FavoritesRoute: React.FC = () => {
 
   const onFavoritePressed: FavoritesScreenProps['onFavoritePressed'] = useCallback(
     (productCode: string) => {
-      modalNavigation.navigate({ screen: 'ProductDetail', params: { productCode, randomMode: false } })
+      rootNavigation.navigate('PDP', { screen: 'ProductDetail', params: { productCode, randomMode: false } })
     },
-    [modalNavigation],
+    [rootNavigation],
   )
 
   return isLoggedIn ? (

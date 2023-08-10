@@ -26,6 +26,12 @@ const mockedRandomModeRouterEvent: WebViewEvents['router.events'] = {
 
 const mockedNavigateFn = jest.fn(x => x)
 
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: mockedNavigateFn,
+  }),
+}))
+
 jest.mock('../../../navigation/modal/hooks', () => ({
   useModalNavigation: () => ({
     navigate: mockedNavigateFn,
@@ -55,7 +61,9 @@ describe('useOpenProductDetail', () => {
       },
     }
 
-    expect(mockedNavigateFn.mock.results[0].value).toEqual(navigationResult)
+    expect(mockedNavigateFn.mock.calls[0][0]).toEqual('PDP')
+    // @ts-expect-error needs to be types in jest.fn
+    expect(mockedNavigateFn.mock.calls[0][1]).toEqual(navigationResult)
   })
 
   test('should navigate to radnom mode product detail', () => {
@@ -76,7 +84,9 @@ describe('useOpenProductDetail', () => {
       },
     }
 
-    expect(mockedNavigateFn.mock.results[0].value).toEqual(navigationResult)
+    expect(mockedNavigateFn.mock.calls[0][0]).toEqual('PDP')
+    // @ts-expect-error needs to be types in jest.fn
+    expect(mockedNavigateFn.mock.calls[0][1]).toEqual(navigationResult)
   })
 
   test('Should throttle multiple router events', () => {
@@ -99,6 +109,8 @@ describe('useOpenProductDetail', () => {
       },
     }
 
-    expect(mockedNavigateFn.mock.results[0].value).toEqual(navigationResult)
+    expect(mockedNavigateFn.mock.calls[0][0]).toEqual('PDP')
+    // @ts-expect-error needs to be types in jest.fn
+    expect(mockedNavigateFn.mock.calls[0][1]).toEqual(navigationResult)
   })
 })

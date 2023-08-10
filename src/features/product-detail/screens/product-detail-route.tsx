@@ -1,11 +1,16 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { PdpParamList, PdpScreenProps } from '../../../navigation/pdp/types'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { GetProductDetailParams } from '../../../services/api/types'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
+import { selectDefaultLocationProvider } from '../../../services/user/redux/user-selectors'
 import { modalCardStyle } from '../../../theme/utils'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
@@ -18,19 +23,21 @@ export type ProductDetailRouteParams = {
   productCode: string
   randomMode: boolean
   offerId?: Offer['id']
+  offersByLocation?: GetProductDetailParams['location']
 }
 
-type ProfileScreenProps = ModalScreenProps<'ProductDetail'>
+type ProfileScreenProps = PdpScreenProps<'ProductDetail'>
 
-export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, navigation }) => {
-  const modalNavigation = useModalNavigation()
-  const { productCode, offerId, randomMode } = route.params
+export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const navigation = useNavigation<StackNavigationProp<PdpParamList>>()
+  const { productCode, offerId, randomMode, offersByLocation } = route.params
 
   const [randomProductQueryTrigger, randomProductResult] = commerceApi.useLazyGetRandomProductQuery()
 
   const onClose = useCallback(() => {
-    modalNavigation.closeModal()
-  }, [modalNavigation])
+    rootNavigation.navigate('Tabs')
+  }, [rootNavigation])
 
   const onRandomReroll = useCallback(async () => {
     const randomProduct = await randomProductQueryTrigger({}).unwrap()
@@ -40,11 +47,14 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, naviga
     })
   }, [navigation, randomProductQueryTrigger])
 
-  const onOfferSelection = useCallback(() => {
-    modalNavigation.navigate({ screen: 'OfferSelection', params: { productCode, randomMode } })
-  }, [modalNavigation, productCode, randomMode])
+  const defaultLocationProvider = useSelector(selectDefaultLocationProvider)
+  const { data: productDetail, error, isFetching } = useQueryProductDetail(productCode, offersByLocation)
 
-  const { data: productDetail, error, isFetching } = useQueryProductDetail(productCode)
+  const onOfferSelection = useCallback(() => {
+    const location = offersByLocation ?? defaultLocationProvider
+
+    navigation.navigate('OfferSelection', { productCode, offersByLocation: location, randomMode })
+  }, [navigation, productCode, randomMode, offersByLocation, defaultLocationProvider])
 
   const selectedOffer = useSelectedOrClosestOffer(productDetail, offerId)
 
@@ -53,11 +63,8 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route, naviga
       return
     }
 
-    modalNavigation.navigate({
-      screen: 'ProductConfirmReservation',
-      params: { productCode, offerId: selectedOffer.id },
-    })
-  }, [productCode, selectedOffer, modalNavigation])
+    navigation.navigate('ProductConfirmReservation', { productCode, offerId: selectedOffer.id })
+  }, [productCode, selectedOffer, navigation])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
     !isFetching ? error ?? randomProductResult.error : undefined,

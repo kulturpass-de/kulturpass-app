@@ -9,6 +9,7 @@ import { EidStack } from './eid/eid-stack'
 import { ModalStack } from './modal/modal-stack'
 import { ModalStackCardOverlay } from './modal/modal-stack-card-overlay'
 import { OnboardingStack } from './onboarding-stack'
+import { PdpStack } from './pdp/pdp-stack'
 import { Tabs } from './tabs/tabs'
 import { OnboardingStackParams, RootStackParams } from './types'
 
@@ -45,6 +46,17 @@ export const RootStackScreen: React.FC = () => {
         <Stack.Screen
           name="Modal"
           component={ModalStack}
+          options={{
+            headerShown: false,
+            presentation: 'transparentModal',
+            cardOverlay: ModalStackCardOverlay,
+            cardOverlayEnabled: true,
+            ...TransitionPresets.ModalSlideFromBottomIOS,
+          }}
+        />
+        <Stack.Screen
+          name="PDP"
+          component={PdpStack}
           options={{
             headerShown: false,
             presentation: 'transparentModal',

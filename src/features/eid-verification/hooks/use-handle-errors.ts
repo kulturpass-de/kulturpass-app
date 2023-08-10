@@ -8,10 +8,10 @@ import {
   AA2AuthError,
   AA2AuthErrorResultError,
   AA2CardDeactivated,
-  AA2CardRemoved,
   createAA2ErrorFromMessage,
   extractDetailCode,
   isErrorUserCancellation,
+  reasonToError,
 } from '../errors'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
 import { useCloseFlow } from './use-close-flow'
@@ -57,16 +57,10 @@ export const useHandleErrors = (
             return
           }
 
-          if (
-            msg.result?.reason === FailureCodes.Card_Removed ||
-            msg.result?.reason === FailureCodes.Did_Authenticate_Eac2_Card_Command_Failed
-          ) {
-            onError(new AA2CardRemoved())
-            return
-          }
+          const reasonError = reasonToError(msg.result?.reason)
 
-          if (msg.result?.reason === FailureCodes.Connect_Card_Eid_Inactive) {
-            onError(new AA2CardDeactivated())
+          if (reasonError !== undefined) {
+            onError(reasonError)
             return
           }
 
@@ -90,6 +84,13 @@ export const useHandleErrors = (
             if (handleUserCancellation && !cancelEidFlowAlertVisible) {
               closeFlow()
             }
+            return
+          }
+
+          const reasonError = reasonToError(msg.reason)
+
+          if (reasonError !== undefined) {
+            onError(reasonError)
             return
           }
 

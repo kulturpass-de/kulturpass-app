@@ -1,7 +1,9 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { PdpParamList, PdpScreenProps } from '../../../navigation/pdp/types'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { Offer, Product } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
@@ -19,25 +21,26 @@ export type ProductConfirmReservationRouteParams = {
   offerId: Offer['id']
 }
 
-type ProfileScreenProps = ModalScreenProps<'ProductConfirmReservation'>
+type ProfileScreenProps = PdpScreenProps<'ProductConfirmReservation'>
 
 export const ProductConfirmReservationRoute: React.FC<ProfileScreenProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const navigation = useNavigation<StackNavigationProp<PdpParamList>>()
   const { productCode, offerId } = route.params
 
   const onClose = useCallback(() => {
-    modalNavigation.closeModal()
-  }, [modalNavigation])
+    rootNavigation.navigate('Tabs')
+  }, [rootNavigation])
 
   const onBack = useCallback(() => {
-    modalNavigation.goBack()
-  }, [modalNavigation])
+    rootNavigation.goBack()
+  }, [rootNavigation])
 
   const afterReserveProduct = useCallback(
     (params: ReservationDetailRouteParams) => {
-      modalNavigation.navigate({ screen: 'ReservationDetail', params })
+      navigation.navigate('ReservationDetail', params)
     },
-    [modalNavigation],
+    [navigation],
   )
 
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)

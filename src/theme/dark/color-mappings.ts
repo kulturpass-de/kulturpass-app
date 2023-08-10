@@ -33,6 +33,14 @@ export const colorMappings: ColorMappings = {
   emphasizedPriceBackground: colors.primaryDarkest,
   divider: toTransparentColor(colors.sunLightest, 0.1),
   alertBackdrop: toTransparentColor(colors.moonDarker, 0.8),
+  tokenBackground: toTransparentColor(colors.newMoonDarker, 0.8),
+  tokenText: colors.sunLightest,
+  tokenTextDisabled: colors.sunLightest,
+  chipBackground: colors.moonDarker,
+  chipBackgroundActive: colors.moonBase,
+  chipBorder: colors.moonBase,
+  chipText: colors.basicWhite,
+  chipTextActive: colors.basicWhite,
 }
 
 export const preferenceButtonColors: PreferencesButtonColors = {

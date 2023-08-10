@@ -1,5 +1,6 @@
 import { logger } from '../../../logger'
 import { AppStartListening, ListenerEffect } from '../../../redux/listener-middleware'
+import { webviewsLocationSync } from '../thunks/webviews-location-sync'
 import { webviewsValidateSession } from '../thunks/webviews-validate-session'
 import { webviewsSlice } from '../webviews-slice'
 
@@ -9,6 +10,7 @@ export const onWebViewStateChangeEffect: ListenerEffect<
   if (typeof action.payload.state.isLoggedIn !== 'undefined' || typeof action.payload.state.isReady !== 'undefined') {
     logger.log('onWebViewStateChangeEffect', action.payload.webViewId, 'will call webviewsValidateSession')
 
+    await listenerApi.dispatch(webviewsLocationSync(action.payload.webViewId)).unwrap()
     return await listenerApi.dispatch(webviewsValidateSession(action.payload.webViewId)).unwrap()
   }
 }

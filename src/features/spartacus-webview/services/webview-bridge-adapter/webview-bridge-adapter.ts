@@ -138,7 +138,7 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
     const webView = this.availableWebViews.get(webViewId)
     /*
      * This script gets inserted into the webview each time this function gets called
-     * This means, we can't redefine 'deltaRelativeToCurrentPage' each time new with
+     * This means, we can't redefine 'injectedUri' each time new with
      * 'let' or 'const' but with `var`.
      *
      * Better would be, to insert a function once into the webview like

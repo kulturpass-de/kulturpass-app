@@ -21,6 +21,7 @@ import {
   AA2BelowMinYearOfBirth,
   AA2CardDeactivated,
   AA2CardRemoved,
+  AA2CardValidationFailed,
   AA2ForeignResidency,
   AA2InitError,
   AA2PseudonymAlreadyInUse,
@@ -98,6 +99,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
       return t('eid_error_timeout_message')
     } else if (intError instanceof AA2CardRemoved) {
       return t('eid_error_cardRemoved_message')
+    } else if (intError instanceof AA2CardValidationFailed) {
+      return t('eid_error_cardValidationFailed_message')
     } else if (intError instanceof AA2AcceptTimeout) {
       return t('eid_error_acceptTimeout_message')
     }

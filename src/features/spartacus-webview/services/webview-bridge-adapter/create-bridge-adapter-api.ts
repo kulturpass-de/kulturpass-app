@@ -13,8 +13,10 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.AuthLogout, [])
   }
 
-  const routerNavigate = async (arg: string[]) => {
-    return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.RouterNavigate, [arg])
+  const routerNavigate = async (arg: string[] | string) => {
+    return webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.RouterNavigate, [
+      arg,
+    ] as [string[]] | [string])
   }
 
   const geolocationSetLocation = async (latitude?: number, longitude?: number) => {

@@ -13,7 +13,6 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
-import { useModalNavigation } from '../../navigation/modal/hooks'
 import { RootStackParams } from '../../navigation/types'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { logger } from '../../services/logger'
@@ -57,21 +56,21 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
-  const modalNavigation = useModalNavigation()
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
   const [productCode, setProductCode] = useState('')
 
   const onOpenProductDetail = useCallback(() => {
-    modalNavigation.navigate({
+    rootNavigation.navigate('PDP', {
       screen: ProductDetailRouteConfig.name,
       params: {
         productCode: productCode,
         randomMode: false,
       },
     })
-  }, [productCode, modalNavigation])
+  }, [productCode, rootNavigation])
 
   const cancelEidFlow = useCallback(async () => {
     try {

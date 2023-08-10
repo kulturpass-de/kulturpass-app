@@ -15,22 +15,14 @@ export type FavoriteButtonProps = {
 export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress, testID, hitSlop }) => {
   const { t } = useTranslation()
 
-  if (!isFavorite) {
-    // NOTE: Currently, when the item is removed from favourites - we display only an "empty" icon without Pressable.
-    // Later when the api is available to re-add the item to favourites - we need to add a Pressable with the same props
-    // as the ones on the "remove from favourites" Pressable, with the only difference in
-    // `accessibilityLabel={t('favorites_item_add_a11y_label')}`
-    return <SvgImage type="heart-unselected" width={36} height={36} />
-  }
-
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={t('favorites_item_remove_a11y_label')}
+      accessibilityLabel={isFavorite ? t('favorites_item_remove_a11y_label') : t('favorites_item_add_a11y_label')}
       testID={testID}
       onPress={onPress}
       hitSlop={hitSlop || HITSLOP}>
-      <SvgImage type="heart-selected" width={36} height={36} />
+      <SvgImage type={isFavorite ? 'heart-selected' : 'heart-unselected'} width={36} height={36} />
     </Pressable>
   )
 }

@@ -19,6 +19,10 @@ import {
   AccountsSetAccountInfoWithRegTokenUnsignedRequestParams,
 } from './types'
 import {
+  AccountsFinalizeRegistrationRequestParams,
+  AccountsFinalizeRegistrationResponse,
+} from './types/cdc/accounts/cdc-accounts-finalize-registration'
+import {
   AccountsResetPasswordRequestParams,
   AccountsResetPasswordResponse,
 } from './types/cdc/accounts/cdc-accounts-reset-password'
@@ -68,6 +72,18 @@ export const cdcApi = createApi({
             terms: { 'eula-v1': { isConsentGranted: true } },
             privacy: { 'dps-v1': { isConsentGranted: true } },
           },
+        },
+      })),
+    }),
+    accountsFinalizeRegistration: builder.mutation<
+      AccountsFinalizeRegistrationResponse,
+      AccountsFinalizeRegistrationRequestParams
+    >({
+      queryFn: callCdcWithApiKey(params => ({
+        path: 'accounts.finalizeRegistration',
+        bodyPayload: {
+          include: 'profile,data,id_token',
+          regToken: params.regToken,
         },
       })),
     }),

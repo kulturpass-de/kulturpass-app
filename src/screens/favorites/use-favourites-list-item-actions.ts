@@ -1,52 +1,42 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { commerceApi } from '../../services/api/commerce-api'
 
-export const useFavouritesListItemActions = (productCode?: string) => {
-  const [isFavorite, setIsFavorite] = useState<boolean>(true)
-  const [getFavorites] = commerceApi.useLazyGetFavoritesQuery()
-  const [removeProductFromCart, { error, reset: resetError }] = commerceApi.useRemoveProductFromCartMutation()
+export const useFavouritesListItemActions = (productCode?: string, defaultIsFavorite: boolean = true) => {
+  const [isFavorite, setIsFavorite] = useState<boolean>(defaultIsFavorite)
+  const [addProductToCart, addProductToCartDetails] = commerceApi.useAddProductToCartMutation()
+  const [removeProductFromCart, removeProductFromCartDetails] = commerceApi.useRemoveProductFromCartMutation()
+
+  useEffect(() => {
+    setIsFavorite(defaultIsFavorite)
+  }, [defaultIsFavorite])
 
   const removeFromFavorites = useCallback(async () => {
     setIsFavorite(false)
 
     try {
-      /**
-       * In order to remove an item from favourites, we need to do so by giving its entryNumber in the api call. That
-       * entryNumber is "dynamic" and changes upon every favourite removal, meaning that every consequent request to
-       * remove a favourite will fail.
-       *
-       * For that reason we "index" the favourites with the product.code, and before doing the favourite removal, we
-       * refetch the favourites just to make sure that have the item's update entryNumber.
-       *
-       * Another solution would be to just refresh the favourites after the removal of one, but the refetch is much
-       * faster than the actual database deletion, meaning that we have to setTimeout before the refetch, not a clean
-       * solution.
-       */
-      const favorites = await getFavorites(undefined, false)
-      const favorite = favorites.data?.favouritesItems?.find(
-        currentFavorite => currentFavorite.product?.code === productCode,
-      )
-
-      if (!favorite || favorite.cartId === undefined || favorite.entryNumber === undefined) {
+      if (productCode === undefined) {
         return
       }
 
-      await removeProductFromCart({ cartId: favorite.cartId, entryNumber: favorite.entryNumber }).unwrap()
+      await removeProductFromCart({ productCode }).unwrap()
     } catch (err) {
       setIsFavorite(true)
     }
-  }, [getFavorites, productCode, removeProductFromCart])
+  }, [productCode, removeProductFromCart])
 
   const addToFavourites = useCallback(async () => {
     setIsFavorite(true)
 
     try {
-      // NOTE: no api call is available to execute this action
-      throw productCode
+      if (productCode === undefined) {
+        return
+      }
+
+      await addProductToCart({ productCode })
     } catch (err) {
       setIsFavorite(false)
     }
-  }, [productCode])
+  }, [productCode, addProductToCart])
 
   const toggleIsFavourite = useCallback(() => {
     if (isFavorite) {
@@ -56,12 +46,17 @@ export const useFavouritesListItemActions = (productCode?: string) => {
     }
   }, [isFavorite, removeFromFavorites, addToFavourites])
 
+  const resetError = useCallback(() => {
+    addProductToCartDetails.reset()
+    removeProductFromCartDetails.reset()
+  }, [addProductToCartDetails, removeProductFromCartDetails])
+
   return {
     isFavorite,
     removeFromFavorites,
     addToFavourites,
     toggleIsFavourite,
-    error,
+    error: addProductToCartDetails.error ?? removeProductFromCartDetails.error,
     resetError,
   }
 }

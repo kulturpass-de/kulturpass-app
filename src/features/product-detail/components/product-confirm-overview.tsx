@@ -41,14 +41,14 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
           {category?.name ? (
             <Text
               style={[textStyles.MicroMediumCaps, styles.categoryText, { color: colors.labelColor }]}
-              accessibilityLabel={t('productDetail_confirmReservation_productCategory')}
+              accessibilityHint={t('productDetail_confirmReservation_productCategory')}
               testID={buildTestId('productDetail_confirmReservation_productCategory')}>
               {category.name}
             </Text>
           ) : null}
           <Text
             style={[textStyles.BodyRegular, { color: colors.labelColor }]}
-            accessibilityLabel={t('productDetail_confirmReservation_productName')}
+            accessibilityHint={t('productDetail_confirmReservation_productName')}
             numberOfLines={2}
             testID={buildTestId('productDetail_confirmReservation_productName')}>
             {productDetail.name}
@@ -63,13 +63,13 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.productPriceInfoContainer}>
-          {productDetail.fulfillmentOption !== 'PICKUP_CODE' && productDetail.productType === ProductTypes.Voucher ? (
+          {productDetail.fulfillmentOption === 'VENDOR_CODE' ? (
             <>
               <SvgImage type="info" width={16} height={16} />
               <TranslatedText
                 i18nKey="productDetail_confirmReservation_productPriceInfo"
                 textStyle="CaptionExtrabold"
-                textStyleOverrides={(styles.productPriceInfo, { color: colors.labelColor })}
+                textStyleOverrides={[styles.productPriceInfo, { color: colors.labelColor }]}
                 testID={buildTestId('productDetail_confirmReservation_productPriceInfo')}
               />
             </>
@@ -77,7 +77,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
         </View>
         <Text
           style={[textStyles.HeadlineH3Extrabold, styles.productPrice, { color: colors.labelColor }]}
-          accessibilityLabel={t('productDetail_confirmReservation_productPrice')}
+          accessibilityHint={t('productDetail_confirmReservation_productPrice')}
           testID={buildTestId('productDetail_confirmReservation_productPrice')}>
           {formattedPrice}
         </Text>

@@ -33,7 +33,7 @@ describe('useFavouritesListItemActions', () => {
           }),
         )
       }),
-      rest.delete('*/cc/kulturapp/users/current/carts/D11242100021/entries/3', (_req, res, ctx) => {
+      rest.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_1', (_req, res, ctx) => {
         apiCalledCounter++
         return res(ctx.status(200), ctx.text('OK'))
       }),
@@ -69,7 +69,7 @@ describe('useFavouritesListItemActions', () => {
           }),
         )
       }),
-      rest.delete('*/cc/kulturapp/users/current/carts/D11242100021/entries/123', async (_req, res, ctx) => {
+      rest.delete('*/cc/kulturapp/users/current/favourites/PRODUCT_CODE_2', async (_req, res, ctx) => {
         await new Promise(resolve => setTimeout(resolve, 100))
         return res(ctx.status(500), ctx.text('NOT_OK'))
       }),
@@ -83,9 +83,11 @@ describe('useFavouritesListItemActions', () => {
   })
 
   it('Should remove a favorite item when there is a missing product', async () => {
+    const productCode = 'D11242100021'
+
     const hook = renderHook(useFavouritesListItemActions, {
       wrapper,
-      initialProps: 'D11242100021',
+      initialProps: productCode,
     })
 
     server.use(
@@ -95,13 +97,13 @@ describe('useFavouritesListItemActions', () => {
           ctx.json({
             favouritesItems: [
               { cartId: 'D11242100020', entryNumber: 122 },
-              { product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 },
+              { product: { code: productCode }, cartId: 'D11242100021', entryNumber: 123 },
               { cartId: 'D11242100022', entryNumber: 124 },
             ],
           }),
         )
       }),
-      rest.delete('*/cc/kulturapp/users/current/carts/D11242100021/entries/123', async (_req, res, ctx) => {
+      rest.delete(`*/cc/kulturapp/users/current/favourites/entry/${productCode}`, async (_req, res, ctx) => {
         await new Promise(resolve => setTimeout(resolve, 100))
         return res(ctx.status(200), ctx.text('OK'))
       }),

@@ -1,8 +1,11 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
+import { PdpParamList, PdpScreenProps } from '../../../navigation/pdp/types'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { GetProductDetailParams } from '../../../services/api/types'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../../theme/utils'
@@ -16,37 +19,46 @@ export const OfferSelectionRouteName = 'OfferSelection'
 export type OfferSelectionRouteParams = {
   productCode: string
   randomMode: boolean
+  filterMode?: 'postalCode' | 'location'
+  offersByLocation?: GetProductDetailParams['location']
 }
 
-type OfferSelectionProps = ModalScreenProps<'OfferSelection'>
+type OfferSelectionProps = PdpScreenProps<'OfferSelection'>
 
 export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
-  const productCode = route.params.productCode
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const navigation = useNavigation<StackNavigationProp<PdpParamList>>()
+  const { productCode, offersByLocation, randomMode } = route.params
 
   const onClose = useCallback(() => {
-    modalNavigation.closeModal()
-  }, [modalNavigation])
+    rootNavigation.navigate('Tabs')
+  }, [rootNavigation])
 
   const onBack = useCallback(() => {
-    modalNavigation.goBack()
-  }, [modalNavigation])
+    navigation.goBack()
+  }, [navigation])
 
   const selectOffer = useCallback(
     (offerId: Offer['id']) => {
-      modalNavigation.navigate({
-        screen: 'ProductDetail',
-        params: {
-          productCode,
-          offerId,
-          randomMode: route.params.randomMode,
-        },
+      navigation.navigate('ProductDetail', {
+        productCode,
+        offerId,
+        randomMode,
+        offersByLocation,
       })
     },
-    [modalNavigation, productCode, route.params.randomMode],
+    [navigation, productCode, randomMode, offersByLocation],
   )
 
-  const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
+  const onPressFilter = useCallback(() => {
+    navigation.navigate('OfferSelectionFilter', {
+      productCode: productCode,
+      offersByLocation,
+      randomMode,
+    })
+  }, [navigation, productCode, offersByLocation, randomMode])
+
+  const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode, offersByLocation)
 
   const productImage = useProductImageUrl(productDetail?.images, 'zoom')
 
@@ -65,6 +77,8 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
         selectOffer={selectOffer}
         offers={productDetail.offers}
         productImageUrl={productImage?.imageUrl}
+        onPressFilter={onPressFilter}
+        offersByLocation={offersByLocation}
       />
     </>
   )

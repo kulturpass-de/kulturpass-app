@@ -18,6 +18,7 @@ export enum AA2ErrorCode {
   AA2_TIMEOUT = 'AA2_TIMEOUT',
   AA2_ACCEPT_TIMEOUT = 'AA2_ACCEPT_TIMEOUT',
   AA2_CARD_REMOVED = 'AA2_CARD_REMOVED',
+  AA2_CARD_VALIDATION_FAILED = 'AA2_CARD_VALIDATION_FAILED',
 }
 
 export class AA2Error extends ErrorWithCode {
@@ -154,6 +155,14 @@ export class AA2CardRemoved extends AA2Error {
   }
 }
 
+export class AA2CardValidationFailed extends AA2Error {
+  constructor(detailCode?: string, message?: string, type?: string) {
+    super(AA2ErrorCode.AA2_CARD_VALIDATION_FAILED, detailCode)
+    this.message = message ?? this.message
+    this.type = type
+  }
+}
+
 export const createAA2ErrorFromMessage = (message: AA2Messages): ErrorWithCode => {
   switch (message) {
     case AA2Messages.BadState:
@@ -218,5 +227,19 @@ export const extractAuthResultUrlQueryError = (authMsg: Auth): AA2Error | undefi
           return new AA2AuthError(errorCode)
       }
     }
+  }
+}
+
+export const reasonToError = (reason?: FailureCodes): AA2Error | undefined => {
+  switch (reason) {
+    case FailureCodes.Card_Removed:
+    case FailureCodes.Did_Authenticate_Eac2_Card_Command_Failed:
+      return new AA2CardRemoved()
+    case FailureCodes.Connect_Card_Eid_Inactive:
+      return new AA2CardDeactivated()
+    case FailureCodes.Get_TcToken_Invalid_Data:
+      return new AA2InitError()
+    case FailureCodes.Start_Paos_Response_Error:
+      return new AA2CardValidationFailed()
   }
 }

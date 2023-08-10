@@ -75,7 +75,7 @@ export namespace SpartacusBridge {
     }
 
     export namespace RouterNavigate {
-      export type Arguments = [commands: string[]]
+      export type Arguments = [commands: string[]] | [url: string]
       export type ResultValue = void
       export type Signature = (...args: Arguments) => Promise<ResultValue>
       export interface Request extends FunctionCall.Request<Target.RouterNavigate, Arguments> {}

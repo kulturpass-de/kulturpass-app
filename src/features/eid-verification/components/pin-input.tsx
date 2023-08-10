@@ -1,26 +1,22 @@
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react'
 import { FieldError } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
-  Animated,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   TextInputKeyPressEventData,
   View,
-  ViewStyle,
 } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { HITSLOP_PIN } from '../../../theme/constants'
-import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { FormFieldContainer } from '../../form-validation/components/form-field-container'
+import { usePinField } from '../hooks/use-pin-field'
 
 export type PinInputProps = {
   value?: string
@@ -34,8 +30,6 @@ export type PinInputProps = {
 
 export const PinInput = React.forwardRef<TextInput, PinInputProps>(
   ({ value = '', onChange, pinLength, numRows = 1, testID, error, variant }, externalInputRef) => {
-    const { colors } = useTheme()
-
     const [innerInputRef, setFocusInnerInputRef] = useAccessibilityFocus()
     const [toggleShowPinRef, setFocusToggleShowPinRef] = useAccessibilityFocus()
 
@@ -50,40 +44,21 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
     const [focusedIndex, setFocusedIndex] = useState<number | undefined>()
 
     const nextInputIndex = value.length <= pinLength ? value.length : 0
-    const selectedIndex = focusedIndex !== undefined ? focusedIndex : nextInputIndex
+    const selectedIndex = focusedIndex ?? nextInputIndex
 
-    const focusNextInput = useCallback(
-      (incr: number) => {
-        if (focusedIndex !== undefined) {
-          setFocusedIndex(prev => {
-            if (incr < 0 && prev === 0) {
-              // user clicks backspace until the end is reached
-              return prev
-            }
-
-            if (incr > 0 && prev === pinLength - 1) {
-              // user enters until the end is reached
-              return prev
-            }
-
-            return prev !== undefined ? prev + incr : 0
-          })
-        }
-      },
-      [focusedIndex, pinLength],
-    )
-
-    const handleChange = useCallback(
-      (newInput: string) => {
-        const newValue = newInput.replace(/[^0-9]/g, '')
-        if (newValue.length > pinLength) {
-          return
-        }
-        onChange?.(replaceCharAt(value, selectedIndex, newValue))
-        focusNextInput(+1)
-      },
-      [onChange, pinLength, value, selectedIndex, focusNextInput],
-    )
+    const { renderPinField, focusNextInput, handleChange } = usePinField({
+      nextInputIndex,
+      selectedIndex,
+      error,
+      value,
+      variant,
+      focusedIndex,
+      showPin,
+      innerInputRef,
+      setFocusedIndex,
+      pinLength,
+      onChange,
+    })
 
     const handleKeyPress = useCallback(
       (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
@@ -100,93 +75,8 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
     }, [])
 
     const toggleShowPin = useCallback(() => {
-      setShowPin(!showPin)
-    }, [showPin])
-
-    const renderPinField = useCallback(
-      (index: number, total: number) => {
-        let borderStyle: ViewStyle
-        const selected = index === selectedIndex && focusedIndex !== undefined
-        if (selected) {
-          borderStyle = { borderColor: colors.textFieldBorderFocused }
-        } else if (error !== undefined) {
-          borderStyle = { borderColor: colors.textFieldBorderError }
-        } else {
-          borderStyle = { borderColor: colors.textFieldBorder }
-        }
-
-        let fieldValue: string | undefined = value[index]
-        if (fieldValue === undefined) {
-          fieldValue = ''
-        } else if (!showPin) {
-          fieldValue = '*'
-        }
-
-        const onPress = () => {
-          if (index < value.length) {
-            setFocusedIndex(index)
-          } else {
-            innerInputRef.current?.blur()
-            setFocusedIndex(nextInputIndex)
-          }
-        }
-
-        return (
-          <Pressable
-            key={index}
-            accessibilityElementsHidden={false}
-            importantForAccessibility={'yes'}
-            accessibilityHint={t(`eid_${variant}_form_accessibilityHint_from_to`, { current: index + 1, total: total })}
-            accessibilityLabel={t(
-              Platform.OS === 'ios'
-                ? `eid_${variant}_form_accessibilityLabel_label_ios`
-                : `eid_${variant}_form_accessibilityLabel_label_android`,
-            )}
-            accessibilityRole={'none'}
-            accessibilityActions={[{ name: 'activate' }]}
-            accessibilityValue={{ text: fieldValue }}
-            // eslint-disable-next-line react/jsx-no-bind
-            onAccessibilityAction={e => {
-              // trigger/focus text input
-              if (e.nativeEvent.actionName === 'activate') {
-                onPress()
-              }
-            }}
-            disabled={index > nextInputIndex}
-            // eslint-disable-next-line react/jsx-no-bind
-            onPress={onPress}
-            style={[
-              styles.pinField,
-              { backgroundColor: colors.secondaryBackground },
-              borderStyle,
-              styles.pinFieldBorder,
-            ]}>
-            <Text
-              accessible={false}
-              style={[textStyles.HeadlineH4Bold, { color: colors.labelColor }, selected && styles.pinFieldFocusedText]}>
-              {fieldValue}
-            </Text>
-            {selected && <Caret />}
-          </Pressable>
-        )
-      },
-      [
-        selectedIndex,
-        focusedIndex,
-        error,
-        value,
-        showPin,
-        t,
-        variant,
-        nextInputIndex,
-        colors.secondaryBackground,
-        colors.labelColor,
-        colors.textFieldBorderFocused,
-        colors.textFieldBorderError,
-        colors.textFieldBorder,
-        innerInputRef,
-      ],
-    )
+      setShowPin(oldShowPin => !oldShowPin)
+    }, [])
 
     const focusSelectedIndex = useCallback(() => {
       setFocusedIndex(selectedIndex)
@@ -250,52 +140,13 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
               showPin ? `eid_${variant}_form_accessibilityLabel_hide` : `eid_${variant}_form_accessibilityLabel_show`,
             )}
             hitSlop={HITSLOP_PIN}>
-            <SvgImage
-              type={showPin ? 'show-password' : 'hide-password'}
-              width={24}
-              height={24}
-              // tintColor={colors.labelColor}
-            />
+            <SvgImage type={showPin ? 'show-password' : 'hide-password'} width={24} height={24} />
           </Pressable>
         </View>
       </FormFieldContainer>
     )
   },
 )
-
-const replaceCharAt = (str: string, pos: number, newChar: string): string => {
-  return str.slice(0, pos) + newChar + str.slice(pos + 1)
-}
-
-const Caret = () => {
-  const { colors } = useTheme()
-  const fadeAim = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.delay(500),
-        Animated.timing(fadeAim, {
-          toValue: 1,
-          duration: 100,
-          useNativeDriver: false,
-        }),
-        Animated.delay(500),
-        Animated.timing(fadeAim, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: false,
-        }),
-      ]),
-    ).start()
-  }, [fadeAim])
-
-  return (
-    <Animated.View style={[styles.caretContainer, { opacity: fadeAim }]}>
-      <View style={[styles.caret, { borderLeftColor: colors.textFieldBorderFocused }]} />
-    </Animated.View>
-  )
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -314,37 +165,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     gap: 14,
     flexGrow: 1,
-  },
-  pinField: {
-    position: 'relative',
-    borderRadius: 8,
-    width: 40,
-    minHeight: 56,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    textAlign: 'center',
-  },
-  caretContainer: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  caret: {
-    borderLeftWidth: 2,
-    width: 23,
-    height: 26,
-  },
-  pinFieldBorder: {
-    borderWidth: 2,
-  },
-  pinFieldFocusedText: {
-    opacity: 0.5,
   },
   input: {
     position: 'absolute',

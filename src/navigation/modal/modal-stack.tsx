@@ -4,10 +4,7 @@ import { StatusBar } from 'react-native'
 import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
-import { OfferSelectionRouteConfig } from '../../features/product-detail/screens/offer-selection-route'
-import { ProductConfirmReservationRouteConfig } from '../../features/product-detail/screens/product-confirm-reservation-route'
-import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
-import { ReservationDetailRouteConfig } from '../../features/reservations/screens/reservation-detail-route'
+import { RegistrationFinishedRouteConfig } from '../../features/registration/screens/registration-finished-route'
 import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
 import { DarkModePreviewRouteConfig } from '../../screens/developer-settings/dark-mode-preview-route'
 import { DeveloperMenuRouteConfig } from '../../screens/developer-settings/developer-menu-route'
@@ -54,18 +51,11 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...RegistrationFormRouteConfig} />
         <Stack.Screen {...RegistrationSuccessRouteConfig} />
         <Stack.Screen {...RegistrationPreferencesRouteConfig} />
+        <Stack.Screen {...RegistrationFinishedRouteConfig} />
 
         {/* Account Deletion Routes */}
         <Stack.Screen {...AccountDeletionConfirmRouteConfig} />
         <Stack.Screen {...AccountDeletionSuccessfulRouteConfig} />
-
-        {/* Product Detail Routes */}
-        <Stack.Screen {...ProductDetailRouteConfig} />
-        <Stack.Screen {...OfferSelectionRouteConfig} />
-        <Stack.Screen {...ProductConfirmReservationRouteConfig} />
-
-        {/* Reservation Detail Routes */}
-        <Stack.Screen {...ReservationDetailRouteConfig} />
 
         {/* Developer Settings Routes */}
         <Stack.Screen {...DeveloperMenuRouteConfig} />

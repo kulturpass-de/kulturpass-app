@@ -25,6 +25,14 @@ export type ColorMappings = {
   emphasizedPriceBackground: string
   divider: string
   alertBackdrop: string
+  tokenBackground: string
+  tokenText: string
+  tokenTextDisabled: string
+  chipBackground: string
+  chipBackgroundActive: string
+  chipBorder: string
+  chipText: string
+  chipTextActive: string
 }
 
 export type PreferencesButtonColors = {

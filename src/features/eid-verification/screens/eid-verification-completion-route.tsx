@@ -1,8 +1,5 @@
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback } from 'react'
-import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { logger } from '../../../services/logger'
@@ -16,11 +13,9 @@ export const EidVerificationCompletionRouteName = 'EidVerificationCompletion'
 export type EidVerificationCompletionRouteParams = undefined
 
 export const EidVerificationCompletionRoute: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const [getProfile] = commerceApi.endpoints.getProfile.useLazyQuery()
 
   const onNext = useCallback(async () => {
-    navigation.navigate('Tabs')
     try {
       await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
 
@@ -31,7 +26,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
     } catch (error: unknown) {
       logger.log(error)
     }
-  }, [navigation, getProfile])
+  }, [getProfile])
 
   useHandleGestures(onNext)
 

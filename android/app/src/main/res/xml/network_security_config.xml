@@ -52,7 +52,7 @@
   <domain-config>
     <domain includeSubdomains="true">kp-mockserver.cfapps.eu10-004.hana.ondemand.com</domain>
     <pin-set>
-      <pin digest="SHA-256">2clfDj1TmOYxzoOEnriKY6PcoXhaVUDDR8D6mK84RN8=</pin>
+      <pin digest="SHA-256">Me+zT8frLdroBg4WR2MXgrPuJ6lXRjiDeaj4VT5RYVI=</pin>
     </pin-set>
   </domain-config>
   <domain-config cleartextTrafficPermitted="true">

@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   address: {
-    flexGrow: 1,
+    flexShrink: 1,
   },
 })

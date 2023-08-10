@@ -10,21 +10,9 @@ import {
 } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
 import {
-  OfferSelectionRouteName,
-  OfferSelectionRouteParams,
-} from '../../features/product-detail/screens/offer-selection-route'
-import {
-  ProductConfirmReservationRouteName,
-  ProductConfirmReservationRouteParams,
-} from '../../features/product-detail/screens/product-confirm-reservation-route'
-import {
-  ProductDetailRouteName,
-  ProductDetailRouteParams,
-} from '../../features/product-detail/screens/product-detail-route'
-import {
-  ReservationDetailRouteName,
-  ReservationDetailRouteParams,
-} from '../../features/reservations/screens/reservation-detail-route'
+  RegistrationFinishedRouteName,
+  RegistrationFinishedRouteParams,
+} from '../../features/registration/screens/registration-finished-route'
 import { AppConfigRouteName, AppConfigRouteParams } from '../../screens/developer-settings/app-config-route'
 import {
   DarkModePreviewRouteName,
@@ -80,15 +68,10 @@ export type ModalParamList = {
   [RegistrationFormRouteName]: RegistrationFormRouteParams
   [RegistrationSuccessRouteName]: RegistrationSuccessRouteParams
   [RegistrationPreferencesRouteName]: RegistrationPreferencesRouteParams
+  [RegistrationFinishedRouteName]: RegistrationFinishedRouteParams
 
   [AccountDeletionConfirmRouteName]: AccountDeletionConfirmRouteParams
   [AccountDeletionSuccessfulRouteName]: AccountDeletionSuccessfulRouteParams
-
-  [ProductDetailRouteName]: ProductDetailRouteParams
-  [OfferSelectionRouteName]: OfferSelectionRouteParams
-  [ProductConfirmReservationRouteName]: ProductConfirmReservationRouteParams
-
-  [ReservationDetailRouteName]: ReservationDetailRouteParams
 
   [DeveloperMenuRouteName]: DeveloperMenuRouteParams
   [EnvironmentConfigRouteName]: EnvironmentConfigRouteParams

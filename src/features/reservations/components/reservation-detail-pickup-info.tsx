@@ -62,12 +62,20 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             testID={buildTestId('reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode')}
             accessibilityRole="button"
             accessibilityLabel={orderEntry.voucherCode}>
-            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
-            <SvgImage
-              type="clipboard"
-              style={styles.voucherCodeCopyIcon}
-              accessibilityLabel={t('productDetail_offer_copyToClipboard')}
-            />
+            {({ pressed }) => (
+              <>
+                <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>
+                  {orderEntry.voucherCode}
+                </Text>
+                <SvgImage
+                  type={pressed ? 'copy-clipboard' : 'clipboard'}
+                  width={24}
+                  height={24}
+                  style={styles.voucherCodeCopyIcon}
+                  accessibilityLabel={t('productDetail_offer_copyToClipboard')}
+                />
+              </>
+            )}
           </Pressable>
         </>
       ) : null}
@@ -84,7 +92,13 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
         />
       ) : null}
       {orderEntry.barcodeDisplayType === 'QR_CODE' && orderEntry.barcodeData ? (
-        <QRCode value={orderEntry.barcodeData} size={state.containerWidth} />
+        <View
+          accessible
+          accessibilityRole="image"
+          accessibilityLabel={t('reservationDetail_qrCode_dataDescription')}
+          accessibilityHint={t('reservationDetail_qrCode_hint')}>
+          <QRCode value={orderEntry.barcodeData} size={state.containerWidth} />
+        </View>
       ) : null}
     </View>
   )
@@ -100,16 +114,14 @@ const styles = StyleSheet.create({
     marginBottom: spacing[2],
   },
   voucherCodeContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
     marginBottom: spacing[6],
-    backgroundColor: 'red',
   },
   voucherCodeCopyIcon: {
     marginLeft: spacing[5],
-    backgroundColor: 'red',
   },
   voucherRedemptionUrlButton: {
     marginBottom: spacing[7],
-    flex: 1,
   },
 })
