@@ -88,7 +88,9 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
               onPress={onReserve}
             />
           </View>
-          {selectedOffer?.code && <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} />}
+          {selectedOffer?.code && (
+            <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} size={48} />
+          )}
         </View>
       ) : null}
       {showCannotAfford ? (

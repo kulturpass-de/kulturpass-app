@@ -23,6 +23,8 @@
         <data android:scheme="https"/>
         <data android:pathPattern="/redirect/.*"/>
         <data android:host="storefront.prod.kulturpass.de"/>
+        <data android:host="storefront.perf.kulturpass.de"/>
+        <data android:host="storefront.staging.kulturpass.de"/>
         <data android:host="storefront.qa.kulturpass.de"/>
         <data android:host="storefront.dev.kulturpass.de"/>
       </intent-filter>

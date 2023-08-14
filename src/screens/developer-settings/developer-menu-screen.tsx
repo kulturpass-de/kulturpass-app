@@ -148,7 +148,11 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             autoCapitalize="none"
             style={[
               styles.productCodeTextInput,
-              { borderColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+              {
+                borderColor: colors.listItemBorder,
+                backgroundColor: colors.secondaryBackground,
+                color: colors.labelColor,
+              },
             ]}
             onChangeText={setProductCode}
             value={productCode}

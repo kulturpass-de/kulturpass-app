@@ -1,18 +1,15 @@
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useEffect } from 'react'
 import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { RootStackParams } from '../../../navigation/types'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { openLink } from '../../../utils/links/utils'
-import { ProductDetailRouteConfig } from '../../product-detail/screens/product-detail-route'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
 import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offline-android'
+import { useNavigateToPDP } from '../hooks/use-navigate-to-pdp'
 import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
@@ -48,26 +45,18 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 }) => {
   const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
-  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const navigateToPDP = useNavigateToPDP()
 
   const origin = useOrigin(url)
 
   const handleShouldLoadRequest: OnShouldStartLoadWithRequest = useCallback(
     e => {
       let isSamePage: boolean
-      // TODO: Cleanup / Deduplicate code with useOpenProductDetail hook
       // Fixes PDP opened in banner subpage not working properly (home screen is white after)
       if (webViewId === WebViewId.Home && e.url.startsWith(origin)) {
-        const productCode = e.url.match(/.*\/product\/([^?/]+)/)?.[1]
-        if (productCode) {
-          const isRandomMode = e.url.includes('randomMode=true')
-          rootNavigation.navigate('PDP', {
-            screen: ProductDetailRouteConfig.name,
-            params: {
-              productCode: productCode,
-              randomMode: isRandomMode,
-            },
-          })
+        const navigatedToPDP = navigateToPDP(e)
+
+        if (navigatedToPDP === true) {
           return false
         }
       }
@@ -83,7 +72,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       }
       return isSamePage
     },
-    [rootNavigation, origin, webViewId],
+    [origin, webViewId, navigateToPDP],
   )
   const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 

@@ -1,4 +1,4 @@
-import { CDC_SESSION_EXPIRATION_INIFINITE } from '../../api/cdc-api'
+import { CDC_SESSION_EXPIRATION_INFINITE } from '../../api/cdc-constants'
 import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
 import { AccountsFinalizeRegistrationResponse } from '../../api/types/cdc/accounts/cdc-accounts-finalize-registration'
 import { CdcSessionData } from '../../session/types'
@@ -8,7 +8,7 @@ export const isNotEmptyString = (s?: string) => {
 }
 
 export const isSessionTimestampValid = (s?: string | number) => {
-  if (s === CDC_SESSION_EXPIRATION_INIFINITE) {
+  if (s === CDC_SESSION_EXPIRATION_INFINITE) {
     return true
   }
   let sessionExpiryDate: number = 0
@@ -38,7 +38,7 @@ export const cdcLoginResponseToSessionData = (
   const sessionValidity =
     cdcLoginResponse.sessionInfo.expires_in !== undefined
       ? parseInt(cdcLoginResponse.sessionInfo.expires_in, 10) * 1000
-      : CDC_SESSION_EXPIRATION_INIFINITE
+      : CDC_SESSION_EXPIRATION_INFINITE
 
   const { sessionToken, sessionSecret } = cdcLoginResponse.sessionInfo
   // NOTE: cdc sends signatureTimestamp as the number of seconds

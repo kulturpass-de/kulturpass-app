@@ -8,9 +8,10 @@ import { ErrorAlert } from '../../form-validation/components/error-alert'
 
 export type ProductDetailFooterFavoriteButtonProps = {
   productCode?: string
+  size?: number
 }
 
-export const ProductDetailFooterFavoriteButton = ({ productCode }: ProductDetailFooterFavoriteButtonProps) => {
+export const ProductDetailFooterFavoriteButton = ({ productCode, size }: ProductDetailFooterFavoriteButtonProps) => {
   const isFavorite = useIsFavorite(productCode)
   const { toggleIsFavourite, error, resetError } = useFavouritesListItemActions(productCode, isFavorite)
 
@@ -21,6 +22,7 @@ export const ProductDetailFooterFavoriteButton = ({ productCode }: ProductDetail
         hitSlop={HITSLOP_FAVORITES_LIST_ITEM}
         testID={buildTestId('productDetail_footer_favorite_button')}
         onPress={toggleIsFavourite}
+        size={size}
       />
       <ErrorAlert error={error} onDismiss={resetError} />
     </>

@@ -12,7 +12,7 @@ export type TranslatedTextProps = {
   textStyle: AvailableTextStyles
   textStyleOverrides?: StyleProp<TextStyle>
   testID?: TestId
-  customComponents?: Record<string, JSX.Element>
+  customComponents?: Record<string, React.ReactElement>
   accessibilityRole?: AccessibilityProps['accessibilityRole']
 }
 

@@ -10,9 +10,10 @@ export type FavoriteButtonProps = {
   onPress: () => void
   testID: TestId
   hitSlop?: PressableProps['hitSlop']
+  size?: number
 }
 
-export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress, testID, hitSlop }) => {
+export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress, testID, hitSlop, size = 36 }) => {
   const { t } = useTranslation()
 
   return (
@@ -22,7 +23,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPr
       testID={testID}
       onPress={onPress}
       hitSlop={hitSlop || HITSLOP}>
-      <SvgImage type={isFavorite ? 'heart-selected' : 'heart-unselected'} width={36} height={36} />
+      <SvgImage type={isFavorite ? 'heart-selected' : 'heart-unselected'} width={size} height={size} />
     </Pressable>
   )
 }

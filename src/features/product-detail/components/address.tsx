@@ -41,7 +41,6 @@ export const Address: React.FC<AddressProps> = ({
       street,
       postalCode,
     })
-    // TODO: show toast?
   }, [city, name, postalCode, street])
 
   return (

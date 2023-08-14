@@ -4,7 +4,7 @@ import '@testing-library/jest-native/extend-expect'
 import { render } from '@testing-library/react-native'
 import { rest } from 'msw'
 import { setupServer as setupMswServer } from 'msw/node'
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useRef } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -41,10 +41,12 @@ export const renderScreen = (children: React.ReactNode) => {
 }
 
 export const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const bridgeAdapter = new WebViewBridgeAdapter()
+  const bridgeAdapter = useRef(new WebViewBridgeAdapter())
   return (
     <SafeAreaProvider>
-      <WebViewBridgeAdapterContext.Provider value={bridgeAdapter}>{children}</WebViewBridgeAdapterContext.Provider>
+      <WebViewBridgeAdapterContext.Provider value={bridgeAdapter.current}>
+        {children}
+      </WebViewBridgeAdapterContext.Provider>
     </SafeAreaProvider>
   )
 }

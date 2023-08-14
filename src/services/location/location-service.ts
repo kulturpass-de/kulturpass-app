@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import Geolocation, { GeoPosition } from 'react-native-geolocation-service'
+import Geolocation, { GeoPosition, PositionError } from 'react-native-geolocation-service'
 import { check, PERMISSIONS, RESULTS, request, PermissionStatus } from 'react-native-permissions'
 import { logger } from '../../services/logger'
 import { LocationService } from './types'
@@ -40,12 +40,10 @@ const createLocationService = (): LocationService => {
     async getCurrentLocation(): Promise<GeoPosition | undefined> {
       if (await this.checkLocationPermission()) {
         return new Promise((res, rej) => {
-          // TODO: Add correct error codes
           Geolocation.getCurrentPosition(res, rej, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 })
         })
       } else {
-        // TODO: Add correct error code
-        throw new Error('No permission to fetch location data')
+        throw new Error(`No permission to fetch location data. Error code: ${PositionError.PERMISSION_DENIED}`)
       }
     },
   }
