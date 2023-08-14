@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Alert } from '../../../components/alert/alert'
 import { AlertButtonDismiss } from '../../../components/alert/alert-button-dismiss'
 import { AlertContent } from '../../../components/alert/alert-content'

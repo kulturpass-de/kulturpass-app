@@ -1,8 +1,9 @@
 import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
 import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
-import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native'
+import { StyleProp, Text, TextStyle } from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
+import { textStyles } from '../../theme/typography'
 import { openLink } from '../../utils/links/utils'
 
 type InlineTextLinkProps = {
@@ -16,7 +17,7 @@ const InlineTextLink: React.FC<InlineTextLinkProps> = ({ text, link, textStyle }
 
   return (
     <Text
-      style={[textStyle, styles.linkText]}
+      style={[textStyle, textStyles.Link]}
       accessible
       accessibilityLabel={text}
       accessibilityRole="link"
@@ -65,9 +66,9 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
       if (element.children[0].type === ElementType.Text) {
         switch (element.name) {
           case 'b':
-            return renderTextNode(element.children[0], elementKey, [textStyle, styles.boldText])
+            return renderTextNode(element.children[0], elementKey, [textStyle, textStyles.Bold])
           case 'i':
-            return renderTextNode(element.children[0], elementKey, [textStyle, styles.italicText])
+            return renderTextNode(element.children[0], elementKey, [textStyle, textStyles.Italic])
           case 'a':
             return renderInlineLink(element.children[0], elementKey + '-0', textStyle)
         }
@@ -109,10 +110,3 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
     </Text>
   )
 }
-
-const styles = StyleSheet.create({
-  boldText: { fontWeight: '700' },
-  // TODO: extract textStyles below
-  linkText: { textDecorationLine: 'underline' },
-  italicText: { fontStyle: 'italic' },
-})

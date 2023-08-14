@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import type { PropsWithChildren } from 'react'
 import { Modal, type ModalProps } from 'react-native'
 import { AlertBackdrop } from './alert-backdrop'
@@ -13,17 +12,21 @@ export type AlertProps = ModalProps &
     dismissable?: boolean
   }>
 
-export const Alert = ({ visible, onChange = () => {}, children, dismissable, ...modalProps }: AlertProps) => {
+export const Alert = ({ visible, onChange, children, dismissable, ...modalProps }: AlertProps) => {
+  const onShow = useCallback(() => onChange?.(true), [onChange])
+  const onHide = useCallback(() => onChange?.(false), [onChange])
+  const providerValue = useMemo(() => ({ dismiss: onHide }), [onHide])
+
   return (
-    <AlertContextImpl.Provider value={{ dismiss: () => onChange(false) }}>
+    <AlertContextImpl.Provider value={providerValue}>
       <Modal
         animationType="fade"
         presentationStyle="overFullScreen"
         transparent={true}
         visible={visible}
-        onRequestClose={() => onChange(false)}
-        onShow={() => onChange(true)}
-        onDismiss={() => onChange(false)}
+        onRequestClose={onHide}
+        onShow={onShow}
+        onDismiss={onHide}
         {...modalProps}>
         <AlertContainer>
           <AlertBackdrop dismissable={dismissable} />

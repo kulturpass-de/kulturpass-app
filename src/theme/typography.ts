@@ -217,4 +217,14 @@ export const textStyles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
   },
+
+  Bold: {
+    fontWeight: '700',
+  },
+  Link: {
+    textDecorationLine: 'underline',
+  },
+  Italic: {
+    fontStyle: 'italic',
+  },
 })

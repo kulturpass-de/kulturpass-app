@@ -6,6 +6,8 @@
 	<array>
 		<string>webcredentials:kulturpass.de</string>
 		<string>applinks:storefront.prod.kulturpass.de</string>
+		<string>applinks:storefront.perf.kulturpass.de</string>
+		<string>applinks:storefront.staging.kulturpass.de</string>
 		<string>applinks:storefront.qa.kulturpass.de</string>
 		<string>applinks:storefront.dev.kulturpass.de</string>
 	</array>

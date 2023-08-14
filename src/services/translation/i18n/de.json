@@ -63,7 +63,7 @@
   "eid_error_init_message": "Der Scanprozess kann nicht gestartet werden. Bitte logge dich auf https://storefront.prod.kulturpass.de ein und starte dort die Identifizierung mit der AusweisApp2.",
   "eid_error_acceptTimeout_message": "Dein Ausweis antwortet nicht. Deine Online-Ausweisfunktion ist wahrscheinlich deaktiviert.\nBitte überprüfe mit der AusweisApp2 deinen Online-Ausweis.\nEin Reisepass oder ausländischer Ausweis kann nicht zur Identifizierung verwendet werden.",
   "eid_error_cardRemoved_message": "Dein Online-Ausweis wurde bewegt. Bitte probiere es erneut ohne den Online-Ausweis zu bewegen.",
-  "eid_error_cardValidationFailed_message": "Die Gültigkeitsprüfung deines Online-Ausweis ist fehlgeschlagen.\nBitte überprüfe mit der AusweisApp2 deinen Online-Ausweis.",
+  "eid_error_cardValidationFailed_message": "Die Gültigkeitsprüfung deines Online-Ausweis ist fehlgeschlagen.\nBitte nutze 'Meine Daten einsehen' in der AusweisApp2 um dein Online-Ausweis zu entsperren.",
   "eid_error_try_again_message": "Bitte probiere es später erneut!",
   "eid_resetPin_link": "PIN zurücksetzen",
   "eid_pin_faq_link": "Wo finde ich meine PIN?\nMehr Informationen in den FAQ.",

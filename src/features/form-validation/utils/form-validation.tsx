@@ -31,7 +31,7 @@ export const DATE_SCHEMA = (t: TranslationFunction) => {
   return z.undefined().or(z.string().regex(DATE_PATTERN, { message: t('form_error_date') }))
 }
 
-export const POSTAL_CODE_PATTERN = /^[0-9]{5}$/
+export const POSTAL_CODE_PATTERN = /^\d{5}$/
 
 export const POSTAL_CODE_SCHEMA = (
   t: TranslationFunction,

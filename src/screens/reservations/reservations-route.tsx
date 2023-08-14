@@ -26,7 +26,7 @@ export const ReservationsRoute: React.FC = () => {
 
   const onReservationPressed: ReservationsScreenProps['onReservationPressed'] = useCallback(
     (orderCode, completedReservation) => {
-      rootNavigation.replace('PDP', { screen: 'ReservationDetail', params: { orderCode, completedReservation } })
+      rootNavigation.navigate('PDP', { screen: 'ReservationDetail', params: { orderCode, completedReservation } })
     },
     [rootNavigation],
   )
