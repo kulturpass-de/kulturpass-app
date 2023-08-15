@@ -4,6 +4,9 @@ import { authLogoutWithoutErrors } from './auth-logout'
 
 export const authValidateSession = createThunk('auth/validateSession', async (payload, thunkAPI) => {
   const state = thunkAPI.getState()
+  if (state.user.registrationFinalizationInProgess) {
+    return
+  }
   const cdcSessionData = getCdcSessionData(state)
   const commerceSessionData = getCommerceSessionData(state)
   const isUserLoggedIn = getIsUserLoggedIn(state)

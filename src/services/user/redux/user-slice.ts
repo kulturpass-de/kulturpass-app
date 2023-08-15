@@ -6,6 +6,7 @@ export type UserState = {
   data: AccountInfo['data'] | null
   userDeniedLocationServices: boolean
   displayVerifiedAlert: boolean
+  registrationFinalizationInProgess: boolean
 }
 
 const initialState: UserState = {
@@ -13,6 +14,7 @@ const initialState: UserState = {
   data: null,
   userDeniedLocationServices: false,
   displayVerifiedAlert: false,
+  registrationFinalizationInProgess: false,
 }
 
 export const userSlice = createSlice({
@@ -30,6 +32,9 @@ export const userSlice = createSlice({
     },
     setDisplayVerifiedAlert: (state, action: PayloadAction<boolean>) => {
       state.displayVerifiedAlert = action.payload
+    },
+    setRegistrationFinalizationInProgess: (state, action: PayloadAction<boolean>) => {
+      state.registrationFinalizationInProgess = action.payload
     },
     clearUser: state => {
       state.profile = null
