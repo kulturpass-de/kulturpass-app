@@ -1,6 +1,10 @@
 import { CompositeScreenProps } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
+  ReleaseNotesRouteName,
+  ReleaseNotesRouteParams,
+} from '../../../features/release-notes/screens/release-notes-route'
+import {
   AppInformationsRouteName,
   AppInformationsRouteParams,
 } from '../../../screens/profile-tab/app-informations-route'
@@ -19,6 +23,7 @@ export type SettingsParamList = {
   [UpdateProfileRouteName]: UpdateProfileRouteParams
   [ContactRouteName]: ContactRouteParams
   [AppInformationsRouteName]: AppInformationsRouteParams
+  [ReleaseNotesRouteName]: ReleaseNotesRouteParams
   [DeleteAccountRouteName]: DeleteAccountRouteParams
 }
 

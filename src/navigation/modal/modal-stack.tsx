@@ -5,6 +5,7 @@ import { AccountDeletionConfirmRouteConfig } from '../../features/account-deleti
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
 import { RegistrationFinishedRouteConfig } from '../../features/registration/screens/registration-finished-route'
+import { ReleaseNotesModalRouteConfig } from '../../features/release-notes/screens/release-notes-modal-route'
 import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
 import { DarkModePreviewRouteConfig } from '../../screens/developer-settings/dark-mode-preview-route'
 import { DeveloperMenuRouteConfig } from '../../screens/developer-settings/developer-menu-route'
@@ -64,6 +65,8 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...SimulationCardConfigRouteConfig} />
         <Stack.Screen {...StorybookRouteConfig} />
         <Stack.Screen {...DarkModePreviewRouteConfig} />
+
+        <Stack.Screen {...ReleaseNotesModalRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

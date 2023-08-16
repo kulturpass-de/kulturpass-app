@@ -4,6 +4,7 @@ import { Animated } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Screen } from '../../components/screen/screen'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { useDisplayReleaseNotes } from '../../features/release-notes/hooks/use-display-release-notes'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
@@ -19,6 +20,7 @@ import { HomeHeaderWithWebView } from './home-header-with-webview'
 export type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
+  useDisplayReleaseNotes()
   const { buildTestId } = useTestIdBuilder()
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 

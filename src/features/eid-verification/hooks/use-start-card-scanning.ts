@@ -14,6 +14,7 @@ import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import {
   AA2AcceptTimeout,
   AA2CardDeactivated,
+  AA2SetPinTimeout,
   AA2Timeout,
   extractAuthResultUrlQueryError,
   isTimeoutError,
@@ -142,18 +143,26 @@ export const useStartCardScanning = ({
   }, [newPin, onChangePinSuccess, simulateCard])
 
   const enterPin = useCallback(async () => {
-    const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
-      msTimeout: AA2_TIMEOUTS.SET_PIN,
-    })
+    try {
+      const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
+        msTimeout: AA2_TIMEOUTS.SET_PIN,
+      })
 
-    if (result.msg === AA2Messages.EnterNewPin) {
-      enterNewPin()
-    } else if (result.msg === AA2Messages.Auth) {
-      handleAuth(result)
-    } else {
-      handleRetry(result.msg, result.msg === AA2Messages.EnterPin, result.reader)
+      if (result.msg === AA2Messages.EnterNewPin) {
+        enterNewPin()
+      } else if (result.msg === AA2Messages.Auth) {
+        handleAuth(result)
+      } else {
+        handleRetry(result.msg, result.msg === AA2Messages.EnterPin, result.reader)
+      }
+    } catch (e) {
+      if (isTimeoutError(e) && flow === 'Auth') {
+        return onError(new AA2SetPinTimeout())
+      } else {
+        throw e
+      }
     }
-  }, [enterNewPin, handleAuth, handleRetry, pin, simulateCard])
+  }, [enterNewPin, flow, handleAuth, handleRetry, onError, pin, simulateCard])
 
   const enterCan = useCallback(async () => {
     if (can === undefined) {

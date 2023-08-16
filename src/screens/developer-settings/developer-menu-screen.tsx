@@ -13,6 +13,7 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
+import { useReleaseNotesConfig } from '../../features/release-notes/hooks/use-release-notes-config'
 import { RootStackParams } from '../../navigation/types'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { logger } from '../../services/logger'
@@ -85,6 +86,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   }, [navigation])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
+  const { showReleaseNotesOnAppStart, toggleShowReleaseNotesOnAppStart } = useReleaseNotesConfig()
 
   return (
     <ModalScreen testID={buildTestId('developerMenu')} withoutBottomSafeArea>
@@ -130,6 +132,24 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             accessibilityLabel={t('developerMenu_showOnboarding_label')}
             value={showOnboardingOnAppStart}
             onValueChange={toggleShowOnboardingOnAppStart}
+          />
+        </View>
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <TranslatedText
+            i18nKey="developerMenu_showReleaseNotes_label"
+            testID={buildTestId('developerMenu_showReleaseNotes_label')}
+            textStyle="BodyRegular"
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+          <Switch
+            testID={buildTestId('developerMenu_showReleaseNotes_switch')}
+            accessibilityLabel={t('developerMenu_showReleaseNotes_label')}
+            value={showReleaseNotesOnAppStart}
+            onValueChange={toggleShowReleaseNotesOnAppStart}
           />
         </View>
         <ListItem

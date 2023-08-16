@@ -3,6 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import * as ReduxPersist from 'redux-persist'
 import { cardSimulationSlice } from '../../features/eid-verification/redux/simulated-card'
 import { onboardingSlice } from '../../features/onboarding/redux/onboarding'
+import { releaseNotesSlice } from '../../features/release-notes/redux/release-notes-slice'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
 import { locationSlice } from '../location/redux/location-slice'
 import { appCoreSlice } from './slices/app-core'
@@ -12,6 +13,7 @@ import { appCoreSlice } from './slices/app-core'
  */
 const persistedReducer = combineReducers({
   [environmentConfigurationSlice.name]: environmentConfigurationSlice.reducer,
+  [releaseNotesSlice.name]: releaseNotesSlice.reducer,
   [onboardingSlice.name]: onboardingSlice.reducer,
   [locationSlice.name]: locationSlice.reducer,
   [appCoreSlice.name]: appCoreSlice.reducer,

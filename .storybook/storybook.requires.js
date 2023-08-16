@@ -44,6 +44,7 @@ try {
 const getStories = () => {
   return {
     "./src/components/alert/alert.stories.tsx": require("../src/components/alert/alert.stories.tsx"),
+    "./src/components/bullet-list-item/bullet-list-item.stories.tsx": require("../src/components/bullet-list-item/bullet-list-item.stories.tsx"),
     "./src/components/button/button.stories.tsx": require("../src/components/button/button.stories.tsx"),
     "./src/components/e-mail-link/e-mail-link.stories.tsx": require("../src/components/e-mail-link/e-mail-link.stories.tsx"),
     "./src/components/favorite-button/favorite-button.stories.tsx": require("../src/components/favorite-button/favorite-button.stories.tsx"),
@@ -71,6 +72,8 @@ const getStories = () => {
     "./src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx"),
     "./src/features/product-detail/stories/offer-selection-screen.stories.tsx": require("../src/features/product-detail/stories/offer-selection-screen.stories.tsx"),
     "./src/features/product-detail/stories/product-detail-screen.stories.tsx": require("../src/features/product-detail/stories/product-detail-screen.stories.tsx"),
+    "./src/features/release-notes/screens/release-notes-modal-screen.stories.tsx": require("../src/features/release-notes/screens/release-notes-modal-screen.stories.tsx"),
+    "./src/features/release-notes/screens/release-notes-screen.stories.tsx": require("../src/features/release-notes/screens/release-notes-screen.stories.tsx"),
     "./src/features/reservations/components/reservation-detail-header.stories.tsx": require("../src/features/reservations/components/reservation-detail-header.stories.tsx"),
     "./src/features/reservations/screens/reservation-detail-screen.stories.tsx": require("../src/features/reservations/screens/reservation-detail-screen.stories.tsx"),
     "./src/features/reservations/stories/reservations-list-empty.stories.tsx": require("../src/features/reservations/stories/reservations-list-empty.stories.tsx"),
