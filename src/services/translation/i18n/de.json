@@ -284,7 +284,7 @@
   "release_notes_img_alt": "Ein grünes Häkchen mit Sternen",
   "release_notes_screen_headline_title": "Neue Funktionen",
   "release_notes_screen_body_title": "Release {{releaseVersion}}",
-  "release_notes_screen_body_text_generic": "Der KulturPass wird immer besser!\nNeben Fehlerbehebungen kannst du dich auf neue und erweiterte Funktionen freuen!",
+  "release_notes_screen_body_text_generic": "Der KulturPass wird immer besser!\nNeben Fehlerbehebungen kannst du dich auf neue und erweiterte Funktionen freuen.",
   "release_notes_screen_body_text_list": "Verbesserte Startseite;Auf der Startseite werden dir nun mehr und vielfältigere Angebote angezeigt.|Ortsauswahl flexibel änderbar;Du kannst die Ortsauswahl anpassen, wenn du in den Produktdetails nach Anbietern suchst.|Die Verifikation über E-Mail wurde verbessert",
   "release_notes_screen_button_ok_text": "OK",
   "productDetail_header_closeButton": "Schließen",
