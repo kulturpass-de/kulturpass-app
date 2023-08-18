@@ -5,10 +5,14 @@ import { SearchScreen } from './search-screen'
 
 export const SearchRouteName = 'Search'
 
-export type SearchRouteParams = undefined
+export type SearchRouteParams =
+  | undefined
+  | {
+      initialNavigationUrl: string
+    }
 
-export const SearchRoute: React.FC<TabsScreenProps<'Search'>> = () => {
-  return <SearchScreen />
+export const SearchRoute: React.FC<TabsScreenProps<'Search'>> = ({ route }) => {
+  return <SearchScreen initialNavigationUrl={route.params?.initialNavigationUrl} />
 }
 
 export const SearchRouteConfig = createRouteConfig({

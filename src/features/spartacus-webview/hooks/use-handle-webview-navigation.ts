@@ -30,28 +30,6 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
   }, [webViewBridgeAdapter])
 
   useEffect(() => {
-    // As a lot of router events can come in, throttle both search and home navigation effects
-    const throttledSearchNavigation = throttle(
-      (navigationUrl: string) => {
-        tabNavigation.navigate(SearchRouteName)
-        if (searchIsReady) {
-          searchBridgeAdapterApi.routerNavigate(navigationUrl)
-        } else {
-          const subscription = searchBridgeAdapterApi.onBridge(event => {
-            if (event.name === 'ready') {
-              searchBridgeAdapterApi.routerNavigate(navigationUrl)
-              subscription.unsubscribe()
-            }
-          })
-        }
-      },
-      ROUTER_EFFECT_THROTTLE_TIME_MS,
-      {
-        leading: true,
-        trailing: false,
-      },
-    )
-
     const throttledHomeNavigation = throttle(
       () => {
         bridgeAdapterApi.routerNavigate(['/search'])
@@ -69,7 +47,12 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
       dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { routerUrl: url } }))
 
       if (url.startsWith('/search') && webViewId === WebViewId.Home) {
-        throttledSearchNavigation(data.url)
+        if (searchIsReady) {
+          tabNavigation.navigate(SearchRouteName)
+          searchBridgeAdapterApi.routerNavigate(url)
+        } else {
+          tabNavigation.navigate(SearchRouteName, { initialNavigationUrl: url })
+        }
       } else if (url === '/' && webViewId === WebViewId.Search) {
         throttledHomeNavigation()
       }

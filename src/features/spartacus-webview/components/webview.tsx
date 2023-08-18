@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
@@ -26,6 +26,7 @@ type SpartacusWebViewProps = {
   webViewId: WebViewId
   commands?: string[]
   url: string
+  initialNavigationUrl?: string
   onScroll?: WebViewProps['onScroll']
   language: string
   contentOffset?: number
@@ -37,6 +38,7 @@ type SpartacusWebViewProps = {
 export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   webViewId,
   url,
+  initialNavigationUrl,
   commands,
   language,
   style,
@@ -45,6 +47,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 }) => {
   const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
+  // If there is an initial navigation URL we start the webview with it.
+  // The alternative (waiting for a bridge ready event and navigating over the bridge is) is not stable,
+  // as we might need to reload on startup for language sync.
+  // This is only important for the first website load.
+  const initialUrl = useRef(initialNavigationUrl)
   const navigateToPDP = useNavigateToPDP()
 
   const origin = useOrigin(url)
@@ -139,7 +146,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           onError={handleError}
           onHttpError={handleHttpError}
           renderLoading={renderLoading}
-          source={{ uri }}
+          source={{ uri: initialUrl.current ? origin + initialUrl.current : uri }}
           ref={webViewRef}
           onMessage={onMessage}
           {...props}
