@@ -1,34 +1,55 @@
 import { CDC_SESSION_EXPIRATION_INFINITE } from '../../api/cdc-constants'
 import { AccountsLoginResponse, PostAuthTokenResponse } from '../../api/types'
 import { AccountsFinalizeRegistrationResponse } from '../../api/types/cdc/accounts/cdc-accounts-finalize-registration'
-import { CdcSessionData } from '../../session/types'
+import { CdcSessionData, CommerceSessionData } from '../../session/types'
+import { isUserPending } from './auth-selectors'
 
 export const isNotEmptyString = (s?: string) => {
   return s && typeof s === 'string' && s.length > 0 ? true : false
 }
 
-export const isSessionTimestampValid = (s?: string | number) => {
-  if (s === CDC_SESSION_EXPIRATION_INFINITE) {
+export const isCdcSessionValid = (sessionValidity: number, sessionStartTimestamp: number) => {
+  if (sessionValidity <= 0) {
     return true
   }
-  let sessionExpiryDate: number = 0
-  if (typeof s === 'number') {
-    sessionExpiryDate = s
-  }
-  if (typeof s === 'string') {
-    sessionExpiryDate = parseInt(s, 10)
-  }
-  if (sessionExpiryDate < 0) {
-    return false
-  }
-  return Date.now() < sessionExpiryDate
+
+  const sessionExpiryDate = sessionStartTimestamp + sessionValidity
+
+  return Date.now() <= sessionExpiryDate
 }
 
-export const isExpiresInValid = (n: number | undefined) => {
-  if (n === undefined) {
+export const isUserLoggedInToCdc = (cdcSessionData?: CdcSessionData | null) => {
+  if (!cdcSessionData) {
     return false
   }
-  return n > 0
+
+  if (isUserPending(cdcSessionData)) {
+    return isCdcSessionValid(cdcSessionData.sessionValidity, cdcSessionData.sessionStartTimestamp)
+  }
+
+  return (
+    isNotEmptyString(cdcSessionData.sessionToken) &&
+    isNotEmptyString(cdcSessionData.sessionSecret) &&
+    isCdcSessionValid(cdcSessionData.sessionValidity, cdcSessionData.sessionStartTimestamp)
+  )
+}
+
+export const isCommerceSessionValid = (expiresIn?: number, tokenValidUntil?: number) => {
+  if (expiresIn === undefined || expiresIn <= 0) {
+    return false
+  }
+
+  return (tokenValidUntil && tokenValidUntil > Date.now()) || false
+}
+
+export const isUserLoggedInToCommerce = (commerceSessionData?: CommerceSessionData | null) => {
+  if (!commerceSessionData) {
+    return false
+  }
+  return (
+    isNotEmptyString(commerceSessionData.access_token) &&
+    isCommerceSessionValid(commerceSessionData.expires_in, commerceSessionData.token_valid_until)
+  )
 }
 
 export const cdcLoginResponseToSessionData = (

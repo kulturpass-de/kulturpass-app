@@ -3,7 +3,8 @@ import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
-import { configureMockStore } from '../../../testing/configure-mock-store'
+import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/configure-mock-store'
+import { mockedCdcLoginResponse } from '../../../testing/test-utils'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogin } from './auth-cdc-login'
 import { authCommerceLogin } from './auth-commerce-login'
@@ -14,11 +15,8 @@ const server = setupServer()
 
 describe('authLogin', () => {
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
-  const cdcLoginResult = {
-    profile: { firstName: 'Tester' },
-    sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
-  }
-  const commerceLoginResult = { auth_something: 'token' }
+  const cdcLoginResult = mockedCdcLoginResponse
+  const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware, commerceApi.middleware] })
 

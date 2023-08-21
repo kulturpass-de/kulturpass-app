@@ -8,7 +8,6 @@ import {
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { useCallback, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import DeviceInfo from 'react-native-device-info'
 import { useSelector } from 'react-redux'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
@@ -112,7 +111,7 @@ export const useStartCardScanning = ({
       retry: boolean,
       reader?: ReaderData,
     ) => {
-      if (Platform.OS === 'ios' && !DeviceInfo.isEmulatorSync()) {
+      if (Platform.OS === 'ios' && !simulateCard) {
         AA2CommandService.interrupt()
       }
       if (reader?.card?.deactivated === true) {
@@ -127,7 +126,7 @@ export const useStartCardScanning = ({
         onPukRetry(retry)
       }
     },
-    [onError, onPinRetry, onCanRetry, onPukRetry],
+    [simulateCard, onError, onPinRetry, onCanRetry, onPukRetry],
   )
 
   const enterNewPin = useCallback(async () => {
@@ -145,13 +144,7 @@ export const useStartCardScanning = ({
 
   const enterPin = useCallback(async () => {
     try {
-      let enteredPin = simulateCard ? undefined : pin
-      if (simulateCard && Platform.OS === 'ios' && !DeviceInfo.isEmulatorSync()) {
-        // INFO: This is needed as there is some Bug in the AusweisApp2 SDK breaking simulated Cards
-        // after an INTERRUPT occured. This is only relevant for real iOS Devices with simulated cards
-        enteredPin = pin
-      }
-      const result = await AA2CommandService.setPin(enteredPin, {
+      const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
         msTimeout: AA2_TIMEOUTS.SET_PIN,
       })
 
