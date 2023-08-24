@@ -1,12 +1,15 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { PdpScreenProps } from '../../../navigation/pdp/types'
+import { PdpParamList, PdpScreenProps } from '../../../navigation/pdp/types'
+import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { modalCardStyle } from '../../../theme/utils'
 import { useQueryProductDetail } from '../../product-detail/hooks/use-query-product-detail'
+import { OrderReportRouteName } from './order-report-route'
 import { ReservationDetailScreen } from './reservation-detail-screen'
 
 export const ReservationDetailRouteName = 'ReservationDetail'
@@ -19,7 +22,8 @@ export type ReservationDetailRouteParams = {
 type ReservationDetailProps = PdpScreenProps<'ReservationDetail'>
 
 export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
+  const navigation = useNavigation<StackNavigationProp<PdpParamList>>()
 
   const { orderCode, completedReservation } = route.params
   const orderDetailResponse = commerceApi.useGetOrderDetailQuery({ orderCode }, { refetchOnMountOrArgChange: true })
@@ -29,12 +33,17 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   const { data: productDetail, isLoading } = useQueryProductDetail(orderEntry?.product?.code)
 
   const onClose = useCallback(() => {
-    modalNavigation.closeModal()
-  }, [modalNavigation])
+    rootNavigation.navigate('Tabs')
+  }, [rootNavigation])
 
-  const afterCancelReservationTriggered = useCallback(() => {
-    modalNavigation.closeModal()
-  }, [modalNavigation])
+  const onPressReportButton = useCallback(() => {
+    navigation.navigate(OrderReportRouteName, {
+      offerId: orderEntry?.offerId,
+      shopName: orderEntry?.shopName,
+      shopId: orderEntry?.shopId,
+      orderId: order?.code,
+    })
+  }, [navigation, order?.code, orderEntry?.offerId, orderEntry?.shopId, orderEntry?.shopName])
 
   if (!order || !orderEntry?.product?.code || !orderEntry?.offerId) {
     return null
@@ -47,7 +56,8 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
         productDetail={productDetail}
         order={order}
         onClose={onClose}
-        afterCancelReservationTriggered={afterCancelReservationTriggered}
+        onPressReportButton={onPressReportButton}
+        afterCancelReservationTriggered={onClose}
         completedReservation={completedReservation}
       />
     </>

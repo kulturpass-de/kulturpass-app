@@ -21,7 +21,7 @@ export const useGetTcTokenUrl = () => {
       throw new UnknownError()
     }
 
-    const data = await getAccountInfoLazyQuery(sessionData.regToken).unwrap()
+    const data = await getAccountInfoLazyQuery(sessionData.regToken)
 
     if (data?.id_token === undefined) {
       throw new UnknownError()

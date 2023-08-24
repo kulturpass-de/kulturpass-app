@@ -6,6 +6,7 @@ import { Button } from '../../../components/button/button'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
+import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { HITSLOP } from '../../../theme/constants'
@@ -43,7 +44,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
       return
     }
 
-    await openLink(orderEntry.voucherRedemptionUrl)
+    await openLink(orderEntry.voucherRedemptionUrl).catch(logger.logError)
   }, [orderEntry.voucherRedemptionUrl])
 
   return (
@@ -72,7 +73,9 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
                   width={24}
                   height={24}
                   style={styles.voucherCodeCopyIcon}
-                  accessibilityLabel={t('productDetail_offer_copyToClipboard')}
+                  accessibilityLabel={t(
+                    'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard',
+                  )}
                 />
               </>
             )}

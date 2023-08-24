@@ -8,10 +8,11 @@ import { Screen } from '../../components/screen/screen'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { ScreenHeader } from '../../components/screen/screen-header'
 import { SvgImage } from '../../components/svg-image/svg-image'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { useAuth } from '../../services/auth/use-auth'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useUserInfo } from '../../services/user/use-user-info'
@@ -43,7 +44,6 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const auth = useAuth()
   const faqDocumentUrl = useLocalizedEnvironmentUrl(getFaqHomeUrl)
 
@@ -54,16 +54,16 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
     } catch (error: unknown) {
       // Should always succeed as our API only throws ErrorWithCode instances
       if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setLoading(false)
     }
   }, [auth])
 
-  const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl), [faqDocumentUrl])
+  const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl).catch(logger.logError), [faqDocumentUrl])
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
@@ -81,7 +81,6 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
         />
       }>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent style={styles.screenContent}>
         <ListItem
           icon={

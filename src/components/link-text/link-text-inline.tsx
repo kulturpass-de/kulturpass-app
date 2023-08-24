@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, TextStyle } from 'react-native'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -30,7 +31,7 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
 
-  const handlePress = useCallback(() => openLink(link), [link])
+  const handlePress = useCallback(() => openLink(link).catch(logger.logError), [link])
 
   const linkTestId = buildTestId(i18nKey)
 

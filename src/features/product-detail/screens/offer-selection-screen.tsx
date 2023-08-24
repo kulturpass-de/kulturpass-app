@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { FlatList, StyleSheet, View, ListRenderItem, Pressable } from 'react-native'
 import { Divider } from '../../../components/divider/divider'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
@@ -14,11 +14,12 @@ import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { OfferSelectionHeader } from '../components/offer-selection-header'
 import { OfferSelectionListItem } from '../components/offer-selection-list-item'
-import { OfferWithId } from '../types/product-detail'
-import { isOfferWithId } from '../utils'
+import { OfferWithId, ProductDetail } from '../types/product-detail'
+import { isOfferWithId, isVoucher } from '../utils'
 
 export type OfferSelectionScreenProps = {
   offers: Offer[]
+  fulfillmentOption: ProductDetail['fulfillmentOption']
   productImageUrl?: string
   onClose: () => void
   onBack: () => void
@@ -32,6 +33,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   onClose,
   onBack,
   selectOffer,
+  fulfillmentOption,
   productImageUrl,
   onPressFilter,
   offersByLocation,
@@ -40,9 +42,11 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
 
+  const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
+
   const renderOfferSelectionListItem: ListRenderItem<Offer> = useCallback(
-    ({ item }) => <OfferSelectionListItem offer={item} onPress={selectOffer} />,
-    [selectOffer],
+    ({ item }) => <OfferSelectionListItem offer={item} isVoucher={productIsVoucher} onPress={selectOffer} />,
+    [productIsVoucher, selectOffer],
   )
 
   const keyExtractor = useCallback((item: OfferWithId) => item.id, [])
@@ -56,7 +60,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
           ListHeaderComponent={
             <View>
               <TranslatedText
-                i18nKey="offerSelection_title"
+                i18nKey={productIsVoucher ? 'offerSelection_voucher_title' : 'offerSelection_title'}
                 textStyleOverrides={[styles.title, { color: colors.labelColor }]}
                 testID={buildTestId('offerSelection_title')}
                 textStyle="HeadlineH4Extrabold"
@@ -86,7 +90,6 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
                   </View>
                 )}
               </Pressable>
-
               <Divider marginTop={spacing[0]} />
             </View>
           }

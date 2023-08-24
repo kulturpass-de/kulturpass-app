@@ -13,6 +13,10 @@ import {
   RegistrationFinishedRouteName,
   RegistrationFinishedRouteParams,
 } from '../../features/registration/screens/registration-finished-route'
+import {
+  ReleaseNotesModalRouteName,
+  ReleaseNotesModalRouteParams,
+} from '../../features/release-notes/screens/release-notes-modal-route'
 import { AppConfigRouteName, AppConfigRouteParams } from '../../screens/developer-settings/app-config-route'
 import {
   DarkModePreviewRouteName,
@@ -79,6 +83,8 @@ export type ModalParamList = {
   [SimulationCardConfigRouteName]: SimulationCardConfigRouteParams
   [StorybookRouteName]: StorybookRouteParams
   [DarkModePreviewRouteName]: DarkModePreviewRouteParams
+
+  [ReleaseNotesModalRouteName]: ReleaseNotesModalRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

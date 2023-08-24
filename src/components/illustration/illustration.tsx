@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Image, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native'
+import { Image, ImageSourcePropType, ImageStyle, StyleProp, View } from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
 import { requireIllustrationImage as requireIllustrationImageDark } from '../../theme/dark/illustrations'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -51,5 +51,9 @@ export const Illustration: React.FC<IllustrationProps> = ({
     }
   }, [colorScheme, type])
 
-  return <Image testID={testID} accessible={true} accessibilityLabel={t(i18nKey)} style={style} source={source} />
+  return (
+    <View testID={testID} accessible={true} accessibilityRole="image" accessibilityLabel={t(i18nKey)} style={style}>
+      <Image source={source} style={style} />
+    </View>
+  )
 }

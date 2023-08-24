@@ -2,6 +2,7 @@ import { createNavigationContainerRef, NavigationContainer as RNNNavigationConta
 import React from 'react'
 import { AccountVerifiedAlertHandler } from '../features/registration/components/account-verified-alert/account-verified-alert-handler'
 import { EmailVerificationDeeplinkHandler } from '../features/registration/components/email-verification-deeplink-handler'
+import { ErrorAlertProvider } from '../services/errors/error-alert-provider'
 import { useTheme } from '../theme/hooks/use-theme'
 import { RootStackScreen } from './root-stack'
 import { RootStackParams } from './types'
@@ -28,6 +29,7 @@ export const NavigationContainer: React.FC<React.PropsWithChildren> = ({ childre
       {children}
       <RootStackScreen />
       <AccountVerifiedAlertHandler />
+      <ErrorAlertProvider />
       <EmailVerificationDeeplinkHandler />
     </RNNNavigationContainer>
   )

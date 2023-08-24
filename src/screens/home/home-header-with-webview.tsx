@@ -5,16 +5,17 @@ import { selectWebViewState } from '../../services/webviews/redux/webviews-selec
 
 export const HomeHeaderWithWebView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [showHeader, setShowHeader] = useState(true)
-  const { routerUrl: url } = useSelector(state => selectWebViewState(state, WebViewId.Home))
+  const { routerUrl } = useSelector(state => selectWebViewState(state, WebViewId.Home))
 
   useEffect(() => {
+    const url = routerUrl?.split('?')?.[0]
     if (!url) {
       return
     }
 
     // TODO: /product -> better would be to intercept the routing to /product when the user clicks a product
     setShowHeader(url === '/' || url.startsWith('/homepage') || url.startsWith('/product'))
-  }, [url])
+  }, [routerUrl])
 
   if (showHeader) {
     return <>{children}</>

@@ -5,6 +5,8 @@ import { OfferSelectionFilterRouteConfig } from '../../features/product-detail/s
 import { OfferSelectionRouteConfig } from '../../features/product-detail/screens/offer-selection-route'
 import { ProductConfirmReservationRouteConfig } from '../../features/product-detail/screens/product-confirm-reservation-route'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
+import { ProductReportRouteConfig } from '../../features/product-detail/screens/product-report-route'
+import { OrderReportRouteConfig } from '../../features/reservations/screens/order-report-route'
 import { ReservationDetailRouteConfig } from '../../features/reservations/screens/reservation-detail-route'
 import { ModalStackWrapper } from '../modal/modal-stack-wrapper'
 import { PdpParamList } from './types'
@@ -26,6 +28,8 @@ export const PdpStack = () => {
         <Stack.Screen {...OfferSelectionFilterRouteConfig} />
         <Stack.Screen {...ProductConfirmReservationRouteConfig} />
         <Stack.Screen {...ReservationDetailRouteConfig} />
+        <Stack.Screen {...ProductReportRouteConfig} />
+        <Stack.Screen {...OrderReportRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

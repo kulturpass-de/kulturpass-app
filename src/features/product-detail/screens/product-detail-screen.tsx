@@ -1,9 +1,10 @@
-import { useFocusEffect } from '@react-navigation/core'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { Divider } from '../../../components/divider/divider'
 import { HtmlText } from '../../../components/html-text/html-text'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
+import { TextWithIcon } from '../../../components/text-with-icon/text-with-icon'
 import { TryAgainButton } from '../../../components/try-again-button/try-again-button'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { Offer } from '../../../services/api/types/commerce/api-types'
@@ -21,7 +22,6 @@ import { ProductDetailTyped } from '../components/product-detail-typed'
 import { ShopAccessibilityInfo } from '../components/shop-accessibility-info'
 import { useProductDetailHeaderHeight } from '../hooks/use-product-detail-header-height'
 import { ProductDetail } from '../types/product-detail'
-import { useDismissSwipingDown } from './use-dismiss-swiping-down'
 
 export type ProductDetailScreenProps = {
   productDetail: ProductDetail
@@ -31,6 +31,7 @@ export type ProductDetailScreenProps = {
   onOfferSelection: () => void
   onRandomReroll: () => void
   reserveProduct: () => void
+  onPressReportButton: () => void
 }
 
 export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
@@ -41,6 +42,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   onRandomReroll,
   reserveProduct,
   randomMode,
+  onPressReportButton,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -56,14 +58,9 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   useFocusEffect(setFocus)
   useEffect(setFocus, [setFocus, productDetail])
 
-  const swipingDown = useDismissSwipingDown({
-    scrollY,
-    productDetailHeaderHeightProps,
-  })
-
   return (
     <ModalScreen whiteBottom testID={testID}>
-      <View style={[styles.scrollContainer, swipingDown.containerStyle]}>
+      <View style={[styles.scrollContainer, { paddingTop: productDetailHeaderHeightProps.headerMinHeight }]}>
         <ProductDetailHeader
           {...productDetailHeaderHeightProps}
           scrollY={scrollY}
@@ -79,12 +76,9 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
               })}
               contentContainerStyle={[
                 styles.scrollView,
-                swipingDown.isEnabled && styles.scrollViewGestureEnabled,
-                !swipingDown.isEnabled && {
-                  marginTop: productDetailHeaderHeightProps.headerHeightDiff,
-                },
                 {
                   paddingBottom: productDetailHeaderHeightProps.headerHeightDiff + spacing[7],
+                  marginTop: productDetailHeaderHeightProps.headerHeightDiff,
                 },
               ]}>
               <ProductDetailTitle productDetail={productDetail} ref={focusRef} />
@@ -92,7 +86,11 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
                 <ProductDetailOffer copyAddressToClipboard showDistance offerInfo={selectedOffer} />
               ) : null}
               {productDetail.offers !== undefined && productDetail.offers.length > 1 ? (
-                <ProductDetailAllOffersButton onPress={onOfferSelection} offers={productDetail.offers} />
+                <ProductDetailAllOffersButton
+                  fulfillmentOption={productDetail.fulfillmentOption}
+                  onPress={onOfferSelection}
+                  offers={productDetail.offers}
+                />
               ) : null}
               <ProductDetailTyped productDetail={productDetail} />
               <View style={styles.description}>
@@ -102,9 +100,12 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
                   html={productDetail.description}
                 />
               </View>
+              <View style={styles.report}>
+                <TextWithIcon iconType="report" i18nKey="productDetail_report_button" onPress={onPressReportButton} />
+              </View>
               {selectedOffer ? (
                 <>
-                  <Divider marginBottom={0} />
+                  <Divider marginBottom={0} marginTop={0} />
                   <ShopAccessibilityInfo
                     testID={addTestIdModifier(testID, 'accessibility')}
                     selectedOffer={selectedOffer}
@@ -126,7 +127,11 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
             </View>
           ) : null}
         </View>
-        <ProductDetailFooter selectedOffer={selectedOffer} onReserve={reserveProduct} />
+        <ProductDetailFooter
+          fulfillmentOption={productDetail.fulfillmentOption}
+          selectedOffer={selectedOffer}
+          onReserve={reserveProduct}
+        />
       </View>
     </ModalScreen>
   )
@@ -148,19 +153,24 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    flexGrow: 1,
   },
   scrollContainer: {
-    height: '100%',
+    flexGrow: 1,
+    flex: 1,
   },
   scrollView: {
     paddingTop: spacing[7],
     paddingHorizontal: spacing[5],
     alignItems: 'flex-start',
   },
-  scrollViewGestureEnabled: {
-    marginTop: 0,
-  },
   description: {
     paddingTop: spacing[7],
+  },
+  report: {
+    flex: 1,
+    width: '100%',
+    marginVertical: spacing[6],
+    alignItems: 'center',
   },
 })

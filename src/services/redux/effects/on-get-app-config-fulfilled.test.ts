@@ -2,7 +2,8 @@ import { Action } from '@reduxjs/toolkit'
 import * as enforceAppConfigMinVersionModule from '../../../features/force-update/utils/enforce-app-config-min-version'
 import { ErrorWithCode } from '../../errors/errors'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { AppConfig, appCoreSlice } from '../slices/app-core'
+import { appCoreSlice } from '../slices/app-core'
+import { AppConfig } from '../versions/current'
 import { onGetAppConfigFulfilled, onGetAppConfigFulfilledEffect } from './on-get-app-config-fulfilled'
 
 let mockedAppConfig: AppConfig = {

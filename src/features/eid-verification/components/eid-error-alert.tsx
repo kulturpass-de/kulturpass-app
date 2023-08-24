@@ -25,6 +25,7 @@ import {
   AA2ForeignResidency,
   AA2InitError,
   AA2PseudonymAlreadyInUse,
+  AA2SetPinTimeout,
   AA2Timeout,
 } from '../errors'
 import { useCancelFlow } from '../hooks/use-cancel-flow'
@@ -103,6 +104,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
       return t('eid_error_cardValidationFailed_message')
     } else if (intError instanceof AA2AcceptTimeout) {
       return t('eid_error_acceptTimeout_message')
+    } else if (intError instanceof AA2SetPinTimeout) {
+      return t('eid_error_setPinTimeout_message')
     }
   }, [intError, t])
 

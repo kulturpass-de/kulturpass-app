@@ -12,6 +12,7 @@ import {
 import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
 import { TranslationFunction } from '../../../services/translation/translation'
+import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
 
@@ -130,6 +131,13 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: { key: 'cdc_loginid_not_existing_message' },
         }
       }
+      case MailToError: {
+        const mailError = error as MailToError
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: { key: 'error_alert_mailto_message', values: { mail: mailError.mail } },
+        }
+      }
       case HttpStatusBadRequestError: {
         if ((error as HttpStatusBadRequestError).isInsufficientBalanceError()) {
           return {
@@ -137,6 +145,7 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
             message: { key: 'cc_insufficient_balance_message' },
           }
         }
+        break
       }
     }
   }

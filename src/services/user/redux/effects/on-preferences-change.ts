@@ -8,9 +8,11 @@ import { AppStartListening, ListenerEffect, ListenerPredicate } from '../../../r
  * Determines if the effect should run
  */
 export const onPreferencesChangePredicate: ListenerPredicate = action => {
-  return cdcApi.endpoints.accountsSetAccountInfoSigned.matchFulfilled(action)
+  return (
+    cdcApi.endpoints.accountsSetAccountInfoSigned.matchFulfilled(action) ||
+    cdcApi.endpoints.accountsSetAccountInfoWithRegTokenUnsigned.matchFulfilled(action)
+  )
 }
-
 /**
  * Runs if the predicate returns true
  */

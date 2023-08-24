@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { BulletListItem } from '../../components/bullet-list-item/bullet-list-item'
 import { Button } from '../../components/button/button'
 import { Illustration } from '../../components/illustration/illustration'
 import { LinkText } from '../../components/link-text/link-text'
@@ -8,7 +9,7 @@ import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-fo
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { AvailableTranslations, AvailableTextStyles } from '../../components/translated-text/types'
+import { AvailableTranslations } from '../../components/translated-text/types'
 import { addTestIdModifier, buildTestId, TestId } from '../../services/test-id/test-id'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
@@ -25,46 +26,22 @@ const SCREEN_TEST_ID = 'registration_data_privacy'
 export type BulletListItemProps = {
   testID: TestId
   i18nKey: AvailableTranslations
-  textStyle?: AvailableTextStyles
-  style?: StyleProp<ViewStyle>
 }
 
-export const BulletListItem: React.FC<BulletListItemProps> = ({
-  testID,
-  i18nKey,
-  textStyle = 'BodyRegular',
-  style,
-}) => {
+const BulletListItemWrapper: React.FC<BulletListItemProps> = ({ testID, i18nKey }) => {
   const { colors } = useTheme()
   return (
-    <View style={[bulletStyles.container, style]}>
-      {/* <Icon source={'ArrowBack'} width={24} height={24} /> */}
-      <View style={[bulletStyles.bulletPoint, { backgroundColor: colors.labelColor }]} />
+    <BulletListItem>
       <TranslatedText
+        textStyle="BodyRegular"
         testID={testID}
         i18nKey={i18nKey}
-        textStyle={textStyle}
         textStyleOverrides={{ color: colors.labelColor }}
       />
-    </View>
+    </BulletListItem>
   )
 }
-const bulletStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginLeft: spacing[6],
-    minHeight: 24,
-  },
-  bulletPoint: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    marginRight: spacing[2],
-    marginHorizontal: spacing[1],
-  },
-})
+
 export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScreenProps> = ({
   onHeaderClose,
   onContinue,
@@ -110,27 +87,27 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
           testID={addTestIdModifier(SCREEN_TEST_ID, 'introtext')}
           textStyleOverrides={[styles.introtext, { color: colors.labelColor }]}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item1')}
           i18nKey={'registration_data_privacy_item1'}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item2')}
           i18nKey={'registration_data_privacy_item2'}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item3')}
           i18nKey={'registration_data_privacy_item3'}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item4')}
           i18nKey={'registration_data_privacy_item4'}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item5')}
           i18nKey={'registration_data_privacy_item5'}
         />
-        <BulletListItem
+        <BulletListItemWrapper
           testID={addTestIdModifier(SCREEN_TEST_ID, 'item6')}
           i18nKey={'registration_data_privacy_item6'}
         />

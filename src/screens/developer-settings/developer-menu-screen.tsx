@@ -13,6 +13,7 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
+import { useReleaseNotesConfig } from '../../features/release-notes/hooks/use-release-notes-config'
 import { RootStackParams } from '../../navigation/types'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { logger } from '../../services/logger'
@@ -85,6 +86,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   }, [navigation])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
+  const { showReleaseNotesOnAppStart, toggleShowReleaseNotesOnAppStart } = useReleaseNotesConfig()
 
   return (
     <ModalScreen testID={buildTestId('developerMenu')} withoutBottomSafeArea>
@@ -132,6 +134,24 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             onValueChange={toggleShowOnboardingOnAppStart}
           />
         </View>
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <TranslatedText
+            i18nKey="developerMenu_showReleaseNotes_label"
+            testID={buildTestId('developerMenu_showReleaseNotes_label')}
+            textStyle="BodyRegular"
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+          <Switch
+            testID={buildTestId('developerMenu_showReleaseNotes_switch')}
+            accessibilityLabel={t('developerMenu_showReleaseNotes_label')}
+            value={showReleaseNotesOnAppStart}
+            onValueChange={toggleShowReleaseNotesOnAppStart}
+          />
+        </View>
         <ListItem
           title="Dark Theme Preview"
           testID={buildTestId('developerMenu_darkTheme_button')}
@@ -159,7 +179,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           />
           <Button
             onPress={onOpenProductDetail}
-            testID="developerMenu_showProductDetail_button"
+            testID={buildTestId('developerMenu_showProductDetail_button')}
             i18nKey="developerMenu_showProductDetail_button"
           />
         </View>
@@ -178,7 +198,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             ]}>
             <Button
               onPress={startEidFlow}
-              testID="developerMenu_startEidFlow_button"
+              testID={buildTestId('developerMenu_startEidFlow_button')}
               i18nKey="developerMenu_startEidFlow_button"
             />
           </View>
@@ -190,7 +210,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           ]}>
           <Button
             onPress={cancelEidFlow}
-            testID="developerMenu_cancelEidFlow_button"
+            testID={buildTestId('developerMenu_cancelEidFlow_button')}
             i18nKey="developerMenu_cancelEidFlow_button"
           />
         </View>

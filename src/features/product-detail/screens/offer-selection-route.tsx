@@ -75,6 +75,7 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
         onClose={onClose}
         onBack={onBack}
         selectOffer={selectOffer}
+        fulfillmentOption={productDetail.fulfillmentOption}
         offers={productDetail.offers}
         productImageUrl={productImage?.imageUrl}
         onPressFilter={onPressFilter}

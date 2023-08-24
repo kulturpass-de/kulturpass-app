@@ -1,6 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { WebViewId } from '../../../features/spartacus-webview/services/webview-bridge-adapter/types'
-import { getCdcSessionData, getIsUserLoggedIn, selectValidCommerceAccessToken } from '../../auth/store/auth-selectors'
+import {
+  getCdcSessionData,
+  getIsUserLoggedIn,
+  getIsUserLoggedInToCdc,
+  selectValidCommerceAccessToken,
+} from '../../auth/store/auth-selectors'
 import { RootState } from '../../redux/configure-store'
 
 const selectWebviewsState = (state: RootState) => state.webviews
@@ -11,22 +16,26 @@ export const selectWebViewState = createSelector(
 )
 
 export const selectWebViewAuthSyncAction = createSelector(
-  [selectWebViewState, getIsUserLoggedIn, getCdcSessionData, selectValidCommerceAccessToken],
-  (webViewState, isUserLoggedIn, cdcSessionData, validCommerceAccessToken) => {
+  [selectWebViewState, getIsUserLoggedIn, getIsUserLoggedInToCdc, getCdcSessionData, selectValidCommerceAccessToken],
+  (webViewState, isUserLoggedIn, isUserLoggedInToCdc, cdcSessionData, validCommerceAccessToken) => {
     if (!webViewState.isReady) {
       return
     }
 
-    const haveDifferentTokens = webViewState.lastAccessToken !== validCommerceAccessToken
+    const isTokenDifferent = webViewState.lastAccessToken !== validCommerceAccessToken
 
-    const shouldReauthenticateWebView =
-      (!webViewState.isLoggedIn && isUserLoggedIn) || haveDifferentTokens || !validCommerceAccessToken
+    const isLoggedInStateDifferent = !webViewState.isLoggedIn && isUserLoggedIn
 
-    if (shouldReauthenticateWebView && validCommerceAccessToken) {
+    if ((isLoggedInStateDifferent || isTokenDifferent) && validCommerceAccessToken && isUserLoggedIn) {
       return { action: 'webviewsAuthLogin', validCommerceAccessToken } as const
     }
 
-    if (shouldReauthenticateWebView && !validCommerceAccessToken && cdcSessionData) {
+    if (
+      (isLoggedInStateDifferent || isTokenDifferent) &&
+      !validCommerceAccessToken &&
+      cdcSessionData &&
+      isUserLoggedInToCdc
+    ) {
       return { action: 'authCommerceRefreshSession', cdcSessionData } as const
     }
 

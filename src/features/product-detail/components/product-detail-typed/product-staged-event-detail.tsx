@@ -39,6 +39,7 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
             showDistance
             showCopyToClipboard
             baseTestId={addTestIdModifier(sectionTestID, 'location')}
+            copyToClipboardAccessibilityI18nKey="productDetail_stagedEvent_copyToClipboard"
           />
         </ProductDetailSection>
       ) : null}

@@ -37,6 +37,18 @@
       "EID_PUK": {
         "de": "https://service.kulturpass.de/help/de-de/36/87",
         "en": "https://service.kulturpass.de/help/de-de/36/87"
+      },
+      "REPORT_ORDER_ABOUT_CANCELLATIONS": {
+        "de": "https://service.kulturpass.de/help/de-de/47",
+        "en": "https://service.kulturpass.de/help/de-de/47"
+      },
+      "REPORT_ORDER_VOUCHER_REDEMPTION": {
+        "de": "https://service.kulturpass.de/help/de-de/40",
+        "en": "https://service.kulturpass.de/help/de-de/40"
+      },
+      "REPORT_ORDER_CONTACT_SELLER": {
+        "de": "https://service.kulturpass.de/help/de-de/2/152",
+        "en": "https://service.kulturpass.de/help/de-de/2/152"
       }
     }
   }

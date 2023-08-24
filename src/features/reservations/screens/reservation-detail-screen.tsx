@@ -6,15 +6,16 @@ import { LoadingIndicator } from '../../../components/loading-indicator/loading-
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { SvgImage } from '../../../components/svg-image/svg-image'
+import { TextWithIcon } from '../../../components/text-with-icon/text-with-icon'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer, Order } from '../../../services/api/types/commerce/api-types'
+import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { ProductDetailOffer } from '../../product-detail/components/product-detail-offer'
 import { ProductDetailTitle } from '../../product-detail/components/product-detail-title'
 import { ProductDetailTyped } from '../../product-detail/components/product-detail-typed'
@@ -33,6 +34,7 @@ export type ReservationDetailScreenProps = {
   order: Order
   onClose: () => void
   afterCancelReservationTriggered: () => void
+  onPressReportButton: () => void
   completedReservation?: boolean
 }
 
@@ -40,6 +42,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   productDetail,
   onClose,
   afterCancelReservationTriggered,
+  onPressReportButton,
   order,
   completedReservation,
 }) => {
@@ -50,7 +53,6 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const [isCancelTriggered, setIsCancelTriggered] = useState(false)
   const [cancelReservation] = commerceApi.useCancelReservationMutation()
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const [visibleCancellationConfirmationAlert, setVisibleCancellationConfirmationAlert] = useState(false)
 
   const onPressCancellation = useCallback(() => {
@@ -67,9 +69,9 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
       afterCancelReservationTriggered()
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setLoading(false)
@@ -90,9 +92,8 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const orderStatusTranslattions = getReservationOrderTranslations(productDetail, orderStatus)
 
   return (
-    <ModalScreen whiteBottom testID={buildTestId('pickupReservationDetail')}>
+    <ModalScreen whiteBottom testID={buildTestId('reservationDetail')}>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ConfirmCancellationAlert
         visible={visibleCancellationConfirmationAlert}
         onDismiss={onDismissCancellation}
@@ -122,7 +123,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
               <View style={styles.bottomContainerStatusDescription}>
                 <SvgImage type={'boings'} width={24} height={24} style={styles.bottomContainerStatusDescriptionIcon} />
                 <TranslatedText
-                  testID={buildTestId('orderStatus')}
+                  testID={buildTestId(orderStatusTranslattions.copytext)}
                   i18nKey={orderStatusTranslattions.copytext}
                   textStyle="BodySmallBold"
                   textStyleOverrides={[styles.bottomContainerStatusDescriptionText, { color: colors.labelColor }]}
@@ -136,14 +137,20 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
           <ProductDetailTyped productDetail={productDetail} />
           <HtmlText
-            testID={buildTestId('productDescription')}
+            testID={buildTestId('reservationDetail_productDescription')}
             style={[textStyles.BodyRegular, styles.bottomContainerProductDescription, { color: colors.labelColor }]}
             html={productDetail.description}
           />
+          <View style={styles.report}>
+            <TextWithIcon iconType="report" i18nKey="reservationDetail_report_button" onPress={onPressReportButton} />
+          </View>
           {selectedOffer ? (
             <>
-              <Divider marginBottom={0} />
-              <ShopAccessibilityInfo testID={buildTestId('accessibility')} selectedOffer={selectedOffer} />
+              <Divider marginBottom={0} marginTop={0} />
+              <ShopAccessibilityInfo
+                testID={buildTestId('reservationDetail_accessibility')}
+                selectedOffer={selectedOffer}
+              />
             </>
           ) : null}
         </View>
@@ -156,6 +163,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         price={order.totalPrice}
         refunds={order.refunds}
         onCancelReservation={onPressCancellation}
+        fulfillmentOption={productDetail.fulfillmentOption}
       />
     </ModalScreen>
   )
@@ -194,5 +202,11 @@ const styles = StyleSheet.create({
   },
   bottomContainerProductDescription: {
     paddingTop: spacing[6],
+  },
+  report: {
+    flex: 1,
+    width: '100%',
+    marginVertical: spacing[6],
+    alignItems: 'center',
   },
 })

@@ -18,6 +18,7 @@ type UsePinFieldProps = Omit<PinInputProps, 'numRows' | 'testID'> & {
   showPin: boolean
   innerInputRef: React.MutableRefObject<TextInput>
   setFocusedIndex: React.Dispatch<React.SetStateAction<number | undefined>>
+  testID?: string
 }
 
 export const usePinField = ({
@@ -32,6 +33,7 @@ export const usePinField = ({
   setFocusedIndex,
   pinLength,
   onChange,
+  testID,
 }: UsePinFieldProps) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
@@ -71,6 +73,7 @@ export const usePinField = ({
       return (
         <Pressable
           key={index}
+          testID={testID}
           accessibilityElementsHidden={false}
           importantForAccessibility={'yes'}
           accessibilityHint={t(`eid_${variant}_form_accessibilityHint_from_to`, { current: index + 1, total: total })}
@@ -123,6 +126,7 @@ export const usePinField = ({
       colors.textFieldBorder,
       innerInputRef,
       setFocusedIndex,
+      testID,
     ],
   )
 

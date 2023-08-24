@@ -23,7 +23,7 @@ export const authFinalizeRegistration = createThunk<void, { url: URL }>(
     if (regToken === null) {
       throw new UnknownError()
     }
-
+    thunkAPI.dispatch(userSlice.actions.setRegistrationFinalizationInProgess(true))
     try {
       const cdcSessionData = await thunkAPI.dispatch(authCdcFinalizeRegistration({ regToken })).unwrap()
 
@@ -36,6 +36,8 @@ export const authFinalizeRegistration = createThunk<void, { url: URL }>(
     } catch (error: unknown) {
       await thunkAPI.dispatch(authLogoutWithoutErrors()).unwrap()
       throw error
+    } finally {
+      thunkAPI.dispatch(userSlice.actions.setRegistrationFinalizationInProgess(false))
     }
   },
 )

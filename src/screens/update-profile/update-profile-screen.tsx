@@ -14,12 +14,12 @@ import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-fo
 import { Screen } from '../../components/screen/screen'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { AccountsGetAccountInfoResponse, AccountsSetAccountInfoSignedRequestParams } from '../../services/api/types'
 import { CdcStatusInvalidParameter, CdcStatusValidationError } from '../../services/errors/cdc-errors'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -105,7 +105,6 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
 
   useFocusErrors(form)
   const { setErrors, setError } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
     setState(currentState => ({ ...currentState, isLoading: true }))
@@ -139,9 +138,9 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
       } else if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setState(currentState => ({ ...currentState, isLoading: false }))
@@ -163,7 +162,6 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
             screenType="subscreen"
           />
         }>
-        <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
         <ScreenContent style={styles.screenContent}>
           <FormFieldGroup i18nKey="updateProfile_myData" testID={addTestIdModifier(testID, 'myData')}>
             <FormFieldWithControl

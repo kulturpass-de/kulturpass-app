@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export type OnboardingState = {
-  showOnboardingOnStartup: boolean
-}
+import { OnboardingState } from '../../../services/redux/versions/current'
 
 export const onboardingInitialState: OnboardingState = {
   showOnboardingOnStartup: true,

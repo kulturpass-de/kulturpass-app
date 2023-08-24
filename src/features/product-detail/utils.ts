@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard'
 import { ThemedSvgImageType } from '../../components/svg-image/svg-image'
 import { Offer } from '../../services/api/types/commerce/api-types'
-import { OfferWithId, ProductTypes } from './types/product-detail'
+import { OfferWithId, ProductDetail, ProductTypes } from './types/product-detail'
 
 export const isOfferWithId = (offer: Offer): offer is OfferWithId => !!offer.id
 
@@ -37,4 +37,8 @@ export const copyAddressToClipboard = (address: Address) => {
   Clipboard.setString(`${address.name}
 ${address.street}
 ${address.postalCode} ${address.city}`)
+}
+
+export const isVoucher = (fulfillmentOption: ProductDetail['fulfillmentOption'] | string) => {
+  return fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
 }

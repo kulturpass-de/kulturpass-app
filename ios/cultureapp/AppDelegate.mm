@@ -2,6 +2,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
+#import <React/RCTLog.h>
 
 @implementation AppDelegate
 
@@ -11,6 +12,15 @@
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
+
+#ifdef JS_LOGGING
+  // Show console.log logging in macOS Console App.
+  // Needed for Release builds, that should have active logging.
+  RCTSetLogThreshold((RCTLogLevel)(RCTLogLevelInfo - 1));
+  RCTSetLogFunction(^(RCTLogLevel level, RCTLogSource source, NSString *fileName, NSNumber *lineNumber, NSString *message) {
+    NSLog(@"%@", RCTFormatLog(nil, level, nil, nil, message));
+  });
+#endif
 
 
   return [super application:application

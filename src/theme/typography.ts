@@ -217,7 +217,9 @@ export const textStyles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
   },
+})
 
+export const textHighlighting = StyleSheet.create({
   Bold: {
     fontWeight: '700',
   },

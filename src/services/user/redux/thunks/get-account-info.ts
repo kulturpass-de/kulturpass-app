@@ -3,10 +3,16 @@ import { AccountsGetAccountInfoResponse } from '../../../api/types'
 import { getRegistrationToken } from '../../../auth/store/auth-selectors'
 import { createThunk } from '../../../redux/utils/create-thunk'
 
-export const getAccountInfo = createThunk<AccountsGetAccountInfoResponse>(
+export type GetAccountInfoPayload =
+  | {
+      regToken?: string
+    }
+  | undefined
+
+export const getAccountInfo = createThunk<AccountsGetAccountInfoResponse, GetAccountInfoPayload>(
   'user/getAccountInfo',
   async (payload, thunkAPI) => {
-    const regToken = getRegistrationToken(thunkAPI.getState())
+    const regToken = payload?.regToken ?? getRegistrationToken(thunkAPI.getState())
 
     if (!regToken) {
       const action = cdcApi.endpoints.accountsGetAccountInfoSigned.initiate(undefined, { forceRefetch: true })

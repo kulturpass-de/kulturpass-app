@@ -38,6 +38,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
         showDistance
         showCopyToClipboard
         baseTestId={sectionTestID}
+        copyToClipboardAccessibilityI18nKey="productDetail_voucher_copyToClipboard"
       />
     </ProductDetailSection>
   )

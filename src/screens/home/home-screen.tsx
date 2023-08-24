@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Screen } from '../../components/screen/screen'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { useDisplayReleaseNotes } from '../../features/release-notes/hooks/use-display-release-notes'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { commerceApi } from '../../services/api/commerce-api'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
-import { ErrorWithCode, NetworkError } from '../../services/errors/errors'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
+import { ErrorWithCode, NetworkError, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HomeHeader } from './home-header'
@@ -19,6 +20,7 @@ import { HomeHeaderWithWebView } from './home-header-with-webview'
 export type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
+  useDisplayReleaseNotes()
   const { buildTestId } = useTestIdBuilder()
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 
@@ -26,13 +28,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   const { data, refetch, error } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   useEffect(() => {
     if (error instanceof ErrorWithCode && !(error instanceof NetworkError)) {
-      setVisibleError(error)
+      ErrorAlertManager.current?.showError(new UnknownError())
     }
   }, [error])
-  const clearVisibleError = useCallback(() => setVisibleError(undefined), [])
 
   useFocusEffect(
     useCallback(() => {
@@ -48,7 +48,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const [contentOffset, setContentOffset] = useState<number>(0)
   return (
     <Screen withBasicBackground testID={buildTestId('home')}>
-      <ErrorAlert error={visibleError} onDismiss={clearVisibleError} />
       <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
         <HomeHeaderWithWebView>
           <HomeHeader profile={data} />

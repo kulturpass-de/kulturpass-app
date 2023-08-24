@@ -46,6 +46,7 @@ const buildStoryForOrderStatus = (orderStatus: Order['status']) => {
       <ReservationDetailScreen
         afterCancelReservationTriggered={() => {}}
         onClose={() => {}}
+        onPressReportButton={() => {}}
         order={order}
         productDetail={productDetail}
       />

@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
-import { configureMockStore } from '../../../testing/configure-mock-store'
+import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/configure-mock-store'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcFinalizeRegistration } from './auth-cdc-finalize-registration'
 import { authCommerceLogin } from './auth-commerce-login'
@@ -20,7 +20,7 @@ describe('authFinalizeRegistration', () => {
     profile: { firstName: 'Tester' },
     sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
   }
-  const commerceLoginResult = { auth_something: 'token' }
+  const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware, commerceApi.middleware] })
 

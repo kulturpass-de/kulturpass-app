@@ -10,6 +10,8 @@ import { isPreferencesFormDirty } from '../../features/preferences/utils/is-pref
 import { sanitizeSelectedCategories } from '../../features/preferences/utils/sanitize-selected-categories'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
+import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useUserInfo } from '../../services/user/use-user-info'
@@ -76,8 +78,16 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
 
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
-      await setAccountInfo({ data })
-      afterSubmitTriggered()
+      try {
+        await setAccountInfo({ data })
+        afterSubmitTriggered()
+      } catch (error: unknown) {
+        if (error instanceof ErrorWithCode) {
+          ErrorAlertManager.current?.showError(error)
+        } else {
+          ErrorAlertManager.current?.showError(new UnknownError())
+        }
+      }
     },
     [setAccountInfo, afterSubmitTriggered],
   )

@@ -55,14 +55,14 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
         <>
           <View style={styles.linkContainer}>
             <LinkText
-              testID="onboarding_locationPermission_iosLink"
+              testID={buildTestId('onboarding_locationPermission_iosLink')}
               i18nKey="onboarding_locationPermission_iosLink"
               link={language === Language.de ? URLS.IOS_DE_LOCATION_PERMISSION : URLS.IOS_EN_LOCATION_PERMISSION}
             />
           </View>
           <View style={styles.linkContainer}>
             <LinkText
-              testID="onboarding_locationPermission_androidLink"
+              testID={buildTestId('onboarding_locationPermission_androidLink')}
               i18nKey="onboarding_locationPermission_androidLink"
               link={
                 language === Language.de ? URLS.ANDROID_DE_LOCATION_PERMISSION : URLS.ANDROID_EN_LOCATION_PERMISSION

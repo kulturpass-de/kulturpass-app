@@ -27,7 +27,6 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
   ) {
     return (
       <Text
-        numberOfLines={1}
         testID={buildTestId('favorites_item_event_start_date')}
         style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
         {t('favorites_item_event_start_date', {
@@ -41,7 +40,6 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
   if (!eventEndsOnSameDay && formattedEventStartDate && formattedEvenEndDate) {
     return (
       <Text
-        numberOfLines={1}
         testID={buildTestId('favorites_item_event_date')}
         style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
         {t('favorites_item_event_date_range', {

@@ -1,22 +1,26 @@
-import { useSelector } from 'react-redux'
-import { cdcApi } from '../api/cdc-api'
+import { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { AccountsSetAccountInfoSignedRequestParams } from '../api/types'
 import { getCdcSessionData } from '../auth/store/auth-selectors'
+import { AppDispatch } from '../redux/configure-store'
+import { setAccountInfo } from './redux/thunks/set-account-info'
 
 export const useSetAccountInfo = (regToken?: string) => {
-  const [setAccountInfoSigned] = cdcApi.useAccountsSetAccountInfoSignedMutation()
-  const [setAccountWithRegTokenUnsigned] = cdcApi.useAccountsSetAccountInfoWithRegTokenUnsignedMutation()
-
+  const dispatch = useDispatch<AppDispatch>()
   const cdcSessionData = useSelector(getCdcSessionData)
   regToken = regToken || cdcSessionData?.regToken
 
-  const setAccountInfo = async (params: AccountsSetAccountInfoSignedRequestParams) => {
-    if (regToken) {
-      return setAccountWithRegTokenUnsigned({ ...params, regToken }).unwrap()
-    } else {
-      return setAccountInfoSigned(params).unwrap()
-    }
-  }
+  const setAccountInfoCb = useCallback(
+    async (params: AccountsSetAccountInfoSignedRequestParams) => {
+      await dispatch(
+        setAccountInfo({
+          params,
+          regToken,
+        }),
+      ).unwrap()
+    },
+    [dispatch, regToken],
+  )
 
-  return setAccountInfo
+  return setAccountInfoCb
 }

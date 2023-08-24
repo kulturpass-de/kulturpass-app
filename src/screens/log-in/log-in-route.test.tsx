@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
+import { ErrorAlertProvider } from '../../services/errors/error-alert-provider'
 import { buildTestId } from '../../services/test-id/test-id'
 import { AppProviders, StoreProvider } from '../../services/testing/test-utils'
 import t from '../../services/translation/i18n/de.json'
@@ -19,6 +20,7 @@ const renderScreen = () => {
           <Stack.Navigator>
             <Stack.Screen name="Register" component={LogInRoute} />
           </Stack.Navigator>
+          <ErrorAlertProvider />
         </NavigationContainer>
       </StoreProvider>
     </AppProviders>,

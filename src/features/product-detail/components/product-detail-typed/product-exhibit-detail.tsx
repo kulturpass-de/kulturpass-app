@@ -56,6 +56,7 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
             showDistance
             showCopyToClipboard
             baseTestId={addTestIdModifier(sectionTestID, 'location')}
+            copyToClipboardAccessibilityI18nKey="productDetail_exhibit_location_copyToClipboard"
           />
         </ProductDetailSection>
       ) : null}

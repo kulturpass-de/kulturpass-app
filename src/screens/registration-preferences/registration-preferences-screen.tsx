@@ -6,6 +6,8 @@ import { Preferences } from '../../features/preferences/components/preferences'
 import { usePreferences } from '../../features/preferences/hooks/use-preferences'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
+import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useSetAccountInfo } from '../../services/user/use-set-account-info'
 
@@ -28,8 +30,16 @@ export const RegistrationPreferencesScreen: React.FC<RegistrationPreferencesScre
 
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
-      await setAccountInfo({ data })
-      afterSubmitTriggered()
+      try {
+        await setAccountInfo({ data })
+        afterSubmitTriggered()
+      } catch (error: unknown) {
+        if (error instanceof ErrorWithCode) {
+          ErrorAlertManager.current?.showError(error)
+        } else {
+          ErrorAlertManager.current?.showError(new UnknownError())
+        }
+      }
     },
     [setAccountInfo, afterSubmitTriggered],
   )

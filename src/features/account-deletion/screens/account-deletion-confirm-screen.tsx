@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -13,11 +13,11 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { useDeleteAccount } from '../hooks/use-delete-account'
 
@@ -29,8 +29,6 @@ export type AccountDeletionConfirmScreenProps = {
 export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
-  const [visibleError, setVisibleError] = useState<ErrorWithCode | undefined>()
-
   const { deleteAccount, loading } = useDeleteAccount()
 
   const form = useForm<{ password: string }>({
@@ -50,9 +48,9 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
       onNext()
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     }
   })
@@ -62,7 +60,6 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
   return (
     <ModalScreen whiteBottom testID={screenTestId}>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         testID={addTestIdModifier(screenTestId, 'title')}
         titleI18nKey="accountDeletion_confirm_title"

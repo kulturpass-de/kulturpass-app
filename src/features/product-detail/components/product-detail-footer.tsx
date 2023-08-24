@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
+import { Badge } from '../../../components/badge/badge'
 import { Button } from '../../../components/button/button'
 import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 import { applyAccessibilityReplacements } from '../../../components/translated-text/accessibility-replacements'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
@@ -14,14 +14,22 @@ import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
+import { ProductDetail } from '../types/product-detail'
+import { isVoucher } from '../utils'
+import { ProductDetailCannotAffordText } from './product-detail-cannot-afford-text'
 import { ProductDetailFooterFavoriteButton } from './product-detail-footer-favorite-button'
 
 type ProductDetailFooterProps = {
   onReserve: () => void
   selectedOffer?: Offer
+  fulfillmentOption: ProductDetail['fulfillmentOption']
 }
 
-export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onReserve, selectedOffer }) => {
+export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
+  onReserve,
+  selectedOffer,
+  fulfillmentOption,
+}) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -30,8 +38,6 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
   const { data } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
-
-  const availableBalanceFormatted = useFormattedPrice(data?.balance?.availableBalance)
 
   const canAfford = useMemo(() => {
     const availableBalance = data?.balance?.availableBalance?.value
@@ -50,6 +56,8 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
     }
   }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, isLoggedIn])
 
+  const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
+
   if (!(showPrice || showReserveButton || showCannotAfford)) {
     return null
   }
@@ -59,22 +67,38 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
       style={[styles.container, { backgroundColor: colors.secondaryBackground, borderTopColor: colors.footerBorder }]}
       testID={buildTestId('productDetail_footer')}>
       {showPrice && formattedPrice ? (
-        <View
-          style={styles.row}
-          accessible
-          accessibilityLabel={t('productDetail_footer_priceTitle') + applyAccessibilityReplacements(formattedPrice)}>
-          <Text
-            testID={buildTestId('productDetail_footer_priceTitle')}
-            style={[textStyles.CaptionExtrabold, styles.priceTitle, { color: colors.labelColor }]}
-            accessibilityElementsHidden>
-            {t('productDetail_footer_priceTitle')}
-          </Text>
-          <Text
-            testID={buildTestId('productDetail_footer_price')}
-            style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}
-            accessibilityElementsHidden>
-            {formattedPrice}
-          </Text>
+        <View style={styles.row}>
+          {productIsVoucher ? (
+            <View style={styles.badge}>
+              <Badge i18nKey="voucher_badge" testID={buildTestId('productDetail_footer_voucher_badge')} />
+            </View>
+          ) : null}
+          <View
+            style={styles.priceRow}
+            accessible
+            accessibilityLabel={
+              t(productIsVoucher ? 'productDetail_footer_voucher_priceTitle' : 'productDetail_footer_priceTitle') +
+              applyAccessibilityReplacements(formattedPrice)
+            }>
+            <Text
+              testID={buildTestId('productDetail_footer_priceTitle')}
+              style={[textStyles.CaptionExtrabold, { color: colors.labelColor }]}
+              accessibilityElementsHidden>
+              {t(productIsVoucher ? 'productDetail_footer_voucher_priceTitle' : 'productDetail_footer_priceTitle')}
+            </Text>
+            <View style={styles.spacer} />
+            <Text
+              testID={buildTestId('productDetail_footer_price')}
+              style={[textStyles.HeadlineH3Extrabold, styles.fixLineHeight, { color: colors.labelColor }]}
+              accessibilityElementsHidden>
+              {formattedPrice}
+            </Text>
+          </View>
+          {!showReserveButton && selectedOffer?.code && isLoggedIn && (
+            <View style={styles.favoriteButtonNotEntitled}>
+              <ProductDetailFooterFavoriteButton productCode={selectedOffer?.productCode} size={48} />
+            </View>
+          )}
         </View>
       ) : null}
       {showReserveButton ? (
@@ -94,26 +118,11 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({ onRese
         </View>
       ) : null}
       {showCannotAfford ? (
-        <View style={[styles.row, styles.rowCentered]}>
-          <View style={styles.cannotAffordContainer}>
-            <TranslatedText
-              textStyle="CaptionSemibold"
-              textStyleOverrides={[styles.discount, { color: colors.labelColor }]}
-              testID={buildTestId('productDetail_footer_cannot_afford_text')}
-              i18nKey="productDetail_footer_cannot_afford"
-              i18nParams={{ availableBalance: availableBalanceFormatted }}
-              customComponents={{
-                mark: (
-                  <Text
-                    style={[
-                      { color: colors.emphasizedPriceColor, backgroundColor: colors.emphasizedPriceBackground },
-                      styles.discountAvailableBalance,
-                    ]}
-                  />
-                ),
-              }}
-            />
-          </View>
+        <View style={styles.row}>
+          <ProductDetailCannotAffordText
+            availableBalance={data?.balance.availableBalance}
+            productIsVoucher={productIsVoucher}
+          />
           <Text
             testID={buildTestId('productDetail_footer_price')}
             style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}>
@@ -132,12 +141,19 @@ const styles = StyleSheet.create({
     paddingTop: spacing[4],
     borderTopWidth: 2,
   },
+  badge: {
+    alignContent: 'center',
+    paddingRight: spacing[2],
+  },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  rowCentered: {
     alignItems: 'center',
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    flexGrow: 1,
   },
   rowReserve: {
     flexDirection: 'row',
@@ -148,19 +164,16 @@ const styles = StyleSheet.create({
   reserButtonContainer: {
     flexGrow: 1,
   },
-  priceTitle: {
-    height: 26,
-    alignSelf: 'center',
-  },
-  cannotAffordContainer: {
+  spacer: {
+    flexGrow: 1,
     flex: 1,
-    paddingRight: spacing[6],
   },
-  discount: {
-    lineHeight: 19,
+  fixLineHeight: {
+    // fontSize is 25 and lineHeight 29,
+    // to make it vertically centered:
+    marginTop: 4,
   },
-  discountAvailableBalance: {
-    lineHeight: 19,
-    fontWeight: '700',
+  favoriteButtonNotEntitled: {
+    marginLeft: spacing[5],
   },
 })

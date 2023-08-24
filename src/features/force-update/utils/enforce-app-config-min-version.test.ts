@@ -1,5 +1,5 @@
 import { rootNavigationRef } from '../../../navigation/navigation-container'
-import { AppConfig } from '../../../services/redux/slices/app-core'
+import { AppConfig } from '../../../services/redux/versions/current'
 import { ForceUpdateRouteName } from '../screens/force-update-route'
 import { enforceAppConfigMinVersion } from './enforce-app-config-min-version'
 

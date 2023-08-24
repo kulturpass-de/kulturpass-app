@@ -4,9 +4,10 @@ import { getCurrentEnvironmentConfigurationName } from '../../environment-config
 import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { ErrorWithCode } from '../../errors/errors'
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../listener-middleware'
-import { AppConfig, appCoreSlice } from '../slices/app-core'
+import { appCoreSlice } from '../slices/app-core'
 import { AppConfigSchema } from '../utils/app-config-schema'
 import { verifyJwsWithJwk } from '../utils/verify-jws-with-jwk'
+import { AppConfig } from '../versions/current'
 
 export const onGetAppConfigFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getAppConfig.matchFulfilled>

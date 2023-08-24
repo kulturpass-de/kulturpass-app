@@ -16,6 +16,7 @@ import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useQueryProductDetail } from '../hooks/use-query-product-detail'
 import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
 import { ProductDetailScreen } from './product-detail-screen'
+import { ProductReportRouteName } from './product-report-route'
 
 export const ProductDetailRouteName = 'ProductDetail'
 
@@ -58,6 +59,14 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
 
   const selectedOffer = useSelectedOrClosestOffer(productDetail, offerId)
 
+  const onPressReportButton = useCallback(() => {
+    navigation.navigate(ProductReportRouteName, {
+      offerId: selectedOffer?.code,
+      shopName: selectedOffer?.shopName,
+      shopId: selectedOffer?.shopId,
+    })
+  }, [navigation, selectedOffer])
+
   const reserveProduct = useCallback(async () => {
     if (!selectedOffer?.code) {
       return
@@ -88,6 +97,7 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
           selectedOffer={selectedOffer}
           randomMode={randomMode}
           reserveProduct={reserveProduct}
+          onPressReportButton={onPressReportButton}
         />
       ) : null}
     </>

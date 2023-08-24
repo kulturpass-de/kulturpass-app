@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
+import { logger } from '../../../services/logger'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { openLink } from '../../../utils/links/utils'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
@@ -26,6 +27,7 @@ type SpartacusWebViewProps = {
   webViewId: WebViewId
   commands?: string[]
   url: string
+  initialNavigationUrl?: string
   onScroll?: WebViewProps['onScroll']
   language: string
   contentOffset?: number
@@ -37,6 +39,7 @@ type SpartacusWebViewProps = {
 export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   webViewId,
   url,
+  initialNavigationUrl,
   commands,
   language,
   style,
@@ -45,16 +48,23 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 }) => {
   const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
+  // If there is an initial navigation URL we start the webview with it.
+  // The alternative (waiting for a bridge ready event and navigating over the bridge is) is not stable,
+  // as we might need to reload on startup for language sync.
+  // This is only important for the first website load.
+  const initialUrl = useRef(initialNavigationUrl)
   const navigateToPDP = useNavigateToPDP()
 
   const origin = useOrigin(url)
 
   const handleShouldLoadRequest: OnShouldStartLoadWithRequest = useCallback(
-    e => {
+    event => {
       let isSamePage: boolean
-      // Fixes PDP opened in banner subpage not working properly (home screen is white after)
-      if (webViewId === WebViewId.Home && e.url.startsWith(origin)) {
-        const navigatedToPDP = navigateToPDP(e)
+      const eventUrl = new URL(event.url)
+      // Fixes PDP opened in banner subpage not working properly (home screen is white after).
+      // Use https, as links could potentially be http
+      if (webViewId === WebViewId.Home && 'https://' + eventUrl.hostname === origin) {
+        const navigatedToPDP = navigateToPDP(event)
 
         if (navigatedToPDP === true) {
           return false
@@ -62,13 +72,13 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       }
       if (Platform.OS === 'ios') {
         // iOS invokes this function for each text/html request. Therefore using mainDocumentURL (iOS only)
-        isSamePage = e.mainDocumentURL?.startsWith(origin) === true
+        isSamePage = event.mainDocumentURL?.startsWith(origin) === true
       } else {
         // Android does not invoke function on single page apps https://github.com/react-native-webview/react-native-webview/issues/1869
-        isSamePage = e.url.startsWith(origin)
+        isSamePage = event.url.startsWith(origin)
       }
       if (!isSamePage) {
-        openLink(e.url)
+        openLink(event.url).catch(logger.logError)
       }
       return isSamePage
     },
@@ -118,8 +128,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   }
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', e => {
-      if (e.target?.startsWith(webViewId)) {
+    const unsubscribe = navigation.addListener('tabPress', event => {
+      if (event.target?.startsWith(webViewId)) {
         webViewBridgeAdapter.goToPage(webViewId, uri)
         webViewBridgeAdapter.scrollToTop(webViewId)
       }
@@ -139,7 +149,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           onError={handleError}
           onHttpError={handleHttpError}
           renderLoading={renderLoading}
-          source={{ uri }}
+          source={{ uri: initialUrl.current ? origin + initialUrl.current : uri }}
           ref={webViewRef}
           onMessage={onMessage}
           {...props}

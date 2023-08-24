@@ -44,7 +44,7 @@ export const AppConfigScreen: React.FC<AppConfigScreenProps> = ({ onHeaderPressB
           ]}>
           <Button
             onPress={onPressForceReloadAppConfig}
-            testID="appConfig_forceReload_button"
+            testID={buildTestId('appConfig_forceReload_button')}
             i18nKey="appConfig_forceReload_button"
           />
         </View>

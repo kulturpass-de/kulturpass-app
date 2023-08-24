@@ -12,14 +12,10 @@ const componentMeta: ComponentMeta<typeof FavoritesListItem> = {
       eventStartDate: '1985-05-14T11:00:00+0000',
       images: [
         {
-          format: 'thumbnail',
-          imageType: 'PRIMARY',
-          url: '/medias/96Wx96H-null?context=bWFzdGVyfHJvb3R8NDIwMHxpbWFnZS9qcGVnfGFHWTNMMmd3T0M4NE56azRNelk1TmpjM016UXlMemsyVjNnNU5raGZiblZzYkF8ZTRhM2FlMjAyNTRiZGFhYzA4N2ZmMWNhZTMwNTI2MzFhMGNjOTFiNzBlZDkyMTAwYmQ4NGRmOGNkMmNmN2NlMQ',
-        },
-        {
+          altText: 'REDEMPTION_CODE',
           format: 'product',
           imageType: 'PRIMARY',
-          url: '/medias/300Wx300H-null?context=bWFzdGVyfHJvb3R8Mjc1NjR8aW1hZ2UvanBlZ3xhREpsTDJnMllpODROems0TXpZNE16WTJOakl5THpNd01GZDRNekF3U0Y5dWRXeHN8MDcyOTZmZTM4MmVkYWIwM2E2MGMyZDExNjc4Yjg4MmY1YjY5YWE4YmVlNGUzZDQzMTI4ZDNlYjdiZTJkZmMwOQ',
+          url: '/medias/300Wx300H-null?context=bWFzdGVyfHJvb3R8MjkxNjl8aW1hZ2UvanBlZ3xhREU0TDJneE5DODRPRFV3T0RFNU56YzJOVFF5THpNd01GZDRNekF3U0Y5dWRXeHN8NDE3ZWEyYjQyOGY3NzYyZDVkODUzOTNjNmFmMWIzY2ZiYWEzMjg3NTE2M2VjYTJiOGZjYTdkMzVkZTkxM2Y5MQ',
         },
       ],
       itemType: 'AudioProduct',
@@ -69,6 +65,7 @@ const componentMeta: ComponentMeta<typeof FavoritesListItem> = {
       },
       shopDistance: 11.4,
       topCategoryName: 'Tonträger',
+      fulfillmentOption: 'REDEMPTION_CODE',
       url: '/Katalog-%C3%B6ffnen/Marktplatz/Tontr%C3%A4ger/R%26B-%26-Soul/Lively-Chorus-DE/p/AudioProduct-167159963977',
     },
   },

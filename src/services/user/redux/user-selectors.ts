@@ -6,6 +6,7 @@ export const getUserDeniedLocationServices = (state: RootState) => state.user.us
 export const getDisplayVerifiedAlert = (state: RootState) => state.user.displayVerifiedAlert
 export const selectUserState = (state: RootState) => state.user
 export const selectUserPreferences = createSelector(selectUserState, userState => userState.data)
+export const selectUserProfile = createSelector(selectUserState, userState => userState.profile)
 
 export type UserLocationProvider = { provider: 'location' } | { provider: 'postalCode'; postalCode: string } | undefined
 

@@ -1,11 +1,11 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { ReservationsListTabContent } from '../../features/reservations/components/reservations-list-tab-content'
 import { useQueryReservations } from '../../features/reservations/hooks/use-query-reservations'
 import { Order } from '../../services/api/types/commerce/api-types'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -29,13 +29,11 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const screenTestId = buildTestId('reservations')
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
-
   const onOrderPressed = useCallback(
     (completedReservation: boolean) => (order: Order) => {
       if (!order.code) {
         // This should be replaced with a suitable error in the future
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
         return
       }
 
@@ -48,19 +46,18 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
 
   useEffect(() => {
     if (error === undefined) {
-      setVisibleError(undefined)
+      ErrorAlertManager.current?.dismiss()
     } else if (error instanceof ErrorWithCode) {
-      setVisibleError(error)
+      ErrorAlertManager.current?.showError(error)
     } else {
-      setVisibleError(new UnknownError())
+      ErrorAlertManager.current?.showError(new UnknownError())
     }
-  }, [error, setVisibleError])
+  }, [error])
 
   return (
     <Screen
       testID={screenTestId}
       header={<ScreenHeader testID={addTestIdModifier(screenTestId, 'headline')} title={t('reservations_headline')} />}>
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <Tab.Navigator tabBar={ReservationsTabBar} sceneContainerStyle={{ backgroundColor: colors.primaryBackground }}>
         <Tab.Screen name="PendingReservations">
           {() => (

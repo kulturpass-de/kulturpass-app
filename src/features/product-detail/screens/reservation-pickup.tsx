@@ -6,14 +6,14 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { ProductDetail, VoucherProductDetail } from '../types/product-detail'
+import { ProductDetail } from '../types/product-detail'
 
 export type ReservationPickupProps = {
   productDetail: ProductDetail
 }
 
 const getPickupTextTranslationKey = (
-  fulfillmentOption: VoucherProductDetail['fulfillmentOption'] | null,
+  fulfillmentOption: ProductDetail['fulfillmentOption'] | null,
 ): AvailableTranslations | null => {
   switch (fulfillmentOption) {
     case 'PICKUP_CODE':

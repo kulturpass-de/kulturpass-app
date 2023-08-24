@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react'
-import { Image, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
+import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { Badge } from '../../components/badge/badge'
 import { FavoriteButton } from '../../components/favorite-button/favorite-button'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { isVoucher } from '../../features/product-detail/utils'
 import { Product } from '../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -12,6 +15,7 @@ import { textStyles } from '../../theme/typography'
 import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
 import { useFormattedPrice } from '../../utils/price/hooks/use-formatted-price'
 import { FavoritesEventDate } from './favorites-event-date'
+import { FavoritesListItemImageBadge } from './favorites-list-item-image-badge'
 import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 
 export type FavoritesListItemProps = {
@@ -36,8 +40,9 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
     eventEndDate,
     lowestOfferPrice,
     seller,
+    fulfillmentOption,
   } = product
-  const { imageUrl, image } = useProductImageUrl(images, 'product')
+  const { imageUrl } = useProductImageUrl(images, 'product')
   const offersCount = productOfferCount ?? 0
   let shopName: string | undefined
   if (offersCount > 1) {
@@ -107,54 +112,38 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
         onAccessibilityAction={onAccessibilityAction}>
         <View
           testID={buildTestId('screens_favorites_favorites_list_item')}
-          style={[styles.container, { height: ITEM_HEIGHT }]}>
+          style={[styles.container, { minHeight: ITEM_HEIGHT }]}>
           <View style={styles.containerItem}>
             <View style={styles.imageContainer}>
               {imageUrl && (
                 <>
-                  <Image
+                  <FastImage
                     testID={buildTestId('screens_favorites_favorites_list_item_image')}
-                    style={styles.image}
+                    accessibilityLabel={t('favorites_item_image')}
+                    style={[styles.image, { backgroundColor: colors.secondaryBackground }]}
+                    resizeMode={FastImage.resizeMode.cover}
                     source={{ uri: imageUrl }}
                   />
                   {topCategoryName !== undefined ? (
-                    <Text
-                      testID={buildTestId('screens_favorites_favorites_list_item_top_category_name')}
-                      numberOfLines={2}
-                      style={[
-                        styles.categoryName,
-                        { color: colors.labelColor, backgroundColor: colors.secondaryBackground },
-                      ]}>
+                    <FavoritesListItemImageBadge
+                      testID={buildTestId('screens_favorites_favorites_list_item_top_category_name')}>
                       {topCategoryName}
-                    </Text>
+                    </FavoritesListItemImageBadge>
                   ) : null}
                 </>
-              )}
-              {image?.altText && (
-                <View
-                  testID={buildTestId('screens_favorites_favorites_list_item_badge')}
-                  style={[styles.imageBadge, { backgroundColor: colors.secondaryBackground }]}>
-                  <Text
-                    numberOfLines={2}
-                    style={textStyles.MicroExtraboldCaps}
-                    testID={buildTestId('screens_favorites_favorites_list_item_image_alt')}>
-                    {image.altText}
-                  </Text>
-                </View>
               )}
             </View>
             <View style={styles.main}>
               <View style={styles.content}>
                 <Text
                   testID={buildTestId('screens_favorites_favorites_list_item_title')}
-                  style={[textStyles.BodyExtrabold, styles.title, { color: colors.labelColor }]}
-                  numberOfLines={2}>
+                  style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}>
                   {title}
                 </Text>
                 <View style={styles.informationLine}>
                   {shopInformation !== undefined ? (
                     <Text
-                      numberOfLines={1}
+                      numberOfLines={3}
                       testID={buildTestId('favorites_item_shopInformation')}
                       style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
                       {shopInformation}
@@ -171,9 +160,12 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
                 <View style={styles.informationLine}>
                   <FavoritesEventDate startDate={eventStartDate} endDate={eventEndDate} />
                 </View>
+                {isVoucher(fulfillmentOption) ? (
+                  <Badge i18nKey="voucher_badge" testID={buildTestId('favorites_item_voucher_badge')} />
+                ) : null}
                 {formattedPriceInformation ? (
                   <Text
-                    numberOfLines={1}
+                    numberOfLines={2}
                     ellipsizeMode="head"
                     testID={buildTestId('screens_favorites_favorites_list_item_price')}
                     style={[styles.price, { color: colors.labelColor }]}>
@@ -187,6 +179,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
                   isFavorite={isFavorite}
                   hitSlop={HITSLOP_FAVORITES_LIST_ITEM}
                   onPress={toggleIsFavourite}
+                  size={36}
                 />
               </View>
             </View>
@@ -200,6 +193,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    justifyContent: 'center',
   },
   containerItem: {
     flexDirection: 'row',
@@ -209,20 +203,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 16,
-    width: 128,
+    width: '33%',
+    minWidth: 96,
+    maxWidth: 128,
     aspectRatio: 1,
     overflow: 'hidden',
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
-  },
-  categoryName: {
-    ...textStyles.MicroExtraboldCaps,
-    paddingVertical: spacing[0],
-    paddingHorizontal: spacing[2] - 2,
-    position: 'absolute',
-    bottom: spacing[6] - 4,
   },
   main: {
     marginLeft: spacing[4],
@@ -232,30 +220,20 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'column',
     flex: 1,
-  },
-  title: {
-    marginBottom: spacing[1],
+    rowGap: spacing[1],
   },
   informationLine: {
-    paddingTop: spacing[1],
     flexDirection: 'row',
     flexWrap: 'nowrap',
   },
   price: {
     ...textStyles.HeadlineH4Extrabold,
-    marginTop: spacing[2],
+    paddingTop: spacing[0],
     marginRight: spacing[7],
   },
   actionContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-  },
-  imageBadge: {
-    position: 'absolute',
-    bottom: '10%',
-    left: 0,
-    paddingHorizontal: spacing[2],
-    paddingVertical: spacing[0],
   },
 })

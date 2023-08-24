@@ -23,6 +23,8 @@ export type ColorMappings = {
   preferencesCategoryShadow: string
   emphasizedPriceColor: string
   emphasizedPriceBackground: string
+  emphasizedPriceVoucherColor: string
+  emphasizedPriceVoucherBackground: string
   divider: string
   alertBackdrop: string
   tokenBackground: string
@@ -33,6 +35,7 @@ export type ColorMappings = {
   chipBorder: string
   chipText: string
   chipTextActive: string
+  badgeBackground: string
 }
 
 export type PreferencesButtonColors = {

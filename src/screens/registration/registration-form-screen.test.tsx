@@ -8,7 +8,8 @@ import { Provider } from 'react-redux'
 import { AccountsRegisterResponse } from '../../services/api/types'
 import * as authLoginModule from '../../services/auth/store/thunks/auth-login'
 import { addTestIdModifier, buildTestId } from '../../services/test-id/test-id'
-import { configureMockStore } from '../../services/testing/configure-mock-store'
+import { configureMockStore, mockedLoggedInAuthState } from '../../services/testing/configure-mock-store'
+import { mockedCdcLoginResponse } from '../../services/testing/test-utils'
 import t from '../../services/translation/i18n/de.json'
 import { register } from '../../services/user/redux/thunks/register'
 import { RegistrationFormScreen } from './registration-form-screen'
@@ -39,11 +40,8 @@ describe('registration-form-screen', () => {
   const dateOfBirthInput = buildTestId('registration_form_dateOfBirth')
   const formSubmitBtn = buildTestId('registration_form_submit')
 
-  const cdcLoginResult = {
-    profile: { firstName: 'Tester' },
-    sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
-  }
-  const commerceLoginResult = { auth_something: 'token' }
+  const cdcLoginResult = mockedCdcLoginResponse
+  const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
 
   beforeAll(() => server.listen())
   afterEach(() => {

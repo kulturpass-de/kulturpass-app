@@ -37,8 +37,8 @@ export const useAccountVerifiedWebViewHandler = (bridgeAdapterApi: BridgeAdapter
           return
         }
         try {
-          const response = await getAccountInfoLazyQuery(regToken)
-          setShowAlert(response.data?.isVerified === true)
+          const { isVerified } = await getAccountInfoLazyQuery(regToken)
+          setShowAlert(isVerified === true)
         } catch (_error: unknown) {}
       },
       THROTTLE_TIMEOUT_MS,

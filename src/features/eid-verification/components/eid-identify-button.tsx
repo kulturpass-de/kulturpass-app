@@ -28,7 +28,7 @@ export const EidIdentifyButton: React.FC = () => {
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('eid_startVerify_button_title')}
-            i18nKey={'eid_startVerify_button_title'}
+            i18nKey={name ? 'eid_startVerify_button_title' : 'eid_startVerify_button_title_withoutName'}
             i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.labelColor }}

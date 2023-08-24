@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import pkg from '../../../package.json'
@@ -6,6 +8,9 @@ import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
+import { ReleaseNotesRouteName } from '../../features/release-notes/screens/release-notes-route'
+import { SettingsParamList } from '../../navigation/tabs/settings/types'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -27,19 +32,21 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
   const { t } = useTranslation()
   const { colors, colorScheme } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+  const navigation = useNavigation<StackNavigationProp<SettingsParamList>>()
 
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
   const eulaDocumentUrl = useLocalizedEnvironmentUrl(getCdcEulaDocumentUrl)
   const imprintUrl = useLocalizedEnvironmentUrl(getImprintUrl)
   const openSourceLegalNoticeUrl = useLocalizedEnvironmentUrl(getOpenSourceLegalNoticeUrl)
 
-  const onDpsDocumentLinkPress = useCallback(() => openLink(dpsDocumentUrl), [dpsDocumentUrl])
-  const onEulaDocumentLinkPress = useCallback(() => openLink(eulaDocumentUrl), [eulaDocumentUrl])
-  const onImprintLinkPress = useCallback(() => openLink(imprintUrl), [imprintUrl])
+  const onDpsDocumentLinkPress = useCallback(() => openLink(dpsDocumentUrl).catch(logger.logError), [dpsDocumentUrl])
+  const onEulaDocumentLinkPress = useCallback(() => openLink(eulaDocumentUrl).catch(logger.logError), [eulaDocumentUrl])
+  const onImprintLinkPress = useCallback(() => openLink(imprintUrl).catch(logger.logError), [imprintUrl])
   const onOpenSourceLegalNoticeLinkPress = useCallback(
-    () => openLink(openSourceLegalNoticeUrl),
+    () => openLink(openSourceLegalNoticeUrl).catch(logger.logError),
     [openSourceLegalNoticeUrl],
   )
+  const onOpenReleaseNotes = useCallback(() => navigation.navigate(ReleaseNotesRouteName), [navigation])
 
   return (
     <Screen
@@ -53,6 +60,12 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
         />
       }>
       <ScrollView contentContainerStyle={styles.container}>
+        <ListItem
+          title={t('app_informations_releaseNotes_link_text')}
+          testID={buildTestId('app_informations_releaseNotes_link_text')}
+          onPress={onOpenReleaseNotes}
+          type="navigation"
+        />
         <ListItem
           title={t('app_informations_dataPrivacy_link_text')}
           testID={buildTestId('app_informations_dataPrivacy_link_text')}
@@ -75,8 +88,8 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
           title={t('app_informations_openSourceLegalNotice_link_text')}
           testID={buildTestId('app_informations_openSourceLegalNotice_link_text')}
           onPress={onOpenSourceLegalNoticeLinkPress}
-          noBorderBottom
           type="link"
+          noBorderBottom
         />
         <View>
           <TranslatedText
@@ -101,8 +114,9 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
 const styles = StyleSheet.create({
   container: {
     paddingTop: spacing[6],
+    paddingBottom: spacing[13],
     flexDirection: 'column',
-    flex: 1,
+    flexGrow: 1,
   },
   appVersionText: {
     textAlign: 'center',
@@ -113,8 +127,6 @@ const styles = StyleSheet.create({
     minHeight: spacing[6],
   },
   logo: {
-    paddingBottom: spacing[13],
-    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },

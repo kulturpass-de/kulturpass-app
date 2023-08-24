@@ -11,6 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { WebViewBridgeAdapter } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { WebViewBridgeAdapterContext } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter-provider'
 import { RootStackScreen } from '../../navigation/root-stack'
+import { CDC_SESSION_EXPIRATION_INFINITE } from '../api/cdc-constants'
 import { AccountsGetAccountInfoResponse } from '../api/types'
 import { GetProfileResponseBody } from '../api/types/commerce/commerce-get-profile'
 import { authSlice } from '../auth/store/auth-slice'
@@ -158,3 +159,14 @@ export const serverHandlersLoggedIn: ServerHandler[] = [
 
 export const setupServer = (...customHandlers: ServerHandler[]) =>
   setupMswServer(...serverHandlersRequired, ...customHandlers)
+
+export const mockedCdcLoginResponse = {
+  profile: { firstName: 'Tester' },
+  sessionInfo: {
+    sessionToken: 'MySessionToken',
+    sessionSecret: 'MySessionSecret',
+    expires_in: CDC_SESSION_EXPIRATION_INFINITE,
+    signatureTimestamp: (Date.now() / 1000 - 1).toString(),
+  },
+  id_token: 'my_token',
+}

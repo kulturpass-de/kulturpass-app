@@ -17,6 +17,11 @@ import {
   ProductDetailRouteParams,
 } from '../../features/product-detail/screens/product-detail-route'
 import {
+  ProductReportRouteName,
+  ProductReportRouteParams,
+} from '../../features/product-detail/screens/product-report-route'
+import { OrderReportRouteName, OrderReportRouteParams } from '../../features/reservations/screens/order-report-route'
+import {
   ReservationDetailRouteName,
   ReservationDetailRouteParams,
 } from '../../features/reservations/screens/reservation-detail-route'
@@ -28,6 +33,8 @@ export type PdpParamList = {
   [OfferSelectionFilterRouteName]: OfferSelectionFilterRouteParams
   [ProductConfirmReservationRouteName]: ProductConfirmReservationRouteParams
   [ReservationDetailRouteName]: ReservationDetailRouteParams
+  [ProductReportRouteName]: ProductReportRouteParams
+  [OrderReportRouteName]: OrderReportRouteParams
 }
 
 export type PdpScreenProps<RouteName extends keyof PdpParamList> = CompositeScreenProps<

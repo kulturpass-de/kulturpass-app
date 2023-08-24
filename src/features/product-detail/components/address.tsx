@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
+import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { HITSLOP } from '../../../theme/constants'
@@ -18,6 +19,7 @@ export type AddressProps = {
   showDistance?: boolean
   showCopyToClipboard: boolean
   baseTestId: string
+  copyToClipboardAccessibilityI18nKey: AvailableTranslations
 }
 
 export const Address: React.FC<AddressProps> = ({
@@ -28,6 +30,7 @@ export const Address: React.FC<AddressProps> = ({
   distance,
   showCopyToClipboard,
   baseTestId,
+  copyToClipboardAccessibilityI18nKey,
   showDistance = true,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
@@ -72,7 +75,7 @@ export const Address: React.FC<AddressProps> = ({
             hitSlop={HITSLOP}
             testID={addTestIdModifier(baseTestId, 'copyToClipboard')}
             accessibilityRole="button"
-            accessibilityLabel={t('productDetail_offer_copyToClipboard')}
+            accessibilityLabel={t(copyToClipboardAccessibilityI18nKey)}
             onPress={copyToClipboard}>
             {({ pressed }) => <SvgImage type={pressed ? 'copy-clipboard' : 'clipboard'} width={24} height={24} />}
           </Pressable>

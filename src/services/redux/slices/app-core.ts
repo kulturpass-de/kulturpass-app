@@ -1,16 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { z } from 'zod'
 import { RootState } from '../configure-store'
-import { AppConfigSchema } from '../utils/app-config-schema'
-
-export type AppConfig = z.infer<typeof AppConfigSchema>
-
-export type AppCoreState = {
-  appConfig?: AppConfig
-  isBootstrapped?: boolean
-  isInForeground?: boolean
-  lastUsedTranslationLanguage?: string
-}
+import { AppConfig, AppCoreState } from '../versions/current'
 
 export const initialState: AppCoreState = {}
 

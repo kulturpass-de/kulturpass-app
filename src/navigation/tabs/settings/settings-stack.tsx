@@ -1,5 +1,6 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
+import { ReleaseNotesRouteConfig } from '../../../features/release-notes/screens/release-notes-route'
 import { AppInformationsRouteConfig } from '../../../screens/profile-tab/app-informations-route'
 import { ChangeLanguageRouteConfig } from '../../../screens/profile-tab/change-language-route'
 import { ContactRouteConfig } from '../../../screens/profile-tab/contact-route'
@@ -21,6 +22,7 @@ export const SettingsStack: React.FC = () => {
       screenOptions={{ headerShown: false, ...TransitionPresets.SlideFromRightIOS }}>
       <Stack.Screen {...ViewProfileRouteConfig} />
       <Stack.Screen {...ChangeLanguageRouteConfig} />
+      <Stack.Screen {...ReleaseNotesRouteConfig} />
       <Stack.Screen {...PreferencesRouteConfig} />
       <Stack.Screen {...UpdateProfileRouteConfig} />
       <Stack.Screen {...ContactRouteConfig} />

@@ -14,11 +14,11 @@ import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
@@ -71,7 +71,6 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
 
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
     setLoading(true)
@@ -83,9 +82,9 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setLoading(false)
@@ -95,7 +94,6 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
   return (
     <ModalScreen whiteBottom testID={buildTestId('registration_form')}>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="registration_form_headline"
         testID={buildTestId('registration_form_headline')}

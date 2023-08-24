@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet, View, Pressable } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { z } from 'zod'
 import { Button } from '../../components/button/button'
 import { FormFieldWithControl } from '../../components/form-fields/form-field-with-control'
@@ -12,11 +12,11 @@ import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -60,7 +60,6 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
 
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const { buildTestId } = useTestIdBuilder()
 
   const onPressLoginButton = form.handleSubmit(async data => {
@@ -72,9 +71,9 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setLoading(false)
@@ -84,7 +83,6 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   return (
     <ModalScreen testID={buildTestId('login')} withoutBottomSafeArea>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="login_headline"
         testID={buildTestId('login_headline')}
@@ -116,17 +114,6 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           disableAccessibilityForLabel
           textContentType="password"
         />
-        <Pressable
-          accessibilityRole="link"
-          onPress={afterForgotPassword}
-          testID={buildTestId('login_form_forgotPassword_button')}>
-          <TranslatedText
-            i18nKey="login_form_forgotPassword"
-            testID={buildTestId('login_form_forgotPassword')}
-            textStyle="CaptionSemibold"
-            textStyleOverrides={[style.forgotPasswordText, { color: colors.labelColor }]}
-          />
-        </Pressable>
         <Button
           bodyStyleOverrides={style.formLoginButton}
           disabled={!form.formState.isDirty}
@@ -183,9 +170,6 @@ const style = StyleSheet.create({
   },
   formForgotPasswordButton: {
     marginTop: spacing[1],
-  },
-  forgotPasswordText: {
-    textDecorationLine: 'underline',
   },
   registerTitle: {
     marginTop: spacing[9],

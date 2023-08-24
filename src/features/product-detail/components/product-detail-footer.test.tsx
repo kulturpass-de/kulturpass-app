@@ -45,6 +45,7 @@ test('Should render product detail footer with sufficient credit', async () => {
 
   renderComponent(
     <ProductDetailFooter
+      fulfillmentOption="PICKUP_CODE"
       onReserve={onReserve}
       selectedOffer={{ code: 'test', price: { value: 22.99, currencyIso: 'EUR' } }}
     />,
@@ -80,6 +81,7 @@ test('Should render product detail footer with non-sufficient credit', async () 
 
   renderComponent(
     <ProductDetailFooter
+      fulfillmentOption="PICKUP_CODE"
       onReserve={onReserve}
       selectedOffer={{ code: 'test', price: { value: 22.99, currencyIso: 'EUR' } }}
     />,
@@ -115,6 +117,7 @@ test('Should render product detail footer without a total price', async () => {
 
   renderComponent(
     <ProductDetailFooter
+      fulfillmentOption="PICKUP_CODE"
       onReserve={onReserve}
       // no offer = do not display the footer
       // selectedOffer={}

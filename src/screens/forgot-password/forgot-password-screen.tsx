@@ -11,11 +11,11 @@ import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../components/screen/screen-content'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
 import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
+import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -48,7 +48,6 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
 
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async data => {
     setLoading(true)
@@ -59,9 +58,9 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     } finally {
       setLoading(false)
@@ -71,7 +70,6 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
   return (
     <ModalScreen testID={buildTestId('forgotPassword')}>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ModalScreenHeader
         titleI18nKey="forgotPassword_headline"
         testID={buildTestId('forgotPassword_headline')}

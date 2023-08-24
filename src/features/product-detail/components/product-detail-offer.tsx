@@ -36,6 +36,7 @@ export const ProductDetailOffer: React.FC<ProductDetailOfferProps> = ({
         showDistance={showDistance}
         showCopyToClipboard={copyAddressToClipboard}
         baseTestId={sectionTestID}
+        copyToClipboardAccessibilityI18nKey="productDetail_offer_copyToClipboard"
       />
     </ProductDetailSection>
   )
