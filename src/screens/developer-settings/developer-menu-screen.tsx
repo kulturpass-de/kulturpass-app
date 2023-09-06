@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
-import React, { useCallback, useState } from 'react'
-import { StyleSheet, Switch, TextInput, View } from 'react-native'
+import React, { useCallback, useReducer, useState } from 'react'
+import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../components/button/button'
 import { ListItem } from '../../components/list-item/list-item'
@@ -62,6 +62,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
   const [productCode, setProductCode] = useState('')
+  const [tapCounter, incrementTapCounter] = useReducer((current: number) => current + 1, 1)
 
   const onOpenProductDetail = useCallback(() => {
     rootNavigation.navigate('PDP', {
@@ -90,11 +91,13 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
 
   return (
     <ModalScreen testID={buildTestId('developerMenu')} withoutBottomSafeArea>
-      <ModalScreenHeader
-        titleI18nKey="developerMenu_headline_title"
-        testID={buildTestId('developerMenu_headline_title')}
-        onPressClose={onHeaderPressClose}
-      />
+      <Pressable onPress={incrementTapCounter} testID={buildTestId('developerMenu_headline_tapCounterButton')}>
+        <ModalScreenHeader
+          titleI18nKey="developerMenu_headline_title"
+          testID={buildTestId('developerMenu_headline_title')}
+          onPressClose={onHeaderPressClose}
+        />
+      </Pressable>
       <ScreenContent>
         <ListItem
           icon={<CogIcon />}
@@ -152,12 +155,14 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             onValueChange={toggleShowReleaseNotesOnAppStart}
           />
         </View>
-        <ListItem
-          title="Dark Theme Preview"
-          testID={buildTestId('developerMenu_darkTheme_button')}
-          type="navigation"
-          onPress={onPressDarkThemeConfiguration}
-        />
+        {tapCounter > 3 ? (
+          <ListItem
+            title="Dark Theme Preview"
+            testID={buildTestId('developerMenu_darkTheme_button')}
+            type="navigation"
+            onPress={onPressDarkThemeConfiguration}
+          />
+        ) : null}
         <View
           style={[
             styles.productCodeListItem,
@@ -190,7 +195,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
-        {isLoggedIn ? (
+        {isLoggedIn && tapCounter > 3 ? (
           <View
             style={[
               styles.productCodeListItem,
@@ -203,17 +208,19 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             />
           </View>
         ) : null}
-        <View
-          style={[
-            styles.productCodeListItem,
-            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
-          ]}>
-          <Button
-            onPress={cancelEidFlow}
-            testID={buildTestId('developerMenu_cancelEidFlow_button')}
-            i18nKey="developerMenu_cancelEidFlow_button"
-          />
-        </View>
+        {tapCounter > 3 ? (
+          <View
+            style={[
+              styles.productCodeListItem,
+              { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+            ]}>
+            <Button
+              onPress={cancelEidFlow}
+              testID={buildTestId('developerMenu_cancelEidFlow_button')}
+              i18nKey="developerMenu_cancelEidFlow_button"
+            />
+          </View>
+        ) : null}
       </ScreenContent>
     </ModalScreen>
   )

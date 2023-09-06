@@ -9,9 +9,16 @@ import {
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
 } from '../../../services/errors/cdc-errors'
-import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
-import { logger } from '../../../services/logger'
+import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
+import {
+  ErrorWithCode,
+  HttpError,
+  HttpStatusBadRequestError,
+  NetworkError,
+  UnknownError,
+} from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
+import { Language } from '../../../services/translation/types'
 import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
@@ -52,22 +59,24 @@ export const POSTAL_CODE_SCHEMA = (
         return z.NEVER
       }
 
-      try {
-        const result = await validatePostalCode({ postalCode })
+      const result = await validatePostalCode({ postalCode })
 
-        if (result.isError) {
+      if (result.isError) {
+        if (result.error instanceof HttpError && result.error.statusCode === 400) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: t('form_error_not_valid_postal_code_verified'),
           })
+        } else {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+          })
+          if (result.error instanceof ErrorWithCode) {
+            ErrorAlertManager.current?.showError(result.error)
+          } else {
+            ErrorAlertManager.current?.showError(new UnknownError())
+          }
         }
-      } catch (error) {
-        logger.log(error)
-
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: t('form_error_not_valid_postal_code_verified'),
-        })
       }
     })
 }
@@ -136,6 +145,25 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'error_alert_title_fallback' },
           message: { key: 'error_alert_mailto_message', values: { mail: mailError.mail } },
+        }
+      }
+      case NetworkError: {
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: {
+            key: 'error_alert_networkError_message',
+            values: {
+              dateTime: new Intl.DateTimeFormat(Language.de, {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+              }).format(Date.now()),
+            },
+          },
         }
       }
       case HttpStatusBadRequestError: {

@@ -4,8 +4,8 @@ import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 import { logger } from '../../../services/logger'
-import { useTheme } from '../../../theme/hooks/use-theme'
 import { openLink } from '../../../utils/links/utils'
+import { userAgent } from '../../../utils/user-agent/utils'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
@@ -46,7 +46,6 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
-  const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
   // If there is an initial navigation URL we start the webview with it.
   // The alternative (waiting for a bridge ready event and navigating over the bridge is) is not stable,
@@ -155,11 +154,13 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           {...props}
           onLoadProgress={onLoadProgress}
           onLoadEnd={applyWebviewDocumentBodyOffset}
-          style={[{ backgroundColor: colors.primaryBackground }, style]}
+          style={[styles.transparentBackground, style]}
+          containerStyle={styles.transparentBackground}
           onScroll={onScroll}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           autoManageStatusBarEnabled={false}
+          applicationNameForUserAgent={userAgent}
         />
         {errorCode !== undefined ? (
           <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />
@@ -176,5 +177,8 @@ const styles = StyleSheet.create({
   },
   inner: {
     height: '100%',
+  },
+  transparentBackground: {
+    backgroundColor: 'transparent',
   },
 })

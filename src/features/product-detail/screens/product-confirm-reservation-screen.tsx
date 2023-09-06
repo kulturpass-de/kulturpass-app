@@ -135,6 +135,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
           testID={buildTestId('productDetail_confirmReservation_submitButton')}
           i18nKey="productDetail_confirmReservation_submitButton"
           onPress={reserveProduct}
+          disabled={loading}
         />
       </ModalScreenFooter>
     </ModalScreen>

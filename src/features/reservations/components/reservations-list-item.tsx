@@ -40,65 +40,68 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
 
   return (
     <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>
-      <View style={[styles.shadow, { backgroundColor: toTransparentColor(colors.boxShadow, 0.7, completed) }]} />
-      <View style={[styles.container, { backgroundColor: colors.secondaryBackground }]}>
-        <FastImage
-          testID={buildTestId('reservations_listItem_image')}
-          accessibilityLabel={t('reservations_listItem_image')}
-          resizeMode={FastImage.resizeMode.cover}
-          style={[styles.image, { backgroundColor: colors.secondaryBackground }]}
-          source={{ uri: imageUrl }}
-        />
-        <View style={styles.contentContainer}>
-          <View style={styles.topContainer}>
-            <Text
-              testID={buildTestId('reservations_listItem_productName')}
-              numberOfLines={2}
-              accessible
-              ellipsizeMode="tail"
-              style={[textStyles.BodySmallBold, styles.text, { color: colors.labelColor }]}>
-              {productName ?? ''}
-            </Text>
-          </View>
-          <View style={styles.middleContainer}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              accessible
-              testID={buildTestId('reservations_listItem_shopName')}
-              style={[textStyles.CaptionSemibold, styles.text, { color: colors.labelColor }]}>
-              {shopName ?? ''}
-            </Text>
-          </View>
-          <View style={styles.bottomContainer}>
-            {status ? <ReservationListStatusText status={status} deliveryScenario={deliveryScenario} /> : <View />}
-            {formattedPrice ? (
+      {/* Do NOT remove this wrapper and it's testID, otherwise the views will not be accessable on iOS (bug) */}
+      <View testID={buildTestId('reservations_listItem_inner')}>
+        <View style={[styles.shadow, { backgroundColor: toTransparentColor(colors.boxShadow, 0.7, completed) }]} />
+        <View style={[styles.container, { backgroundColor: colors.secondaryBackground }]}>
+          <FastImage
+            testID={buildTestId('reservations_listItem_image')}
+            accessibilityLabel={t('reservations_listItem_image')}
+            resizeMode={FastImage.resizeMode.cover}
+            style={[styles.image, { backgroundColor: colors.secondaryBackground }]}
+            source={{ uri: imageUrl }}
+          />
+          <View style={styles.contentContainer}>
+            <View style={styles.topContainer}>
               <Text
-                testID={buildTestId('reservations_listItem_price')}
-                numberOfLines={1}
+                testID={buildTestId('reservations_listItem_productName')}
+                numberOfLines={2}
                 accessible
-                style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}>
-                {formattedPrice}
+                ellipsizeMode="tail"
+                style={[textStyles.BodySmallBold, styles.text, { color: colors.labelColor }]}>
+                {productName ?? ''}
               </Text>
-            ) : null}
+            </View>
+            <View style={styles.middleContainer}>
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                accessible
+                testID={buildTestId('reservations_listItem_shopName')}
+                style={[textStyles.CaptionSemibold, styles.text, { color: colors.labelColor }]}>
+                {shopName ?? ''}
+              </Text>
+            </View>
+            <View style={styles.bottomContainer}>
+              {status ? <ReservationListStatusText status={status} deliveryScenario={deliveryScenario} /> : <View />}
+              {formattedPrice ? (
+                <Text
+                  testID={buildTestId('reservations_listItem_price')}
+                  numberOfLines={1}
+                  accessible
+                  style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}>
+                  {formattedPrice}
+                </Text>
+              ) : null}
+            </View>
           </View>
         </View>
+        <SvgImage width={20} height={5} type="cutout-top" preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
+        <SvgImage
+          width={20}
+          height={8}
+          type="cutout-bottom"
+          preserveAspectRatio="xMaxYMax"
+          color={toTransparentColor(colors.boxShadow, 0.7, completed)}
+          style={[
+            styles.cutoutBottom,
+            Platform.select({
+              ios: styles.iosOffset,
+              android: styles.androidOffset,
+            }),
+          ]}
+        />
       </View>
-      <SvgImage width={20} height={5} type="cutout-top" preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
-      <SvgImage
-        width={20}
-        height={8}
-        type="cutout-bottom"
-        preserveAspectRatio="xMaxYMax"
-        color={toTransparentColor(colors.boxShadow, 0.7, completed)}
-        style={[
-          styles.cutoutBottom,
-          Platform.select({
-            ios: styles.iosOffset,
-            android: styles.androidOffset,
-          }),
-        ]}
-      />
     </Pressable>
   )
 }
