@@ -1,4 +1,5 @@
 import axios, { isAxiosError } from 'axios'
+import { userAgent } from '../../../utils/user-agent/utils'
 import { createHttpErrorFromStatusCode, NetworkError, UnknownError } from '../../errors/errors'
 import { logger } from '../../logger'
 import { AxiosBaseQueryFn } from './types'
@@ -10,7 +11,14 @@ export const axiosBaseQuery = <Result>(): AxiosBaseQueryFn<Result> => {
     try {
       logger.logRequest(args.url, args)
 
-      const result = await axios({ ...args, timeout: AXIOS_TIMEOUT })
+      const result = await axios({
+        ...args,
+        timeout: AXIOS_TIMEOUT,
+        headers: {
+          ...args.headers,
+          'User-Agent': userAgent,
+        },
+      })
 
       logger.logResponse(args.url, result.data)
 

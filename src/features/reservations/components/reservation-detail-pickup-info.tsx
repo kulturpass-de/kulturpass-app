@@ -99,7 +99,8 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
           accessible
           accessibilityRole="image"
           accessibilityLabel={t('reservationDetail_qrCode_dataDescription')}
-          accessibilityHint={t('reservationDetail_qrCode_hint')}>
+          accessibilityHint={t('reservationDetail_qrCode_hint')}
+          style={styles.qrFrame}>
           <QRCode value={orderEntry.barcodeData} size={state.containerWidth} />
         </View>
       ) : null}
@@ -126,5 +127,10 @@ const styles = StyleSheet.create({
   },
   voucherRedemptionUrlButton: {
     marginBottom: spacing[7],
+  },
+  qrFrame: {
+    padding: spacing[4],
+    backgroundColor: 'white',
+    borderRadius: 8,
   },
 })

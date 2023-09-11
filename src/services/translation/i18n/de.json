@@ -223,7 +223,6 @@
   "favorites_item_remove_a11y_label": "Aus Favoriten entfernen",
   "favorites_item_add_a11y_label": "Als Favorit hinzufügen",
   "favorites_item_distance": "{{distance}} km",
-  "favorites_item_no_offers": "keine Angebote",
   "favorites_item_multiple_offers": "mehrere Angebote",
   "favorites_item_multiple_offers_price": "ab {{price}}",
   "favorites_item_event_start_date": "{{date}} | {{time}} Uhr",
@@ -395,7 +394,7 @@
   "productDetail_confirmReservation_productPriceInfo": "maximal 48 Stunden gültig",
   "productDetail_confirmReservation_aboutReservationsFaqLink": "Mehr Informationen zur Reservierung findest du in den FAQ.",
   "productDetail_confirmReservation_consentLink": "Link zu den ausführlichen Datenschutzhinweisen",
-  "productDetail_confirmReservation_submitButton": "Einverstanden",
+  "productDetail_confirmReservation_submitButton": "Jetzt reservieren",
   "productDetail_confirmReservation_product_pickup": "Mit der Reservierung erhältst du einen Abhol-Code für das gewählte Produkt, den du dann unter „Reservierungen“ findest. Das Produkt musst du vor Ort beim Anbieter abholen. Es erfolgt kein Versand.",
   "productDetail_confirmReservation_voucher_pickupRequired": "Mit der Reservierung erhältst du einen Einlöse-Code des Anbieters, den du dann unter „Reservierungen“ findest. Diesen Einlöse-Code kannst du nur vor Ort beim Anbieter für ein vom KulturPass gefördertes Produkt einlösen. Falls es ein Restguthaben gibt, dann wird es deinem Budget nach dem Einlösen des Einlöse-Codes wieder hinzugefügt.",
   "productDetail_confirmReservation_voucher_pickupNotRequired": "Mit der Reservierung erhältst du einen Anbieter-Code, den du dann unter „Reservierungen“ findest. Je nach Anbieter kannst du diesen Anbieter-Code auf einer Onlineplattform des Anbieters oder vor Ort beim Anbieter einlösen. Falls es ein Restguthaben gibt, dann wird es deinem Budget nach dem Einlösen des Anbieter-Codes wieder hinzugefügt. Bitte beachte, dass dieser Anbieter-Code höchstens 48 Stunden gültig ist. Danach muss der Reservierungsbetrag deinem Budget wieder hinzugefügt werden.",
@@ -663,5 +662,6 @@
   "account_verified_alert_button": "Weiter zur Anmeldung",
   "external_link_accessibility_announcement": "Externer Link",
   "external_link_short_accessibility_announcement": "Externer",
-  "voucher_badge": "Wert-Code"
+  "voucher_badge": "Wert-Code",
+  "error_alert_networkError_message": "Die Aktion konnte nicht durchgeführt werden.\nDas System ist gerade nicht erreichbar, bitte versuche es später erneut.\n{{dateTime}}"
 }
