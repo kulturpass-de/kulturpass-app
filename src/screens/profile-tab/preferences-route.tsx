@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useTabsNavigation } from '../../navigation/tabs/hooks'
 import { SettingsScreenProps } from '../../navigation/tabs/settings/types'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { PreferencesScreen } from './preferences-screen'
 
 export const PreferencesRouteName = 'Preferences'

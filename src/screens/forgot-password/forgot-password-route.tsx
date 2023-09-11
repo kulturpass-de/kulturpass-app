@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../navigation/modal/hooks'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { cdcApi } from '../../services/api/cdc-api'
 import { modalCardStyle } from '../../theme/utils'
 import { ForgotPasswordScreen } from './forgot-password-screen'

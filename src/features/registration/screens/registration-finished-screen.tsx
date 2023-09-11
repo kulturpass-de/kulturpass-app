@@ -42,8 +42,14 @@ export const RegistrationFinishedScreen: React.FC<RegistrationFinishedScreenProp
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestID, 'content_text')}
-            i18nKey="registration_finished_content_text"
+            testID={addTestIdModifier(screenTestID, 'content_text_first')}
+            i18nKey="registration_finished_content_text_first"
+            textStyle="BodyRegular"
+          />
+          <TranslatedText
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={addTestIdModifier(screenTestID, 'content_text_second')}
+            i18nKey="registration_finished_content_text_second"
             textStyle="BodyRegular"
           />
         </View>

@@ -6,6 +6,7 @@ import { TranslatedText } from '../../../../components/translated-text/translate
 import { useModalNavigation } from '../../../../navigation/modal/hooks'
 import { LogInRouteName } from '../../../../screens/log-in/log-in-route'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
 
@@ -13,13 +14,19 @@ export const RegisterNowButton: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const modalNavigation = useModalNavigation()
+  const { t } = useTranslation()
 
   const startVerification = useCallback(() => {
     modalNavigation.navigate({ screen: LogInRouteName })
   }, [modalNavigation])
 
   return (
-    <Pressable onPress={startVerification} accessible accessibilityRole="button">
+    <Pressable
+      onPress={startVerification}
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={t('register_now_button_title')}
+      accessibilityHint={t('register_now_button_text')}>
       <InfoBox containerStyle={styles.container}>
         <View style={styles.shrink}>
           <TranslatedText

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { getLastDisplayedVersion } from '../redux/release-notes-selectors'
 import { ReleaseNotesModalRouteName } from '../screens/release-notes-modal-route'
-import { getDisplayVersion } from '../utils/getDisplayVersion'
+import { getDisplayVersion } from '../utils/get-display-version'
 
 const currentDisplayedVersion = getDisplayVersion()
 

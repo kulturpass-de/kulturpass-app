@@ -1031,6 +1031,7 @@ export interface Offer {
   shopGrade?: number
   /** @format int32 */
   shopEvaluationCount?: number
+  shopDescription?: string
   volumePrices?: Price[]
   volumeOriginPrices?: Price[]
   /** @format int32 */

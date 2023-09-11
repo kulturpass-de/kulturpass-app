@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { AccountDeletionSuccessfulScreen } from './account-deletion-successful-screen'
 

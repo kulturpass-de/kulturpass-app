@@ -16,10 +16,12 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
+import { OfferDetails } from '../../product-detail/components/offer-details'
 import { ProductDetailOffer } from '../../product-detail/components/product-detail-offer'
 import { ProductDetailTitle } from '../../product-detail/components/product-detail-title'
 import { ProductDetailTyped } from '../../product-detail/components/product-detail-typed'
 import { ShopAccessibilityInfo } from '../../product-detail/components/shop-accessibility-info'
+import { ShopDescription } from '../../product-detail/components/shop-description'
 import { ProductDetail } from '../../product-detail/types/product-detail'
 import { ConfirmCancellationAlert } from '../components/confirm-cancellation-alert'
 import { ReservationDetailFooter } from '../components/reservation-detail-footer'
@@ -46,8 +48,9 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   order,
   completedReservation,
 }) => {
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
+  const testID = buildTestId('reservationDetail')
 
   const [loading, setLoading] = useState(false)
   const [isCancelTriggered, setIsCancelTriggered] = useState(false)
@@ -92,7 +95,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const orderStatusTranslattions = getReservationOrderTranslations(productDetail, orderStatus)
 
   return (
-    <ModalScreen whiteBottom testID={buildTestId('reservationDetail')}>
+    <ModalScreen whiteBottom testID={testID}>
       <LoadingIndicator loading={loading} />
       <ConfirmCancellationAlert
         visible={visibleCancellationConfirmationAlert}
@@ -135,20 +138,43 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           <ProductDetailTitle productDetail={productDetail} />
           <ProductDetailOffer offerInfo={orderEntry} copyAddressToClipboard />
 
-          <ProductDetailTyped productDetail={productDetail} />
+          <ProductDetailTyped productDetail={productDetail} detailType="OrderDetail" />
           <HtmlText
-            testID={buildTestId('reservationDetail_productDescription')}
+            testID={addTestIdModifier(testID, 'productDescription')}
             style={[textStyles.BodyRegular, styles.bottomContainerProductDescription, { color: colors.labelColor }]}
             html={productDetail.description}
           />
           <View style={styles.report}>
             <TextWithIcon iconType="report" i18nKey="reservationDetail_report_button" onPress={onPressReportButton} />
           </View>
+          {selectedOffer?.priceAdditionalInfo || selectedOffer?.description ? (
+            <View style={styles.offerDetailsSection}>
+              <Divider marginBottom={0} marginTop={0} />
+              <View style={styles.offerDetailsSectionVerticalSpacing}>
+                <OfferDetails
+                  testID={addTestIdModifier(testID, 'accessibility')}
+                  description={selectedOffer.description}
+                  priceAdditionalInfo={selectedOffer.priceAdditionalInfo}
+                />
+              </View>
+            </View>
+          ) : null}
+          {selectedOffer?.shopDescription ? (
+            <View style={styles.offerDetailsSection}>
+              <Divider marginBottom={0} marginTop={0} />
+              <View style={styles.offerDetailsSectionVerticalSpacing}>
+                <ShopDescription
+                  testID={addTestIdModifier(testID, 'shop_description')}
+                  shopDescription={selectedOffer.shopDescription}
+                />
+              </View>
+            </View>
+          ) : null}
           {selectedOffer ? (
             <>
               <Divider marginBottom={0} marginTop={0} />
               <ShopAccessibilityInfo
-                testID={buildTestId('reservationDetail_accessibility')}
+                testID={addTestIdModifier(testID, 'accessibility')}
                 selectedOffer={selectedOffer}
               />
             </>
@@ -208,5 +234,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: spacing[6],
     alignItems: 'center',
+  },
+  offerDetailsSection: {
+    flexDirection: 'column',
+    width: '100%',
+  },
+  offerDetailsSectionVerticalSpacing: {
+    paddingVertical: spacing[7],
   },
 })

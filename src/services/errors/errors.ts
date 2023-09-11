@@ -14,6 +14,14 @@ export class ErrorWithCode extends Error {
   }
 }
 
+export class OfflineError extends ErrorWithCode {
+  constructor() {
+    super('OFFLINE_ERROR')
+    this.detailCode = 'You are offline.'
+    this.presentableErrorCode = false
+  }
+}
+
 export class NetworkError extends ErrorWithCode {
   constructor() {
     super('NETWORK_ERROR')

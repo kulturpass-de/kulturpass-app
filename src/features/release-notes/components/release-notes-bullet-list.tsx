@@ -7,12 +7,12 @@ import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { getDisplayVersion } from '../utils/getDisplayVersion'
+import { getDisplayVersion } from '../utils/get-display-version'
 import { ReleaseNotesProps } from './release-notes-view'
 
 const BULLET_SIZE = 6
-const RELEASE_FEATURES_VERSION = '1.5'
-const RELEASE_FEATURE_COUNT = 6
+const RELEASE_FEATURES_VERSION = '1.6'
+const RELEASE_FEATURE_COUNT = 4
 
 type ReleaseNotesBulletListProps = Pick<ReleaseNotesProps, 'bodyTextListBaseI18nKey'>
 

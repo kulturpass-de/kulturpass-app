@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native'
 import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
+import { LocationSharingRouteConfig } from '../../features/location-sharing/screen/location-sharing-route'
 import { RegistrationFinishedRouteConfig } from '../../features/registration/screens/registration-finished-route'
 import { ReleaseNotesModalRouteConfig } from '../../features/release-notes/screens/release-notes-modal-route'
 import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
@@ -67,6 +68,8 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...DarkModePreviewRouteConfig} />
 
         <Stack.Screen {...ReleaseNotesModalRouteConfig} />
+
+        <Stack.Screen {...LocationSharingRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

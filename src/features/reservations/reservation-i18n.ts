@@ -60,8 +60,9 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
     return { headline: undefined, copytext: undefined }
   }
 
+  const { fulfillmentOption } = productDetail
+
   if (orderStatus === 'READY_FOR_PICKUP') {
-    const { fulfillmentOption } = productDetail
     if (fulfillmentOption === 'REDEMPTION_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
     } else if (fulfillmentOption === 'PICKUP_CODE') {
@@ -72,7 +73,9 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
   }
 
   if (
-    productDetail.productType === ProductTypes.Voucher &&
+    (productDetail.productType === ProductTypes.Voucher ||
+      fulfillmentOption === 'REDEMPTION_CODE' ||
+      fulfillmentOption === 'VENDOR_CODE') &&
     (orderStatus === 'RECEIVED' || orderStatus === 'COMPLETED')
   ) {
     return RESERVATION_DETAILS_I18N_KEYS_MAP.RECEIVED_VOUCHER

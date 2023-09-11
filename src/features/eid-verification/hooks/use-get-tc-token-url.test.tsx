@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node'
 import React, { PropsWithChildren } from 'react'
 import { useDispatch } from 'react-redux'
 import { act } from 'react-test-renderer'
-import { appCoreSlice } from '../../../services/redux/slices/app-core'
+import { persistedAppCoreSlice } from '../../../services/redux/slices/persisted-app-core'
 import { AppConfig } from '../../../services/redux/versions/current'
 import { StoreProvider } from '../../../services/testing/test-utils'
 import { useGetTcTokenUrl } from './use-get-tc-token-url'
@@ -44,7 +44,7 @@ describe('useGetTcTokenUrl', () => {
       { wrapper: Wrapper },
     )
     await act(() => {
-      result.current.dispatch(appCoreSlice.actions.setAppConfig(mockedAppConfig))
+      result.current.dispatch(persistedAppCoreSlice.actions.setAppConfig(mockedAppConfig))
     })
 
     let generatedTcTokenUrl = ''
@@ -76,7 +76,7 @@ describe('useGetTcTokenUrl', () => {
       { wrapper: Wrapper },
     )
     await act(() => {
-      result.current.dispatch(appCoreSlice.actions.setAppConfig(mockedAppConfig))
+      result.current.dispatch(persistedAppCoreSlice.actions.setAppConfig(mockedAppConfig))
     })
 
     let generatedTcTokenUrl = ''
@@ -108,7 +108,7 @@ describe('useGetTcTokenUrl', () => {
       { wrapper: Wrapper },
     )
     await act(() => {
-      result.current.dispatch(appCoreSlice.actions.setAppConfig(mockedAppConfig))
+      result.current.dispatch(persistedAppCoreSlice.actions.setAppConfig(mockedAppConfig))
     })
 
     let generatedTcTokenUrl = ''

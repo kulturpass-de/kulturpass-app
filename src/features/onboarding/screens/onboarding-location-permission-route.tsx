@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { setLastDisplayedVersion } from '../../release-notes/redux/release-notes-slice'
-import { getDisplayVersion } from '../../release-notes/utils/getDisplayVersion'
+import { getDisplayVersion } from '../../release-notes/utils/get-display-version'
 import { setShowOnboardingOnStartup } from '../redux/onboarding'
 import { OnboardingLocationPermissionScreen } from './onboarding-location-permission-screen'
 

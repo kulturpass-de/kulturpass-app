@@ -45,6 +45,8 @@ const useOnboardingConfig = () => {
 
 const CogIcon = () => <SvgImage type="cog" width={29} height={24} />
 
+const ADDITIONAL_OPTIONS_TAP_COUNTER = 3
+
 export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onHeaderPressClose,
   onPressEnvironmentConfiguration,
@@ -155,7 +157,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             onValueChange={toggleShowReleaseNotesOnAppStart}
           />
         </View>
-        {tapCounter > 3 ? (
+        {tapCounter > ADDITIONAL_OPTIONS_TAP_COUNTER ? (
           <ListItem
             title="Dark Theme Preview"
             testID={buildTestId('developerMenu_darkTheme_button')}
@@ -195,7 +197,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
-        {isLoggedIn && tapCounter > 3 ? (
+        {isLoggedIn && tapCounter > ADDITIONAL_OPTIONS_TAP_COUNTER ? (
           <View
             style={[
               styles.productCodeListItem,
@@ -208,7 +210,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             />
           </View>
         ) : null}
-        {tapCounter > 3 ? (
+        {tapCounter > ADDITIONAL_OPTIONS_TAP_COUNTER ? (
           <View
             style={[
               styles.productCodeListItem,

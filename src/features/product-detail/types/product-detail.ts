@@ -52,6 +52,10 @@ export type ProductDetailBase<ProductType extends ProductTypes> = {
    * If it is required to pickup the voucher from the vendor or it is available digitally through the app
    */
   fulfillmentOption?: 'PICKUP_CODE' | 'REDEMPTION_CODE' | 'VENDOR_CODE'
+  /**
+   * Reservation for this product is suspended
+   */
+  reservationSuspended?: boolean
 }
 
 export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
@@ -66,7 +70,7 @@ export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
   /**
    * One of: Dvd, Vinyl, Other  - optional
    */
-  audioFormat?: 'DVD' | 'VINYL' | 'OTHER'
+  audioFormat?: 'DVD' | 'VINYL' | 'OTHER' | 'CD'
 }
 
 export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
@@ -105,6 +109,10 @@ export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
    * the length of the event in minutes
    */
   durationInMins: number
+  /**
+   * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
+   */
+  eventStartDate?: string
 }
 
 export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
@@ -198,6 +206,14 @@ export type StagedEventProductDetail = ProductDetailBase<ProductTypes.StagedEven
 }
 
 export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
+  /**
+   * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
+   */
+  eventDateTime?: string
+  /**
+   * the length of the event in minutes
+   */
+  durationInMins?: number
   voucherPickupPoint?: {
     name?: string
     street?: string

@@ -7,6 +7,7 @@ import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { RootStackParams } from '../../../navigation/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -17,13 +18,21 @@ export const EidIdentifyButton: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const { colors } = useTheme()
   const { name } = useUserInfo()
+  const { t } = useTranslation()
 
   const startVerification = useCallback(() => {
     navigation.navigate('Eid', { screen: EidAboutVerificationRouteName })
   }, [navigation])
 
   return (
-    <Pressable onPress={startVerification} accessible accessibilityRole="button">
+    <Pressable
+      onPress={startVerification}
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={t(name ? 'eid_startVerify_button_title' : 'eid_startVerify_button_title_withoutName', {
+        name,
+      })}
+      accessibilityHint={t('eid_startVerify_button_text')}>
       <InfoBox containerStyle={styles.container}>
         <View style={styles.shrink}>
           <TranslatedText

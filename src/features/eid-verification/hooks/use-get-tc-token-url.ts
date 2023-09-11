@@ -11,7 +11,7 @@ export const useGetTcTokenUrl = () => {
   const eidEnv = useEnvironmentConfiguration().eid
 
   const tcTokenUrlSubdomains = useSelector(
-    (state: RootState) => state.persisted.appCore.appConfig?.eid.tcTokenUrlSubdomains,
+    (state: RootState) => state.persisted.persistedAppCore.appConfig?.eid.tcTokenUrlSubdomains,
   )
   const getAccountInfoLazyQuery = useGetAccountInfoLazyQuery()
 

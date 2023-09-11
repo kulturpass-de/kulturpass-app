@@ -48,8 +48,14 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
         <AlertTitle testID={buildTestId('eid_cancel_flow_title')} i18nKey="eid_cancel_flow_title" />
         <TranslatedText
           textStyleOverrides={[styles.text, { color: colors.labelColor }]}
-          i18nKey="eid_cancel_flow_text"
-          testID={buildTestId('eid_cancel_flow_text')}
+          i18nKey="eid_cancel_flow_text_first"
+          testID={buildTestId('eid_cancel_flow_text_first')}
+          textStyle="BodyRegular"
+        />
+        <TranslatedText
+          textStyleOverrides={[styles.text, styles.spacer, { color: colors.labelColor }]}
+          i18nKey="eid_cancel_flow_text_second"
+          testID={buildTestId('eid_cancel_flow_text_second')}
           textStyle="BodyRegular"
         />
         <View style={styles.linkContainer}>
@@ -93,5 +99,8 @@ const styles = StyleSheet.create({
   linkContainer: {
     paddingTop: spacing[7],
     paddingBottom: spacing[6],
+  },
+  spacer: {
+    height: spacing[6],
   },
 })

@@ -112,9 +112,21 @@ export const RegistrationDataPrivacyScreen: React.FC<RegistrationDataPrivacyScre
           i18nKey={'registration_data_privacy_item6'}
         />
         <TranslatedText
-          i18nKey="registration_data_privacy_copytext"
+          i18nKey="registration_data_privacy_copytext_first"
           textStyle={'BodyRegular'}
-          testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext')}
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext_first')}
+          textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
+        />
+        <TranslatedText
+          i18nKey="registration_data_privacy_copytext_second"
+          textStyle={'BodyRegular'}
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext_second')}
+          textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
+        />
+        <TranslatedText
+          i18nKey="registration_data_privacy_copytext_third"
+          textStyle={'BodyRegular'}
+          testID={addTestIdModifier(SCREEN_TEST_ID, 'copytext_third')}
           textStyleOverrides={[styles.dataPrivacyCopyText, { color: colors.labelColor }]}
         />
         <LinkText

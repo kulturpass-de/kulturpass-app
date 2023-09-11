@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { GoToSearchButton } from '../../../../components/go-to-search-button/go-to-search-button'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
@@ -8,10 +9,12 @@ import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted
 import { ExhibitProductDetail } from '../../types/product-detail'
 import { Address } from '../address'
 import { ProductDetailSection } from '../product-detail-section'
+import { ProductDetailSectionDateTime } from '../product-detail-section-date-time'
 
 export type ProductExhibitDetailProps = {
   productDetail: ExhibitProductDetail
   testID: TestId
+  detailType: 'OrderDetail' | 'ProductDetail'
 }
 
 const formatDate = (t: ReturnType<typeof useTranslation>['t'], startDate?: string, endDate?: string) => {
@@ -28,7 +31,7 @@ const formatDate = (t: ReturnType<typeof useTranslation>['t'], startDate?: strin
   }
 }
 
-export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail, testID }) => {
+export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ productDetail, testID, detailType }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
@@ -40,6 +43,20 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
   const formattedEvenEndDate = useFormattedDateTime(exhibitEndDate)
   const exhibitDate = formatDate(t, formattedEventStartDate?.date, formattedEvenEndDate?.date)
 
+  const address = venue ? (
+    <Address
+      name={venue.name}
+      city={venue.city}
+      street={venue.street}
+      postalCode={venue.postalCode}
+      distance={venueDistance}
+      showDistance
+      showCopyToClipboard={detailType === 'OrderDetail'}
+      baseTestId={addTestIdModifier(sectionTestID, 'location')}
+      copyToClipboardAccessibilityI18nKey="productDetail_exhibit_location_copyToClipboard"
+    />
+  ) : null
+
   return (
     <>
       {venue ? (
@@ -47,33 +64,24 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
           testID={addTestIdModifier(sectionTestID, 'location')}
           iconSource="map-pin"
           sectionCaptioni18nKey="productDetail_exhibit_location_caption">
-          <Address
-            name={venue.name}
-            city={venue.city}
-            street={venue.street}
-            postalCode={venue.postalCode}
-            distance={venueDistance}
-            showDistance
-            showCopyToClipboard
-            baseTestId={addTestIdModifier(sectionTestID, 'location')}
-            copyToClipboardAccessibilityI18nKey="productDetail_exhibit_location_copyToClipboard"
-          />
+          {detailType !== 'OrderDetail' ? (
+            <GoToSearchButton searchTerm={venue.name} testID={addTestIdModifier(sectionTestID, 'location_button')}>
+              {address}
+            </GoToSearchButton>
+          ) : (
+            address
+          )}
         </ProductDetailSection>
       ) : null}
       {formattedEventDateTime ? (
-        <ProductDetailSection
-          testID={addTestIdModifier(sectionTestID, 'time')}
-          iconSource="calendar"
-          sectionCaptioni18nKey="productDetail_exhibit_time_caption">
-          <Text
-            testID={addTestIdModifier(sectionTestID, 'time_value')}
-            style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
-            {t('productDetail_exhibit_time_value', {
-              date: formattedEventDateTime.date,
-              time: formattedEventDateTime.time,
-            })}
-          </Text>
-        </ProductDetailSection>
+        <ProductDetailSectionDateTime
+          testID={sectionTestID}
+          sectionCaptioni18nKey="productDetail_exhibit_time_caption"
+          translatedEventDateTime={t('productDetail_exhibit_time_value', {
+            date: formattedEventDateTime.date,
+            time: formattedEventDateTime.time,
+          })}
+        />
       ) : null}
       {exhibitStartDate || exhibitEndDate ? (
         <ProductDetailSection

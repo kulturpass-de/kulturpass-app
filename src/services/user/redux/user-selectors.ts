@@ -10,17 +10,20 @@ export const selectUserProfile = createSelector(selectUserState, userState => us
 
 export type UserLocationProvider = { provider: 'location' } | { provider: 'postalCode'; postalCode: string } | undefined
 
-export const selectDefaultLocationProvider = (rootState: RootState): UserLocationProvider => {
-  const currentUserLocation = getCurrentUserLocation(rootState)
-  const preferredPostalCode = selectUserPreferences(rootState)?.preferredPostalCode
+export const selectDefaultLocationProvider = createSelector(
+  (rootState: RootState) => ({
+    currentUserLocation: getCurrentUserLocation(rootState),
+    preferredPostalCode: selectUserPreferences(rootState)?.preferredPostalCode,
+  }),
+  ({ currentUserLocation, preferredPostalCode }): UserLocationProvider => {
+    if (currentUserLocation) {
+      return { provider: 'location' }
+    }
 
-  if (currentUserLocation) {
-    return { provider: 'location' }
-  }
+    if (preferredPostalCode) {
+      return { provider: 'postalCode', postalCode: preferredPostalCode }
+    }
 
-  if (preferredPostalCode) {
-    return { provider: 'postalCode', postalCode: preferredPostalCode }
-  }
-
-  return undefined
-}
+    return undefined
+  },
+)

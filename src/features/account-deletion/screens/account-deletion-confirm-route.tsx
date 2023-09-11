@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { AccountDeletionConfirmScreen } from './account-deletion-confirm-screen'
 import { AccountDeletionSuccessfulRouteName } from './account-deletion-successful-route'

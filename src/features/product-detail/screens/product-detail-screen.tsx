@@ -13,6 +13,7 @@ import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
+import { OfferDetails } from '../components/offer-details'
 import { ProductDetailAllOffersButton } from '../components/product-detail-all-offers-button'
 import { ProductDetailFooter } from '../components/product-detail-footer'
 import { ProductDetailHeader } from '../components/product-detail-header'
@@ -20,6 +21,7 @@ import { ProductDetailOffer } from '../components/product-detail-offer'
 import { ProductDetailTitle } from '../components/product-detail-title'
 import { ProductDetailTyped } from '../components/product-detail-typed'
 import { ShopAccessibilityInfo } from '../components/shop-accessibility-info'
+import { ShopDescription } from '../components/shop-description'
 import { useProductDetailHeaderHeight } from '../hooks/use-product-detail-header-height'
 import { ProductDetail } from '../types/product-detail'
 
@@ -66,6 +68,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
           scrollY={scrollY}
           onClose={onClose}
           imageUrl={productImage?.imageUrl}
+          productDetail={productDetail}
         />
         <View style={styles.contentContainer}>
           {productDetailHeaderHeightProps.headerHeightDiff === null ? null : (
@@ -82,9 +85,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
                 },
               ]}>
               <ProductDetailTitle productDetail={productDetail} ref={focusRef} />
-              {selectedOffer ? (
-                <ProductDetailOffer copyAddressToClipboard showDistance offerInfo={selectedOffer} />
-              ) : null}
+              {selectedOffer ? <ProductDetailOffer showDistance offerInfo={selectedOffer} /> : null}
               {productDetail.offers !== undefined && productDetail.offers.length > 1 ? (
                 <ProductDetailAllOffersButton
                   fulfillmentOption={productDetail.fulfillmentOption}
@@ -92,7 +93,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
                   offers={productDetail.offers}
                 />
               ) : null}
-              <ProductDetailTyped productDetail={productDetail} />
+              <ProductDetailTyped productDetail={productDetail} detailType="ProductDetail" />
               <View style={styles.description}>
                 <HtmlText
                   testID={addTestIdModifier(testID, 'description')}
@@ -103,6 +104,29 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
               <View style={styles.report}>
                 <TextWithIcon iconType="report" i18nKey="productDetail_report_button" onPress={onPressReportButton} />
               </View>
+              {selectedOffer?.priceAdditionalInfo || selectedOffer?.description ? (
+                <View style={styles.offerDetailsSection}>
+                  <Divider marginBottom={0} marginTop={0} />
+                  <View style={styles.offerDetailsSectionVerticalSpacing}>
+                    <OfferDetails
+                      testID={addTestIdModifier(testID, 'accessibility')}
+                      description={selectedOffer.description}
+                      priceAdditionalInfo={selectedOffer.priceAdditionalInfo}
+                    />
+                  </View>
+                </View>
+              ) : null}
+              {selectedOffer?.shopDescription ? (
+                <View style={styles.offerDetailsSection}>
+                  <Divider marginBottom={0} marginTop={0} />
+                  <View style={styles.offerDetailsSectionVerticalSpacing}>
+                    <ShopDescription
+                      testID={addTestIdModifier(testID, 'shop_description')}
+                      shopDescription={selectedOffer.shopDescription}
+                    />
+                  </View>
+                </View>
+              ) : null}
               {selectedOffer ? (
                 <>
                   <Divider marginBottom={0} marginTop={0} />
@@ -129,6 +153,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
         </View>
         <ProductDetailFooter
           fulfillmentOption={productDetail.fulfillmentOption}
+          reservationSuspended={productDetail.reservationSuspended}
           selectedOffer={selectedOffer}
           onReserve={reserveProduct}
         />
@@ -172,5 +197,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: spacing[6],
     alignItems: 'center',
+  },
+  offerDetailsSection: {
+    flexDirection: 'column',
+    width: '100%',
+  },
+  offerDetailsSectionVerticalSpacing: {
+    paddingVertical: spacing[7],
   },
 })

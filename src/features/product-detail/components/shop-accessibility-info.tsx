@@ -90,42 +90,46 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
       iconSource="human-sketch"
       sectionCaptioni18nKey="productDetail_offer_accessibility_caption">
       <View style={styles.container}>
-        {accessibilityWheelchairShop !== undefined ? (
-          <AccessibilityFeatureCheckable
-            key="wheelchair_shop"
-            testID={addTestIdModifier(testID, 'wheelchair_shop')}
-            checked={accessibilityWheelchairShop}
-            enabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_enabled_caption"
-            disabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_disabled_caption"
-          />
-        ) : null}
-        {accessibilityToiletShop !== undefined ? (
-          <AccessibilityFeatureCheckable
-            key="toilet_shop"
-            testID={addTestIdModifier(testID, 'toilet_shop')}
-            checked={accessibilityToiletShop}
-            enabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_enabled_caption"
-            disabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_disabled_caption"
-          />
-        ) : null}
-        {accessibilityOfferCleaned ? (
+        <View style={styles.containerCheckable}>
+          {accessibilityWheelchairShop !== undefined ? (
+            <AccessibilityFeatureCheckable
+              key="wheelchair_shop"
+              testID={addTestIdModifier(testID, 'wheelchair_shop')}
+              checked={accessibilityWheelchairShop}
+              enabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_enabled_caption"
+              disabledLabel_i18nKey="productDetail_offer_accessibility_feature_pickup_disabled_caption"
+            />
+          ) : null}
+          {accessibilityToiletShop !== undefined ? (
+            <AccessibilityFeatureCheckable
+              key="toilet_shop"
+              testID={addTestIdModifier(testID, 'toilet_shop')}
+              checked={accessibilityToiletShop}
+              enabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_enabled_caption"
+              disabledLabel_i18nKey="productDetail_offer_accessibility_feature_toilet_disabled_caption"
+            />
+          ) : null}
+        </View>
+        <View style={styles.containerText}>
+          {accessibilityOfferCleaned ? (
+            <AccessibilityFeatureText
+              testID={addTestIdModifier(testID, 'offer')}
+              label_i18nKey="productDetail_offer_accessibility_feature_offer_caption"
+              text={accessibilityOfferCleaned}
+            />
+          ) : null}
+          {accessibilityOfferOthersCleaned ? (
+            <AccessibilityFeatureText
+              testID={addTestIdModifier(testID, 'others')}
+              label_i18nKey="productDetail_offer_accessibility_feature_others_caption"
+              text={accessibilityOfferOthersCleaned}
+            />
+          ) : null}
           <AccessibilityFeatureText
-            testID={addTestIdModifier(testID, 'offer')}
-            label_i18nKey="productDetail_offer_accessibility_feature_offer_caption"
-            text={accessibilityOfferCleaned}
+            testID={addTestIdModifier(testID, 'noOtherFeatures')}
+            text={t('productDetail_offer_accessibility_noOtherFeatures')}
           />
-        ) : null}
-        {accessibilityOfferOthersCleaned ? (
-          <AccessibilityFeatureText
-            testID={addTestIdModifier(testID, 'others')}
-            label_i18nKey="productDetail_offer_accessibility_feature_others_caption"
-            text={accessibilityOfferOthersCleaned}
-          />
-        ) : null}
-        <AccessibilityFeatureText
-          testID={addTestIdModifier(testID, 'noOtherFeatures')}
-          text={t('productDetail_offer_accessibility_noOtherFeatures')}
-        />
+        </View>
       </View>
     </ProductDetailSection>
   )
@@ -133,15 +137,21 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: spacing[3],
+    paddingTop: spacing[2],
+  },
+  containerCheckable: {
+    gap: spacing[2],
+    flexDirection: 'column',
+  },
+  containerText: {
+    gap: spacing[5],
+    flexDirection: 'column',
   },
   featureCheckable: {
-    marginTop: spacing[2],
     gap: spacing[3],
     flexDirection: 'row',
   },
   featureText: {
-    marginTop: spacing[5],
     flexDirection: 'column',
   },
 })

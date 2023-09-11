@@ -23,12 +23,14 @@ type ProductDetailFooterProps = {
   onReserve: () => void
   selectedOffer?: Offer
   fulfillmentOption: ProductDetail['fulfillmentOption']
+  reservationSuspended: ProductDetail['reservationSuspended']
 }
 
 export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
   onReserve,
   selectedOffer,
   fulfillmentOption,
+  reservationSuspended = false,
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -51,10 +53,10 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
     const hasSelectedOffer = selectedOffer !== undefined && selectedOffer.code !== undefined
     return {
       showPrice: canAfford && formattedPrice,
-      showReserveButton: hasSelectedOffer && isLoggedIn && canAfford && isEntitled,
-      showCannotAfford: hasSelectedOffer && isLoggedIn && !canAfford && isEntitled,
+      showReserveButton: !reservationSuspended && hasSelectedOffer && isLoggedIn && canAfford && isEntitled,
+      showCannotAfford: !reservationSuspended && hasSelectedOffer && isLoggedIn && !canAfford && isEntitled,
     }
-  }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, isLoggedIn])
+  }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, reservationSuspended, isLoggedIn])
 
   const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
 
@@ -74,6 +76,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
             </View>
           ) : null}
           <View
+            testID={buildTestId('productDetail_footer_priceTitleAndPrice')}
             style={styles.priceRow}
             accessible
             accessibilityLabel={

@@ -37,5 +37,7 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/delete-account.png')
     case 'no-network':
       return require('./illustrations/no-network.png')
+    case 'location-sharing':
+      return require('./illustrations/location-sharing.png')
   }
 }

@@ -1,7 +1,8 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
-import WebView from 'react-native-webview'
-import { WebViewScrollEvent } from 'react-native-webview/lib/WebViewTypes'
+import WebView, { WebViewProps } from 'react-native-webview'
+
+type WebViewScrollEvent = Parameters<NonNullable<WebViewProps['onScroll']>>['0']
 
 export const useWebViewContentOffset = (webViewRef: RefObject<WebView<{}> | null>, contentOffset?: number) => {
   /**

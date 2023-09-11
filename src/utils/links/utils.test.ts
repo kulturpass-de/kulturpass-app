@@ -1,7 +1,7 @@
 import { Linking } from 'react-native'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { LinkError } from './errors'
-import { openLink, sendMail } from './utils'
+import { createProductLink, openLink, sendMail } from './utils'
 
 jest.mock('../../services/errors/error-alert-provider', () => ({
   ErrorAlertManager: {
@@ -83,6 +83,14 @@ describe('Links Utils', () => {
 
       expect(canOpenUrl).toBeCalledWith(expectedMailLink)
       expect(ErrorAlertManager.current?.showError).toBeCalled()
+    })
+  })
+
+  describe('createProductLink', () => {
+    test('should create product link', () => {
+      const link = createProductLink('http://localhost/', '12345ABCD', 'TESTNAME')
+
+      expect(link).toBe('http://localhost/product/12345ABCD/TESTNAME')
     })
   })
 })

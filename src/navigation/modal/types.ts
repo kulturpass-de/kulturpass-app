@@ -10,6 +10,10 @@ import {
 } from '../../features/account-deletion/screens/account-deletion-successful-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../features/force-update/screens/force-update-route'
 import {
+  LocationSharingRouteName,
+  LocationSharingRouteParams,
+} from '../../features/location-sharing/screen/location-sharing-route'
+import {
   RegistrationFinishedRouteName,
   RegistrationFinishedRouteParams,
 } from '../../features/registration/screens/registration-finished-route'
@@ -85,6 +89,8 @@ export type ModalParamList = {
   [DarkModePreviewRouteName]: DarkModePreviewRouteParams
 
   [ReleaseNotesModalRouteName]: ReleaseNotesModalRouteParams
+
+  [LocationSharingRouteName]: LocationSharingRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

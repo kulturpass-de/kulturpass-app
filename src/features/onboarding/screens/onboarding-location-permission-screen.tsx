@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { RESULTS } from 'react-native-permissions'
 import { useDispatch } from 'react-redux'
 import { LinkText } from '../../../components/link-text/link-text'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
@@ -23,7 +24,7 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
 
   const onAccept = useCallback(async () => {
     try {
-      const granted = await locationService.requestLocationPermission()
+      const granted = (await locationService.requestLocationPermission()) === RESULTS.GRANTED
       if (!granted) {
         dispatch(userSlice.actions.setUserDeniedLocationServices(true))
       }
@@ -45,7 +46,8 @@ export const OnboardingLocationPermissionScreen: React.FC<OnboardingLocationPerm
       testID={screenTestID}
       titleI18nKey="onboarding_locationPermission_headline_title"
       contentTitleI18nKey="onboarding_locationPermission_content_title"
-      contentTextI18nKey="onboarding_locationPermission_content_text"
+      contentTextI18nKeyFirst="onboarding_locationPermission_content_text_first"
+      contentTextI18nKeySecond="onboarding_locationPermission_content_text_second"
       acceptButtonI18nKey="onboarding_locationPermission_acceptButton"
       illustrationI18nKey="onboarding_locationPermission_image_alt"
       dataprivacyI18nKey="onboarding_locationPermission_dpsLink"

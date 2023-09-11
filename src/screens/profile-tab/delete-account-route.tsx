@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { DeleteAccountScreen } from './delete-account-screen'
 
 export const DeleteAccountRouteName = 'DeleteAccount'

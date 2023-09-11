@@ -6,7 +6,7 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { getDisplayVersion } from '../utils/getDisplayVersion'
+import { getDisplayVersion } from '../utils/get-display-version'
 import { ReleaseNotesBulletList } from './release-notes-bullet-list'
 
 const releaseVersion = getDisplayVersion()

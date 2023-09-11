@@ -6,6 +6,7 @@ import { authSlice } from '../auth/store/auth-slice'
 import { userSlice } from '../user/redux/user-slice'
 import { webviewsSlice } from '../webviews/redux/webviews-slice'
 import { createPersistReducer } from './persist-reducer'
+import { appCoreSlice } from './slices/app-core'
 
 export const rootReducer = combineReducers({
   persisted: createPersistReducer(),
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [webviewsSlice.name]: webviewsSlice.reducer,
   [themeSlice.name]: themeSlice.reducer,
+  [appCoreSlice.name]: appCoreSlice.reducer,
 })

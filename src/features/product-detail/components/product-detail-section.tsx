@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { SvgImage, SvgImageProps } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
@@ -11,6 +11,7 @@ export type ProductDetailSectionProps = PropsWithChildren<{
   testID: TestId
   iconSource: SvgImageProps['type']
   sectionCaptioni18nKey: AvailableTranslations
+  style?: StyleProp<ViewStyle>
 }>
 
 export const ProductDetailSection: React.FC<ProductDetailSectionProps> = ({
@@ -18,11 +19,12 @@ export const ProductDetailSection: React.FC<ProductDetailSectionProps> = ({
   testID,
   iconSource,
   sectionCaptioni18nKey,
+  style,
 }) => {
   const { colors } = useTheme()
   return (
-    <View style={styles.section}>
-      <SvgImage type={iconSource} width={24} height={23} />
+    <View style={[styles.section, style]}>
+      <SvgImage type={iconSource} width={24} height={24} />
       <View style={styles.content}>
         <TranslatedText
           i18nKey={sectionCaptioni18nKey}

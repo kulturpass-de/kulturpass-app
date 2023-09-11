@@ -1,14 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useSelector } from 'react-redux'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { GetProductDetailParams } from '../../../services/api/types'
-import { locationService } from '../../../services/location/location-service'
+import { getCurrentUserLocation } from '../../../services/location/redux/location-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
+import { useRequestLocationPopup } from '../../location-sharing/hooks/use-location-popup'
 import { Chip } from '../components/chip'
 import { LocationSection } from '../components/offer-selection-filter/location-section'
 import { PostalCodeSection } from '../components/offer-selection-filter/postal-code-section'
@@ -34,21 +36,18 @@ export const OfferSelectionFilterScreen: React.FC<OfferSelectionFilterScreenProp
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
+  const currentLocationAvailable = useSelector(getCurrentUserLocation) !== undefined
 
   const [selected, setSelected] = useState<'location' | 'postalCode'>(defaultLocationProvider?.provider ?? 'postalCode')
-  const [locationPermissionGranted, setLocationPermissionGranted] = useState<boolean>()
-
-  useEffect(() => {
-    const checkLocationPermission = async () => {
-      const granted = await locationService.checkLocationPermission()
-      setLocationPermissionGranted(granted)
-    }
-    checkLocationPermission()
-  }, [])
+  const openRequestLocationPopup = useRequestLocationPopup()
 
   const onSelectLocation = useCallback(() => {
-    setSelected('location')
-  }, [])
+    if (!currentLocationAvailable) {
+      openRequestLocationPopup()
+    } else {
+      setSelected('location')
+    }
+  }, [currentLocationAvailable, openRequestLocationPopup])
 
   const onSelectPostalCode = useCallback(() => {
     setSelected('postalCode')
@@ -69,7 +68,6 @@ export const OfferSelectionFilterScreen: React.FC<OfferSelectionFilterScreenProp
             i18nKey="offerSelectionFilter_location"
             active={selected === 'location'}
             onPress={onSelectLocation}
-            disabled={!locationPermissionGranted}
             accessible
             accessibilityRole="tab"
             accessibilityState={{ selected: selected === 'location' }}

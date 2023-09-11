@@ -11,6 +11,7 @@ import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
 import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offline-android'
 import { useNavigateToPDP } from '../hooks/use-navigate-to-pdp'
+import { useOpenLocationSharing } from '../hooks/use-open-location-sharing'
 import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
@@ -95,6 +96,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   useWebViewAuthSync(webViewId, bridgeAdapterApi)
 
   useOpenProductDetail(bridgeAdapterApi)
+
+  useOpenLocationSharing(bridgeAdapterApi)
 
   useHandleWebviewNavigation(webViewId, bridgeAdapterApi)
 

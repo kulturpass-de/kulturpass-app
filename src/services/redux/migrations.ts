@@ -1,12 +1,8 @@
 import { PersistedState } from 'redux-persist'
 import { PersistState as PersistState0 } from './versions/version-0'
+import { PersistState as PersistState1 } from './versions/version-1'
 
-export const currentPersistVersion = 0
-
-// Uncomment this to see an example
-// type PersistState1 = PersistState0 & {
-//   kultur: string
-// }
+export const currentPersistVersion = 1
 
 export const migrations = {
   0: (state: PersistedState & { [key: string]: any }): PersistState0 & PersistedState => {
@@ -16,11 +12,13 @@ export const migrations = {
     // @ts-expect-error wrongly typed
     return { ...state }
   },
-  // Uncomment this to see an example
-  // 1: (state: PersistState0 & PersistedState): PersistState1 & PersistedState => {
-  //   return {
-  //     ...state,
-  //     kultur: ''
-  //   }
-  // }
+  1: (state: PersistState0 & PersistedState): PersistState1 & PersistedState => {
+    const { appCore, ...stateWithoutAppCore } = state
+
+    return {
+      ...stateWithoutAppCore,
+      apiOfflineCache: { commerceApi: {} },
+      persistedAppCore: appCore,
+    }
+  },
 }

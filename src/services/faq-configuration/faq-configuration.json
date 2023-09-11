@@ -49,6 +49,14 @@
       "REPORT_ORDER_CONTACT_SELLER": {
         "de": "https://service.kulturpass.de/help/de-de/2/152",
         "en": "https://service.kulturpass.de/help/de-de/2/152"
+      },
+      "ABOUT_GEOLOCATION_IOS": {
+        "de": "https://service.kulturpass.de/help/de-de/2/163",
+        "en": "https://service.kulturpass.de/help/de-de/2/163"
+      },
+      "ABOUT_GEOLOCATION_ANDROID": {
+        "de": "https://service.kulturpass.de/help/de-de/2/164",
+        "en": "https://service.kulturpass.de/help/de-de/2/164"
       }
     }
   }

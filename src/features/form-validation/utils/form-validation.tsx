@@ -15,10 +15,11 @@ import {
   HttpError,
   HttpStatusBadRequestError,
   NetworkError,
+  OfflineError,
   UnknownError,
 } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
-import { Language } from '../../../services/translation/types'
+import { formatFullDateTime } from '../../../utils/date/date-format'
 import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
@@ -153,15 +154,7 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: {
             key: 'error_alert_networkError_message',
             values: {
-              dateTime: new Intl.DateTimeFormat(Language.de, {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false,
-              }).format(Date.now()),
+              dateTime: formatFullDateTime(Date.now()),
             },
           },
         }
@@ -174,6 +167,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           }
         }
         break
+      }
+      case OfflineError: {
+        return {
+          title: { key: 'error_alert_offline_title' },
+          message: { key: 'error_alert_offline_message' },
+        }
       }
     }
   }

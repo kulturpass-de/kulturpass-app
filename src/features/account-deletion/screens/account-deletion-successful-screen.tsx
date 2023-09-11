@@ -42,8 +42,14 @@ export const AccountDeletionSuccessfulScreen: React.FC<AccountDeletionSuccessful
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestId, 'content_text')}
-            i18nKey="accountDeletion_successful_content_text"
+            testID={addTestIdModifier(screenTestId, 'content_text_first')}
+            i18nKey="accountDeletion_successful_content_text_first"
+            textStyle="BodyRegular"
+          />
+          <TranslatedText
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={addTestIdModifier(screenTestId, 'content_text_second')}
+            i18nKey="accountDeletion_successful_content_text_second"
             textStyle="BodyRegular"
           />
         </View>

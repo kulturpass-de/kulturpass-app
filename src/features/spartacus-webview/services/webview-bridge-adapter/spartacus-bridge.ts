@@ -97,6 +97,7 @@ export namespace SpartacusBridge {
       RouterEvents = 'router.events',
       Bridge = 'bridge',
       Auth = 'auth',
+      Search = 'search',
     }
 
     export interface Event extends Message {
@@ -116,6 +117,23 @@ export namespace SpartacusBridge {
     export interface MobileAppEvent extends Event {
       source: Source.MobileApp
       data: 'ERR_UNKNOWN'
+    }
+
+    export interface AuthTokenAwaitedEvent extends Event {
+      source: Source.Auth
+      name: 'tokenAwaited'
+      data: {
+        timeout: number
+      }
+    }
+    export interface BridgeReadyEvent extends Event {
+      source: Source.Bridge
+      name: 'ready'
+    }
+
+    export interface SearchLocationOpenEvent extends Event {
+      source: Source.Search
+      name: 'locationOpen'
     }
   }
 

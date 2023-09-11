@@ -54,6 +54,7 @@
       "quantity": 40,
       "shopId": "1011",
       "shopName": "Munich Seller Shop",
+      "priceAdditionalInfo": "Kategorie 1 Normalpreis",
       "shopDistance": 4.1,
       "shopAddress": {
         "street": "Konrad-Zuse-Ring 10",
@@ -63,7 +64,8 @@
         "latitude": 52.4347569,
         "longitude": 13.0551049
       },
-      "stateLabel": "Neu"
+      "stateLabel": "Neu",
+      "shopDescription": "Franky’s 17 euer Vertrauenswürdiger Ticketanbieter.<br /><a href=\"mailto:mail@kulturpass.de\" rel=\"nofollow noreferrer\" target=\"_blank\">mail@kulturpass.de</a><br /><a href=\"tel:05373920733\" rel=\"nofollow noreferrer\" target=\"_blank\">05373920733</a>"
     },
     {
       "availableEndDate": "2023-02-02T21:16:49.497Z",

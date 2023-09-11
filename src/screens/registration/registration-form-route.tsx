@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../navigation/modal/hooks'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../theme/utils'
 import { RegistrationPreferencesRouteConfig } from '../registration-preferences/registration-preferences-route'
 import { CancelRegistrationAlert } from './cancel-registration-alert'

@@ -20,7 +20,7 @@ export const AppConfigScreen: React.FC<AppConfigScreenProps> = ({ onHeaderPressB
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
 
-  const currentAppConfig = useSelector((state: RootState) => state.persisted.appCore.appConfig)
+  const currentAppConfig = useSelector((state: RootState) => state.persisted.persistedAppCore.appConfig)
 
   const [executeQuery] = commerceApi.useLazyGetAppConfigQuery()
 

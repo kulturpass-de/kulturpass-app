@@ -1,7 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { ReleaseNotesScreen } from './release-notes-screen'
 

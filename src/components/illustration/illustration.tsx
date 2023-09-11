@@ -24,6 +24,7 @@ export type IllustrationType =
   | 'stop-sign'
   | 'delete-account'
   | 'no-network'
+  | 'location-sharing'
 
 export type IllustrationProps = {
   type: IllustrationType

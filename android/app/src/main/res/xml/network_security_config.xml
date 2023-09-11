@@ -2,12 +2,6 @@
 <!-- build v1.0.1 -->
 <network-security-config>
   <domain-config>
-    <domain includeSubdomains="true">commerce.qa.kulturpass.de</domain>
-    <pin-set>
-      <pin digest="SHA-256">TaUiArx6CmGD2JNQ9D0ZeWBAKpmGZnwKLJpQsPRZdaw=</pin>
-    </pin-set>
-  </domain-config>
-  <domain-config>
     <domain includeSubdomains="true">accounts.eu1.gigya.com</domain>
     <pin-set>
       <pin digest="SHA-256">t5B9+w1LA5jfc/g+pOHlRDgJr1yN0vpGL0neRSQRiSw=</pin>

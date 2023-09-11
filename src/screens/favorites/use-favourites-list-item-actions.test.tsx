@@ -69,7 +69,7 @@ describe('useFavouritesListItemActions', () => {
           }),
         )
       }),
-      rest.delete('*/cc/kulturapp/users/current/favourites/PRODUCT_CODE_2', async (_req, res, ctx) => {
+      rest.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async (_req, res, ctx) => {
         await new Promise(resolve => setTimeout(resolve, 100))
         return res(ctx.status(500), ctx.text('NOT_OK'))
       }),

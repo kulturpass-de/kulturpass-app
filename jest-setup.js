@@ -18,6 +18,33 @@ jest.mock('@react-native-async-storage/async-storage', () => {
   };
 });
 
+jest.mock('react-native-webview', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  const WebView = React.forwardRef((props, ref) => {
+    React.useImperativeHandle(ref, () => ({
+      goBack: jest.fn(),
+      goForward: jest.fn(),
+      reload: jest.fn(),
+      stopLoading: jest.fn(),
+      injectJavaScript: jest.fn(),
+      requestFocus: jest.fn(),
+      postMessage: jest.fn(),
+      clearFormData: jest.fn(),
+      clearCache: jest.fn(),
+      clearHistory: jest.fn(),
+    }));
+    return <View {...props} />;
+  });
+
+  return {
+    WebView,
+    default: WebView,
+    __esModule: true,
+  };
+});
+
 jest.mock('react-native-encrypted-storage', () => {
   const store = {};
   return {

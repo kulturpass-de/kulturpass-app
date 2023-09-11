@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { GoToSearchButton } from '../../../../components/go-to-search-button/go-to-search-button'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
@@ -12,9 +13,14 @@ import { ProductDetailSection } from '../product-detail-section'
 export type ProductStagedEventDetailProps = {
   productDetail: StagedEventProductDetail
   testID: TestId
+  detailType: 'OrderDetail' | 'ProductDetail'
 }
 
-export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> = ({ productDetail, testID }) => {
+export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> = ({
+  productDetail,
+  testID,
+  detailType,
+}) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
@@ -23,6 +29,20 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
   const { venue, eventDateTime, durationInMins, venueDistance } = productDetail
   const formattedEventStartDate = useFormattedDateTime(eventDateTime)
 
+  const address = venue ? (
+    <Address
+      name={venue.name}
+      city={venue.city}
+      street={venue.street}
+      postalCode={venue.postalCode}
+      distance={venueDistance}
+      showDistance
+      showCopyToClipboard={detailType === 'OrderDetail'}
+      baseTestId={addTestIdModifier(sectionTestID, 'location')}
+      copyToClipboardAccessibilityI18nKey="productDetail_stagedEvent_copyToClipboard"
+    />
+  ) : null
+
   return (
     <>
       {venue ? (
@@ -30,17 +50,13 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
           testID={addTestIdModifier(sectionTestID, 'location_caption')}
           iconSource="map-pin"
           sectionCaptioni18nKey="productDetail_stagedEvent_location_caption">
-          <Address
-            name={venue.name}
-            city={venue.city}
-            street={venue.street}
-            postalCode={venue.postalCode}
-            distance={venueDistance}
-            showDistance
-            showCopyToClipboard
-            baseTestId={addTestIdModifier(sectionTestID, 'location')}
-            copyToClipboardAccessibilityI18nKey="productDetail_stagedEvent_copyToClipboard"
-          />
+          {detailType !== 'OrderDetail' ? (
+            <GoToSearchButton searchTerm={venue.name} testID={addTestIdModifier(sectionTestID, 'location_button')}>
+              {address}
+            </GoToSearchButton>
+          ) : (
+            address
+          )}
         </ProductDetailSection>
       ) : null}
       <ProductDetailSection

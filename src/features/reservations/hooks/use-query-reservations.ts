@@ -1,26 +1,14 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { useFocusEffect } from '@react-navigation/native'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { commerceApi } from '../../../services/api/commerce-api'
-import {
-  ORDER_STATUS_CANCELLING,
-  ORDER_STATUS_CANCELLED,
-  ORDER_STATUS_COMPLETED,
-  ORDER_STATUS_CREATED,
-  ORDER_STATUS_READY_FOR_PICKUP,
-  ORDER_STATUS_RECEIVED,
-  ORDER_STATUS_SHIPPING,
-} from '../../../services/api/types/commerce/commerce-get-reservations'
-
-const PENDING_STATUSES = [ORDER_STATUS_CREATED, ORDER_STATUS_SHIPPING, ORDER_STATUS_READY_FOR_PICKUP]
-const COMPLETED_STATUSES = [
-  ORDER_STATUS_RECEIVED,
-  ORDER_STATUS_COMPLETED,
-  ORDER_STATUS_CANCELLING,
-  ORDER_STATUS_CANCELLED,
-]
+import { COMPLETED_STATUSES, PENDING_STATUSES } from '../../../services/api/types/commerce/commerce-get-reservations'
+import { ErrorWithCode, OfflineError } from '../../../services/errors/errors'
 
 export const useQueryReservations = () => {
-  const { data, refetch, ...rest } = commerceApi.useGetReservationsQuery({})
+  const { data, refetch: queryRefetch, error: queryError, ...rest } = commerceApi.useGetReservationsQuery({})
+  const netInfo = useNetInfo()
+  const [state, setState] = useState<{ customError?: ErrorWithCode }>({})
 
   const pendingReservations = useMemo(
     () => data?.orders?.filter(order => order.status && PENDING_STATUSES.includes(order.status)) || [],
@@ -34,9 +22,27 @@ export const useQueryReservations = () => {
 
   useFocusEffect(
     useCallback(() => {
-      refetch()
-    }, [refetch]),
+      queryRefetch()
+    }, [queryRefetch]),
   )
 
-  return { ...rest, pendingReservations, completedReservations, refetch }
+  const error = useMemo(() => {
+    if (state.customError && !netInfo.isConnected) {
+      return state.customError
+    }
+
+    if (queryError && netInfo.isConnected) {
+      return queryError
+    }
+  }, [state.customError, netInfo, queryError])
+
+  const refetch = useCallback(async () => {
+    if (!netInfo.isConnected) {
+      return setState(currentState => ({ ...currentState, customError: new OfflineError() }))
+    }
+
+    queryRefetch()
+  }, [netInfo, queryRefetch])
+
+  return { ...rest, pendingReservations, completedReservations, refetch, error }
 }

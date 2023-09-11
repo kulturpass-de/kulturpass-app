@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useModalNavigation } from '../../navigation/modal/hooks'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { useAuth } from '../../services/auth/use-auth'
 import { modalCardStyle } from '../../theme/utils'
 import { LogInScreen } from './log-in-screen'

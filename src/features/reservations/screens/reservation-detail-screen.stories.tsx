@@ -13,6 +13,11 @@ const componentMeta: ComponentMeta<typeof ReservationDetailScreen> = {
 
 const selectedOffer: Offer = {
   id: '555',
+  shopName: 'Munich Seller Shop',
+  shopDescription:
+    'Some test shop.<br /><a href="mailto:mail@kulturpass.de" rel="nofollow noreferrer" target="_blank">mail@kulturpass.de</a><br /><a href="tel:05373920733" rel="nofollow noreferrer" target="_blank">05373920733</a>',
+  description: 'description of the offer',
+  priceAdditionalInfo: 'additional price info',
 }
 const productDetail: ProductDetail = {
   // ageRating: 'NO_RESTRICTION',
@@ -40,6 +45,11 @@ const buildStoryForOrderStatus = (orderStatus: Order['status']) => {
     code: 'TEST-555',
     cancellable: true,
     status: orderStatus,
+    entries: [
+      {
+        offerId: '555',
+      },
+    ],
   }
   return (
     <View style={styles.container}>

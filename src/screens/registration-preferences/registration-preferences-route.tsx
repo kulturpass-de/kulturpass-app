@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useModalNavigation } from '../../navigation/modal/hooks'
 import { ModalScreenProps } from '../../navigation/modal/types'
-import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { RegistrationSuccessRouteConfig } from '../registration-success/registration-success-route'
 import { CancelRegistrationPreferencesAlert } from './cancel-registration-preferences-alert'
 import { RegistrationPreferencesScreen } from './registration-preferences-screen'

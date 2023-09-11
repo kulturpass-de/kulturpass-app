@@ -54,11 +54,18 @@ export const DeleteAccountScreen: React.FC<DeleteAccountScreenProps> = ({ onPres
             textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
           />
           <TranslatedText
-            i18nKey="deleteAccount_content_text"
-            testID={addTestIdModifier(SCREEN_TEST_ID, 'content_text')}
+            i18nKey="deleteAccount_content_text_first"
+            testID={addTestIdModifier(SCREEN_TEST_ID, 'content_text_first')}
             textStyle="BodyRegular"
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
           />
+          <TranslatedText
+            i18nKey="deleteAccount_content_text_second"
+            testID={addTestIdModifier(SCREEN_TEST_ID, 'content_text_second')}
+            textStyle="BodyRegular"
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+          />
+          <View style={styles.spacerSecond} />
           <LinkText
             i18nKey="deleteAccount_content_link"
             testID={addTestIdModifier(SCREEN_TEST_ID, 'content_link')}
@@ -83,13 +90,17 @@ const styles = StyleSheet.create({
   },
   contentTitle: {
     paddingTop: spacing[6],
+    paddingBottom: spacing[2],
   },
   contentText: {
-    paddingVertical: spacing[7],
+    paddingTop: spacing[6],
   },
   spacer: {
     minHeight: spacing[6],
     flexGrow: 1,
+  },
+  spacerSecond: {
+    height: spacing[7],
   },
   contentContainer: {
     paddingHorizontal: spacing[8],

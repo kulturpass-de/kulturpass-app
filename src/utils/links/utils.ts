@@ -37,3 +37,7 @@ export const sendMail = async (recipient: string, subject?: string, content?: st
     ErrorAlertManager.current?.showError(new MailToError(recipient))
   }
 }
+
+export const createProductLink = (baseUrl: string, productId: string, productTitle: string): string => {
+  return new URL(`/product/${productId}/${productTitle}`, baseUrl).href
+}
