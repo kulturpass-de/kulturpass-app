@@ -5,6 +5,9 @@ platform :ios, '14.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'cultureapp' do
+  # Set OpenSSL Version, to mitigate an issue with react-native-quick-crypto and OpenSSL 3
+  # https://github.com/margelo/react-native-quick-crypto/issues/189
+  pod "OpenSSL-Universal", "1.1.1100"
   # React Native Permissions
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"

@@ -385,7 +385,6 @@
   "productDetail_error_title": "Oops!",
   "productDetail_getProductDetailError_message": "Beim Öffnen des Produktes ist ein Fehler aufgetreten.",
   "productDetail_confirmReservation_title": "Bestätige deine\nReservierung",
-  "productDetail_confirmReservation_subtitle": "bei",
   "productDetail_confirmReservation_description": "Mit Bestätigung von „Jetzt reservieren“ nimmst du eine Reservierung für folgendes Angebot vor:",
   "productDetail_confirmReservation_supplierName": "Name des Anbieters",
   "productDetail_confirmReservation_productCategory": "Produktkategorie",
