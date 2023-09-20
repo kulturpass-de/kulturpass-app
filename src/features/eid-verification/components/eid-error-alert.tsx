@@ -19,6 +19,7 @@ import {
   AA2AcceptTimeout,
   AA2BelowMinAge,
   AA2BelowMinYearOfBirth,
+  AA2CardAuthenticityValidationFailed,
   AA2CardDeactivated,
   AA2CardRemoved,
   AA2CardValidationFailed,
@@ -28,8 +29,9 @@ import {
   AA2SetPinTimeout,
   AA2Timeout,
 } from '../errors'
-import { useCancelFlow } from '../hooks/use-cancel-flow'
+import { useCloseFlow } from '../hooks/use-close-flow'
 import { useHandleErrors } from '../hooks/use-handle-errors'
+import { eidAusweisApp2Service } from '../services/eid-ausweisapp2-service'
 
 export type EidErrorAlertProps = {
   error: ErrorWithCode | null
@@ -44,7 +46,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   cancelEidFlowAlertVisible = false,
   handleUserCancellation = false,
 }) => {
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('eid_error_alert')
   const { colors } = useTheme()
   const { t } = useTranslation()
 
@@ -56,6 +59,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   const [intError, setIntError] = useState<ErrorWithCode | null>(null)
 
   useHandleErrors(setIntError, handleUserCancellation, cancelEidFlowAlertVisible)
+
+  const { closeFlow } = useCloseFlow()
 
   useEffect(() => {
     if (error !== null) {
@@ -69,19 +74,16 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
     }
   }, [intError, onModalIsVisible])
 
-  const cancelFlow = useCancelFlow()
-
   const handleRestart = useCallback(async () => {
-    await cancelFlow()
+    await eidAusweisApp2Service.stopSDK()
     navigation.replace('Eid')
     setIntError(null)
-  }, [cancelFlow, navigation])
+  }, [navigation])
 
   const handleClose = useCallback(async () => {
-    await cancelFlow()
-    navigation.navigate('Tabs')
+    await closeFlow()
     setIntError(null)
-  }, [cancelFlow, navigation])
+  }, [closeFlow])
 
   const errorMessage: string | undefined = useMemo(() => {
     if (intError instanceof AA2InitError) {
@@ -102,6 +104,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
       return t('eid_error_cardRemoved_message')
     } else if (intError instanceof AA2CardValidationFailed) {
       return t('eid_error_cardValidationFailed_message')
+    } else if (intError instanceof AA2CardAuthenticityValidationFailed) {
+      return t('eid_error_cardAuthenticityValidationFailed_message')
     } else if (intError instanceof AA2AcceptTimeout) {
       return t('eid_error_acceptTimeout_message')
     } else if (intError instanceof AA2SetPinTimeout) {
@@ -122,37 +126,38 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   return (
     <Alert visible={intError !== null} dismissable={false}>
       <AlertContent ref={focusRef}>
-        <AlertTitle i18nKey="eid_error_title" testID={buildTestId('eid_error_title')} />
+        <AlertTitle i18nKey="eid_error_title" testID={addTestIdModifier(testID, 'title')} />
         <TranslatedText
           textStyle="BodyRegular"
           i18nKey="error_alert_message_fallback"
-          testID={buildTestId('error_alert_message')}
+          testID={addTestIdModifier(testID, 'message')}
           textStyleOverrides={{ color: colors.labelColor }}
         />
         <View style={styles.content}>
           {errorMessage ? (
             <Text
               style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
-              testID={buildTestId('error_alert_message_detail')}>
+              testID={addTestIdModifier(testID, 'message_detail')}>
               {errorMessage}
             </Text>
           ) : (
             <TranslatedText
               i18nKey="eid_error_try_again_message"
+              testID={addTestIdModifier(testID, 'try_again_message')}
               textStyle="BodyRegular"
               textStyleOverrides={[styles.message, { color: colors.labelColor }]}
             />
           )}
           <Text
             style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
-            testID={buildTestId('error_alert_code')}>
+            testID={addTestIdModifier(testID, 'code')}>
             {errorCode}
           </Text>
 
           {intError?.errorDetails ? (
             <Text
               style={[textStyles.BodyRegular, styles.message, { color: colors.labelColor }]}
-              testID={buildTestId('error_alert_details')}>
+              testID={addTestIdModifier(testID, 'details')}>
               {intError.errorDetails}
             </Text>
           ) : null}
@@ -161,7 +166,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
           widthOption="stretch"
           variant="primary"
           i18nKey="eid_error_retry_button"
-          testID={buildTestId('eid_error_retry_button')}
+          testID={addTestIdModifier(testID, 'retry_button')}
           onPress={handleRestart}
         />
         <Button
@@ -169,7 +174,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
           variant="transparent"
           i18nKey="alert_cta"
           onPress={handleClose}
-          testID={buildTestId('alert_cta')}
+          testID={addTestIdModifier(testID, 'cta')}
         />
       </AlertContent>
     </Alert>

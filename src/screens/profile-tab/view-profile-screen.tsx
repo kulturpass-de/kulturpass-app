@@ -18,7 +18,7 @@ import { useTranslation } from '../../services/translation/translation'
 import { useUserInfo } from '../../services/user/use-user-info'
 import { spacing } from '../../theme/spacing'
 import { useLocalizedEnvironmentUrl, getFaqHomeUrl } from '../../utils/links/hooks/use-localized-environment-url'
-import { openLink } from '../../utils/links/utils'
+import { linkLogger, openLink } from '../../utils/links/utils'
 
 export type ViewProfileScreenProps = {
   onPressChangeLanguage: () => void
@@ -52,18 +52,18 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
     try {
       await auth.logout()
     } catch (error: unknown) {
-      // Should always succeed as our API only throws ErrorWithCode instances
       if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('logout error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Logout'))
       }
     } finally {
       setLoading(false)
     }
   }, [auth])
 
-  const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl).catch(logger.logError), [faqDocumentUrl])
+  const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl).catch(linkLogger), [faqDocumentUrl])
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()

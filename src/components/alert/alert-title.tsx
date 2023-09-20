@@ -19,7 +19,7 @@ export const AlertTitle = ({ textStyleOverrides, ...props }: AlertTitleProps) =>
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: spacing[5],
+    marginBottom: spacing[2],
     textAlign: 'center',
   },
 })

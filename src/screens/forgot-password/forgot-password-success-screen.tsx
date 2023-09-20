@@ -35,6 +35,7 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
           testID={buildTestId('forgotPasswordSuccess_image_alt')}
           i18nKey="forgotPasswordSuccess_image_alt"
           type="password"
+          style={styles.image}
         />
         <TranslatedText
           textStyle="BodyRegular"
@@ -56,8 +57,12 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
 
 const styles = StyleSheet.create({
   screenContent: {
+    paddingTop: spacing[7],
     paddingHorizontal: spacing[5],
     flex: 1,
+  },
+  image: {
+    marginBottom: spacing[8],
   },
   description: {
     marginBottom: spacing[6],

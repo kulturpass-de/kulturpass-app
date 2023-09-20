@@ -22,7 +22,8 @@ export type CancelEidFlowAlertProps = {
 }
 
 export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible, onChange }) => {
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('eid_cancel_flow')
   const { colors } = useTheme()
 
   const resetPinFaqLink = useFaqLink('EID_PIN_RESET')
@@ -45,41 +46,43 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
   return (
     <Alert visible={visible} onChange={onChange}>
       <AlertContent ref={focusRef} style={styles.container}>
-        <AlertTitle testID={buildTestId('eid_cancel_flow_title')} i18nKey="eid_cancel_flow_title" />
+        <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey="eid_cancel_flow_title" />
         <TranslatedText
           textStyleOverrides={[styles.text, { color: colors.labelColor }]}
           i18nKey="eid_cancel_flow_text_first"
-          testID={buildTestId('eid_cancel_flow_text_first')}
+          testID={addTestIdModifier(testID, 'text_first')}
           textStyle="BodyRegular"
         />
+        <View style={styles.spacer} />
         <TranslatedText
-          textStyleOverrides={[styles.text, styles.spacer, { color: colors.labelColor }]}
+          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
           i18nKey="eid_cancel_flow_text_second"
-          testID={buildTestId('eid_cancel_flow_text_second')}
+          testID={addTestIdModifier(testID, 'text_second')}
           textStyle="BodyRegular"
         />
         <View style={styles.linkContainer}>
           <LinkText
             i18nKey="eid_cancel_flow_resetPin_link"
-            testID={buildTestId('eid_cancel_flow_resetPin_link')}
+            testID={addTestIdModifier(testID, 'resetPin_link')}
             link={resetPinFaqLink}
             textStyle="BodyMedium"
             flex={false}
           />
         </View>
         <Button
-          testID={buildTestId('eid_cancel_flow_resume_button')}
+          testID={addTestIdModifier(testID, 'resume_button')}
           i18nKey="eid_cancel_flow_resume_button"
           variant="primary"
           disabled={loading}
           onPress={handleResume}
         />
         <Button
-          testID={buildTestId('eid_cancel_flow_cancel_button')}
+          testID={addTestIdModifier(testID, 'cancel_button')}
           i18nKey="eid_cancel_flow_cancel_button"
           variant="white"
           disabled={loading}
           onPress={handleCancel}
+          bodyStyleOverrides={styles.cancelButton}
         />
       </AlertContent>
       {debouncedLoading ? <LoadingIndicatorOverlay /> : null}
@@ -97,10 +100,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   linkContainer: {
-    paddingTop: spacing[7],
-    paddingBottom: spacing[6],
+    paddingVertical: spacing[6],
   },
   spacer: {
     height: spacing[6],
+  },
+  cancelButton: {
+    paddingTop: spacing[2],
   },
 })

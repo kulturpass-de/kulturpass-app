@@ -15,6 +15,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -50,7 +51,8 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
       if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('delete account error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Delete Account'))
       }
     }
   })

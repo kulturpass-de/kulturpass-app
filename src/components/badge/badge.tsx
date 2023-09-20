@@ -10,17 +10,20 @@ export type BadgeProps = {
   i18nKey: AvailableTranslations
   i18nParams?: {}
   testID?: TestId
+  backgroundColorVariant?: 'purple' | 'blue'
 }
 
-export const Badge: React.FC<BadgeProps> = ({ i18nKey, i18nParams, testID }) => {
+export const Badge: React.FC<BadgeProps> = ({ i18nKey, i18nParams, testID, backgroundColorVariant = 'purple' }) => {
   const { colors } = useTheme()
+  const backgroundColor = backgroundColorVariant === 'purple' ? colors.badgeBackground : colors.badgeBackground2
+  const color = backgroundColorVariant === 'purple' ? colors.labelColor : colors.badgeColor2
   return (
-    <View style={[styles.badge, { backgroundColor: colors.badgeBackground }]} testID={testID}>
+    <View style={[styles.badge, { backgroundColor }]} testID={testID}>
       <TranslatedText
         i18nKey={i18nKey}
         i18nParams={i18nParams}
         textStyle="BodyPrimary1Dark"
-        textStyleOverrides={{ color: colors.labelColor }}
+        textStyleOverrides={{ color }}
       />
     </View>
   )

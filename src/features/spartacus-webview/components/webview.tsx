@@ -3,8 +3,7 @@ import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { logger } from '../../../services/logger'
-import { openLink } from '../../../utils/links/utils'
+import { linkLogger, openLink } from '../../../utils/links/utils'
 import { userAgent } from '../../../utils/user-agent/utils'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
@@ -78,7 +77,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
         isSamePage = event.url.startsWith(origin)
       }
       if (!isSamePage) {
-        openLink(event.url).catch(logger.logError)
+        openLink(event.url).catch(linkLogger)
       }
       return isSamePage
     },

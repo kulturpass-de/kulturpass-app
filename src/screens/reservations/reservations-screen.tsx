@@ -7,6 +7,7 @@ import { useQueryReservations } from '../../features/reservations/hooks/use-quer
 import { Order } from '../../services/api/types/commerce/api-types'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -33,7 +34,8 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
     (completedReservation: boolean) => (order: Order) => {
       if (!order.code) {
         // This should be replaced with a suitable error in the future
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('Order code missing')
+        ErrorAlertManager.current?.showError(new UnknownError('Missing Order Code'))
         return
       }
 
@@ -50,7 +52,8 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
     } else if (error instanceof ErrorWithCode) {
       ErrorAlertManager.current?.showError(error)
     } else {
-      ErrorAlertManager.current?.showError(new UnknownError())
+      logger.warn('query reservations error cannot be interpreted', JSON.stringify(error))
+      ErrorAlertManager.current?.showError(new UnknownError('Query Reservations'))
     }
   }, [error])
 

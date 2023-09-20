@@ -36,6 +36,8 @@ export type ColorMappings = {
   chipText: string
   chipTextActive: string
   badgeBackground: string
+  badgeBackground2: string
+  badgeColor2: string
 }
 
 export type PreferencesButtonColors = {

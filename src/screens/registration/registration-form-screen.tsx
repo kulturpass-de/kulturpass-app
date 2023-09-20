@@ -20,6 +20,7 @@ import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/
 import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { AppDispatch } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -84,7 +85,8 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
       } else if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('account register error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Register'))
       }
     } finally {
       setLoading(false)

@@ -2,6 +2,7 @@ import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { z } from 'zod'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { CcGetProfileError } from '../../../services/errors/cc-errors'
 import {
   CdcAccountDeletionRequestedError,
   CdcAccountDisabledError,
@@ -18,6 +19,7 @@ import {
   OfflineError,
   UnknownError,
 } from '../../../services/errors/errors'
+import { logger } from '../../../services/logger'
 import { TranslationFunction } from '../../../services/translation/translation'
 import { formatFullDateTime } from '../../../utils/date/date-format'
 import { MailToError } from '../../../utils/links/errors'
@@ -75,7 +77,8 @@ export const POSTAL_CODE_SCHEMA = (
           if (result.error instanceof ErrorWithCode) {
             ErrorAlertManager.current?.showError(result.error)
           } else {
-            ErrorAlertManager.current?.showError(new UnknownError())
+            logger.warn('postalcode validation error cannot be interpreted', JSON.stringify(result.error))
+            ErrorAlertManager.current?.showError(new UnknownError('Postalcode Validation'))
           }
         }
       }
@@ -172,6 +175,14 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'error_alert_offline_title' },
           message: { key: 'error_alert_offline_message' },
+        }
+      }
+      case CcGetProfileError: {
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: {
+            key: 'cc_get_profile_bad_request_message',
+          },
         }
       }
     }

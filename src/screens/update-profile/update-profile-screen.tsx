@@ -21,6 +21,7 @@ import { AccountsGetAccountInfoResponse, AccountsSetAccountInfoSignedRequestPara
 import { CdcStatusInvalidParameter, CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useSetAccountInfo } from '../../services/user/use-set-account-info'
@@ -140,7 +141,8 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
       } else if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('update profile error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Update Profile'))
       }
     } finally {
       setState(currentState => ({ ...currentState, isLoading: false }))

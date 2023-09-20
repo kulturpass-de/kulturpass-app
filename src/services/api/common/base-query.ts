@@ -26,15 +26,18 @@ export const axiosBaseQuery = <Result>(): AxiosBaseQueryFn<Result> => {
     } catch (error: any) {
       if (isAxiosError(error) && error.response?.status !== undefined) {
         const httpError = createHttpErrorFromStatusCode(error.response.status, error.response.data)
+        logger.logRequestError(args.url, error.response.status, error.response.data)
         return { error: httpError }
       }
+
+      logger.logRequestError(args.url, JSON.stringify(error))
 
       if (isAxiosError(error)) {
         const networkError = new NetworkError()
         return { error: networkError }
       }
 
-      const unknownError = new UnknownError()
+      const unknownError = new UnknownError('API Error')
       return { error: unknownError }
     }
   }

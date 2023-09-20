@@ -43,7 +43,8 @@ export const DeeplinkHandler: React.FC = () => {
         if (error instanceof ErrorWithCode) {
           ErrorAlertManager.current?.showError(error)
         } else {
-          ErrorAlertManager.current?.showError(new UnknownError())
+          logger.warn('deeplink handler error cannot be interpreted', JSON.stringify(error))
+          ErrorAlertManager.current?.showError(new UnknownError('Deeplink Handler'))
         }
       } finally {
         setLoading(false)

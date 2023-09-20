@@ -24,7 +24,7 @@ export const EidTransportPinRoute: React.FC<EidTransportPinRouteProps> = ({ rout
 
   const onNext = useCallback(
     (pin: string) => {
-      navigation.navigate(EidNewPinRouteName, {
+      navigation.replace(EidNewPinRouteName, {
         pin,
       })
     },

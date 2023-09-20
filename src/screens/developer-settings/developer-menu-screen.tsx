@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useReducer, useState } from 'react'
-import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
+import { Keyboard, Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../components/button/button'
 import { ListItem } from '../../components/list-item/list-item'
@@ -67,6 +67,8 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const [tapCounter, incrementTapCounter] = useReducer((current: number) => current + 1, 1)
 
   const onOpenProductDetail = useCallback(() => {
+    // Otherwise the Keyboard might still be open, creating visual bugs through the KeyboardAvoidingView
+    Keyboard.dismiss()
     rootNavigation.navigate('PDP', {
       screen: ProductDetailRouteConfig.name,
       params: {

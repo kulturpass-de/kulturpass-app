@@ -43,7 +43,7 @@ export const EidStack = () => {
           <Stack.Screen {...EidNFCNotSupportedRouteConfig} />
           <Stack.Screen {...EidPukInoperativeRouteConfig} />
         </Stack.Group>
-        <Stack.Screen {...EidServiceProviderDetailsRouteConfig} />
+        <Stack.Screen {...EidServiceProviderDetailsRouteConfig} options={{ gestureEnabled: true }} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

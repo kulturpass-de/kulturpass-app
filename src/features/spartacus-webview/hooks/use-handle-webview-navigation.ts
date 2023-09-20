@@ -10,6 +10,7 @@ import { BridgeAdapterAPI, createBridgeAdapterApi } from '../services/webview-br
 import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewId } from '../services/webview-bridge-adapter/types'
 import { useWebViewBridgeAdapterContext } from '../services/webview-bridge-adapter/webview-bridge-adapter-provider'
+import { isHeaderShown, isRoutedToLogin } from '../utils'
 
 const ROUTER_EFFECT_THROTTLE_TIME_MS = 1000
 /**
@@ -44,7 +45,10 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
     const navigationHandler = (data: SpartacusBridge.EventForwarding.RouterEvent['data']) => {
       const { url } = data
 
-      dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { routerUrl: url } }))
+      if (url.startsWith('/product')) {
+        // Product routes are handled by the useNavigateToPDP hook and can be ignored
+        return
+      }
 
       if (url.startsWith('/search') && webViewId === WebViewId.Home) {
         if (searchIsReady) {
@@ -55,6 +59,13 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
         }
       } else if (url === '/' && webViewId === WebViewId.Search) {
         throttledHomeNavigation()
+      } else {
+        dispatch(
+          webviewsSlice.actions.setWebViewState({
+            webViewId,
+            state: { routesToLogin: isRoutedToLogin(url), showHeader: isHeaderShown(url) },
+          }),
+        )
       }
     }
 

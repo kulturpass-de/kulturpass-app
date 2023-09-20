@@ -209,7 +209,7 @@ export const mapAppErrorCodeToError = (
     case 'HTTP_STATUS_UNAUTHORIZED':
       return new HttpStatusUnauthorizedError(responseBody)
     case 'UNKNOWN':
-      return new UnknownError()
+      return new UnknownError('Invalid ErrorCode')
   }
 
   return null

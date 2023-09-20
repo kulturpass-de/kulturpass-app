@@ -34,3 +34,8 @@ export const selectLastUsedTranslationLanguage = createSelector(
   selectPersistedAppCoreState,
   persistedAppCoreState => persistedAppCoreState.lastUsedTranslationLanguage,
 )
+
+export const selectTcTokenUrlSubdomains = createSelector(
+  selectPersistedAppCoreState,
+  persistedAppCoreState => persistedAppCoreState.appConfig?.eid.tcTokenUrlSubdomains,
+)

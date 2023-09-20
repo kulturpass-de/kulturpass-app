@@ -1,9 +1,10 @@
 import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Linking } from 'react-native'
+import { Linking, LogBox } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { ModalScreenProps } from '../../../navigation/modal/types'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { AppDispatch } from '../../../services/redux/configure-store'
 import { selectIsInForeground } from '../../../services/redux/slices/app-core'
@@ -11,15 +12,22 @@ import { modalCardStyle } from '../../../theme/utils'
 import { forceRefreshLocation } from '../redux/thunks/force-refresh-location'
 import { LocationSharingScreen } from './location-sharing-screen'
 
+// This screen is not deeplinked into, so we can use a function parameter
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+
 export const LocationSharingRouteName = 'LocationSharing'
 
-export type LocationSharingRouteParams = undefined
+export type LocationSharingRouteParams = {
+  onFinished?: (isGranted: boolean) => void
+}
 
 export type LocationSharingRouteStackParams = {
   ReleaseNotes: NavigatorScreenParams<LocationSharingRouteParams>
 }
 
-const LocationSharingRoute: React.FC = () => {
+export type LocationSharingRouteProps = ModalScreenProps<'LocationSharing'>
+const LocationSharingRoute: React.FC<LocationSharingRouteProps> = ({ route }) => {
+  const { params } = route
   const modalNavigation = useModalNavigation()
   const [isLoading, setIsLoading] = useState(false)
   const appIsInForeground = useSelector(selectIsInForeground)
@@ -32,6 +40,7 @@ const LocationSharingRoute: React.FC = () => {
           setIsLoading(true)
           const isGranted = await dispatch(forceRefreshLocation()).unwrap()
           if (isGranted) {
+            params.onFinished?.(isGranted)
             modalNavigation.goBack()
           }
         } finally {
@@ -40,7 +49,7 @@ const LocationSharingRoute: React.FC = () => {
       }
       recheckLocationPermission()
     }
-  }, [appIsInForeground, dispatch, modalNavigation])
+  }, [appIsInForeground, dispatch, modalNavigation, params])
 
   const onClose = useCallback(() => {
     modalNavigation.goBack()
@@ -51,8 +60,11 @@ const LocationSharingRoute: React.FC = () => {
       return
     }
     setIsLoading(true)
-    await Linking.openSettings()
-    setIsLoading(false)
+    try {
+      await Linking.openSettings()
+    } finally {
+      setIsLoading(false)
+    }
   }, [isLoading])
 
   return (

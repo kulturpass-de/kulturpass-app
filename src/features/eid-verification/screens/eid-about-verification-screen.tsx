@@ -1,4 +1,3 @@
-import { SerializedError } from '@reduxjs/toolkit'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -27,7 +26,7 @@ import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRights, certificate: Certificate) => void
   onNFCNotSupported: () => void
-  onError: (error: ErrorWithCode | SerializedError) => void
+  onError: (error: ErrorWithCode) => void
   onClose: () => void
 }
 
