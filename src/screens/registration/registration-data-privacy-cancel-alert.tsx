@@ -20,7 +20,8 @@ export const RegistrationDataPrivacyCancelAlert: React.FC<RegistrationDataPrivac
   onCancelRegistration,
 }) => {
   const [visible, setVisible] = useState<boolean>(true)
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('registration_data_privacy_cancel_dialog')
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -28,20 +29,20 @@ export const RegistrationDataPrivacyCancelAlert: React.FC<RegistrationDataPrivac
     <Alert visible={visible} onChange={setVisible}>
       <AlertContent ref={focusRef}>
         <AlertTitle
-          testID={buildTestId('registration_data_privacy_cancel_dialog_title')}
+          testID={addTestIdModifier(testID, 'title')}
           i18nKey="registration_data_privacy_cancel_dialog_title"
         />
         <AlertMessage
-          testID={buildTestId('registration_data_privacy_cancel_dialog_message')}
+          testID={addTestIdModifier(testID, 'message')}
           i18nKey="registration_data_privacy_cancel_dialog_message"
         />
         <Button
-          testID={buildTestId('registration_data_privacy_cancel_dialog_dismiss_button')}
+          testID={addTestIdModifier(testID, 'dismiss_button')}
           i18nKey="registration_data_privacy_cancel_dialog_dismiss_button"
           onPress={onDismiss}
         />
         <Button
-          testID={buildTestId('registration_data_privacy_cancel_dialog_cancel_button')}
+          testID={addTestIdModifier(testID, 'cancel_button')}
           i18nKey="registration_data_privacy_cancel_dialog_cancel_button"
           onPress={onCancelRegistration}
           variant="secondary"

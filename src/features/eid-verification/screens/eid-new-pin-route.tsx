@@ -25,7 +25,7 @@ export const EidNewPinRoute: React.FC<EidNewPinRouteProps> = ({ route }) => {
 
   const onNext = useCallback(
     (newPin: string) => {
-      navigation.navigate(EidInsertCardRouteName, {
+      navigation.replace(EidInsertCardRouteName, {
         flow: 'ChangePin',
         pin: route.params.pin,
         newPin,

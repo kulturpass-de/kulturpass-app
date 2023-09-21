@@ -14,6 +14,7 @@ import { AccountInfoData, PreferenceCategory } from '../../../services/api/types
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -81,19 +82,19 @@ export const Preferences: React.FC<PreferencesProps> = ({
 
   const onSubmit = form.handleSubmit(async formValues => {
     setLoading(true)
-    const selectedCategoryIds = sanitizeSelectedCategories({
-      availableCategories,
-      selectedCategoryIds: formValues.categories,
-    })
-    const preferences: AccountInfoData = {
-      preferredPostalCode: formValues.postalCode,
-      preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
-      preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
-      preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
-      preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
-    }
-
     try {
+      const selectedCategoryIds = sanitizeSelectedCategories({
+        availableCategories,
+        selectedCategoryIds: formValues.categories,
+      })
+      const preferences: AccountInfoData = {
+        preferredPostalCode: formValues.postalCode,
+        preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
+        preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
+        preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
+        preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
+      }
+
       await onPressSubmit(preferences)
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
@@ -101,7 +102,8 @@ export const Preferences: React.FC<PreferencesProps> = ({
       } else if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('preferences submit error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Preferences Submit'))
       }
     } finally {
       setLoading(false)

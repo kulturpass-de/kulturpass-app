@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useWatch } from 'react-hook-form'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
@@ -8,14 +9,19 @@ import { useAndroidBackButtonHandler } from '../../features/preferences/hooks/us
 import { usePreferences } from '../../features/preferences/hooks/use-preferences'
 import { isPreferencesFormDirty } from '../../features/preferences/utils/is-preferences-form-dirty'
 import { sanitizeSelectedCategories } from '../../features/preferences/utils/sanitize-selected-categories'
+import { UpdateProfileAlert } from '../../features/profile/components/update-profile-alert'
+import {
+  useNavigationOnBeforeRemove,
+  UseNavigationOnBeforeRemoveCallback,
+} from '../../navigation/useNavigationOnBeforeRemove'
 import { commerceApi } from '../../services/api/commerce-api'
 import { AccountInfoData } from '../../services/api/types'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useUserInfo } from '../../services/user/use-user-info'
-import { PreferencesAlert } from './preferences-alert'
 
 export type PreferencesScreenProps = {
   afterSubmitTriggered: () => void
@@ -57,6 +63,28 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
     return isPreferencesFormDirty(defaultValues, currentValues)
   }, [defaultValues, currentValues])
 
+  const navigation = useNavigation()
+
+  const navigationOnBeforeRemoveCallback = useCallback<UseNavigationOnBeforeRemoveCallback>(
+    e => {
+      if (!formIsDirty) {
+        // If we don't have unsaved changes, then we don't need to do anything
+        return
+      }
+
+      // Prevent default behavior of leaving the screen
+      e.preventDefault()
+
+      // Prompt the user before leaving the screen
+      setPreferencesAlertVisible(true)
+    },
+    [formIsDirty, setPreferencesAlertVisible],
+  )
+
+  const { unsubscribeOnBeforeRemoveCallback } = useNavigationOnBeforeRemove(
+    navigationOnBeforeRemoveCallback,
+    navigation,
+  )
   const onClose = useCallback(() => {
     if (formIsDirty) {
       setPreferencesAlertVisible(true)
@@ -67,11 +95,6 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
     return true
   }, [onPressClose, formIsDirty])
 
-  const onDiscardAlert = useCallback(() => {
-    setPreferencesAlertVisible(false)
-    onPressClose()
-  }, [onPressClose])
-
   const onDismissAlert = useCallback(() => {
     setPreferencesAlertVisible(false)
   }, [])
@@ -80,23 +103,32 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
     async (data: AccountInfoData) => {
       try {
         await setAccountInfo({ data })
+        unsubscribeOnBeforeRemoveCallback()
         afterSubmitTriggered()
       } catch (error: unknown) {
         if (error instanceof ErrorWithCode) {
           ErrorAlertManager.current?.showError(error)
         } else {
-          ErrorAlertManager.current?.showError(new UnknownError())
+          logger.warn('setAccountInfo error cannot be interpreted', JSON.stringify(error))
+          ErrorAlertManager.current?.showError(new UnknownError('Preferences SetAccountInfo'))
         }
       }
     },
-    [setAccountInfo, afterSubmitTriggered],
+    [setAccountInfo, afterSubmitTriggered, unsubscribeOnBeforeRemoveCallback],
   )
 
   useAndroidBackButtonHandler(onClose)
 
+  const onDiscardAlert = useCallback(() => {
+    preferencesForm.reset(defaultValues)
+    setPreferencesAlertVisible(false)
+    unsubscribeOnBeforeRemoveCallback()
+    onPressClose()
+  }, [preferencesForm, defaultValues, onPressClose, unsubscribeOnBeforeRemoveCallback])
+
   return (
     <>
-      <PreferencesAlert visible={preferencesAlertVisible} onDiscard={onDiscardAlert} onDismiss={onDismissAlert} />
+      <UpdateProfileAlert visible={preferencesAlertVisible} onDiscard={onDiscardAlert} onDismiss={onDismissAlert} />
       <LoadingIndicator loading={preferenceCategories.isLoading || accountInfo.isLoading} />
       <Screen
         testID={buildTestId('preferences')}
@@ -104,7 +136,7 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
           <ScreenHeader
             title={t('editPreferences_title')}
             testID={buildTestId('editPreferences_title')}
-            onPressClose={formIsDirty ? onPressClose : undefined}
+            onPressClose={formIsDirty ? onClose : undefined}
             onPressBack={onClose}
             screenType="subscreen"
           />

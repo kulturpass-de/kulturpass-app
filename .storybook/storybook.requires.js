@@ -80,6 +80,7 @@ const getStories = () => {
     "./src/features/product-detail/components/product-report-body.stories.tsx": require("../src/features/product-detail/components/product-report-body.stories.tsx"),
     "./src/features/product-detail/stories/offer-selection-screen.stories.tsx": require("../src/features/product-detail/stories/offer-selection-screen.stories.tsx"),
     "./src/features/product-detail/stories/product-detail-screen.stories.tsx": require("../src/features/product-detail/stories/product-detail-screen.stories.tsx"),
+    "./src/features/profile/components/update-profile-alert.stories.tsx": require("../src/features/profile/components/update-profile-alert.stories.tsx"),
     "./src/features/release-notes/screens/release-notes-modal-screen.stories.tsx": require("../src/features/release-notes/screens/release-notes-modal-screen.stories.tsx"),
     "./src/features/release-notes/screens/release-notes-screen.stories.tsx": require("../src/features/release-notes/screens/release-notes-screen.stories.tsx"),
     "./src/features/reservations/components/reservation-detail-footer.stories.tsx": require("../src/features/reservations/components/reservation-detail-footer.stories.tsx"),

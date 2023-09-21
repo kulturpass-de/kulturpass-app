@@ -27,7 +27,7 @@ export const EidCanRoute: React.FC<EidCanRouteProps> = ({ route }) => {
 
   const onNext = useCallback(
     (can: string) => {
-      navigation.navigate(EidInsertCardRouteName, {
+      navigation.replace(EidInsertCardRouteName, {
         flow,
         can,
       })

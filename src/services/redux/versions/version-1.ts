@@ -53,6 +53,10 @@ export type ApiOfflineCacheState = {
   }
 }
 
+export type InAppReviewState = {
+  lastShownTimestamp?: number
+}
+
 export type PersistState = {
   environmentConfiguration: EnvironmentConfigurationState
   onboarding: OnboardingState
@@ -61,4 +65,5 @@ export type PersistState = {
   cardSimulation: CardSimulationState
   releaseNotes: ReleaseNotesState
   apiOfflineCache: ApiOfflineCacheState
+  inAppReview: InAppReviewState
 }

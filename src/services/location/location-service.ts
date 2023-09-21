@@ -1,4 +1,5 @@
 import { Platform } from 'react-native'
+import DeviceInfo from 'react-native-device-info'
 import Geolocation, { GeoPosition, PositionError } from 'react-native-geolocation-service'
 import { check, PERMISSIONS, RESULTS, request, PermissionStatus } from 'react-native-permissions'
 import { logger } from '../../services/logger'
@@ -36,7 +37,7 @@ const createLocationService = () => {
       }
     },
     async getCurrentLocation(): Promise<GeoPosition | undefined> {
-      if ((await this.checkLocationPermission()) === RESULTS.GRANTED) {
+      if ((await DeviceInfo.isLocationEnabled()) && (await this.checkLocationPermission()) === RESULTS.GRANTED) {
         return new Promise((res, rej) => {
           Geolocation.getCurrentPosition(res, rej, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 })
         })

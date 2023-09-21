@@ -11,8 +11,8 @@ import { getDisplayVersion } from '../utils/get-display-version'
 import { ReleaseNotesProps } from './release-notes-view'
 
 const BULLET_SIZE = 6
-const RELEASE_FEATURES_VERSION = '1.6'
-const RELEASE_FEATURE_COUNT = 4
+const RELEASE_FEATURES_VERSION = '1.7'
+const RELEASE_FEATURE_COUNT = 1
 
 type ReleaseNotesBulletListProps = Pick<ReleaseNotesProps, 'bodyTextListBaseI18nKey'>
 

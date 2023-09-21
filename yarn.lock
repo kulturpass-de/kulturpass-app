@@ -2917,10 +2917,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@sap/react-native-ausweisapp2-wrapper@1.1.5":
-  version "1.1.5"
-  resolved "https://common.repositories.cloud.sap/artifactory/api/npm/deploy-releases-hyperspace-npm/@sap/react-native-ausweisapp2-wrapper/-/@sap/react-native-ausweisapp2-wrapper-1.1.5.tgz#58ba1f9a78634a729f1dbeba3b49f269a4a78149"
-  integrity sha512-s+kF+fow5jls/FP2nLJTYy5rSs6orw61Hoax2lMBNkeCT10X4AjHmdM4+WpMOcQ0g9Uz4L/sHzkQtpFFLNW8Lg==
+"@sap/react-native-ausweisapp2-wrapper@1.1.6":
+  version "1.1.6"
+  resolved "https://common.repositories.cloud.sap/artifactory/api/npm/deploy-releases-hyperspace-npm/@sap/react-native-ausweisapp2-wrapper/-/@sap/react-native-ausweisapp2-wrapper-1.1.6.tgz#8500cfd9c0c2f6763cfeb306fe71e509ed6cf308"
+  integrity sha512-0b0aDpxPfc4V93JQscs9brSK/0zWuwpnWxZACJzooRrbJdvJ/kD0m+v7nfdNreQyjYp0PIPANvFlafbyfyfQqg==
   dependencies:
     rxjs "^7.8.1"
 
@@ -11231,6 +11231,11 @@ react-native-get-random-values@^1.9.0:
   integrity sha512-+29IR2oxzxNVeaRwCqGZ9ABadzMI8SLTBidrIDXPOkKnm5+kEmLt34QKM4JV+d2usPErvKyS85le0OmGTHnyWQ==
   dependencies:
     fast-base64-decode "^1.0.0"
+
+react-native-in-app-review@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-4.3.3.tgz#61f09f110de18f0a470a9bb55b9f49600390085f"
+  integrity sha512-Q9sXBtK8tCBYFPCGmMgeMlkxXC5e6vAyPZK26OC1oOKUuKUd0QORnryk/qbwnuN4fLshHQN8UKlLgyHLGRuK3A==
 
 react-native-modal-datetime-picker@^14.0.0:
   version "14.0.1"

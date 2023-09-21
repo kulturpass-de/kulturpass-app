@@ -10,7 +10,6 @@ import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { ReleaseNotesRouteName } from '../../features/release-notes/screens/release-notes-route'
 import { SettingsParamList } from '../../navigation/tabs/settings/types'
-import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -22,7 +21,7 @@ import {
   getImprintUrl,
   getOpenSourceLegalNoticeUrl,
 } from '../../utils/links/hooks/use-localized-environment-url'
-import { openLink } from '../../utils/links/utils'
+import { linkLogger, openLink } from '../../utils/links/utils'
 
 export type AppInformationsScreenProps = {
   onPressBackButton?: () => void
@@ -39,11 +38,11 @@ export const AppInformationsScreen: React.FC<AppInformationsScreenProps> = ({ on
   const imprintUrl = useLocalizedEnvironmentUrl(getImprintUrl)
   const openSourceLegalNoticeUrl = useLocalizedEnvironmentUrl(getOpenSourceLegalNoticeUrl)
 
-  const onDpsDocumentLinkPress = useCallback(() => openLink(dpsDocumentUrl).catch(logger.logError), [dpsDocumentUrl])
-  const onEulaDocumentLinkPress = useCallback(() => openLink(eulaDocumentUrl).catch(logger.logError), [eulaDocumentUrl])
-  const onImprintLinkPress = useCallback(() => openLink(imprintUrl).catch(logger.logError), [imprintUrl])
+  const onDpsDocumentLinkPress = useCallback(() => openLink(dpsDocumentUrl).catch(linkLogger), [dpsDocumentUrl])
+  const onEulaDocumentLinkPress = useCallback(() => openLink(eulaDocumentUrl).catch(linkLogger), [eulaDocumentUrl])
+  const onImprintLinkPress = useCallback(() => openLink(imprintUrl).catch(linkLogger), [imprintUrl])
   const onOpenSourceLegalNoticeLinkPress = useCallback(
-    () => openLink(openSourceLegalNoticeUrl).catch(logger.logError),
+    () => openLink(openSourceLegalNoticeUrl).catch(linkLogger),
     [openSourceLegalNoticeUrl],
   )
   const onOpenReleaseNotes = useCallback(() => navigation.navigate(ReleaseNotesRouteName), [navigation])

@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Platform, StyleSheet } from 'react-native'
 import { z } from 'zod'
@@ -17,18 +18,25 @@ import { ScreenHeader } from '../../components/screen/screen-header'
 import { useFocusErrors } from '../../features/form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../features/form-validation/hooks/use-validation-errors'
 import { DATE_SCHEMA, EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validation'
+import { UpdateProfileAlert } from '../../features/profile/components/update-profile-alert'
+import {
+  useNavigationOnBeforeRemove,
+  UseNavigationOnBeforeRemoveCallback,
+} from '../../navigation/useNavigationOnBeforeRemove'
 import { AccountsGetAccountInfoResponse, AccountsSetAccountInfoSignedRequestParams } from '../../services/api/types'
 import { CdcStatusInvalidParameter, CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useSetAccountInfo } from '../../services/user/use-set-account-info'
-import { useUserInfo } from '../../services/user/use-user-info'
 import { spacing } from '../../theme/spacing'
 
-const hasIdVerfiedDayOfBirth = (response?: AccountsGetAccountInfoResponse) => {
-  return !!(response?.data?.idVerified === 'true' && response?.data.eid?.dateOfBirth)
+type AccountInfoData = Required<Pick<AccountsGetAccountInfoResponse, 'data' | 'profile'>>
+
+const hasIdVerifiedDayOfBirth = (data?: AccountInfoData) => {
+  return !!(data?.data?.idVerified === 'true' && data?.data.eid?.dateOfBirth)
 }
 
 export type UpdateProfileFormData = {
@@ -45,14 +53,18 @@ export type UpdateProfileFormData = {
 export type UpdateProfileFormDataKeys = keyof UpdateProfileFormData
 
 export type UpdateProfileScreenProps = {
+  accountInfoData: AccountInfoData
   onHeaderPressClose: () => void
   afterUpdate: () => void
 }
 
-export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHeaderPressClose, afterUpdate }) => {
+export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
+  onHeaderPressClose,
+  afterUpdate,
+  accountInfoData,
+}) => {
   const { t } = useTranslation()
-  const [state, setState] = useState({ isLoading: false, hasSetDefaultValues: false })
-
+  const [submitLoading, setSubmitLoading] = useState(false)
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const form = useForm<UpdateProfileFormData>({
     shouldFocusError: false,
@@ -75,39 +87,68 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
           message: t('form_error_required'),
         }),
     ),
+    defaultValues: {
+      email: accountInfoData.profile.email,
+      firstName: accountInfoData.profile.firstName,
+      dateOfBirth:
+        accountInfoData.data.idVerified === 'true' && accountInfoData.data.eid
+          ? accountInfoData.data.eid.dateOfBirth
+          : accountInfoData.data.dateOfBirth || undefined,
+    },
   })
 
-  const { accountInfo } = useUserInfo()
   const setAccountInfo = useSetAccountInfo()
-  useEffect(() => {
-    if (state.hasSetDefaultValues) {
+
+  const navigation = useNavigation()
+  const [alertVisible, setAlertVisible] = useState(false)
+
+  const isDirty = form.formState.isDirty
+
+  const onClose = useCallback(() => {
+    if (isDirty) {
+      setAlertVisible(true)
       return
     }
+    onHeaderPressClose()
+  }, [isDirty, setAlertVisible, onHeaderPressClose])
 
-    if (accountInfo.data?.profile && accountInfo.data?.data) {
-      const {
-        profile: { firstName, email },
-        data,
-      } = accountInfo.data
-
-      let dateOfBirth: string | undefined
-      if (data.idVerified === 'true' && data.eid) {
-        dateOfBirth = data.eid.dateOfBirth
-      } else if (data.dateOfBirth) {
-        dateOfBirth = data.dateOfBirth
+  const navigationOnBeforeRemoveCallback = useCallback<UseNavigationOnBeforeRemoveCallback>(
+    e => {
+      if (!isDirty) {
+        // If we don't have unsaved changes, then we don't need to do anything
+        return
       }
 
-      form.reset({ email, firstName, dateOfBirth })
+      // Prevent default behavior of leaving the screen
+      e.preventDefault()
 
-      setState(currentState => ({ ...currentState, hasSetDefaultValues: true }))
-    }
-  }, [state, form, accountInfo.data])
+      // Prompt the user before leaving the screen
+      setAlertVisible(true)
+    },
+    [isDirty, setAlertVisible],
+  )
+
+  const { unsubscribeOnBeforeRemoveCallback } = useNavigationOnBeforeRemove(
+    navigationOnBeforeRemoveCallback,
+    navigation,
+  )
+
+  const onDiscardAlert = useCallback(() => {
+    setAlertVisible(false)
+    form.reset()
+    unsubscribeOnBeforeRemoveCallback()
+    onHeaderPressClose()
+  }, [onHeaderPressClose, setAlertVisible, unsubscribeOnBeforeRemoveCallback, form])
+
+  const onDismissAlert = useCallback(() => {
+    setAlertVisible(false)
+  }, [setAlertVisible])
 
   useFocusErrors(form)
   const { setErrors, setError } = useValidationErrors(form)
 
   const onSubmit = form.handleSubmit(async data => {
-    setState(currentState => ({ ...currentState, isLoading: true }))
+    setSubmitLoading(true)
     try {
       const { email, firstName, dateOfBirth, password, newPassword } = data
 
@@ -127,6 +168,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
       }
 
       await setAccountInfo(update)
+      unsubscribeOnBeforeRemoveCallback()
       afterUpdate()
     } catch (error: unknown) {
       if (error instanceof CdcStatusInvalidParameter) {
@@ -140,10 +182,11 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
       } else if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('update profile error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Update Profile'))
       }
     } finally {
-      setState(currentState => ({ ...currentState, isLoading: false }))
+      setSubmitLoading(false)
     }
   })
 
@@ -151,14 +194,16 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
 
   return (
     <>
-      <LoadingIndicator loading={accountInfo.isLoading || state.isLoading} />
+      <UpdateProfileAlert visible={alertVisible} onDiscard={onDiscardAlert} onDismiss={onDismissAlert} />
+      <LoadingIndicator loading={submitLoading || form.formState.isLoading} />
       <Screen
         testID={testID}
         header={
           <ScreenHeader
             title={t('updateProfile_headline')}
             testID={buildTestId('updateProfile_headline')}
-            onPressClose={onHeaderPressClose}
+            onPressClose={isDirty ? onClose : undefined}
+            onPressBack={onClose}
             screenType="subscreen"
           />
         }>
@@ -192,7 +237,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
               labelI18nKey="updateProfile_dateOfBirth"
               testID={addTestIdModifier(testID, 'dateOfBirth')}
               control={form.control}
-              disabled={hasIdVerfiedDayOfBirth(accountInfo.data)}
+              disabled={hasIdVerifiedDayOfBirth(accountInfoData)}
               disableAccessibilityForLabel
             />
           </FormFieldGroup>
@@ -234,7 +279,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({ onHead
         </ScreenContent>
         <ModalScreenFooter ignorePaddingWithSafeArea={false}>
           <Button
-            disabled={!form.formState.isDirty}
+            disabled={!isDirty}
             testID={addTestIdModifier(testID, 'submit')}
             i18nKey="updateProfile_submit"
             onPress={onSubmit}

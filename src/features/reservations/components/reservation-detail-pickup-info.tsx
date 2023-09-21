@@ -6,12 +6,11 @@ import { Button } from '../../../components/button/button'
 import { CopyToClipboard } from '../../../components/copy-to-clipboard/copy-to-clipboard'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
-import { logger } from '../../../services/logger'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { openLink } from '../../../utils/links/utils'
+import { linkLogger, openLink } from '../../../utils/links/utils'
 
 export type ReservationDetailPickupInfoProps = {
   orderEntry: OrderEntry
@@ -40,7 +39,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
       return
     }
 
-    await openLink(orderEntry.voucherRedemptionUrl).catch(logger.logError)
+    await openLink(orderEntry.voucherRedemptionUrl).catch(linkLogger)
   }, [orderEntry.voucherRedemptionUrl])
 
   return (
@@ -52,15 +51,17 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             textStyle="CaptionSemibold"
             textStyleOverrides={[styles.voucherCodeHeadline, { color: colors.labelColor }]}
           />
-          <Text style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode} />
-          <CopyToClipboard
-            baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
-            copyToClipboardAccessibilityI18nKey={
-              'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
-            }
-            onPress={onPressVoucherCodeCopy}
-            style={styles.voucherCodeCopyIcon}
-          />
+          <View style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode}>
+            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
+            <CopyToClipboard
+              baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
+              copyToClipboardAccessibilityI18nKey={
+                'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
+              }
+              onPress={onPressVoucherCodeCopy}
+              style={styles.voucherCodeCopyIcon}
+            />
+          </View>
         </>
       ) : null}
       {orderEntry.voucherRedemptionUrl ? (

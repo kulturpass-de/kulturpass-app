@@ -131,14 +131,20 @@ test('Should render product detail footer without a total price', async () => {
       fulfillmentOption="PICKUP_CODE"
       reservationSuspended={false}
       onReserve={onReserve}
-      // no offer = do not display the footer
+      // no offer = show no offer footer
       // selectedOffer={}
     />,
   )
 
   await act(() => {})
 
-  await waitFor(() => expect(screen.queryAllByTestId(buildTestId('productDetail_footer')).length).toBe(0))
+  expect(await screen.findByTestId(buildTestId('productDetail_footer_noOffer_badge'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('productDetail_footer_noOffer_text'))).toBeOnTheScreen()
+  expect(await screen.findByTestId(buildTestId('productDetail_footer'))).toBeOnTheScreen()
+
+  await waitFor(() =>
+    expect(screen.queryAllByTestId(buildTestId('productDetail_footer_reserve_button')).length).toBe(0),
+  )
 })
 
 test('Should render product detail without reservation button if reservationSuspended', async () => {

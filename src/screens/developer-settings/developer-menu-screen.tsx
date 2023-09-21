@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useReducer, useState } from 'react'
-import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
+import { Keyboard, Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../components/button/button'
 import { ListItem } from '../../components/list-item/list-item'
@@ -11,13 +11,15 @@ import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-he
 import { ScreenContent } from '../../components/screen/screen-content'
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
+import { setLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review'
+import { getLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review-selectors'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { useReleaseNotesConfig } from '../../features/release-notes/hooks/use-release-notes-config'
 import { RootStackParams } from '../../navigation/types'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { logger } from '../../services/logger'
-import { RootState } from '../../services/redux/configure-store'
+import { AppDispatch, RootState } from '../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -57,16 +59,20 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
 }) => {
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const dispatch = useDispatch<AppDispatch>()
   const { buildTestId } = useTestIdBuilder()
   const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
+  const lastShownTimestamp = useSelector(getLastShownTimestamp)
 
   const [productCode, setProductCode] = useState('')
   const [tapCounter, incrementTapCounter] = useReducer((current: number) => current + 1, 1)
 
   const onOpenProductDetail = useCallback(() => {
+    // Otherwise the Keyboard might still be open, creating visual bugs through the KeyboardAvoidingView
+    Keyboard.dismiss()
     rootNavigation.navigate('PDP', {
       screen: ProductDetailRouteConfig.name,
       params: {
@@ -87,6 +93,10 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const startEidFlow = useCallback(() => {
     navigation.navigate('Eid', { screen: 'EidAboutVerification' })
   }, [navigation])
+
+  const resetInAppReviewTimestamp = useCallback(() => {
+    dispatch(setLastShownTimestamp(undefined))
+  }, [dispatch])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
   const { showReleaseNotesOnAppStart, toggleShowReleaseNotesOnAppStart } = useReleaseNotesConfig()
@@ -197,6 +207,23 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
+        <View
+          style={[
+            styles.productCodeListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <Button
+            disabled={lastShownTimestamp === undefined}
+            onPress={resetInAppReviewTimestamp}
+            testID={buildTestId('developerMenu_resetInAppReviewTimestamp_button')}
+            i18nKey="developerMenu_resetInAppReviewTimestamp_button"
+          />
+          <TranslatedText
+            textStyle="BodyRegular"
+            i18nKey="developerMenu_resetInAppReviewTimestamp_message"
+            textStyleOverrides={[styles.warningMessage, { color: colors.labelColor }]}
+          />
+        </View>
         {isLoggedIn && tapCounter > ADDITIONAL_OPTIONS_TAP_COUNTER ? (
           <View
             style={[
@@ -249,5 +276,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 2,
     borderRadius: 8,
+  },
+  warningMessage: {
+    textAlign: 'center',
+    paddingTop: spacing[1],
   },
 })

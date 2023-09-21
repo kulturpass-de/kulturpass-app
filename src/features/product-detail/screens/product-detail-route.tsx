@@ -68,12 +68,12 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   }, [navigation, selectedOffer])
 
   const reserveProduct = useCallback(async () => {
-    if (!selectedOffer?.code) {
+    if (!selectedOffer || !productDetail) {
       return
     }
 
-    navigation.navigate('ProductConfirmReservation', { productCode, offerId: selectedOffer.id })
-  }, [productCode, selectedOffer, navigation])
+    navigation.navigate('ProductConfirmReservation', { productDetail, selectedOffer })
+  }, [productDetail, selectedOffer, navigation])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
     !isFetching ? error ?? randomProductResult.error : undefined,

@@ -14,7 +14,11 @@ export const onCommerceAccessTokenChangeEffect: ListenerEffect = async (action, 
   const promises = Object.values(WebViewId).map(async webViewId => {
     logger.log('onCommerceAccessTokenChangeEffect', webViewId, 'will call webviewsValidateSession')
 
-    await listenerApi.dispatch(webviewsValidateSession(webViewId)).unwrap()
+    try {
+      await listenerApi.dispatch(webviewsValidateSession(webViewId)).unwrap()
+    } catch (error: unknown) {
+      logger.logError('onCommerceAccessTokenChangeEffect webviewsValidateSession', error)
+    }
   })
 
   await Promise.all(promises)

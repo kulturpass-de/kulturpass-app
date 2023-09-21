@@ -27,7 +27,7 @@ export const EidPukRoute: React.FC<EidPukRouteProps> = ({ route }) => {
 
   const onNext = useCallback(
     (puk: string) => {
-      navigation.navigate(EidInsertCardRouteName, {
+      navigation.replace(EidInsertCardRouteName, {
         flow,
         puk,
       })

@@ -44,6 +44,8 @@ export const colorMappings: ColorMappings = {
   chipText: colors.basicWhite,
   chipTextActive: colors.basicWhite,
   badgeBackground: colors.primaryDarkest,
+  badgeBackground2: colors.primaryDarkestTile,
+  badgeColor2: colors.sunLightest,
 }
 
 export const preferenceButtonColors: PreferencesButtonColors = {

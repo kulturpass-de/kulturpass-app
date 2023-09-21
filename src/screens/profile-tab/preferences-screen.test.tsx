@@ -38,7 +38,7 @@ test('Should not show the preferences alert since no changes were made', async (
 
   fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).not.toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
   expect(onPressClose).toHaveBeenCalledTimes(1)
 })
 
@@ -51,11 +51,11 @@ test('Should show the preferences alert since changes were made and the back but
 
   fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_alert_dismiss')))
+  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_dismiss')))
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).not.toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
   expect(screen.getByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
   expect(onPressClose).toHaveBeenCalledTimes(0)
 })
@@ -69,15 +69,15 @@ test('Should show the preferences alert since changes were made and the back but
 
   fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_alert_discard')))
+  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).not.toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
   expect(onPressClose).toHaveBeenCalledTimes(1)
 })
 
-test('Should let the user leave the preferences screen, when the close button has been pressed, without displaying the preferences alert', async () => {
+test('Should not let the user leave the preferences screen, when the close button has been pressed, since preferences alert is displayed', async () => {
   renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
 
   let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
@@ -88,7 +88,10 @@ test('Should let the user leave the preferences screen, when the close button ha
 
   // alert should not be shown, back navigation should happen
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_alert_title'))).not.toBeOnTheScreen()
+  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+
+  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
+
   expect(screen.getByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
   expect(onPressClose).toHaveBeenCalledTimes(1)
 })

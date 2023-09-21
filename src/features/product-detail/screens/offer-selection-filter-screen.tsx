@@ -39,7 +39,14 @@ export const OfferSelectionFilterScreen: React.FC<OfferSelectionFilterScreenProp
   const currentLocationAvailable = useSelector(getCurrentUserLocation) !== undefined
 
   const [selected, setSelected] = useState<'location' | 'postalCode'>(defaultLocationProvider?.provider ?? 'postalCode')
-  const openRequestLocationPopup = useRequestLocationPopup()
+
+  const onLocationPopupFinished = useCallback((isGranted: boolean) => {
+    if (isGranted) {
+      setSelected('location')
+    }
+  }, [])
+
+  const openRequestLocationPopup = useRequestLocationPopup(onLocationPopupFinished)
 
   const onSelectLocation = useCallback(() => {
     if (!currentLocationAvailable) {

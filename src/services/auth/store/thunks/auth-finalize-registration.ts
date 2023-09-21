@@ -17,7 +17,7 @@ export const authFinalizeRegistration = createThunk<void, { url: URL }>(
     const regToken = url.searchParams.get('regToken')
 
     if (regToken === null) {
-      throw new UnknownError()
+      throw new UnknownError('RegToken is null')
     }
     thunkAPI.dispatch(userSlice.actions.setRegistrationFinalizationInProgess(true))
     try {

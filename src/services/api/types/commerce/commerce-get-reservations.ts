@@ -21,7 +21,6 @@ export const COMPLETED_STATUSES = [
 
 export type GetReservationsParams = {
   statuses?: string
-  //TODO: Add fields, pageSize, sort (API not ready at time of implementation)
 }
 
 export type GetReservationsResponse = OrderHistoryList

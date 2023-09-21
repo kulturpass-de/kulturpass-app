@@ -19,6 +19,7 @@ export const migrations = {
       ...stateWithoutAppCore,
       apiOfflineCache: { commerceApi: {} },
       persistedAppCore: appCore,
+      inAppReview: {},
     }
   },
 }

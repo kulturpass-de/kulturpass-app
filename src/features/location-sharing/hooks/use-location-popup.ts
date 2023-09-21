@@ -5,7 +5,7 @@ import { AppDispatch } from '../../../services/redux/configure-store'
 import { forceRefreshLocation } from '../redux/thunks/force-refresh-location'
 import { LocationSharingRouteName } from '../screen/location-sharing-route'
 
-export const useRequestLocationPopup = () => {
+export const useRequestLocationPopup = (onLocationPopupFinished?: (isGranted: boolean) => void) => {
   const modalNavigation = useModalNavigation()
   const dispatch = useDispatch<AppDispatch>()
   return useCallback(async () => {
@@ -14,7 +14,9 @@ export const useRequestLocationPopup = () => {
       isGranted = await dispatch(forceRefreshLocation()).unwrap()
     } catch (_error: unknown) {}
     if (!isGranted) {
-      modalNavigation.navigate({ screen: LocationSharingRouteName })
+      modalNavigation.navigate({ screen: LocationSharingRouteName, params: { onFinished: onLocationPopupFinished } })
+    } else {
+      onLocationPopupFinished?.(isGranted)
     }
-  }, [dispatch, modalNavigation])
+  }, [dispatch, modalNavigation, onLocationPopupFinished])
 }

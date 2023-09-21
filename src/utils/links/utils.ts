@@ -1,6 +1,7 @@
 import { Linking } from 'react-native'
 import strictUriEncode from 'strict-uri-encode'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
+import { logger } from '../../services/logger'
 import { LinkError, MailToError } from './errors'
 
 export const openLink = async (link: string) => {
@@ -40,4 +41,8 @@ export const sendMail = async (recipient: string, subject?: string, content?: st
 
 export const createProductLink = (baseUrl: string, productId: string, productTitle: string): string => {
   return new URL(`/product/${productId}/${productTitle}`, baseUrl).href
+}
+
+export const linkLogger = (error: unknown) => {
+  logger.logError('Open link failed', error)
 }

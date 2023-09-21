@@ -5,11 +5,9 @@ import { Alert } from '../../components/alert/alert'
 import { AlertContent } from '../../components/alert/alert-content'
 import { AlertTitle } from '../../components/alert/alert-title'
 import { Button } from '../../components/button/button'
-import { TranslatedText } from '../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
-import { useTheme } from '../../theme/hooks/use-theme'
-import { spacing } from '../../theme/spacing'
+import { AlertMessage } from '../alert/alert-message'
 import { AvailableTranslations } from '../translated-text/types'
 
 export type CancelConfirmAlertProps = {
@@ -31,7 +29,6 @@ export const CancelConfirmAlert: React.FC<CancelConfirmAlertProps> = ({
   ...i18n
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
-  const { colors } = useTheme()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -39,12 +36,7 @@ export const CancelConfirmAlert: React.FC<CancelConfirmAlertProps> = ({
     <Alert visible={visible}>
       <AlertContent ref={focusRef} style={styles.container}>
         <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey={i18n.i18nKeyTitle} />
-        <TranslatedText
-          textStyleOverrides={[styles.text, { color: colors.labelColor }]}
-          testID={addTestIdModifier(testID, 'text')}
-          i18nKey={i18n.i18nKeyText}
-          textStyle="BodyRegular"
-        />
+        <AlertMessage testID={addTestIdModifier(testID, 'text')} i18nKey={i18n.i18nKeyText} />
         <Button
           testID={addTestIdModifier(testID, 'dismiss_button')}
           i18nKey={i18n.i18nKeyDismissButton}
@@ -67,10 +59,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     textAlign: 'center',
-  },
-  text: {
-    flexWrap: 'wrap',
-    textAlign: 'center',
-    marginBottom: spacing[6],
   },
 })

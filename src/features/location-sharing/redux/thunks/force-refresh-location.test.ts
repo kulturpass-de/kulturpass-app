@@ -4,8 +4,6 @@ import { locationService } from '../../../../services/location/location-service'
 import { refreshLocation } from '../../../../services/location/redux/thunks/refresh-location'
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { userSlice } from '../../../../services/user/redux/user-slice'
-import { webviewsLocationSync } from '../../../../services/webviews/redux/thunks/webviews-location-sync'
-import { WebViewId } from '../../../spartacus-webview/services/webview-bridge-adapter/types'
 import { forceRefreshLocation } from './force-refresh-location'
 
 jest.mock('../../../../services/location/location-service', () => ({
@@ -43,18 +41,6 @@ describe('force-refresh-location', () => {
       {
         type: refreshLocation.fulfilled.type,
       },
-      {
-        type: webviewsLocationSync.fulfilled.type,
-        meta: {
-          arg: WebViewId.Home,
-        },
-      },
-      {
-        type: webviewsLocationSync.fulfilled.type,
-        meta: {
-          arg: WebViewId.Search,
-        },
-      },
     ])
   })
 
@@ -78,18 +64,6 @@ describe('force-refresh-location', () => {
       {
         type: refreshLocation.fulfilled.type,
       },
-      {
-        type: webviewsLocationSync.fulfilled.type,
-        meta: {
-          arg: WebViewId.Home,
-        },
-      },
-      {
-        type: webviewsLocationSync.fulfilled.type,
-        meta: {
-          arg: WebViewId.Search,
-        },
-      },
     ])
   })
 
@@ -107,8 +81,6 @@ describe('force-refresh-location', () => {
 
     store.expectActionNotDispatched(userSlice.actions.setUserDeniedLocationServices.match)
     store.expectActionNotDispatched(refreshLocation.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
   })
 
   it('should not request again on android if permission is denied', async () => {
@@ -125,8 +97,6 @@ describe('force-refresh-location', () => {
 
     store.expectActionNotDispatched(userSlice.actions.setUserDeniedLocationServices.match)
     store.expectActionNotDispatched(refreshLocation.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
   })
 
   it('should not force refresh location if permission is not granted', async () => {
@@ -141,7 +111,5 @@ describe('force-refresh-location', () => {
 
     store.expectActionNotDispatched(userSlice.actions.setUserDeniedLocationServices.match)
     store.expectActionNotDispatched(refreshLocation.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
-    store.expectActionNotDispatched(webviewsLocationSync.fulfilled.match)
   })
 })

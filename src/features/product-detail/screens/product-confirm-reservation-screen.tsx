@@ -6,13 +6,13 @@ import { LoadingIndicator } from '../../../components/loading-indicator/loading-
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ScreenContent } from '../../../components/screen/screen-content'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../../services/errors/use-dismissable-error'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
@@ -43,7 +43,6 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   productDetail,
   selectedOffer,
 }) => {
-  const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
@@ -58,11 +57,14 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
       return
     }
     setLoading(true)
-    const reservation = await reservationMutation({ offerCode: selectedOffer.code })
-    if (!('error' in reservation) && reservation.data.code) {
-      afterReserveProduct({ orderCode: reservation.data.code })
+    try {
+      const reservation = await reservationMutation({ offerCode: selectedOffer.code })
+      if (!('error' in reservation) && reservation.data.code) {
+        afterReserveProduct({ orderCode: reservation.data.code })
+      }
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [reservationMutation, selectedOffer, afterReserveProduct])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
@@ -87,19 +89,29 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
           />
         </View>
         <View style={styles.subtitleContainer}>
-          <Text
-            style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}
-            accessibilityLabel={t('productDetail_confirmReservation_subtitle') + ' ' + selectedOffer.shopName}
-            accessibilityHint={t('productDetail_confirmReservation_supplierName')}
-            testID={buildTestId('productDetail_confirmReservation_supplierName')}>
-            <TranslatedText
-              i18nKey="productDetail_confirmReservation_subtitle"
-              textStyle="BodyRegular"
-              textStyleOverrides={{ color: colors.labelColor }}
-              testID={buildTestId('productDetail_confirmReservation_subtitle')}
-            />
-            {' ' + selectedOffer.shopName}
-          </Text>
+          <SvgImage width={41} height={41} type="bouncy-left" />
+          <View style={styles.address}>
+            {selectedOffer.shopName ? (
+              <Text
+                testID={buildTestId('productDetail_confirmReservation_shopName')}
+                style={[styles.addressText, textStyles.BodyBlack, { color: colors.labelColor }]}>
+                {selectedOffer.shopName}
+              </Text>
+            ) : null}
+            {selectedOffer.shopAddress?.street ? (
+              <Text
+                testID={buildTestId('productDetail_confirmReservation_street')}
+                style={[styles.addressText, textStyles.BodyRegular, { color: colors.labelColor }]}>
+                {selectedOffer.shopAddress.street}
+              </Text>
+            ) : null}
+            <Text
+              testID={buildTestId('productDetail_confirmReservation_city')}
+              style={[styles.addressText, textStyles.BodyRegular, { color: colors.labelColor }]}>
+              {selectedOffer.shopAddress?.postalCode ?? ''} {selectedOffer.shopAddress?.city ?? ''}
+            </Text>
+          </View>
+          <SvgImage width={41} height={41} type="bouncy-right" />
         </View>
         <View style={styles.descriptionContainer}>
           <TranslatedText
@@ -158,6 +170,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     marginBottom: spacing[6],
+    textAlign: 'center',
+    alignItems: 'center',
   },
   descriptionContainer: {
     marginBottom: spacing[5],
@@ -169,5 +183,11 @@ const styles = StyleSheet.create({
   reservationDetailsLink: {
     marginBottom: spacing[4],
     textDecorationLine: 'underline',
+  },
+  address: {
+    flexShrink: 1,
+  },
+  addressText: {
+    textAlign: 'center',
   },
 })

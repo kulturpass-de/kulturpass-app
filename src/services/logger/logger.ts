@@ -1,5 +1,4 @@
 import { env } from '../../env'
-import { ErrorWithCode } from '../errors/errors'
 
 export interface LoggerType {
   debug(args: any[]): void
@@ -33,9 +32,14 @@ export class Logger implements LoggerType {
       console.log('Response', ...args)
     }
   }
-  logError(error: ErrorWithCode) {
+  logRequestError(...args: any[]) {
+    if (env.DEV_MENU && !env.DEBUG_SKIP_REQUEST_LOGGING) {
+      console.log('Request Error', ...args)
+    }
+  }
+  logError(origin: string, error: unknown) {
     if (env.DEV_MENU) {
-      console.warn('Error', JSON.stringify(error))
+      console.warn(`${origin} Errored`, JSON.stringify(error))
     }
   }
 }

@@ -67,6 +67,8 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 
 jest.mock('./src/theme/hooks/use-theme');
+jest.mock('./src/utils/accessibility/hooks/use-is-screen-reader-active');
+jest.mock('./src/services/webviews/injection-service');
 
 jest.mock('./src/env', () => {
   return {

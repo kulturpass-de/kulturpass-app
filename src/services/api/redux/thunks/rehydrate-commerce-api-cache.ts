@@ -14,7 +14,7 @@ export const rehydrateCommerceApiCache = createThunk<void, void>(
       const caches = selectApiOfflineCacheEndpointState(state, endpointName)
 
       const endpointPromises = caches.map(cache => {
-        logger.log('apiOfflineCache/rehydrateCommerceApiCache', endpointName, cache.args, cache.payload)
+        logger.log('apiOfflineCache/rehydrateCommerceApiCache', endpointName, cache.args)
 
         return thunkApi.dispatch(commerceApi.util.upsertQueryData(endpointName, cache.args, cache.payload)).unwrap()
       })

@@ -17,6 +17,7 @@ import { EMAIL_SCHEMA } from '../../features/form-validation/utils/form-validati
 import { CdcStatusValidationError } from '../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -60,7 +61,8 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
       } else if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        ErrorAlertManager.current?.showError(new UnknownError())
+        logger.warn('forgot password error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Forgot Password'))
       }
     } finally {
       setLoading(false)

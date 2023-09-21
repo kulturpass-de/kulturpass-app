@@ -114,8 +114,29 @@ export namespace SpartacusBridge {
       }
     }
 
-    export interface MobileAppEvent extends Event {
+    export type MobileAppEvent = MobileAppEventLog | MobileAppEventWindowError | MobileAppEventAndroidError
+
+    export interface MobileAppEventLog extends Event {
       source: Source.MobileApp
+      type: 'CONSOLE'
+      data: { type: string; log: Serializable | Serializable[] }
+    }
+
+    export interface MobileAppEventWindowError extends Event {
+      source: Source.MobileApp
+      type: 'WINDOW_ERROR'
+      data: {
+        message: string
+        error: string
+        sourcefile: string
+        lineno: number
+        colno: number
+      }
+    }
+
+    export interface MobileAppEventAndroidError extends Event {
+      source: Source.MobileApp
+      type: 'ANDROID_ERROR'
       data: 'ERR_UNKNOWN'
     }
 

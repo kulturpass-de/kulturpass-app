@@ -1,24 +1,24 @@
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
+import { InteractionManager } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { PdpParamList, PdpScreenProps } from '../../../navigation/pdp/types'
 import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
-import { Offer, Product } from '../../../services/api/types/commerce/api-types'
-import { useDismissableError } from '../../../services/errors/use-dismissable-error'
+import { Offer } from '../../../services/api/types/commerce/api-types'
+import { AppDispatch } from '../../../services/redux/configure-store'
 import { modalCardStyle } from '../../../theme/utils'
-import { ErrorAlert } from '../../form-validation/components/error-alert'
+import { showInAppReview } from '../../in-app-review/redux/thunks/show-in-app-review'
 import { ReservationDetailRouteParams } from '../../reservations/screens/reservation-detail-route'
-import { useQueryProductDetail } from '../hooks/use-query-product-detail'
-import { useSelectedOrClosestOffer } from '../hooks/use-selected-or-closest-offer'
+import { ProductDetail } from '../types/product-detail'
 import { ProductConfirmReservationScreen } from './product-confirm-reservation-screen'
 
 export const ProductConfirmReservationRouteName = 'ProductConfirmReservation'
 
 export type ProductConfirmReservationRouteParams = {
-  productCode: NonNullable<Product['code']>
-  offerId: Offer['id']
+  productDetail: ProductDetail
+  selectedOffer: Offer
 }
 
 type ProfileScreenProps = PdpScreenProps<'ProductConfirmReservation'>
@@ -26,7 +26,8 @@ type ProfileScreenProps = PdpScreenProps<'ProductConfirmReservation'>
 export const ProductConfirmReservationRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   const rootNavigation = useNavigation<StackNavigationProp<RootStackParams>>()
   const navigation = useNavigation<StackNavigationProp<PdpParamList>>()
-  const { productCode, offerId } = route.params
+  const dispatch = useDispatch<AppDispatch>()
+  const { productDetail, selectedOffer } = route.params
 
   const onClose = useCallback(() => {
     rootNavigation.navigate('Tabs')
@@ -39,30 +40,22 @@ export const ProductConfirmReservationRoute: React.FC<ProfileScreenProps> = ({ r
   const afterReserveProduct = useCallback(
     (params: ReservationDetailRouteParams) => {
       navigation.navigate('ReservationDetail', params)
+      // Show Review Popup after Animation. Otherwise the Screen is frozen mid Animation on Android.
+      InteractionManager.runAfterInteractions().then(() => {
+        dispatch(showInAppReview())
+      })
     },
-    [navigation],
+    [dispatch, navigation],
   )
 
-  const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode)
-  const selectedOffer = useSelectedOrClosestOffer(productDetail, offerId)
-
-  const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
-
-  if (!productDetail || !selectedOffer) {
-    return <ErrorAlert error={visibleError} onDismiss={onDismissVisibleError} />
-  }
-
   return (
-    <>
-      <LoadingIndicator loading={isLoading} />
-      <ProductConfirmReservationScreen
-        onBack={onBack}
-        onClose={onClose}
-        afterReserveProduct={afterReserveProduct}
-        productDetail={productDetail}
-        selectedOffer={selectedOffer}
-      />
-    </>
+    <ProductConfirmReservationScreen
+      onBack={onBack}
+      onClose={onClose}
+      afterReserveProduct={afterReserveProduct}
+      productDetail={productDetail}
+      selectedOffer={selectedOffer}
+    />
   )
 }
 

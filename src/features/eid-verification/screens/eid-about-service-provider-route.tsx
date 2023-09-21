@@ -26,7 +26,7 @@ export const EidAboutServiceProviderRoute: React.FC<EidAboutServiceProviderRoute
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(() => {
-    navigation.navigate(EidInsertCardRouteName, {
+    navigation.replace(EidInsertCardRouteName, {
       flow: 'Auth',
     })
   }, [navigation])

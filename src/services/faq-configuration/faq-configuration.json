@@ -57,6 +57,10 @@
       "ABOUT_GEOLOCATION_ANDROID": {
         "de": "https://service.kulturpass.de/help/de-de/2/164",
         "en": "https://service.kulturpass.de/help/de-de/2/164"
+      },
+      "BROWSER_TRANSLATION": {
+        "de": "https://service.kulturpass.de/help/de-de/2/169",
+        "en": "https://service.kulturpass.de/help/en-gb/2/169"
       }
     }
   }
