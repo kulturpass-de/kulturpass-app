@@ -51,15 +51,17 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             textStyle="CaptionSemibold"
             textStyleOverrides={[styles.voucherCodeHeadline, { color: colors.labelColor }]}
           />
-          <Text style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode} />
-          <CopyToClipboard
-            baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
-            copyToClipboardAccessibilityI18nKey={
-              'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
-            }
-            onPress={onPressVoucherCodeCopy}
-            style={styles.voucherCodeCopyIcon}
-          />
+          <View style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode}>
+            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
+            <CopyToClipboard
+              baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
+              copyToClipboardAccessibilityI18nKey={
+                'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
+              }
+              onPress={onPressVoucherCodeCopy}
+              style={styles.voucherCodeCopyIcon}
+            />
+          </View>
         </>
       ) : null}
       {orderEntry.voucherRedemptionUrl ? (
