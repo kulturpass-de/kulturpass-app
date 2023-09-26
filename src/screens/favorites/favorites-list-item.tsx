@@ -60,11 +60,12 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
     useFavouritesListItemActions(product.code)
 
   const shopInformation = React.useMemo(() => {
-    if (shopDistance !== undefined) {
-      const distanceStr = `${t('favorites_item_distance', { distance: shopDistance })}`
-      return shopName ? `${distanceStr} | ${shopName}` : distanceStr
-    } else {
-      return shopName
+    if (shopName !== undefined) {
+      if (shopDistance !== undefined) {
+        return `${t('favorites_item_distance', { distance: shopDistance })} | ${shopName}`
+      } else {
+        return shopName
+      }
     }
   }, [shopName, shopDistance, t])
 
@@ -147,7 +148,14 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
                       style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
                       {shopInformation}
                     </Text>
-                  ) : null}
+                  ) : (
+                    <Text
+                      numberOfLines={1}
+                      testID={buildTestId('favorites_item_no_offers')}
+                      style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
+                      {t('favorites_item_no_offers')}
+                    </Text>
+                  )}
                 </View>
                 <View style={styles.informationLine}>
                   <FavoritesEventDate startDate={eventStartDate} endDate={eventEndDate} />
@@ -220,6 +228,7 @@ const styles = StyleSheet.create({
   },
   price: {
     ...textStyles.HeadlineH4Extrabold,
+    paddingTop: spacing[0],
     marginRight: spacing[7],
   },
   actionContainer: {

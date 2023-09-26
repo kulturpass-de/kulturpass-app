@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, createContext, useEffect, useMemo } from 'react'
-import { Appearance, StatusBar, useColorScheme } from 'react-native'
+import { Appearance, StatusBar } from 'react-native'
 import SystemNavigationBar from 'react-native-system-navigation-bar'
 import { useSelector } from 'react-redux'
 import { store } from '../../app'
+import { useColorScheme } from '../hooks/use-color-scheme'
 import { getDarkThemePreviewEnabled, getForcedTheme } from '../redux/theme-selectors'
 import { getTheme } from '../utils'
 

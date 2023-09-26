@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit'
+import { inAppReviewSliceNonPersisted } from '../../features/in-app-review/redux/in-app-review'
 import { themeSlice } from '../../theme/redux/theme'
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
@@ -18,4 +19,5 @@ export const rootReducer = combineReducers({
   [webviewsSlice.name]: webviewsSlice.reducer,
   [themeSlice.name]: themeSlice.reducer,
   [appCoreSlice.name]: appCoreSlice.reducer,
+  [inAppReviewSliceNonPersisted.name]: inAppReviewSliceNonPersisted.reducer,
 })

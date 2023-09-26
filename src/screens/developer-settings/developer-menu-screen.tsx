@@ -11,8 +11,8 @@ import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-he
 import { ScreenContent } from '../../components/screen/screen-content'
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
-import { setLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review'
-import { getLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review-selectors'
+import { setShowInAppReview, setLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review'
+import { getShowInAppReview, getLastShownTimestamp } from '../../features/in-app-review/redux/in-app-review-selectors'
 import { setShowOnboardingOnStartup } from '../../features/onboarding/redux/onboarding'
 import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
 import { useReleaseNotesConfig } from '../../features/release-notes/hooks/use-release-notes-config'
@@ -66,6 +66,7 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const lastShownTimestamp = useSelector(getLastShownTimestamp)
+  const showInAppReview = useSelector(getShowInAppReview)
 
   const [productCode, setProductCode] = useState('')
   const [tapCounter, incrementTapCounter] = useReducer((current: number) => current + 1, 1)
@@ -97,6 +98,10 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   const resetInAppReviewTimestamp = useCallback(() => {
     dispatch(setLastShownTimestamp(undefined))
   }, [dispatch])
+
+  const toggleShowInAppReview = useCallback(() => {
+    dispatch(setShowInAppReview(!showInAppReview))
+  }, [dispatch, showInAppReview])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
   const { showReleaseNotesOnAppStart, toggleShowReleaseNotesOnAppStart } = useReleaseNotesConfig()
@@ -207,6 +212,24 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           type="navigation"
           onPress={onPressCardSimulationConfiguration}
         />
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <TranslatedText
+            i18nKey="developerMenu_showInAppReview_label"
+            testID={buildTestId('developerMenu_showInAppReview_label')}
+            textStyle="BodyRegular"
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+          <Switch
+            testID={buildTestId('developerMenu_showInAppReview_switch')}
+            accessibilityLabel={t('developerMenu_showInAppReview_label')}
+            value={showInAppReview}
+            onValueChange={toggleShowInAppReview}
+          />
+        </View>
         <View
           style={[
             styles.productCodeListItem,
