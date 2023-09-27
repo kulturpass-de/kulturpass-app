@@ -88,9 +88,9 @@ describe('Links Utils', () => {
 
   describe('createProductLink', () => {
     test('should create product link', () => {
-      const link = createProductLink('http://localhost/', '12345ABCD', 'TESTNAME')
+      const link = createProductLink('http://localhost/', '12345ABCD')
 
-      expect(link).toBe('http://localhost/product/12345ABCD/TESTNAME')
+      expect(link).toBe('http://localhost/product/12345ABCD/details')
     })
   })
 })

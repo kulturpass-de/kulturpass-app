@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useReducer, useState } from 'react'
-import { Keyboard, Pressable, StyleSheet, Switch, TextInput, View } from 'react-native'
+import { Keyboard, StyleSheet, Switch, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../components/button/button'
 import { ListItem } from '../../components/list-item/list-item'
@@ -108,13 +108,12 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
 
   return (
     <ModalScreen testID={buildTestId('developerMenu')} withoutBottomSafeArea>
-      <Pressable onPress={incrementTapCounter} testID={buildTestId('developerMenu_headline_tapCounterButton')}>
-        <ModalScreenHeader
-          titleI18nKey="developerMenu_headline_title"
-          testID={buildTestId('developerMenu_headline_title')}
-          onPressClose={onHeaderPressClose}
-        />
-      </Pressable>
+      <ModalScreenHeader
+        titleI18nKey="developerMenu_headline_title"
+        testID={buildTestId('developerMenu_headline_title')}
+        onPressTitle={incrementTapCounter}
+        onPressClose={onHeaderPressClose}
+      />
       <ScreenContent>
         <ListItem
           icon={<CogIcon />}

@@ -6,7 +6,7 @@ KulturPass: App
 </h1>
 <p align="center">
 <a href="https://github.com/kulturpass-de/kulturpass-app/issues" title="Issues"><img src="https://img.shields.io/github/issues/kulturpass-de/kulturpass-app?style=flat"></a>
-<a href="https://github.com/kulturpass-de/kulturpass-app/blob/HEAD/LICENSEs" title="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
+<a href="https://github.com/kulturpass-de/kulturpass-app/blob/HEAD/LICENSE" title="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat"></a>
 <a href="https://api.reuse.software/info/github.com/kulturpass-de/kulturpass-app" title="REUSE status"><img src="https://api.reuse.software/badge/github.com/kulturpass-de/kulturpass-app"></a>
 </p>
 

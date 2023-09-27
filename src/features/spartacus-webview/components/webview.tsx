@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import { Animated, Platform, StyleSheet } from 'react-native'
+import { Animated, BackHandler, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useSelector } from 'react-redux'
@@ -149,6 +149,15 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 
     return unsubscribe
   }, [navigation, uri, webViewBridgeAdapter, webViewId])
+
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      // Ignore back button, if filter or sort is opened, as otherwise we don't know
+      // if the modal is still visible
+      return filtersOrSortOpen
+    })
+    return sub.remove
+  }, [filtersOrSortOpen, navigation])
 
   return (
     <Animated.View style={[styles.container, { marginTop: outerContainerMarginTop.current }]}>

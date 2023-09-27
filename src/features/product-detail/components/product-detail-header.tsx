@@ -42,12 +42,12 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 
   const onShare = useCallback(() => {
-    const productUrl = createProductLink(homeUrl, productDetail.code, productDetail.name)
+    const productUrl = createProductLink(homeUrl, productDetail.code)
 
     Share.share({
       message: t('productDetail_header_shareButton_message', { link: productUrl }),
     })
-  }, [homeUrl, productDetail.code, productDetail.name, t])
+  }, [homeUrl, productDetail.code, t])
 
   const onLayout = useCallback(
     (evt: LayoutChangeEvent) => {

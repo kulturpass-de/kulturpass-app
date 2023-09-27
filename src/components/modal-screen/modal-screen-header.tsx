@@ -22,15 +22,13 @@ const styles = StyleSheet.create({
   },
   titleContainer: { paddingHorizontal: 6, flexDirection: 'row', flexShrink: 1 },
   closeButton: { marginRight: 6, flexShrink: 0 },
-  title: {
-    flex: 1,
-    flexWrap: 'wrap',
-  },
+  title: { flexWrap: 'wrap' },
 })
 
 export type ModalScreenHeaderProps = {
   testID: TestId
   titleI18nKey: AvailableTranslations
+  onPressTitle?: PressableProps['onPress']
   onPressBack?: PressableProps['onPress']
   onPressClose?: PressableProps['onPress']
 }
@@ -38,6 +36,7 @@ export type ModalScreenHeaderProps = {
 export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
   testID,
   titleI18nKey,
+  onPressTitle,
   onPressBack,
   onPressClose,
 }) => {
@@ -62,14 +61,27 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
         </Pressable>
       )}
       <View style={styles.titleContainer}>
-        <TranslatedText
-          ref={focusRef}
-          testID={addTestIdModifier(testID, 'title')}
-          i18nKey={titleI18nKey}
-          textStyle="SubtitleExtrabold"
-          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
-          accessibilityRole="header"
-        />
+        {onPressTitle ? (
+          <Pressable onPress={onPressTitle} testID={addTestIdModifier(testID, 'titleButton')}>
+            <TranslatedText
+              ref={focusRef}
+              testID={addTestIdModifier(testID, 'text')}
+              i18nKey={titleI18nKey}
+              textStyle="SubtitleExtrabold"
+              textStyleOverrides={[styles.title, { color: colors.labelColor }]}
+              accessibilityRole="header"
+            />
+          </Pressable>
+        ) : (
+          <TranslatedText
+            ref={focusRef}
+            testID={addTestIdModifier(testID, 'text')}
+            i18nKey={titleI18nKey}
+            textStyle="SubtitleExtrabold"
+            textStyleOverrides={[styles.title, { color: colors.labelColor }]}
+            accessibilityRole="header"
+          />
+        )}
       </View>
       {onPressClose && (
         <Pressable
