@@ -27,7 +27,7 @@ export const RegisterNowButton: React.FC = () => {
       accessibilityRole="button"
       accessibilityLabel={t('register_now_button_title')}
       accessibilityHint={t('register_now_button_text')}>
-      <InfoBox containerStyle={styles.container}>
+      <InfoBox containerStyle={styles.container} testID={buildTestId('register_now_button_container')}>
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('register_now_button_title')}

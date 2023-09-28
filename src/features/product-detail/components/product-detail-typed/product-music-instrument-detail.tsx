@@ -13,18 +13,21 @@ export const ProductMusicInstrumentDetail: React.FC<ProductMusicInstrumentDetail
   productDetail,
   testID,
 }) => {
-  const { manufacturer } = productDetail
+  const { manufacturer, ean } = productDetail
   const { addTestIdModifier } = useTestIdBuilder()
   const sectionTestID = addTestIdModifier(testID, 'musicInstrument')
 
   return (
     <>
-      {manufacturer ? (
+      {manufacturer || ean ? (
         <ProductDetailSection
           testID={sectionTestID}
           iconSource="tag"
           sectionCaptioni18nKey="productDetail_musicInstrument_caption">
-          <ProductDetailEntry i18nKey="productDetail_musicInstrument_manufacturer" value={manufacturer} />
+          {manufacturer ? (
+            <ProductDetailEntry i18nKey="productDetail_musicInstrument_manufacturer" value={manufacturer} />
+          ) : null}
+          {ean ? <ProductDetailEntry i18nKey="productDetail_musicInstrument_ean" value={ean} /> : null}
         </ProductDetailSection>
       ) : null}
     </>

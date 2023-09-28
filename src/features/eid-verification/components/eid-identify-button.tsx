@@ -33,7 +33,9 @@ export const EidIdentifyButton: React.FC = () => {
         name,
       })}
       accessibilityHint={t('eid_startVerify_button_text')}>
-      <InfoBox containerStyle={styles.container}>
+      {/* Do NOT remove the testID,
+          otherwise the views contained testIDs will not be found on iOS (bug) */}
+      <InfoBox containerStyle={styles.container} testID={buildTestId('eid_startVerify_button_container')}>
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('eid_startVerify_button_title')}

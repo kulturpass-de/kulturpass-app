@@ -364,6 +364,7 @@
   "productDetail_sheetMusic_publisher": "Verlag",
   "productDetail_musicInstrument_caption": "Details",
   "productDetail_musicInstrument_manufacturer": "Hersteller",
+  "productDetail_musicInstrument_ean": "EAN",
   "productDetail_voucher_pickupPoint_caption": "Veranstaltungsort",
   "productDetail_voucher_copyToClipboard": "Veranstaltungsort in die Zwischenablage kopieren",
   "productDetail_offer_details_title": "Angebotsdetails",

@@ -75,7 +75,9 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
               accessibilityRole="button"
               accessibilityLabel={untranslatedTexts.changeLanguage_browser_translation_title}
               accessibilityHint={untranslatedTexts.changeLanguage_browser_translation_text}>
-              <InfoBox containerStyle={styles.infoBox}>
+              <InfoBox
+                containerStyle={styles.infoBox}
+                testID={buildTestId('changeLanguage_browser_translation_container')}>
                 <View style={styles.content}>
                   <SvgImage type="letters" width={24} height={24} />
                   <View style={styles.textContainer}>

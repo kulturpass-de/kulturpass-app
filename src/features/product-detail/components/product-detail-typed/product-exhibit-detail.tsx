@@ -37,7 +37,7 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
   const { addTestIdModifier } = useTestIdBuilder()
 
   const sectionTestID = addTestIdModifier(testID, 'exhibit')
-  const { exhibitStartDate, exhibitEndDate, venue, venueDistance, eventDateTime } = productDetail
+  const { exhibitStartDate, exhibitEndDate, venue, venueDistance, eventDateTime, durationInMins } = productDetail
   const formattedEventDateTime = useFormattedDateTime(eventDateTime)
   const formattedEventStartDate = useFormattedDateTime(exhibitStartDate)
   const formattedEvenEndDate = useFormattedDateTime(exhibitEndDate)
@@ -83,18 +83,27 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
           })}
         />
       ) : null}
-      {exhibitStartDate || exhibitEndDate ? (
+      {exhibitStartDate || exhibitEndDate || durationInMins ? (
         <ProductDetailSection
           testID={addTestIdModifier(sectionTestID, 'duration')}
           iconSource="calendar"
           sectionCaptioni18nKey="productDetail_exhibit_duration_caption">
-          <Text
-            accessibilityLabel={exhibitDate.accessibilityLabel}
-            accessible
-            testID={addTestIdModifier(sectionTestID, 'duration_content')}
-            style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
-            {exhibitDate.text}
-          </Text>
+          {exhibitStartDate || exhibitEndDate ? (
+            <Text
+              accessibilityLabel={exhibitDate.accessibilityLabel}
+              accessible
+              testID={addTestIdModifier(sectionTestID, 'duration_content')}
+              style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
+              {exhibitDate.text}
+            </Text>
+          ) : null}
+          {durationInMins ? (
+            <Text
+              testID={addTestIdModifier(sectionTestID, 'time_duration')}
+              style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
+              {t('productDetail_stagedEvent_time_duration', { duration: durationInMins })}
+            </Text>
+          ) : null}
         </ProductDetailSection>
       ) : null}
     </>

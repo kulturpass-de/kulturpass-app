@@ -59,28 +59,30 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
           )}
         </ProductDetailSection>
       ) : null}
-      <ProductDetailSection
-        testID={addTestIdModifier(sectionTestID, 'time')}
-        iconSource="calendar"
-        sectionCaptioni18nKey="productDetail_stagedEvent_time_caption">
-        {formattedEventStartDate ? (
-          <Text
-            testID={addTestIdModifier(sectionTestID, 'time_value')}
-            style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
-            {t('productDetail_stagedEvent_time_value', {
-              date: formattedEventStartDate.date,
-              time: formattedEventStartDate.time,
-            })}
-          </Text>
-        ) : null}
-        {durationInMins ? (
-          <Text
-            testID={addTestIdModifier(sectionTestID, 'time_duration')}
-            style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
-            {t('productDetail_stagedEvent_time_duration', { duration: durationInMins })}
-          </Text>
-        ) : null}
-      </ProductDetailSection>
+      {formattedEventStartDate || durationInMins ? (
+        <ProductDetailSection
+          testID={addTestIdModifier(sectionTestID, 'time')}
+          iconSource="calendar"
+          sectionCaptioni18nKey="productDetail_stagedEvent_time_caption">
+          {formattedEventStartDate ? (
+            <Text
+              testID={addTestIdModifier(sectionTestID, 'time_value')}
+              style={[textStyles.BodyBlack, { color: colors.labelColor }]}>
+              {t('productDetail_stagedEvent_time_value', {
+                date: formattedEventStartDate.date,
+                time: formattedEventStartDate.time,
+              })}
+            </Text>
+          ) : null}
+          {durationInMins ? (
+            <Text
+              testID={addTestIdModifier(sectionTestID, 'time_duration')}
+              style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
+              {t('productDetail_stagedEvent_time_duration', { duration: durationInMins })}
+            </Text>
+          ) : null}
+        </ProductDetailSection>
+      ) : null}
     </>
   )
 }
