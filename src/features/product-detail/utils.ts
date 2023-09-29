@@ -42,3 +42,23 @@ ${address.postalCode} ${address.city}`)
 export const isVoucher = (fulfillmentOption: ProductDetail['fulfillmentOption'] | string) => {
   return fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
 }
+
+export const isDefinedAddress = (address?: {
+  name?: string
+  street?: string
+  city?: string
+  postalCode?: string
+}): address is {
+  name?: string
+  street?: string
+  city?: string
+  postalCode?: string
+} => {
+  return (
+    address !== undefined &&
+    (address.name !== undefined ||
+      address.city !== undefined ||
+      address.postalCode !== undefined ||
+      address.street !== undefined)
+  )
+}

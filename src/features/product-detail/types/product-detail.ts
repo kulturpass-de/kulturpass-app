@@ -62,7 +62,7 @@ export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
   /**
    * The ean of the audio product
    */
-  ean: string
+  ean?: string
   /**
    * The artist of the audio product
    */
@@ -151,7 +151,7 @@ export type MusicInstrumentProductDetail = ProductDetailBase<ProductTypes.MusicI
   /**
    * The ean of the music instrument product
    */
-  ean: string
+  ean?: string
   /**
    * The manufacturer of the instrument - optional
    */

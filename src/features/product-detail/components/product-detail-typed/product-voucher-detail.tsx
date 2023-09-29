@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { GoToSearchButton } from '../../../../components/go-to-search-button/go-to-search-button'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { VoucherProductDetail } from '../../types/product-detail'
+import { isDefinedAddress } from '../../utils'
 import { Address } from '../address'
 import { ProductDetailSection } from '../product-detail-section'
 import { ProductCinemaDetail } from './product-cinema-detail'
@@ -22,17 +23,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
     [categories],
   )
 
-  if (
-    voucherPickupPoint === undefined ||
-    (voucherPickupPoint.city === undefined &&
-      voucherPickupPoint.name === undefined &&
-      voucherPickupPoint.postalCode === undefined &&
-      voucherPickupPoint.street === undefined)
-  ) {
-    return null
-  }
-
-  const address = (
+  const address = isDefinedAddress(voucherPickupPoint) ? (
     <Address
       name={voucherPickupPoint.name}
       city={voucherPickupPoint.city}
@@ -44,24 +35,26 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
       baseTestId={sectionTestID}
       copyToClipboardAccessibilityI18nKey="productDetail_voucher_copyToClipboard"
     />
-  )
+  ) : undefined
 
   return (
     <>
-      <ProductDetailSection
-        testID={sectionTestID}
-        iconSource="map-pin"
-        sectionCaptioni18nKey="productDetail_voucher_pickupPoint_caption">
-        {detailType !== 'OrderDetail' ? (
-          <GoToSearchButton
-            searchTerm={voucherPickupPoint.name}
-            testID={addTestIdModifier(sectionTestID, 'pickupPoint_button')}>
-            {address}
-          </GoToSearchButton>
-        ) : (
-          address
-        )}
-      </ProductDetailSection>
+      {address !== undefined ? (
+        <ProductDetailSection
+          testID={sectionTestID}
+          iconSource="map-pin"
+          sectionCaptioni18nKey="productDetail_voucher_pickupPoint_caption">
+          {detailType !== 'OrderDetail' ? (
+            <GoToSearchButton
+              searchTerm={voucherPickupPoint?.name}
+              testID={addTestIdModifier(sectionTestID, 'pickupPoint_button')}>
+              {address}
+            </GoToSearchButton>
+          ) : (
+            address
+          )}
+        </ProductDetailSection>
+      ) : null}
       {isCinemaVoucherType ? <ProductCinemaDetail testID={sectionTestID} productDetail={productDetail} /> : null}
     </>
   )
