@@ -6,7 +6,7 @@ import { useModalNavigation } from '../../navigation/modal/hooks'
 import { RootStackParams } from '../../navigation/types'
 import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import { LogInRouteConfig } from '../log-in/log-in-route'
+import { LogInRouteConfig } from '../auth/log-in-route'
 import { ReservationsScreen, ReservationsScreenProps } from './reservations-screen'
 import { ReservationsUnauthorizedScreen, ReservationsUnauthorizedScreenProps } from './reservations-unauthorized-screen'
 
@@ -25,8 +25,8 @@ export const ReservationsRoute: React.FC = () => {
   }, [modalNavigation])
 
   const onReservationPressed: ReservationsScreenProps['onReservationPressed'] = useCallback(
-    (orderCode, completedReservation) => {
-      rootNavigation.navigate('PDP', { screen: 'ReservationDetail', params: { orderCode, completedReservation } })
+    orderCode => {
+      rootNavigation.navigate('PDP', { screen: 'ReservationDetail', params: { orderCode } })
     },
     [rootNavigation],
   )

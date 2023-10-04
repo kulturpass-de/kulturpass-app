@@ -135,24 +135,14 @@
 					</dict>
 				</array>
 			</dict>
-			<key>kp-mockserver.cfapps.eu10-004.hana.ondemand.com</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSPinnedLeafIdentities</key>
-				<array>
-					<dict>
-						<key>SPKI-SHA256-BASE64</key>
-						<string>Me+zT8frLdroBg4WR2MXgrPuJ6lXRjiDeaj4VT5RYVI=</string>
-					</dict>
-				</array>
-			</dict>
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>We are sending push notifications to inform you about changes of the status of reservations, cancellations, and refunds for your budget etc., and to  remind you to pick up products or to redeem your codes.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>nunito_black.ttf</string>
@@ -171,6 +161,12 @@
 		<string>nunito_regular.ttf</string>
 		<string>nunito_semibold.ttf</string>
 		<string>nunito_semibolditalic.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

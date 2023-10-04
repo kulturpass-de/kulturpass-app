@@ -9,6 +9,7 @@ import { releaseNotesSlice } from '../../features/release-notes/redux/release-no
 import { apiOfflineCacheSlice } from '../api/redux/api-offline-cache-slice'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
 import { locationSlice } from '../location/redux/location-slice'
+import { notificationsSlice } from '../notifications/store/notifications-slice'
 import { currentPersistVersion, migrations } from './migrations'
 import { persistedAppCoreSlice } from './slices/persisted-app-core'
 import { PersistState } from './versions/current'
@@ -25,6 +26,7 @@ const persistedReducer = combineReducers({
   [cardSimulationSlice.name]: cardSimulationSlice.reducer,
   [apiOfflineCacheSlice.name]: apiOfflineCacheSlice.reducer,
   [inAppReviewSlice.name]: inAppReviewSlice.reducer,
+  [notificationsSlice.name]: notificationsSlice.reducer,
 })
 
 const persistConfig: ReduxPersist.PersistConfig<PersistState> = {

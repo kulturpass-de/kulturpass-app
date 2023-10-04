@@ -1,6 +1,7 @@
+import { Notification } from '@notifee/react-native'
 import { GeoPosition } from 'react-native-geolocation-service'
 import { z } from 'zod'
-import { simulationCards } from '../../../screens/developer-settings/simulation-cards/simulation-cards'
+import { simulationCards } from '../../../screens/app/developer-settings/simulation-cards/simulation-cards'
 import { CommerceApiEndpointCache, CommerceApiEndpointName } from '../../api/redux/types'
 
 export type EnvironmentConfigurationState = {
@@ -9,6 +10,7 @@ export type EnvironmentConfigurationState = {
 
 export type OnboardingState = {
   showOnboardingOnStartup: boolean
+  notificationOnboardingShown?: boolean
 }
 
 export type LocationState = {
@@ -57,6 +59,13 @@ export type InAppReviewState = {
   lastShownTimestamp?: number
 }
 
+export type NotificationsState = {
+  fcmToken?: string
+  apnsToken?: string
+  previousFcmToken?: string
+  backgroundPressedNotification?: Notification
+}
+
 export type PersistState = {
   environmentConfiguration: EnvironmentConfigurationState
   onboarding: OnboardingState
@@ -66,4 +75,5 @@ export type PersistState = {
   releaseNotes: ReleaseNotesState
   apiOfflineCache: ApiOfflineCacheState
   inAppReview: InAppReviewState
+  notifications: NotificationsState
 }

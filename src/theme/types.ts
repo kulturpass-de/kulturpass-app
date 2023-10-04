@@ -38,6 +38,7 @@ export type ColorMappings = {
   badgeBackground: string
   badgeBackground2: string
   badgeColor2: string
+  itemSeparator: string
 }
 
 export type PreferencesButtonColors = {

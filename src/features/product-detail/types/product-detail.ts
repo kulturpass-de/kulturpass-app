@@ -1,5 +1,10 @@
 import { Category, Image, Offer, Price } from '../../../services/api/types/commerce/api-types'
 
+export type SelectedFilterType = 'location' | 'city' | 'postalCode'
+
+export const isCityOrPostCode = (filterType?: SelectedFilterType): boolean =>
+  filterType === 'city' || filterType === 'postalCode'
+
 export enum ProductTypes {
   Audio = 'audioProductWsDTO',
   Book = 'bookProductWsDTO',
@@ -62,7 +67,7 @@ export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
   /**
    * The ean of the audio product
    */
-  ean: string
+  ean?: string
   /**
    * The artist of the audio product
    */
@@ -151,7 +156,7 @@ export type MusicInstrumentProductDetail = ProductDetailBase<ProductTypes.MusicI
   /**
    * The ean of the music instrument product
    */
-  ean: string
+  ean?: string
   /**
    * The manufacturer of the instrument - optional
    */

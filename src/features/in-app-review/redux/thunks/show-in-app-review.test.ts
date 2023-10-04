@@ -25,6 +25,9 @@ describe('showInAppReview', () => {
           lastShownTimestamp: undefined,
         },
       },
+      inAppReview: {
+        showInAppReview: true,
+      },
     } as RootState
     const store = configureMockStore({
       middlewares: [],
@@ -48,6 +51,9 @@ describe('showInAppReview', () => {
           lastShownTimestamp: previousTimestamp,
         },
       },
+      inAppReview: {
+        showInAppReview: true,
+      },
     } as RootState
     const store = configureMockStore({
       middlewares: [],
@@ -64,13 +70,16 @@ describe('showInAppReview', () => {
     expect(lastShownTimestamp).toBeGreaterThan(previousTimestamp)
   })
 
-  test('should show inAppReview if not 31 days ago', async () => {
+  test('should not show inAppReview if not 31 days ago', async () => {
     const previousTimestamp = Date.now() - 3600
     const preloadedState = {
       persisted: {
         inAppReview: {
           lastShownTimestamp: previousTimestamp,
         },
+      },
+      inAppReview: {
+        showInAppReview: true,
       },
     } as RootState
     const store = configureMockStore({
@@ -95,6 +104,9 @@ describe('showInAppReview', () => {
           lastShownTimestamp: undefined,
         },
       },
+      inAppReview: {
+        showInAppReview: true,
+      },
     } as RootState
     const store = configureMockStore({
       middlewares: [],
@@ -109,7 +121,7 @@ describe('showInAppReview', () => {
     expect(lastShownTimestamp).toBe(undefined)
   })
 
-  test('should stil set timestamp if InAppReview errored', async () => {
+  test('should still set timestamp if InAppReview errored', async () => {
     const RequestInAppReview = InAppReview.RequestInAppReview as any
     RequestInAppReview.mockImplementationOnce(() => Promise.reject(new Error('Test')))
     const preloadedState = {
@@ -117,6 +129,9 @@ describe('showInAppReview', () => {
         inAppReview: {
           lastShownTimestamp: undefined,
         },
+      },
+      inAppReview: {
+        showInAppReview: true,
       },
     } as RootState
     const store = configureMockStore({
@@ -131,5 +146,31 @@ describe('showInAppReview', () => {
     const lastShownTimestamp = store.getState().persisted.inAppReview.lastShownTimestamp
     expect(lastShownTimestamp).toBeDefined()
     expect(lastShownTimestamp).toBeLessThanOrEqual(Date.now())
+  })
+
+  test('should not show inAppReview if it is disabled', async () => {
+    const isAvailable = InAppReview.isAvailable as any
+    isAvailable.mockImplementationOnce(() => false)
+    const preloadedState = {
+      persisted: {
+        inAppReview: {
+          lastShownTimestamp: undefined,
+        },
+      },
+      inAppReview: {
+        showInAppReview: false,
+      },
+    } as RootState
+    const store = configureMockStore({
+      middlewares: [],
+      preloadedState,
+    })
+
+    await store.dispatch(showInAppReview())
+
+    expect(InAppReview.isAvailable).toBeCalledTimes(0)
+    expect(InAppReview.RequestInAppReview).toBeCalledTimes(0)
+    const lastShownTimestamp = store.getState().persisted.inAppReview.lastShownTimestamp
+    expect(lastShownTimestamp).toBe(undefined)
   })
 })

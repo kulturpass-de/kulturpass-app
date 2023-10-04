@@ -110,6 +110,9 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
             />
           ) : null}
         </View>
+        {accessibilityWheelchairShop !== undefined || accessibilityToiletShop !== undefined ? (
+          <View style={styles.spacer} />
+        ) : null}
         <View style={styles.containerText}>
           {accessibilityOfferCleaned ? (
             <AccessibilityFeatureText
@@ -136,6 +139,9 @@ export const ShopAccessibilityInfo: React.FC<ShopAccessibilityInfoProps> = ({ te
 }
 
 const styles = StyleSheet.create({
+  spacer: {
+    height: spacing[5],
+  },
   container: {
     paddingTop: spacing[2],
   },

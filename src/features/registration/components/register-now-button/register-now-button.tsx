@@ -4,7 +4,7 @@ import { InfoBox } from '../../../../components/info-box/info-box'
 import { SvgImage } from '../../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { useModalNavigation } from '../../../../navigation/modal/hooks'
-import { LogInRouteName } from '../../../../screens/log-in/log-in-route'
+import { LogInRouteName } from '../../../../screens/auth/log-in-route'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
@@ -27,7 +27,7 @@ export const RegisterNowButton: React.FC = () => {
       accessibilityRole="button"
       accessibilityLabel={t('register_now_button_title')}
       accessibilityHint={t('register_now_button_text')}>
-      <InfoBox containerStyle={styles.container}>
+      <InfoBox containerStyle={styles.container} testID={buildTestId('register_now_button_container')}>
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('register_now_button_title')}

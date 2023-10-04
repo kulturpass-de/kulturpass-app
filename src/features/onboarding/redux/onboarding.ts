@@ -3,6 +3,7 @@ import { OnboardingState } from '../../../services/redux/versions/current'
 
 export const onboardingInitialState: OnboardingState = {
   showOnboardingOnStartup: true,
+  notificationOnboardingShown: false,
 }
 
 export const onboardingSlice = createSlice({
@@ -12,7 +13,10 @@ export const onboardingSlice = createSlice({
     setShowOnboardingOnStartup: (state, action: PayloadAction<boolean>) => {
       state.showOnboardingOnStartup = action.payload
     },
+    setNotificationOnboardingShown: (state, action: PayloadAction<boolean>) => {
+      state.notificationOnboardingShown = action.payload
+    },
   },
 })
 
-export const { setShowOnboardingOnStartup } = onboardingSlice.actions
+export const { setShowOnboardingOnStartup, setNotificationOnboardingShown } = onboardingSlice.actions

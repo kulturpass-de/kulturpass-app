@@ -7,7 +7,9 @@ import { authSlice } from '../auth-slice'
 export const authCommerceLogout = createThunk<void, Array<unknown>>(
   'auth/commerceLogout',
   async (payload, thunkAPI) => {
-    const commerceAccessToken = getCommerceAccessToken(thunkAPI.getState())
+    const store = thunkAPI.getState()
+    const commerceAccessToken = getCommerceAccessToken(store)
+    const fcmToken = store.persisted.notifications.fcmToken
 
     if (commerceAccessToken) {
       try {
@@ -17,6 +19,7 @@ export const authCommerceLogout = createThunk<void, Array<unknown>>(
           .dispatch(
             commerceApi.endpoints.postRevokeAuthToken.initiate({
               token: commerceAccessToken,
+              fcmToken,
             }),
           )
           .unwrap()

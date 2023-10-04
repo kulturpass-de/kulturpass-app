@@ -1,6 +1,7 @@
 import { AppStartListening } from '../listener-middleware'
 import { onGetAppConfigFulfilled, onGetAppConfigRejected } from './on-get-app-config-fulfilled'
 import { onPersistRehydrate } from './on-persist-rehydrate'
+import { onLoginFulfilled, onSetTokens } from './on-push-token-sync'
 import { onSetEnvironmentConfiguration } from './on-set-environment-configuration'
 import { onSetIsInForeground } from './on-set-is-in-foreground'
 
@@ -10,4 +11,6 @@ export const addRootStoreEffects = (startListening: AppStartListening) => {
   onGetAppConfigRejected(startListening)
   onSetEnvironmentConfiguration(startListening)
   onSetIsInForeground(startListening)
+  onLoginFulfilled(startListening)
+  onSetTokens(startListening)
 }

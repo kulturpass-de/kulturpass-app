@@ -46,6 +46,7 @@ export const colorMappings: ColorMappings = {
   badgeBackground: colors.primaryLightest,
   badgeBackground2: colors.primaryBase,
   badgeColor2: colors.basicWhite,
+  itemSeparator: colors.sunLighter,
 }
 
 export const preferenceButtonColors: PreferencesButtonColors = {

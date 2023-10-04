@@ -1,4 +1,6 @@
+import { getNotificationOnboardingShown } from '../../../features/onboarding/redux/onboarding-selectors'
 import { rehydrateCommerceApiCache } from '../../api/redux/thunks/rehydrate-commerce-api-cache'
+import { notificationsStartup } from '../../notifications/store/thunks/notifications-startup'
 import { clearSecurePersistedSession } from '../../session/redux/thunks/clear-secure-persisted-session'
 import { restoreSession } from '../../session/redux/thunks/restore-session'
 import { translation } from '../../translation/translation'
@@ -19,8 +21,12 @@ export const startup = createThunk<void, { appFirstRun: boolean }>('root/startup
 
   const lastUsedTranslationLanguage = selectLastUsedTranslationLanguage(state)
   if (lastUsedTranslationLanguage) {
-    translation.changeLanguage(lastUsedTranslationLanguage)
+    await translation.changeLanguage(lastUsedTranslationLanguage)
   }
 
-  thunkApi.dispatch(pollAppConfig())
+  if (getNotificationOnboardingShown(state)) {
+    await thunkApi.dispatch(notificationsStartup()).unwrap()
+  }
+
+  await thunkApi.dispatch(pollAppConfig()).unwrap()
 })

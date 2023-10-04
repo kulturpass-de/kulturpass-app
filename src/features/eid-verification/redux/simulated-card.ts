@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { simulationCards } from '../../../screens/developer-settings/simulation-cards/simulation-cards'
+import { simulationCards } from '../../../screens/app/developer-settings/simulation-cards/simulation-cards'
 import { CardSimulationState } from '../../../services/redux/versions/current'
 
 export const cardSimulationInitialState: CardSimulationState = {

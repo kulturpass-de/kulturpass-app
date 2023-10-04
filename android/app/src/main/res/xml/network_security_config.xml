@@ -43,12 +43,6 @@
       <pin digest="SHA-256">av/AaUDHAADOeFOOH43qMwnpD6gC33te4r8rAcrd1sM=</pin>
     </pin-set>
   </domain-config>
-  <domain-config>
-    <domain includeSubdomains="true">kp-mockserver.cfapps.eu10-004.hana.ondemand.com</domain>
-    <pin-set>
-      <pin digest="SHA-256">Me+zT8frLdroBg4WR2MXgrPuJ6lXRjiDeaj4VT5RYVI=</pin>
-    </pin-set>
-  </domain-config>
   <domain-config cleartextTrafficPermitted="true">
     <domain includeSubdomains="true">localhost</domain>
   </domain-config>

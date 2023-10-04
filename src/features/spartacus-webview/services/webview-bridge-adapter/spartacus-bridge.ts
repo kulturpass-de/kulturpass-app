@@ -156,6 +156,26 @@ export namespace SpartacusBridge {
       source: Source.Search
       name: 'locationOpen'
     }
+
+    export interface SearchFiltersOpenEvent extends Event {
+      source: Source.Search
+      name: 'filtersOpen'
+    }
+
+    export interface SearchFiltersCloseEvent extends Event {
+      source: Source.Search
+      name: 'filtersClose'
+    }
+
+    export interface SearchSortOpenEvent extends Event {
+      source: Source.Search
+      name: 'sortOpen'
+    }
+
+    export interface SearchSortCloseEvent extends Event {
+      source: Source.Search
+      name: 'sortClose'
+    }
   }
 
   export namespace StateForwarding {

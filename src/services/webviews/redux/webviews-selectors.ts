@@ -20,6 +20,9 @@ export const selectHomeHeaderShown = createSelector(
   webviewsState => webviewsState[WebViewId.Home].showHeader,
 )
 
+export const selectFiltersOrSortOpen = (webViewId: WebViewId) =>
+  createSelector(selectWebviewsState, webviewsState => webviewsState[webViewId].filtersOrSortOpen === true)
+
 export const selectWebViewAuthSyncAction = createSelector(
   [selectWebViewState, getIsUserLoggedIn, getIsUserLoggedInToCdc, getCdcSessionData, selectValidCommerceAccessToken],
   (webViewState, isUserLoggedIn, isUserLoggedInToCdc, cdcSessionData, validCommerceAccessToken) => {

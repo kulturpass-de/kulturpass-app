@@ -2,7 +2,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import React from 'react'
 import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
-import { RootState } from '../services/redux/configure-store'
+import { getShowOnboardingOnStartup } from '../features/onboarding/redux/onboarding-selectors'
 import { useGetProfile } from '../services/user/use-get-profile'
 import { EidStack } from './eid/eid-stack'
 import { ModalStack } from './modal/modal-stack'
@@ -15,7 +15,7 @@ import { OnboardingStackParams, RootStackParams } from './types'
 const Stack = createStackNavigator<RootStackParams & OnboardingStackParams>()
 
 export const RootStackScreen: React.FC = () => {
-  const showOnboardingOnStartup = useSelector((state: RootState) => state.persisted.onboarding.showOnboardingOnStartup)
+  const showOnboardingOnStartup = useSelector(getShowOnboardingOnStartup)
   const { data: profile } = useGetProfile()
 
   if (showOnboardingOnStartup) {

@@ -2,9 +2,12 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { RouteProp } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
+import { useSelector } from 'react-redux'
 import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
+import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { selectFiltersOrSortOpen } from '../../services/webviews/redux/webviews-selectors'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
@@ -78,6 +81,11 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
 }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
+  const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(WebViewId.Search))
+
+  if (filtersOrSortOpen) {
+    return null
+  }
 
   return (
     <View

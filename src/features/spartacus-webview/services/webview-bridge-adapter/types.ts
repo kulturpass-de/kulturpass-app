@@ -46,7 +46,12 @@ export type WebViewEvents = {
   [SpartacusBridge.EventForwarding.Source.RouterEvents]: SpartacusBridge.EventForwarding.RouterEvent
   [SpartacusBridge.EventForwarding.Source.Bridge]: SpartacusBridge.EventForwarding.BridgeReadyEvent
   [SpartacusBridge.EventForwarding.Source.Auth]: SpartacusBridge.EventForwarding.AuthTokenAwaitedEvent
-  [SpartacusBridge.EventForwarding.Source.Search]: SpartacusBridge.EventForwarding.SearchLocationOpenEvent
+  [SpartacusBridge.EventForwarding.Source.Search]:
+    | SpartacusBridge.EventForwarding.SearchLocationOpenEvent
+    | SpartacusBridge.EventForwarding.SearchFiltersOpenEvent
+    | SpartacusBridge.EventForwarding.SearchFiltersCloseEvent
+    | SpartacusBridge.EventForwarding.SearchSortOpenEvent
+    | SpartacusBridge.EventForwarding.SearchSortCloseEvent
   [SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn]: SpartacusBridge.StateForwarding.StateChange
 }
 

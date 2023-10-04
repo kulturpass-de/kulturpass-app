@@ -7,6 +7,7 @@ import { useTheme } from '../../../../theme/hooks/use-theme'
 import { textStyles } from '../../../../theme/typography'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { ExhibitProductDetail } from '../../types/product-detail'
+import { isDefinedAddress } from '../../utils'
 import { Address } from '../address'
 import { ProductDetailSection } from '../product-detail-section'
 import { ProductDetailSectionDateTime } from '../product-detail-section-date-time'
@@ -37,13 +38,13 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
   const { addTestIdModifier } = useTestIdBuilder()
 
   const sectionTestID = addTestIdModifier(testID, 'exhibit')
-  const { exhibitStartDate, exhibitEndDate, venue, venueDistance, eventDateTime } = productDetail
+  const { exhibitStartDate, exhibitEndDate, venue, venueDistance, eventDateTime, durationInMins } = productDetail
   const formattedEventDateTime = useFormattedDateTime(eventDateTime)
   const formattedEventStartDate = useFormattedDateTime(exhibitStartDate)
   const formattedEvenEndDate = useFormattedDateTime(exhibitEndDate)
   const exhibitDate = formatDate(t, formattedEventStartDate?.date, formattedEvenEndDate?.date)
 
-  const address = venue ? (
+  const address = isDefinedAddress(venue) ? (
     <Address
       name={venue.name}
       city={venue.city}
@@ -55,17 +56,17 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
       baseTestId={addTestIdModifier(sectionTestID, 'location')}
       copyToClipboardAccessibilityI18nKey="productDetail_exhibit_location_copyToClipboard"
     />
-  ) : null
+  ) : undefined
 
   return (
     <>
-      {venue ? (
+      {address !== undefined ? (
         <ProductDetailSection
           testID={addTestIdModifier(sectionTestID, 'location')}
           iconSource="map-pin"
           sectionCaptioni18nKey="productDetail_exhibit_location_caption">
           {detailType !== 'OrderDetail' ? (
-            <GoToSearchButton searchTerm={venue.name} testID={addTestIdModifier(sectionTestID, 'location_button')}>
+            <GoToSearchButton searchTerm={venue?.name} testID={addTestIdModifier(sectionTestID, 'location_button')}>
               {address}
             </GoToSearchButton>
           ) : (
@@ -73,14 +74,21 @@ export const ProductExhibitDetail: React.FC<ProductExhibitDetailProps> = ({ prod
           )}
         </ProductDetailSection>
       ) : null}
-      {formattedEventDateTime ? (
+      {formattedEventDateTime !== undefined || durationInMins !== undefined ? (
         <ProductDetailSectionDateTime
           testID={sectionTestID}
           sectionCaptioni18nKey="productDetail_exhibit_time_caption"
-          translatedEventDateTime={t('productDetail_exhibit_time_value', {
-            date: formattedEventDateTime.date,
-            time: formattedEventDateTime.time,
-          })}
+          translatedEventDateTime={
+            formattedEventDateTime
+              ? t('productDetail_exhibit_time_value', {
+                  date: formattedEventDateTime.date,
+                  time: formattedEventDateTime.time,
+                })
+              : undefined
+          }
+          translatedDurationInMins={
+            durationInMins ? t('productDetail_stagedEvent_time_duration', { duration: durationInMins }) : undefined
+          }
         />
       ) : null}
       {exhibitStartDate || exhibitEndDate ? (

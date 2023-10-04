@@ -1,3 +1,4 @@
+import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Animated, LayoutChangeEvent, Share, StyleSheet, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -21,6 +22,7 @@ type ProductDetailHeaderProps = UseProductDetailHeaderHeightReturnType & {
 
 const SHARE_BUTTON_TRANSITION_DISTANCE = 32
 const SHARE_BUTTON_HIDDEN_POSITION = 20
+const ROUTER_EFFECT_THROTTLE_TIME_MS = 1000
 
 export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   onClose,
@@ -41,13 +43,22 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
 
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 
-  const onShare = useCallback(() => {
-    const productUrl = createProductLink(homeUrl, productDetail.code, productDetail.name)
+  const shareHandler = useCallback(() => {
+    const productUrl = createProductLink(homeUrl, productDetail.code)
 
     Share.share({
       message: t('productDetail_header_shareButton_message', { link: productUrl }),
     })
-  }, [homeUrl, productDetail.code, productDetail.name, t])
+  }, [homeUrl, productDetail.code, t])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onShare = useCallback(
+    throttle(shareHandler, ROUTER_EFFECT_THROTTLE_TIME_MS, {
+      leading: true,
+      trailing: false,
+    }),
+    [shareHandler],
+  )
 
   const onLayout = useCallback(
     (evt: LayoutChangeEvent) => {

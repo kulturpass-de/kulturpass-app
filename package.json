@@ -1,6 +1,6 @@
 {
   "name": "cultureapp",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "buildNumber": "1",
   "private": true,
   "scripts": {
@@ -34,6 +34,7 @@
     "podinstall": "cd ios && rm -f Podfile.lock && NO_FLIPPER=0 bundle exec pod install",
     "podinstall-release": "cd ios && rm -f Podfile.lock && NO_FLIPPER=1 bundle exec pod install",
     "reinstall": "rm -rf iod/Pods && rm -rf node_modules && yarn install && yarn podinstall",
+    "postinstall": "patch-package",
     "prestart": "sb-rn-get-stories",
     "storybook-watcher": "sb-rn-watcher",
     "prepare": "is-ci || husky install",
@@ -44,9 +45,12 @@
   "dependencies": {
     "@craftzdog/react-native-buffer": "^6.0.5",
     "@hookform/resolvers": "^3.3.1",
+    "@notifee/react-native": "^7.8.0",
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-native-community/netinfo": "^9.4.1",
+    "@react-native-firebase/app": "^18.4.0",
+    "@react-native-firebase/messaging": "^18.4.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/material-top-tabs": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
@@ -60,10 +64,13 @@
     "i18next-react-native-async-storage": "^1.0.4",
     "intl-pluralrules": "^2.0.1",
     "js-yaml": "^4.1.0",
+    "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "lottie-react-native": "^6.2.0",
     "node-jose": "^2.2.0",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-i18next": "^13.2.1",
@@ -78,7 +85,7 @@
     "react-native-get-random-values": "^1.9.0",
     "react-native-in-app-review": "^4.3.3",
     "react-native-pager-view": "^6.2.1",
-    "react-native-permissions": "^3.8.4",
+    "react-native-permissions": "^3.9.1",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-quick-base64": "^2.0.7",
     "react-native-quick-crypto": "^0.6.1",
@@ -118,6 +125,7 @@
     "@tsconfig/react-native": "^3.0.2",
     "@types/jest": "^29.5.4",
     "@types/js-yaml": "^4.0.5",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.isequal": "^4.5.6",
     "@types/lodash.throttle": "^4.1.7",
     "@types/node-jose": "^1.1.10",
@@ -204,6 +212,7 @@
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
     "LocationAlways",
-    "LocationWhenInUse"
+    "LocationWhenInUse",
+    "Notifications"
   ]
 }

@@ -42,3 +42,32 @@ ${address.postalCode} ${address.city}`)
 export const isVoucher = (fulfillmentOption: ProductDetail['fulfillmentOption'] | string) => {
   return fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
 }
+
+export const isDefinedAddress = (address?: {
+  name?: string
+  street?: string
+  city?: string
+  postalCode?: string
+}): address is {
+  name?: string
+  street?: string
+  city?: string
+  postalCode?: string
+} => {
+  return (
+    address !== undefined &&
+    (address.name !== undefined ||
+      address.city !== undefined ||
+      address.postalCode !== undefined ||
+      address.street !== undefined)
+  )
+}
+
+export const isValidLocationSuggestionString = (userEnteredPostalCode: string | undefined = ''): boolean =>
+  /^[a-zA-Z]{3,}/.test(userEnteredPostalCode)
+
+export const isFiveDigitNumber = (str: string | undefined = ''): boolean => /^\d{5}$/.test(str)
+
+export const isStartingWithSpecialCharacter = (str: string | undefined = ''): boolean => /^[^\w\d\s]/.test(str)
+
+export const isStartingWithNumber = (str: string | undefined = ''): boolean => /^\d/.test(str)

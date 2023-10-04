@@ -18,16 +18,18 @@ export const ProductAudioDetail: React.FC<ProductAudioDetailProps> = ({ productD
 
   return (
     <>
-      {audioFormat ? (
+      {audioFormat || ean ? (
         <ProductDetailSection
           testID={sectionTestID}
           iconSource="tag"
           sectionCaptioni18nKey="productDetail_audio_caption">
-          <ProductDetailEntry i18nKey="productDetail_audio_ean" value={ean} />
-          <ProductDetailEntry
-            i18nKey="productDetail_audio_audioFormat"
-            value={t(`productDetail_audio_audioFormat_${audioFormat}`)}
-          />
+          {ean ? <ProductDetailEntry i18nKey="productDetail_audio_ean" value={ean} /> : null}
+          {audioFormat ? (
+            <ProductDetailEntry
+              i18nKey="productDetail_audio_audioFormat"
+              value={t(`productDetail_audio_audioFormat_${audioFormat}`)}
+            />
+          ) : null}
         </ProductDetailSection>
       ) : null}
     </>
