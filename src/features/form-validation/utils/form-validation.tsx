@@ -9,6 +9,7 @@ import {
   CdcInvalidLoginIdError,
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
+  CdcInvalidLoginIdDeleteError,
 } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, HttpStatusBadRequestError, NetworkError, OfflineError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
@@ -109,6 +110,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'cdc_invalid_loginid_title' },
           message: { key: 'cdc_invalid_loginid_message' },
+        }
+      }
+      case CdcInvalidLoginIdDeleteError: {
+        return {
+          title: { key: 'cdc_invalid_loginid_title' },
+          message: { key: 'cdc_invalid_loginid_delete_message' },
         }
       }
       case CdcLoginIdNotExistingError: {

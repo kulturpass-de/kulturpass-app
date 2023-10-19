@@ -57,6 +57,7 @@ export const preferenceButtonColors: PreferencesButtonColors = {
   audioMedia: colors.primaryDarkestTile,
   sheetMusic: colors.newSecondaryDarkest,
   musicInstrument: colors.newYellowDarkest,
+  culturalWorkshop: colors.primaryDarkestTile,
   unknown: colors.newSecondaryDarkest,
 }
 

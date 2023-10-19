@@ -1,13 +1,15 @@
 import React from 'react'
-import { Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native'
+import { PixelRatio, Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
 import { textStyles } from '../../../../theme/typography'
+import { isDeviceTextScaled } from '../../../../theme/utils'
 
 const RADIUS = spacing[3]
 
 export type OfferSelectionFilterSuggestionsItemProps = {
   name: string
+  info?: string
   accessibilityHint?: string
   testID?: string
   topRadius?: boolean
@@ -20,6 +22,7 @@ export type OfferSelectionFilterSuggestionsItemProps = {
 
 export const OfferSelectionFilterSuggestionsItem: React.FC<OfferSelectionFilterSuggestionsItemProps> = ({
   name,
+  info,
   accessibilityHint,
   topRadius,
   bottomRadius,
@@ -36,10 +39,11 @@ export const OfferSelectionFilterSuggestionsItem: React.FC<OfferSelectionFilterS
       testID={testID}
       accessibilityRole="button"
       accessibilityHint={accessibilityHint}
-      accessibilityLabel={name}
+      accessibilityLabel={`${name}${info ? '\n' + info : ''}`}
       onPress={onPress}
       style={[
         styles.container,
+        isDeviceTextScaled() ? { height: PixelRatio.getFontScale() * 42.5 + 9.5 } : undefined,
         {
           backgroundColor: colors.secondaryBackground,
         },
@@ -48,20 +52,27 @@ export const OfferSelectionFilterSuggestionsItem: React.FC<OfferSelectionFilterS
         shadow && styles.shadow,
         style,
       ]}>
-      <Text numberOfLines={1} style={[textStyles.BodyRegular, { color: colors.labelColor }, textStyle]}>
+      <Text
+        numberOfLines={1}
+        style={[textStyles.BodyRegular, styles.fullWidth, { color: colors.labelColor }, textStyle]}>
         {name}
       </Text>
+      {info ? (
+        <Text numberOfLines={1} style={[textStyles.SuggestionInfo, styles.fullWidth, { color: colors.labelColor }]}>
+          {info}
+        </Text>
+      ) : null}
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 48,
+    height: 52,
     width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
     paddingHorizontal: spacing[5],
   },
   topRadius: {
@@ -81,5 +92,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  fullWidth: {
+    width: '100%',
   },
 })

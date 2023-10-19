@@ -1,8 +1,9 @@
 import { ProductDetail } from '../../../../features/product-detail/types/product-detail'
+import { LocationSuggestion } from './commerce-get-location-suggestions'
 
 export type ProviderCityOrPostalCode =
   | { provider: 'postalCode'; postalCode: string }
-  | { provider: 'city'; location: { id: string; name: string; coordinates: [number, number] } }
+  | { provider: 'city'; location: LocationSuggestion }
 
 export type GetProductDetailParams = {
   productCode: string

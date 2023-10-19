@@ -17,6 +17,7 @@ import { isVoucher } from '../../product-detail/utils'
 import { useFavouritesListItemActions } from '../hooks/use-favourites-list-item-actions'
 import { FavoritesEventDate } from './favorites-event-date'
 import { FavoritesListItemImageBadge } from './favorites-list-item-image-badge'
+import { InformationLine } from './information-line'
 
 export type FavoritesListItemProps = {
   product: Product
@@ -41,6 +42,8 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
     lowestOfferPrice,
     seller,
     fulfillmentOption,
+    venueName,
+    itemType,
   } = product
   const { imageUrl } = useProductImageUrl(images, 'product')
   const offersCount = productOfferCount ?? 0
@@ -58,16 +61,6 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
 
   const { isFavorite, addToFavourites, removeFromFavorites, toggleIsFavourite, error, resetError } =
     useFavouritesListItemActions(product.code)
-
-  const shopInformation = React.useMemo(() => {
-    if (shopName !== undefined) {
-      if (shopDistance !== undefined) {
-        return `${t('favorites_item_distance', { distance: shopDistance })} | ${shopName}`
-      } else {
-        return shopName
-      }
-    }
-  }, [shopName, shopDistance, t])
 
   const handlePressFavourite = useCallback(() => {
     onPress?.(product)
@@ -141,21 +134,12 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
                   {title}
                 </Text>
                 <View style={styles.informationLine}>
-                  {shopInformation !== undefined ? (
-                    <Text
-                      numberOfLines={3}
-                      testID={buildTestId('favorites_item_shopInformation')}
-                      style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
-                      {shopInformation}
-                    </Text>
-                  ) : (
-                    <Text
-                      numberOfLines={1}
-                      testID={buildTestId('favorites_item_no_offers')}
-                      style={[textStyles.BodySmallRegular, { color: colors.labelColor }]}>
-                      {t('favorites_item_no_offers')}
-                    </Text>
-                  )}
+                  <InformationLine
+                    shopDistance={shopDistance}
+                    shopName={shopName}
+                    venueName={venueName}
+                    itemType={itemType}
+                  />
                 </View>
                 <View style={styles.informationLine}>
                   <FavoritesEventDate startDate={eventStartDate} endDate={eventEndDate} />

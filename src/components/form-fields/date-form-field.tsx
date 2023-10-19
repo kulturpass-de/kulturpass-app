@@ -40,7 +40,7 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
     },
     ref,
   ) => {
-    const { t } = useTranslation()
+    const { t, l } = useTranslation()
     const { addTestIdModifier } = useTestIdBuilder()
     /**
      * The initially provided date prop is kept in the local state in the format of dotDate. The onChangeText of the
@@ -134,6 +134,10 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
               onCancel={onDatePickerCancel}
               minimumDate={new Date('1900-01-01')}
               maximumDate={new Date()}
+              locale={l}
+              title={t('datePicker_title')}
+              confirmText={t('datePicker_confirmText')}
+              cancelText={t('datePicker_cancelText')}
             />
           </>
         ) : (

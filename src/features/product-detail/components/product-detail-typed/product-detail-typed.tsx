@@ -4,6 +4,7 @@ import { ProductDetail, ProductTypes } from '../../types/product-detail'
 import { ProductAudioDetail } from './product-audio-detail'
 import { ProductBookDetail } from './product-book-detail'
 import { ProductCinemaDetail } from './product-cinema-detail'
+import { ProductCulturalWorkshopDetail } from './product-cultural-workshop-detail'
 import { ProductExhibitDetail } from './product-exhibit-detail'
 import { ProductMusicInstrumentDetail } from './product-music-instrument-detail'
 import { ProductSheetMusicDetail } from './product-sheet-music-detail'
@@ -24,6 +25,8 @@ export const ProductDetailTyped: React.FC<ProductDetailTypedProps> = ({ productD
       return <ProductBookDetail productDetail={productDetail} testID={testID} />
     case ProductTypes.StagedEvent:
       return <ProductStagedEventDetail productDetail={productDetail} testID={testID} detailType={detailType} />
+    case ProductTypes.CulturalWorkshop:
+      return <ProductCulturalWorkshopDetail productDetail={productDetail} testID={testID} detailType={detailType} />
     case ProductTypes.Exhibit:
       return <ProductExhibitDetail productDetail={productDetail} testID={testID} detailType={detailType} />
     case ProductTypes.Audio:

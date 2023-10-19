@@ -6,9 +6,9 @@ import { logger } from '../../../services/logger'
 import { TranslationFunction } from '../../../services/translation/translation'
 import { validatePostalCodeField } from '../../../utils/form-field/validate-postal-code-field'
 import {
+  containsSpecialCharacter,
   isFiveDigitNumber,
   isStartingWithNumber,
-  isStartingWithSpecialCharacter,
   isValidLocationSuggestionString,
 } from '../utils'
 
@@ -38,7 +38,7 @@ export const POSTAL_CODE_OR_CITY_SCHEMA = (
       return
     }
 
-    if (isStartingWithSpecialCharacter(cityOrPostalCode)) {
+    if (containsSpecialCharacter(cityOrPostalCode)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: t('form_error_suggestions_input_invalid'),

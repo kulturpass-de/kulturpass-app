@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Profile } from '../../../services/api/types/commerce/commerce-get-profile'
 import { getAccountVerificationStatus, getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
+import { selectIdentificationDisabled } from '../../../services/redux/slices/persisted-app-core'
 import { EidIdentifyButton } from '../../eid-verification/components/eid-identify-button'
 import { NotYetEntitledHeader } from '../../eid-verification/components/not-yet-entitled-header'
 import { VerificationDuplicateHeader } from '../../eid-verification/components/verification-duplicate-header'
@@ -16,6 +17,7 @@ export type HomeHeaderProps = {
 export const HomeHeader: React.FC<HomeHeaderProps> = ({ profile }) => {
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const isAccountPendingVerification = useSelector(getAccountVerificationStatus)
+  const identificationDisabled = useSelector(selectIdentificationDisabled)
 
   if (!isLoggedIn) {
     return <RegisterNowButton />
@@ -36,7 +38,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ profile }) => {
   }
 
   if (identificationStatus === 'NOT_VERIFIED') {
-    return <EidIdentifyButton />
+    return !identificationDisabled ? <EidIdentifyButton /> : null
   }
 
   if (identificationStatus === 'VERIFIED' && balanceStatus === 'NOT_YET_ENTITLED') {

@@ -15,6 +15,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useDeleteAccount } from '../../../features/account-deletion/hooks/use-delete-account'
 import { useFocusErrors } from '../../../features/form-validation/hooks/use-focus-errors'
+import { CdcInvalidLoginIdDeleteError, CdcInvalidLoginIdError } from '../../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
@@ -49,7 +50,13 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
       onNext()
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        ErrorAlertManager.current?.showError(error)
+        if (error instanceof CdcInvalidLoginIdError) {
+          const newError = new CdcInvalidLoginIdDeleteError()
+          newError.errorDetails = error.errorDetails
+          ErrorAlertManager.current?.showError(newError)
+        } else {
+          ErrorAlertManager.current?.showError(error)
+        }
       } else {
         logger.warn('delete account error cannot be interpreted', JSON.stringify(error))
         ErrorAlertManager.current?.showError(new UnknownError('Delete Account'))

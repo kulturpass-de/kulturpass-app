@@ -64,6 +64,9 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   const { buildTestId } = useTestIdBuilder()
 
   const onPressLoginButton = form.handleSubmit(async data => {
+    if (loading) {
+      return
+    }
     setLoading(true)
     try {
       await afterLogin(data)
@@ -91,11 +94,17 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
         onPressClose={afterClose}
       />
       <ScreenContent style={style.screenContent}>
+        <TranslatedText
+          textStyleOverrides={[style.title, { color: colors.labelColor }]}
+          i18nKey="login_title"
+          textStyle="HeadlineH4Bold"
+        />
         <FormFieldWithControl
-          name={'email'}
+          name="email"
           component={TextFormField}
           testID={buildTestId('login_form_email')}
           labelI18nKey="login_form_email"
+          labelTextStyle="BodySmallMedium"
           control={form.control}
           autoCapitalize="none"
           autoComplete="email"
@@ -106,10 +115,11 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           textContentType="username"
         />
         <FormFieldWithControl
-          name={'password'}
+          name="password"
           component={PasswordFormField}
           testID={buildTestId('login_form_password')}
           labelI18nKey="login_form_password"
+          labelTextStyle="BodySmallMedium"
           control={form.control}
           containerStyle={style.passwordFormFieldContainerStyle}
           isRequired
@@ -118,7 +128,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
         />
         <Button
           bodyStyleOverrides={style.formLoginButton}
-          disabled={!form.formState.isDirty}
+          disabled={!form.formState.isDirty || loading}
           testID={buildTestId('login_button')}
           i18nKey="login_button"
           onPress={onPressLoginButton}
@@ -129,6 +139,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           i18nKey="login_form_forgotPassword"
           variant="transparent"
           onPress={afterForgotPassword}
+          disabled={loading}
         />
         <View style={style.registerTitle}>
           <TranslatedText
@@ -152,6 +163,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             i18nKey="login_form_noAccount_registerButton"
             variant="tertiary"
             onPress={afterRegister}
+            disabled={loading}
           />
         </View>
       </ScreenContent>
@@ -161,8 +173,11 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
 
 const style = StyleSheet.create({
   screenContent: {
-    paddingTop: spacing[10],
     paddingHorizontal: spacing[5],
+  },
+  title: {
+    paddingVertical: spacing[6],
+    textAlign: 'center',
   },
   passwordFormFieldContainerStyle: {
     marginBottom: spacing[2],
@@ -171,16 +186,17 @@ const style = StyleSheet.create({
     marginTop: spacing[6],
   },
   formForgotPasswordButton: {
-    marginTop: spacing[1],
+    marginTop: spacing[2],
   },
   registerTitle: {
-    marginTop: spacing[9],
+    marginTop: spacing[7],
   },
   registerText: {
     marginTop: spacing[5],
   },
   registerButton: {
     marginTop: spacing[5],
+    paddingHorizontal: spacing[5],
   },
   noAccountTitle: {
     textAlign: 'center',

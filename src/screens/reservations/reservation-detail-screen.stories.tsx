@@ -2,41 +2,16 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ProductDetail, ProductTypes } from '../../features/product-detail/types/product-detail'
-import { Offer, Order } from '../../services/api/types/commerce/api-types'
+import { ProductDetail } from '../../features/product-detail/types/product-detail'
+import { Order } from '../../services/api/types/commerce/api-types'
 import { ReservationDetailScreen } from './reservation-detail-screen'
 
 const componentMeta: ComponentMeta<typeof ReservationDetailScreen> = {
-  title: 'Pickup Reservation Detail Screen',
+  title: 'Workshop Reservation Detail Screen',
   component: ReservationDetailScreen,
 }
 
-const selectedOffer: Offer = {
-  id: '555',
-  shopName: 'Munich Seller Shop',
-  shopDescription:
-    'Some test shop.<br /><a href="mailto:mail@kulturpass.de" rel="nofollow noreferrer" target="_blank">mail@kulturpass.de</a><br /><a href="tel:05373920733" rel="nofollow noreferrer" target="_blank">05373920733</a>',
-  description: 'description of the offer',
-  priceAdditionalInfo: 'additional price info',
-}
-const productDetail: ProductDetail = {
-  // ageRating: 'NO_RESTRICTION',
-  // artist: 'Artist',
-  author: 'Author',
-  categories: [],
-  code: '555',
-  name: 'Product name',
-  // composer: 'Composer',
-  description: 'Description',
-  // ean: 'EAN-555',
-  images: [],
-  isbn: '',
-  publisher: '',
-  purchasable: true,
-  url: '',
-  productType: ProductTypes.Book,
-  offers: [selectedOffer],
-}
+const productDetail: ProductDetail = require('../../features/product-detail/stories/mocked-cultural-workshop.json')
 
 export default componentMeta
 
@@ -51,6 +26,7 @@ const buildStoryForOrderStatus = (orderStatus: Order['status']) => {
       },
     ],
   }
+
   return (
     <View style={styles.container}>
       <ReservationDetailScreen

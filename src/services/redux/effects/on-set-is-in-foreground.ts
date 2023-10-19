@@ -3,14 +3,14 @@ import { authValidateSession } from '../../auth/store/thunks/auth-validate-sessi
 import { refreshLocation } from '../../location/redux/thunks/refresh-location'
 import { notificationsHandleStoredBackgroundPressNotification } from '../../notifications/store/thunks/notifications-handle-stored-backround-press-notification'
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../listener-middleware'
-import { appCoreSlice, selectIsStoreRehydrated } from '../slices/app-core'
+import { appCoreSlice, selectIsAppStarted } from '../slices/app-core'
 
 export const onSetIsInForegroundEffect: ListenerEffect<
   ListenerEffectMatcherAction<(typeof appCoreSlice)['actions']['setIsInForeground']['match']>
 > = async ({ payload: isInForeground }, listenerApi) => {
-  const isStoreRehydrated = selectIsStoreRehydrated(listenerApi.getState())
+  const isAppStarted = selectIsAppStarted(listenerApi.getState())
 
-  if (!isStoreRehydrated) {
+  if (!isAppStarted) {
     return
   }
 

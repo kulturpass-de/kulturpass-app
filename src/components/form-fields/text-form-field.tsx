@@ -12,12 +12,13 @@ import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 import { toTransparentColor } from '../../theme/utils'
 import { useInputState } from '../../utils/input/hooks/use-input-state'
-import { AvailableTranslations } from '../translated-text/types'
+import { AvailableTextStyles, AvailableTranslations } from '../translated-text/types'
 
 export type TextFormFieldProps = React.PropsWithChildren<
   {
     testID: TestId
     labelI18nKey: AvailableTranslations
+    labelTextStyle?: AvailableTextStyles
     error?: FieldError
     containerStyle?: FormFieldContainerProps['containerStyle']
     isRequired?: boolean
@@ -47,6 +48,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     {
       testID,
       labelI18nKey,
+      labelTextStyle,
       error,
       containerStyle,
       isRequired,
@@ -82,6 +84,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
       <FormFieldContainer
         testID={testID}
         labelI18nKey={labelI18nKey}
+        labelTextStyle={labelTextStyle}
         error={error}
         containerStyle={containerStyle}
         disableAccessibilityForLabel={disableAccessibilityForLabel}

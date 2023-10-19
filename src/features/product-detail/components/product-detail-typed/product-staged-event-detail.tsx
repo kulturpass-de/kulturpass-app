@@ -9,7 +9,7 @@ import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted
 import { StagedEventProductDetail } from '../../types/product-detail'
 import { isDefinedAddress } from '../../utils'
 import { Address } from '../address'
-import { ProductDetailSection } from '../product-detail-section'
+import { ProductDetailSection } from '../product-detail-section/product-detail-section'
 
 export type ProductStagedEventDetailProps = {
   productDetail: StagedEventProductDetail
@@ -40,7 +40,8 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
       showDistance
       showCopyToClipboard={detailType === 'OrderDetail'}
       baseTestId={addTestIdModifier(sectionTestID, 'location')}
-      copyToClipboardAccessibilityI18nKey="productDetail_stagedEvent_copyToClipboard"
+      accessibilityLabelI18nKey="productDetail_stagedEvent_copyToClipboard"
+      copiedAccessibilityI18nKey="productDetail_stagedEvent_copiedToClipboard"
     />
   ) : undefined
 

@@ -72,11 +72,7 @@ export const OfferSelectionFilterRoute: React.FC<OfferSelectionFilterProps> = ({
           randomMode,
           offersByLocation: {
             provider: 'city',
-            location: {
-              id: selectedSuggestion.id,
-              name: selectedSuggestion.name,
-              coordinates: [selectedSuggestion.latitude, selectedSuggestion.longitude],
-            },
+            location: selectedSuggestion,
           },
         })
       } else {

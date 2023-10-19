@@ -16,7 +16,7 @@ export const ProductDetailFooterFavoriteButton = ({ productCode, size }: Product
   const { isFavorite: defaultIsFavorite, refetch } = useIsFavorite(productCode)
   const { toggleIsFavourite, isFavorite, error, resetError } = useFavouritesListItemActions(
     productCode,
-    defaultIsFavorite,
+    defaultIsFavorite ?? false,
   )
 
   useFocusEffect(refetch)

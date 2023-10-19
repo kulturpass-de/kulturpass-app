@@ -11,17 +11,24 @@ type OfferSelectionTokenProps = {
   i18nParams?: {}
   disabled?: boolean
   customText?: string
+  testID?: string
 }
 
 const textStyle: AvailableTextStyles = 'BodyPrimary1Dark'
 
-export const OfferSelectionToken = ({ i18nKey, i18nParams, disabled, customText }: OfferSelectionTokenProps) => {
+export const OfferSelectionToken = ({
+  i18nKey,
+  i18nParams,
+  disabled,
+  customText,
+  testID,
+}: OfferSelectionTokenProps) => {
   const { colors } = useTheme()
 
   const textStyleOverrides = { color: disabled ? colors.tokenTextDisabled : colors.tokenText }
 
   return (
-    <View style={[styles.token, { backgroundColor: colors.tokenBackground }]}>
+    <View testID={testID} style={[styles.token, { backgroundColor: colors.tokenBackground }]}>
       {customText || !i18nKey ? (
         <Text style={[textStyles[textStyle], textStyleOverrides]}>{customText}</Text>
       ) : (

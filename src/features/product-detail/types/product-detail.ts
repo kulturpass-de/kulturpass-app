@@ -14,6 +14,7 @@ export enum ProductTypes {
   SheetMusic = 'sheetMusicProductWsDTO',
   StagedEvent = 'stagedEventProductWsDTO',
   Voucher = 'voucherProductWsDTO',
+  CulturalWorkshop = 'culturalWorkshopProductWsDTO',
 }
 
 export type ProductDetailBase<ProductType extends ProductTypes> = {
@@ -82,7 +83,7 @@ export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
   /**
    * Isbn13 identifier
    */
-  isbn: string
+  isbn?: string
   /**
    * Isbn10 identifier - optional
    */
@@ -90,11 +91,11 @@ export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
   /**
    * The author of the book
    */
-  author: string
+  author?: string
   /**
    * The publisher of the book
    */
-  publisher: string
+  publisher?: string
   /**
    * The language used in the book - optional
    */
@@ -120,23 +121,11 @@ export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
   eventStartDate?: string
 }
 
-export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
+export type VenueDetails = {
   /**
    * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
    */
   eventDateTime?: string
-  /**
-   * the length of the event in minutes
-   */
-  durationInMins?: number
-  /**
-   * The starting date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
-   */
-  exhibitStartDate?: string
-  /**
-   * The ending date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
-   */
-  exhibitEndDate?: string
   /**
    * The location/ address of the event
    */
@@ -151,6 +140,34 @@ export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
    */
   venueDistance?: string
 }
+
+export type ExhibitProductDetail = VenueDetails &
+  ProductDetailBase<ProductTypes.Exhibit> & {
+    /**
+     * the length of the event in minutes
+     */
+    durationInMins?: number
+    /**
+     * The starting date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
+     */
+    exhibitStartDate?: string
+    /**
+     * The ending date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
+     */
+    exhibitEndDate?: string
+  }
+
+export type CulturalWorkshopDetail = VenueDetails &
+  ProductDetailBase<ProductTypes.CulturalWorkshop> & {
+    /**
+     * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
+     */
+    eventStartDate?: string
+    /**
+     * The end date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
+     */
+    eventEndDate?: string
+  }
 
 export type MusicInstrumentProductDetail = ProductDetailBase<ProductTypes.MusicInstrument> & {
   /**
@@ -186,29 +203,13 @@ export type SheetMusicProductDetail = ProductDetailBase<ProductTypes.SheetMusic>
   publisher?: string
 }
 
-export type StagedEventProductDetail = ProductDetailBase<ProductTypes.StagedEvent> & {
-  /**
-   * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
-   */
-  eventDateTime?: string
-  /**
-   * the length of the event in minutes
-   */
-  durationInMins?: number
-  /**
-   * The location / address of the event
-   */
-  venue?: {
-    name?: string
-    street: string
-    city: string
-    postalCode: string
+export type StagedEventProductDetail = VenueDetails &
+  ProductDetailBase<ProductTypes.StagedEvent> & {
+    /**
+     * the length of the event in minutes
+     */
+    durationInMins?: number
   }
-  /**
-   * The location distance
-   */
-  venueDistance?: string
-}
 
 export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
   /**
@@ -244,3 +245,4 @@ export type ProductDetail =
   | SheetMusicProductDetail
   | StagedEventProductDetail
   | VoucherProductDetail
+  | CulturalWorkshopDetail

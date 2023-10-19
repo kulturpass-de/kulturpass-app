@@ -88,14 +88,14 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     flexDirection: 'row',
-    flexWrap: 'nowrap',
+    flexWrap: 'wrap',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
     paddingTop: spacing[4],
   },
   reservedContainer: {
     flexDirection: 'row',
-    flexWrap: 'nowrap',
+    flexWrap: 'wrap',
     alignItems: 'center',
     marginBottom: 10,
   },

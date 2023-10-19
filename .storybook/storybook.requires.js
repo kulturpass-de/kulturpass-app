@@ -75,6 +75,7 @@ const getStories = () => {
     "./src/features/eid-verification/screens/eid-puk-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx"),
     "./src/features/favorites/components/favorites-list-item.stories.tsx": require("../src/features/favorites/components/favorites-list-item.stories.tsx"),
+    "./src/features/preferences/components/preferences.stories.tsx": require("../src/features/preferences/components/preferences.stories.tsx"),
     "./src/features/product-detail/components/chip.stories.tsx": require("../src/features/product-detail/components/chip.stories.tsx"),
     "./src/features/product-detail/components/offer-details.stories.tsx": require("../src/features/product-detail/components/offer-details.stories.tsx"),
     "./src/features/product-detail/components/offer-selection-filter/offer-selection-filter-suggestions-item.stories.tsx": require("../src/features/product-detail/components/offer-selection-filter/offer-selection-filter-suggestions-item.stories.tsx"),
@@ -91,7 +92,9 @@ const getStories = () => {
     "./src/features/spartacus-webview/components/webview-loading-indicator.stories.tsx": require("../src/features/spartacus-webview/components/webview-loading-indicator.stories.tsx"),
     "./src/screens/app/release-notes-modal-screen.stories.tsx": require("../src/screens/app/release-notes-modal-screen.stories.tsx"),
     "./src/screens/app/release-notes-screen.stories.tsx": require("../src/screens/app/release-notes-screen.stories.tsx"),
+    "./src/screens/product-details/product-confirm-reservation-screen.stories.tsx": require("../src/screens/product-details/product-confirm-reservation-screen.stories.tsx"),
     "./src/screens/reservations/report-screen.stories.tsx": require("../src/screens/reservations/report-screen.stories.tsx"),
+    "./src/screens/reservations/reservation-detail-screen-pickup.stories.tsx": require("../src/screens/reservations/reservation-detail-screen-pickup.stories.tsx"),
     "./src/screens/reservations/reservation-detail-screen.stories.tsx": require("../src/screens/reservations/reservation-detail-screen.stories.tsx"),
     "./src/theme/typography.stories.tsx": require("../src/theme/typography.stories.tsx"),
   };

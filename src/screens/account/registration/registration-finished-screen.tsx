@@ -1,11 +1,13 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
+import { useSelector } from 'react-redux'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { selectIdentificationDisabled } from '../../../services/redux/slices/persisted-app-core'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -18,6 +20,7 @@ export type RegistrationFinishedScreenProps = {
 export const RegistrationFinishedScreen: React.FC<RegistrationFinishedScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
+  const identificationDisabled = useSelector(selectIdentificationDisabled)
   const screenTestID = buildTestId('registration_finished')
 
   return (
@@ -40,32 +43,49 @@ export const RegistrationFinishedScreen: React.FC<RegistrationFinishedScreenProp
             i18nKey="registration_finished_content_title"
             textStyle="HeadlineH3Extrabold"
           />
-          <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestID, 'content_text_first')}
-            i18nKey="registration_finished_content_text_first"
-            textStyle="BodyRegular"
-          />
-          <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestID, 'content_text_second')}
-            i18nKey="registration_finished_content_text_second"
-            textStyle="BodyRegular"
-          />
+          {identificationDisabled ? (
+            <TranslatedText
+              textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+              testID={addTestIdModifier(screenTestID, 'content_text_identification_disabled')}
+              i18nKey="registration_finished_content_text_identification_disabled"
+              textStyle="BodyRegular"
+            />
+          ) : (
+            <>
+              <TranslatedText
+                textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+                testID={addTestIdModifier(screenTestID, 'content_text_first')}
+                i18nKey="registration_finished_content_text_first"
+                textStyle="BodyRegular"
+              />
+              <TranslatedText
+                textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+                testID={addTestIdModifier(screenTestID, 'content_text_second')}
+                i18nKey="registration_finished_content_text_second"
+                textStyle="BodyRegular"
+              />
+            </>
+          )}
         </View>
       </ScrollView>
       <ModalScreenFooter>
-        <Button
-          onPress={onNext}
-          variant="primary"
-          testID={addTestIdModifier(screenTestID, 'nextButton')}
-          i18nKey="registration_finished_nextButton"
-        />
+        {!identificationDisabled ? (
+          <Button
+            onPress={onNext}
+            variant="primary"
+            testID={addTestIdModifier(screenTestID, 'nextButton')}
+            i18nKey="registration_finished_nextButton"
+          />
+        ) : null}
         <Button
           onPress={onClose}
-          variant="white"
+          variant={identificationDisabled ? 'primary' : 'white'}
           testID={addTestIdModifier(screenTestID, 'closeButton')}
-          i18nKey="registration_finished_closeButton"
+          i18nKey={
+            identificationDisabled
+              ? 'registration_finished_closeButton_identification_disabled'
+              : 'registration_finished_closeButton'
+          }
         />
       </ModalScreenFooter>
     </ModalScreen>

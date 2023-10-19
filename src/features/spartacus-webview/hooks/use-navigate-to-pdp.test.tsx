@@ -2,7 +2,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { renderHook } from '@testing-library/react-native'
 import React from 'react'
-import { LocationQueryParamSchema, useNavigateToPDP } from './use-navigate-to-pdp'
+import { parseBaseUrl64Location } from '../utils'
+import { useNavigateToPDP } from './use-navigate-to-pdp'
 
 test('Should not handle non-product links', () => {
   const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -111,15 +112,29 @@ describe('Should handle product links', () => {
 })
 
 describe('location base64url query param', () => {
-  test('should be parsed', () => {
-    const urlStr = `https://commerce.qa.kulturpass.de/occ/v2/kulturapp/products/geospatial/CinemaProduct-603012674602?lang=de&location=eyJpZCI6IjEyMzQ1IiwibmFtZSI6IkJhZCBCZXJnemFiZXJuIiwiY29vcmRpbmF0ZXMiOiI0OC45ODc2LDguMTIzNDU2In0`
+  test('should parse to "Hamburg"', () => {
+    const urlStr = `https://commerce.qa.kulturpass.de/occ/v2/kulturapp/products/geospatial/CinemaProduct-603012674602?lang=de&location=eyJpZCI6ICIyOTExMjk4IiwgImxhdGl0dWRlIjogNTMuNTUwNzMsICJsb25naXR1ZGUiOiA5Ljk5MzAyLCAibmFtZSI6ICJIYW1idXJnIn0`
     const url = new URL(urlStr)
     const locationQueryParam = url.searchParams.get('location')
-    const value = LocationQueryParamSchema.parse(locationQueryParam)
+    const value = parseBaseUrl64Location(locationQueryParam!)
     expect(value).toEqual({
-      id: '12345',
-      name: 'Bad Bergzabern',
-      coordinates: [48.9876, 8.123456],
+      id: '2911298',
+      latitude: 53.55073,
+      longitude: 9.99302,
+      name: 'Hamburg',
+    })
+  })
+
+  test('should parse to "Köln"', () => {
+    const urlStr = `https://commerce.qa.kulturpass.de/occ/v2/kulturapp/product/StagedEventProduct-467914640428/details?location=eyJpZCI6ICIyODg2MjQyIiwgImxhdGl0dWRlIjogNTAuOTMzMzMsICJsb25naXR1ZGUiOiA2Ljk1LCAibmFtZSI6ICJLw7ZsbiJ9`
+    const url = new URL(urlStr)
+    const locationQueryParam = url.searchParams.get('location')
+    const value = parseBaseUrl64Location(locationQueryParam!)
+    expect(value).toEqual({
+      id: '2886242',
+      latitude: 50.93333,
+      longitude: 6.95,
+      name: 'Köln',
     })
   })
 })
