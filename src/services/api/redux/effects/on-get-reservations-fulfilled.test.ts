@@ -10,7 +10,7 @@ describe('on-get-reservations-fulfilled', () => {
   const store = configureMockStore()
 
   const expectedTriggerAction = {
-    meta: { arg: { endpointName: 'getReservations' } },
+    meta: { arg: { endpointName: 'getReservations', originalArgs: {} } },
     payload: {
       orders: [
         { code: 'order_created', status: ORDER_STATUS_CREATED },
@@ -49,7 +49,8 @@ describe('on-get-reservations-fulfilled', () => {
 
       const expectedAction = apiOfflineCacheSlice.actions.setCommerceApiEndpointCache({
         endpointName: 'getReservations',
-        cache: { args: {}, payload: { orders: [{ code: 'order_created', status: ORDER_STATUS_CREATED }] } },
+        cacheKey: 'all',
+        payload: { orders: [{ code: 'order_created', status: ORDER_STATUS_CREATED }] },
       })
 
       store.expectActions([expectedAction])

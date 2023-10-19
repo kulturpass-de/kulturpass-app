@@ -53,7 +53,8 @@ describe('on-get-order-detail-fulfilled', () => {
       const expectedActions = PENDING_STATUSES.map(status =>
         apiOfflineCacheSlice.actions.setCommerceApiEndpointCache({
           endpointName: 'getOrderDetail',
-          cache: { args: { orderCode: 'my_order_code' }, payload: { status } },
+          cacheKey: 'my_order_code',
+          payload: { status },
         }),
       )
 

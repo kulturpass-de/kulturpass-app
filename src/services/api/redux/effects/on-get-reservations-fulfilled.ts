@@ -1,7 +1,7 @@
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../../../redux/listener-middleware'
 import { commerceApi } from '../../commerce-api'
 import { PENDING_STATUSES } from '../../types/commerce/commerce-get-reservations'
-import { apiOfflineCacheActions } from '../api-offline-cache-actions'
+import { setCommerceApiEndpointCache } from '../api-offline-cache-slice'
 import { cacheReservationsProductsDetails } from '../thunks/cache-reservations-products-details'
 
 export const onGetReservationsFulfilledEffect: ListenerEffect<
@@ -11,14 +11,17 @@ export const onGetReservationsFulfilledEffect: ListenerEffect<
     return
   }
 
+  const statuses = action.meta.arg.originalArgs.statuses ?? 'all'
+
   const orderHistoryList = action.payload.orders.filter(
     order => order.status && PENDING_STATUSES.includes(order.status),
   )
 
   listenerApi.dispatch(
-    apiOfflineCacheActions.setCommerceApiEndpointCache({
+    setCommerceApiEndpointCache({
       endpointName: 'getReservations',
-      cache: { args: action.meta.arg.originalArgs, payload: { ...action.payload, orders: orderHistoryList } },
+      cacheKey: statuses,
+      payload: { ...action.payload, orders: orderHistoryList },
     }),
   )
 

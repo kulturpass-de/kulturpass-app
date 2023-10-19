@@ -1,5 +1,6 @@
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
+import { resetCommerceApiCache } from '../../../api/redux/api-offline-cache-slice'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogout } from './auth-cdc-logout'
@@ -12,6 +13,7 @@ export const authLogout = createThunk('auth/logout', async (_payload, thunkAPI) 
   thunkAPI.dispatch(userSlice.actions.clearUser())
   thunkAPI.dispatch(cdcApi.util.resetApiState())
   thunkAPI.dispatch(commerceApi.util.resetApiState())
+  thunkAPI.dispatch(resetCommerceApiCache())
 
   if (errors.length > 0) {
     // We can only show one error. If both API calls fail, it also might be the same problem occuring.

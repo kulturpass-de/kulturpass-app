@@ -2,7 +2,7 @@ import notifee, { Notification } from '@notifee/react-native'
 import { AppState } from 'react-native'
 import { z } from 'zod'
 import { logger } from '../../logger'
-import { translation } from '../../translation/translation'
+import { fallbackLng } from '../../translation/setup'
 
 const NotificationDataPayloadSchema = z.object({
   titleDE: z.string().optional(),
@@ -12,7 +12,7 @@ const NotificationDataPayloadSchema = z.object({
   orderCode: z.string().optional(),
 })
 
-export const handleDataNotification = async (payload: unknown, language: string = translation.language) => {
+export const handleDataNotification = async (payload: unknown, language: string = fallbackLng) => {
   logger.log('handleDataNotification', payload)
 
   try {

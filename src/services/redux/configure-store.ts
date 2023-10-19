@@ -35,7 +35,9 @@ export const setupStore = (props?: SetupStoreProps) => {
             }
             return isPlain(value)
           },
+          warnAfter: 128,
         },
+        immutableCheck: { warnAfter: 128 },
       }).concat(middlewares),
     preloadedState: props?.preloadedState,
   })
