@@ -64,6 +64,9 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   const { buildTestId } = useTestIdBuilder()
 
   const onPressLoginButton = form.handleSubmit(async data => {
+    if (loading) {
+      return
+    }
     setLoading(true)
     try {
       await afterLogin(data)
@@ -118,7 +121,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
         />
         <Button
           bodyStyleOverrides={style.formLoginButton}
-          disabled={!form.formState.isDirty}
+          disabled={!form.formState.isDirty || loading}
           testID={buildTestId('login_button')}
           i18nKey="login_button"
           onPress={onPressLoginButton}
@@ -129,6 +132,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           i18nKey="login_form_forgotPassword"
           variant="transparent"
           onPress={afterForgotPassword}
+          disabled={loading}
         />
         <View style={style.registerTitle}>
           <TranslatedText
@@ -152,6 +156,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
             i18nKey="login_form_noAccount_registerButton"
             variant="tertiary"
             onPress={afterRegister}
+            disabled={loading}
           />
         </View>
       </ScreenContent>

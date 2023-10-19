@@ -13,7 +13,7 @@ export const getUserEnteredCityPostalCode = (state: RootState) => state.productD
 
 export const getLocationSuggestions = (state: RootState) => state.productDetail.locationSuggestions
 
-export const getDefaultPostalCodeOrCity = (state: RootState) => state.productDetail.defaultPostalCodeOrCity
+export const getDefaultSelection = (state: RootState) => state.productDetail.defaultSelection
 
 export const getLocationSuggestionsLength = createSelector(
   getLocationSuggestions,

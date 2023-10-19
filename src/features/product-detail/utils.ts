@@ -63,11 +63,11 @@ export const isDefinedAddress = (address?: {
   )
 }
 
-export const isValidLocationSuggestionString = (userEnteredPostalCode: string | undefined = ''): boolean =>
-  /^[a-zA-Z]{3,}/.test(userEnteredPostalCode)
-
 export const isFiveDigitNumber = (str: string | undefined = ''): boolean => /^\d{5}$/.test(str)
 
-export const isStartingWithSpecialCharacter = (str: string | undefined = ''): boolean => /^[^\w\d\s]/.test(str)
+export const containsSpecialCharacter = (str: string | undefined = ''): boolean => /[!@#$%^*_<>?+\\]/.test(str)
 
-export const isStartingWithNumber = (str: string | undefined = ''): boolean => /^\d/.test(str)
+export const isStartingWithNumber = (str: string | undefined = ''): boolean => /^\d/.test(str.trim())
+
+export const isValidLocationSuggestionString = (str: string | undefined = ''): boolean =>
+  str.length > 1 && !isStartingWithNumber(str) && !containsSpecialCharacter(str)

@@ -12,7 +12,7 @@ import {
   notificationsDebugActions,
   selectNotificationsDebugEvents,
 } from '../../../services/notifications/store/notifications-debug-slice'
-import { selectNotificationsState } from '../../../services/notifications/store/notifications-selectors'
+import { selectPersistedNotificationsState } from '../../../services/notifications/store/notifications-selectors'
 import { AppDispatch } from '../../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -28,7 +28,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ onHead
   const dispatch = useDispatch<AppDispatch>()
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
-  const { fcmToken, apnsToken } = useSelector(selectNotificationsState)
+  const { fcmToken, apnsToken } = useSelector(selectPersistedNotificationsState)
   const notificationsDebugEvents = useSelector(selectNotificationsDebugEvents)
 
   const onCopyFcm = useCallback(() => {

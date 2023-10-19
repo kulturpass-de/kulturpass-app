@@ -1,10 +1,9 @@
 import { firebase } from '@react-native-firebase/messaging'
 import { logger } from '../../logger'
 import { AppStore } from '../../redux/configure-store'
-import { selectNotificationsState } from '../store/notifications-selectors'
-import { setTokens } from '../store/notifications-slice'
+import { notificationsRefreshTokens } from '../store/thunks/notifications-refresh-tokens'
 
-export const subscribeToPushTokenChanges = (store: AppStore['store']) => {
+export const subscribeToPushTokenChanges = (store: Pick<AppStore['store'], 'dispatch'>) => {
   const messaging = firebase.messaging()
 
   /**
@@ -12,15 +11,6 @@ export const subscribeToPushTokenChanges = (store: AppStore['store']) => {
    */
   messaging.onTokenRefresh(fcmToken => {
     logger.log('--- notifications tokenRefresh')
-    const state = store.getState()
-
-    const { fcmToken: previousFcmToken } = selectNotificationsState(state)
-
-    if (previousFcmToken !== fcmToken) {
-      messaging.getAPNSToken().then(apnsToken => {
-        logger.log('tokenRefresh fcmToken changed. Updating...')
-        store.dispatch(setTokens({ fcmToken, apnsToken: apnsToken ?? undefined }))
-      })
-    }
+    store.dispatch(notificationsRefreshTokens(fcmToken))
   })
 }

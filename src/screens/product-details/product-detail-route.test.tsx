@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { fireEvent, screen } from '@testing-library/react-native'
+import { fireEvent, screen, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { useProductDetailHeaderHeight } from '../../features/product-detail/hooks/use-product-detail-header-height'
 import { useQueryProductDetail } from '../../features/product-detail/hooks/use-query-product-detail'
@@ -7,6 +7,8 @@ import { Offer } from '../../services/api/types/commerce/api-types'
 import { buildTestId } from '../../services/test-id/test-id'
 import { renderScreen } from '../../services/testing/test-utils'
 import * as utils from '../../utils/links/utils'
+import { OfferSelectionFilterRouteConfig } from './offer-selection-filter-route'
+import { OfferSelectionRouteConfig } from './offer-selection-route'
 import { ProductDetailRoute, ProductDetailRouteName, ProductDetailRouteParams } from './product-detail-route'
 import { ProductReportRoute, ProductReportRouteName } from './product-report-route'
 
@@ -28,6 +30,10 @@ const PRODUCT_1 = {
       shopName: 'first shop name',
       shopId: 'first shop id',
       shopDistance: 2,
+      price: {
+        currencyIso: 'EUR',
+        value: 20,
+      },
     },
     {
       id: 'secondId',
@@ -35,6 +41,10 @@ const PRODUCT_1 = {
       shopName: 'second shop name',
       shopId: 'second shop id',
       shopDistance: 1,
+      price: {
+        currencyIso: 'EUR',
+        value: 10,
+      },
     },
   ] as Offer[],
 }
@@ -46,6 +56,16 @@ const PRODUCT_2 = {
   categories: [],
 }
 
+const allOffersButtonTestId = buildTestId('productDetail_allOffers_button')
+const offerSelectionScreenTestId = buildTestId('offerSelection_screen')
+const offerSelectionCityTokenTestId = buildTestId('offerSelection_city_token')
+const offerSelectionLocationTokenTestId = buildTestId('offerSelection_location_token')
+const offerSelectionNoneTokenTestId = buildTestId('offerSelection_none_token')
+
+const offerSelectionFilterScreenTestId = buildTestId('offerSelectionFilter_screen')
+const offerSelectionFilterCityOrPostalCodeInputTestId = buildTestId('offerSelectionFilter_postalCodeOrCity_input')
+const offerSelectionFilterSubmitButtonTestId = buildTestId('offerSelectionFilter_submit_button')
+
 const reportButtonTestId = buildTestId('productDetail_report_button')
 
 const reportScreenTestId = buildTestId('productDetail_report_screen')
@@ -53,11 +73,16 @@ const reportScreenAcceptTestId = buildTestId('productDetail_report_accept_button
 const reportScreenAbortTestId = buildTestId('productDetail_report_abort_button')
 
 describe('ProductDetailRoute', () => {
-  const Stack = createStackNavigator()
+  const Stack = createStackNavigator<any>()
 
   const Wrapper: React.FC<ProductDetailRouteParams> = props => (
     <Stack.Navigator>
       <Stack.Screen name={ProductDetailRouteName} component={ProductDetailRoute as any} initialParams={props} />
+      <Stack.Screen name={OfferSelectionRouteConfig.name} component={OfferSelectionRouteConfig.component as any} />
+      <Stack.Screen
+        name={OfferSelectionFilterRouteConfig.name}
+        component={OfferSelectionFilterRouteConfig.component as any}
+      />
       <Stack.Screen name={ProductReportRouteName} component={ProductReportRoute as any} />
     </Stack.Navigator>
   )
@@ -67,6 +92,104 @@ describe('ProductDetailRoute', () => {
     headerMaxHeight: 150,
     headerHeightDiff: 108,
     onHeaderSetMaxHeight: jest.fn,
+  })
+
+  test('Should open PRODUCT_1 and navigate to the offer selection screen, having no location selected (location disabled)', async () => {
+    // -----------------------------------------------------------------------
+    // set hook to return product 1, not loading
+
+    useQueryProductDetailMock.mockReturnValue({
+      isFetching: false,
+      isLoading: false,
+      data: PRODUCT_1,
+    })
+
+    // open screen with product 1
+
+    renderScreen(<Wrapper productCode={PRODUCT_1.code} randomMode={false} offerId={'firstID'} />)
+
+    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+
+    fireEvent.press(screen.getByTestId(allOffersButtonTestId))
+
+    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+
+    expect(screen.queryByTestId(offerSelectionNoneTokenTestId)).toBeOnTheScreen()
+  })
+
+  test('Should open PRODUCT_1 and navigate to the offer selection screen, having location "Berlin" selected, also in the filter screen', async () => {
+    // -----------------------------------------------------------------------
+    // set hook to return product 1, not loading
+
+    useQueryProductDetailMock.mockReturnValue({
+      isFetching: false,
+      isLoading: false,
+      data: PRODUCT_1,
+    })
+
+    // open screen with product 1
+
+    renderScreen(
+      <Wrapper
+        productCode={PRODUCT_1.code}
+        randomMode={false}
+        offersByLocation={{
+          provider: 'city',
+          location: { id: 'berlin0', latitude: 0.1, longitude: 0.2, name: 'Berlin' },
+        }}
+        offerId={'firstID'}
+      />,
+    )
+
+    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+
+    fireEvent.press(screen.getByTestId(allOffersButtonTestId))
+
+    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+
+    expect(screen.queryByTestId(offerSelectionCityTokenTestId)).toBeOnTheScreen()
+    expect(screen.queryByTestId(offerSelectionCityTokenTestId)).toHaveTextContent('Berlin')
+
+    fireEvent.press(screen.getByTestId(offerSelectionCityTokenTestId))
+
+    await waitFor(() => expect(screen.queryByTestId(offerSelectionFilterScreenTestId)).toBeOnTheScreen())
+
+    expect(screen.queryByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)).toBeOnTheScreen()
+
+    let inputElement = screen.getByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)
+    expect(inputElement.props?.value).toEqual('Berlin')
+
+    expect(screen.getByTestId(offerSelectionFilterSubmitButtonTestId)).toBeEnabled()
+  })
+
+  test('Should open PRODUCT_1 and navigate to the offer selection screen, having the default location selected (location enabled)', async () => {
+    // -----------------------------------------------------------------------
+    // set hook to return product 1, not loading
+
+    useQueryProductDetailMock.mockReturnValue({
+      isFetching: false,
+      isLoading: false,
+      data: PRODUCT_1,
+    })
+
+    // open screen with product 1
+
+    renderScreen(
+      <Wrapper
+        productCode={PRODUCT_1.code}
+        randomMode={false}
+        offersByLocation={{ provider: 'location' }}
+        offerId={'firstID'}
+      />,
+    )
+
+    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+
+    fireEvent.press(screen.getByTestId(allOffersButtonTestId))
+
+    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+
+    expect(screen.queryByTestId(offerSelectionLocationTokenTestId)).toBeOnTheScreen()
   })
 
   test('Should open PRODUCT_1 and navigate to the report screen, navigate back, navigate to the report screen and send an email with the correct parameters', async () => {

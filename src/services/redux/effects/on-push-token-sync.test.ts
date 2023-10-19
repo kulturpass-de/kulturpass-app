@@ -1,27 +1,12 @@
 import { Action } from '@reduxjs/toolkit'
-import { setTokens } from '../../notifications/store/notifications-slice'
 import { notificationsSyncPushToken } from '../../notifications/store/thunks/notifications-sync-push-token'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { onLoginFulfilled, onPushTokenSyncEffect, onSetTokens } from './on-push-token-sync'
+import { onLoginFulfilled, onPushTokenSyncEffect } from './on-push-token-sync'
 
 describe('on-push-token-sync', () => {
   const store = configureMockStore()
   afterEach(() => {
     store.clearActions()
-  })
-
-  describe('onSetTokens', () => {
-    it('should match with setTokens action', async () => {
-      let effectDefinition: any
-
-      onSetTokens(((action: Action) => {
-        effectDefinition = action
-      }) as any)
-
-      const willRunEffect = effectDefinition.matcher(setTokens({ fcmToken: 'test' }))
-
-      expect(willRunEffect).toBe(true)
-    })
   })
 
   describe('onLoginFulfilled', () => {
@@ -45,7 +30,7 @@ describe('on-push-token-sync', () => {
 
   describe('onPushTokenSyncEffect', () => {
     it('should dispatch notificationsSyncPushToken thunk', async () => {
-      await onPushTokenSyncEffect(setTokens({ fcmToken: 'TEST' }), store as any)
+      await onPushTokenSyncEffect({} as any, store as any)
 
       store.expectActions([{ type: notificationsSyncPushToken.pending.type }])
     })

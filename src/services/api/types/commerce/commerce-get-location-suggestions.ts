@@ -1,6 +1,7 @@
 export type LocationSuggestion = {
   id: string
   name: string
+  info?: string
   latitude: number
   longitude: number
 }

@@ -6,6 +6,7 @@ export const firebase = {
     hasPermission: () => {},
     requestPermission: () => {},
     getToken: () => {},
+    deleteToken: () => {},
     getAPNSToken: () => {},
     getInitialNotification: () => {},
   }),

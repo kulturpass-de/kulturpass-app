@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Button } from '../../../components/button/button'
+import { Illustration } from '../../../components/illustration/illustration'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../../components/screen/screen-content'
-import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -29,9 +29,7 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
         onPressClose={onHeaderPressClose}
       />
       <ScreenContent style={styles.screenContent}>
-        <SvgImage
-          screenWidthRelativeSize={0.95}
-          height={150}
+        <Illustration
           testID={buildTestId('forgotPasswordSuccess_image_alt')}
           i18nKey="forgotPasswordSuccess_image_alt"
           type="password"
@@ -42,6 +40,12 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
           textStyleOverrides={[styles.description, { color: colors.labelColor }]}
           i18nKey="forgotPasswordSuccess_copytext"
           testID={buildTestId('forgotPasswordSuccess_copytext')}
+        />
+        <TranslatedText
+          textStyle="BodyRegular"
+          textStyleOverrides={[styles.description, { color: colors.labelColor }]}
+          i18nKey="forgotPasswordSuccess_check_spam"
+          testID={buildTestId('forgotPasswordSuccess_check_spam')}
         />
       </ScreenContent>
       <ModalScreenFooter>
@@ -57,15 +61,14 @@ export const ForgotPasswordSuccessScreen: React.FC<ForgotPasswordSuccessScreenPr
 
 const styles = StyleSheet.create({
   screenContent: {
-    paddingTop: spacing[7],
-    paddingHorizontal: spacing[5],
-    flex: 1,
+    flex: 0,
   },
   image: {
-    marginBottom: spacing[8],
+    paddingBottom: spacing[6],
   },
   description: {
-    marginBottom: spacing[6],
+    paddingBottom: spacing[6],
+    paddingHorizontal: spacing[5],
     textAlign: 'center',
   },
 })

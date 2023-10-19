@@ -39,7 +39,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
   offersByLocation,
 }) => {
   const { t } = useTranslation()
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
 
   const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
@@ -51,8 +51,10 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
 
   const keyExtractor = useCallback((item: OfferWithId) => item.id, [])
 
+  const testID = buildTestId('offerSelection')
+
   return (
-    <ModalScreen testID={buildTestId('offerSelection')}>
+    <ModalScreen testID={testID}>
       <View style={styles.scrollContainer}>
         <OfferSelectionHeader imageUrl={productImageUrl} onClose={onClose} onBack={onBack} />
         <FlatList
@@ -73,19 +75,30 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
                 {({ pressed }) => (
                   <View style={styles.filterBar}>
                     {offersByLocation?.provider === 'location' && (
-                      <OfferSelectionToken i18nKey="offerSelection_filter_location" />
+                      <OfferSelectionToken
+                        testID={addTestIdModifier(testID, 'location_token')}
+                        i18nKey="offerSelection_filter_location"
+                      />
                     )}
                     {offersByLocation?.provider === 'postalCode' && (
                       <OfferSelectionToken
+                        testID={addTestIdModifier(testID, 'postal_code_token')}
                         i18nKey="offerSelection_filter_postalCode"
                         i18nParams={{ postalCode: offersByLocation.postalCode }}
                       />
                     )}
                     {offersByLocation?.provider === 'city' && (
-                      <OfferSelectionToken customText={offersByLocation.location.name} />
+                      <OfferSelectionToken
+                        testID={addTestIdModifier(testID, 'city_token')}
+                        customText={offersByLocation.location.name}
+                      />
                     )}
                     {offersByLocation === undefined && (
-                      <OfferSelectionToken i18nKey="offerSelection_filter_none" disabled />
+                      <OfferSelectionToken
+                        testID={addTestIdModifier(testID, 'none_token')}
+                        i18nKey="offerSelection_filter_none"
+                        disabled
+                      />
                     )}
                     <View>
                       <SvgImage type="edit-3" width={24} height={24} style={pressed ? styles.pressed : null} />

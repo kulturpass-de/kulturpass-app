@@ -25,6 +25,7 @@ export type IllustrationType =
   | 'delete-account'
   | 'no-network'
   | 'location-sharing'
+  | 'password'
   | 'notification-permission'
 
 export type IllustrationProps = {

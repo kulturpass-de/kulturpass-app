@@ -8,7 +8,7 @@ export type ProductDetailState = {
   selectedFilterType: SelectedFilterType
   userEnteredCityPostalCode: string
   locationSuggestions: null | Array<LocationSuggestion>
-  defaultPostalCodeOrCity?: string
+  defaultSelection?: string | LocationSuggestion
 }
 
 const initialState: ProductDetailState = {
@@ -17,7 +17,7 @@ const initialState: ProductDetailState = {
   selectedFilterType: 'location',
   userEnteredCityPostalCode: '',
   locationSuggestions: null,
-  defaultPostalCodeOrCity: undefined,
+  defaultSelection: undefined,
 }
 
 export const productDetailSlice = createSlice({
@@ -48,8 +48,12 @@ export const productDetailSlice = createSlice({
     setSelectedFilterType: (state, action: PayloadAction<ProductDetailState['selectedFilterType']>) => {
       state.selectedFilterType = action.payload
     },
-    setDefaultPostalCodeOrCity: (state, action: PayloadAction<ProductDetailState['defaultPostalCodeOrCity']>) => {
-      state.defaultPostalCodeOrCity = action.payload
+    setDefaultSelection: (state, action: PayloadAction<ProductDetailState['defaultSelection']>) => {
+      state.defaultSelection = action.payload
+
+      if (typeof action.payload !== 'string') {
+        state.selectedSuggestion = action.payload
+      }
     },
   },
 })

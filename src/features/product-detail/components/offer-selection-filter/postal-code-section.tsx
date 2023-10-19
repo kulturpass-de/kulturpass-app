@@ -15,13 +15,9 @@ import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
 import { POSTAL_CODE_OR_CITY_SCHEMA } from '../../form/form-validation'
-import {
-  getDefaultPostalCodeOrCity,
-  getSelectedSuggestion,
-  getSuggestionsVisible,
-} from '../../redux/product-detail-selector'
+import { getDefaultSelection, getSelectedSuggestion, getSuggestionsVisible } from '../../redux/product-detail-selector'
 import { productDetailSlice } from '../../redux/product-detail-slice'
-import { isStartingWithNumber } from '../../utils'
+import { isValidLocationSuggestionString, isStartingWithNumber } from '../../utils'
 import { OfferSelectionFilterProps } from './offer-selection-filter-body'
 
 const POSTAL_CODE_MAX_LENGTH = 5
@@ -52,7 +48,9 @@ export const PostalCodeSection = ({
 
   const selectedSuggestion = useSelector(getSelectedSuggestion)
   const suggestionsVisible = useSelector(getSuggestionsVisible)
-  const defaultPostalCodeOrCity = useSelector(getDefaultPostalCodeOrCity)
+  const defaultSelection = useSelector(getDefaultSelection)
+
+  const defaultPostalCodeOrCity = typeof defaultSelection === 'string' ? defaultSelection : defaultSelection?.name
 
   const form = useForm<PostalCodeSectionFormData>({
     shouldFocusError: false,
@@ -103,16 +101,28 @@ export const PostalCodeSection = ({
     dispatch(productDetailSlice.actions.resetSelectedSuggestion())
   }, [form, dispatch])
 
+  /** reset on tab switch / clear field and reset data */
+  useEffect(() => {
+    return onClearSearchField
+  }, [onClearSearchField])
+
   /** set form value based on user selection */
   useEffect(() => {
     if (selectedSuggestion) {
-      form.setValue('postalCodeOrCity', selectedSuggestion.name)
+      form.setValue('postalCodeOrCity', selectedSuggestion.name, { shouldValidate: true })
     }
   }, [selectedSuggestion, form])
 
   /** set user input in the redux store */
   useEffect(() => {
     dispatch(productDetailSlice.actions.setUserEnteredCityPostalCode(postalCodeOrCity))
+
+    if (!isValidLocationSuggestionString(postalCodeOrCity)) {
+      dispatch(productDetailSlice.actions.resetSelectedSuggestion())
+
+      // input is still focused
+      dispatch(productDetailSlice.actions.setShowSuggestions(true))
+    }
   }, [postalCodeOrCity, dispatch])
 
   return (

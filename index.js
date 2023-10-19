@@ -6,6 +6,7 @@ import 'react-native-url-polyfill/auto';
 import { name as appName } from './app.json';
 import { App } from './src/app';
 import { AppHeadless } from './src/app-headless';
+import { logger } from './src/services/logger';
 import { notificationsHandleBackgroundMessage } from './src/services/notifications/store/thunks/notifications-handle-background-message';
 import { notificationsHandleBackgroundPressEvent } from './src/services/notifications/store/thunks/notifications-handle-background-press-event';
 import { store } from './src/services/redux/store';
@@ -13,10 +14,12 @@ import './src/services/translation/translation-polyfills';
 
 // Register background handler for remote notifications
 firebase.messaging().setBackgroundMessageHandler(async notification => {
+  logger.log("setBackgroundMessageHandler", notification)
   await store.dispatch(notificationsHandleBackgroundMessage(notification)).unwrap();
 });
 // Register background handler for notification pressed in background
 notifee.onBackgroundEvent(async event => {
+  logger.log("onBackgroundEvent", event)
   await store.dispatch(notificationsHandleBackgroundPressEvent(event)).unwrap();
 });
 

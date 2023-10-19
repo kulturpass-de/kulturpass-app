@@ -3,6 +3,7 @@ import { firebase } from '@react-native-firebase/messaging'
 import { v4 as uuid } from 'uuid'
 import { logger } from '../../../logger'
 import { createThunk } from '../../../redux/utils/create-thunk'
+import { subscribeToPushTokenChanges } from '../../subscriptions/subscribe-to-push-token-changes'
 import { notificationsDebugActions } from '../notifications-debug-slice'
 import { notificationsRefreshTokens } from './notifications-refresh-tokens'
 
@@ -16,8 +17,6 @@ export const notificationsStartup = createThunk('notifications/startup', async (
   }
   logger.log('--- notifications permission granted')
 
-  await firebase.messaging().subscribeToTopic('notify_all')
-  logger.log('--- notifications subscribed to topic notify_all')
   /**
    * Check for notifications that need to be processed on boot
    */
@@ -27,4 +26,5 @@ export const notificationsStartup = createThunk('notifications/startup', async (
       notificationsDebugActions.addEvent({ id: uuid(), type: 'initialNotification', payload: notification }),
     )
   }
+  subscribeToPushTokenChanges(thunkAPI)
 })

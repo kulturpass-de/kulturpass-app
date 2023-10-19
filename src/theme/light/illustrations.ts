@@ -41,5 +41,7 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/location-sharing.png')
     case 'notification-permission':
       return require('./illustrations/notification-permission.png')
+    case 'password':
+      return require('./illustrations/password.png')
   }
 }

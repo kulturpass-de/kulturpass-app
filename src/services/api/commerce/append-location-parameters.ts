@@ -20,8 +20,8 @@ export const appendLocationParameters = <InputData extends {}>(
 
     if (location.provider === 'postalCode') {
       data.postalCode = location.postalCode
-    } else if (location.provider === 'city') {
-      data.userLocation = location.location?.coordinates?.join(',')
+    } else if (location.provider === 'city' && location.location) {
+      data.userLocation = [location.location.latitude, location.location.longitude].join(',')
     }
 
     return data

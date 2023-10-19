@@ -45,7 +45,7 @@ export const Address: React.FC<AddressProps> = ({
   }, [city, name, postalCode, street])
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={addTestIdModifier(baseTestId, 'address')}>
       <View style={styles.addressSection}>
         <View style={styles.address}>
           {name ? (

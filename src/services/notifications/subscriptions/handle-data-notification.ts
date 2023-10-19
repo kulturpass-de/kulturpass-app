@@ -13,6 +13,8 @@ const NotificationDataPayloadSchema = z.object({
 })
 
 export const handleDataNotification = async (payload: unknown, language: string = translation.language) => {
+  logger.log('handleDataNotification', payload)
+
   try {
     const parsedData = NotificationDataPayloadSchema.parse(payload)
     const body = (language === 'de' ? parsedData.bodyDE : parsedData.bodyEN) ?? parsedData.bodyDE
@@ -34,11 +36,15 @@ export const handleDataNotification = async (payload: unknown, language: string 
           id: 'default',
         },
         sound: 'default',
+        smallIcon: 'ic_notification',
       },
       ios: {
         sound: 'default',
       },
     }
+
+    logger.log('handleDataNotification - displayNotification ', body)
+    logger.log('handleDataNotification - displayNotification ', data)
 
     await notifee.displayNotification({
       title,

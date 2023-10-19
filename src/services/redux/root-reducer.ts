@@ -6,6 +6,7 @@ import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { authSlice } from '../auth/store/auth-slice'
 import { notificationsDebugSlice } from '../notifications/store/notifications-debug-slice'
+import { notificationsSlice } from '../notifications/store/notifications-slice'
 import { userSlice } from '../user/redux/user-slice'
 import { webviewsSlice } from '../webviews/redux/webviews-slice'
 import { createPersistReducer } from './persist-reducer'
@@ -24,4 +25,5 @@ export const rootReducer = combineReducers({
   [notificationsDebugSlice.name]: notificationsDebugSlice.reducer,
   [inAppReviewSliceNonPersisted.name]: inAppReviewSliceNonPersisted.reducer,
   [productDetailSlice.name]: productDetailSlice.reducer,
+  [notificationsSlice.name]: notificationsSlice.reducer,
 })

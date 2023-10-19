@@ -51,6 +51,7 @@ export const OfferSelectionFilterScreen: React.FC<OfferSelectionFilterProps> = (
         topRadius={info.index === 0}
         bottomRadius={info.index >= (suggestionsLength ?? 0) - 1}
         name={info.item.name}
+        info={info.item.info}
         accessibilityHint={t('offerSelectionFilter_suggestions_item_accessibility_hint', {
           position: info.index + 1,
           total: suggestionsLength ?? info.index + 1,
@@ -76,19 +77,12 @@ export const OfferSelectionFilterScreen: React.FC<OfferSelectionFilterProps> = (
   useEffect(() => {
     dispatch(productDetailSlice.actions.setSelectedFilterType(defaultLocationProvider?.provider ?? 'postalCode'))
 
-    if (defaultLocationProvider?.provider === 'city' || defaultLocationProvider?.provider === 'postalCode') {
-      const defaultValue =
-        defaultLocationProvider.provider === 'city'
-          ? defaultLocationProvider.location.name
-          : defaultLocationProvider.postalCode
-
-      dispatch(productDetailSlice.actions.setDefaultPostalCodeOrCity(defaultValue))
+    if (defaultLocationProvider?.provider === 'city') {
+      dispatch(productDetailSlice.actions.setDefaultSelection(defaultLocationProvider.location))
+    } else if (defaultLocationProvider?.provider === 'postalCode') {
+      dispatch(productDetailSlice.actions.setDefaultSelection(defaultLocationProvider.postalCode))
     } else {
-      dispatch(
-        productDetailSlice.actions.setDefaultPostalCodeOrCity(
-          productDetailSlice.getInitialState().defaultPostalCodeOrCity,
-        ),
-      )
+      dispatch(productDetailSlice.actions.setDefaultSelection(productDetailSlice.getInitialState().defaultSelection))
     }
   }, [dispatch, defaultLocationProvider])
 
