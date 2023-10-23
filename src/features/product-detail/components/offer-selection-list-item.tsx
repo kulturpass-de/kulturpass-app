@@ -60,7 +60,7 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
           {formattedPrice ? (
             <Text
               testID={addTestIdModifier(testID, 'price')}
-              style={[textStyles.SubtitleBlack, { color: colors.labelColor }]}>
+              style={[textStyles.SubtitleBlack, { color: colors.labelColor }, styles.formattedPrice]}>
               {formattedPrice}
             </Text>
           ) : null}
@@ -98,6 +98,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  formattedPrice: {
+    marginLeft: spacing[4],
+    width: 82,
+    textAlign: 'right',
+  },
   shopName: {
     lineHeight: 24,
   },
@@ -107,5 +112,5 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: spacing[5],
   },
-  goToSearchButtonChildrenContainerStyle: { flex: 0 },
+  goToSearchButtonChildrenContainerStyle: { flex: 1 },
 })

@@ -1,26 +1,28 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { AccountDeletionConfirmRouteConfig } from '../../features/account-deletion/screens/account-deletion-confirm-route'
-import { AccountDeletionSuccessfulRouteConfig } from '../../features/account-deletion/screens/account-deletion-successful-route'
-import { ForceUpdateRouteConfig } from '../../features/force-update/screens/force-update-route'
-import { LocationSharingRouteConfig } from '../../features/location-sharing/screen/location-sharing-route'
-import { RegistrationFinishedRouteConfig } from '../../features/registration/screens/registration-finished-route'
-import { ReleaseNotesModalRouteConfig } from '../../features/release-notes/screens/release-notes-modal-route'
-import { AppConfigRouteConfig } from '../../screens/developer-settings/app-config-route'
-import { DarkModePreviewRouteConfig } from '../../screens/developer-settings/dark-mode-preview-route'
-import { DeveloperMenuRouteConfig } from '../../screens/developer-settings/developer-menu-route'
-import { EnvironmentConfigRouteConfig } from '../../screens/developer-settings/environment-config-route'
-import { SimulationCardConfigRouteConfig } from '../../screens/developer-settings/simulation-card-config-route'
-import { StorybookRouteConfig } from '../../screens/developer-settings/storybook-route'
-import { ForgotPasswordRouteConfig } from '../../screens/forgot-password/forgot-password-route'
-import { LogInRouteConfig } from '../../screens/log-in/log-in-route'
-import { LogOutRouteConfig } from '../../screens/log-out/log-out-route'
-import { RegistrationPreferencesRouteConfig } from '../../screens/registration-preferences/registration-preferences-route'
-import { RegistrationSuccessRouteConfig } from '../../screens/registration-success/registration-success-route'
-import { RegistrationConsentRouteConfig } from '../../screens/registration/registration-consent-route'
-import { RegistrationDataPrivacyRouteConfig } from '../../screens/registration/registration-data-privacy-route'
-import { RegistrationFormRouteConfig } from '../../screens/registration/registration-form-route'
+import { AccountDeletionConfirmRouteConfig } from '../../screens/account/delete-account/account-deletion-confirm-route'
+import { AccountDeletionSuccessfulRouteConfig } from '../../screens/account/delete-account/account-deletion-successful-route'
+import { ForgotPasswordRouteConfig } from '../../screens/account/forgot-password/forgot-password-route'
+import { LocationSharingRouteConfig } from '../../screens/account/preferences/location-sharing-route'
+import { RegistrationConsentRouteConfig } from '../../screens/account/registration/registration-consent-route'
+import { RegistrationDataPrivacyRouteConfig } from '../../screens/account/registration/registration-data-privacy-route'
+import { RegistrationFinishedRouteConfig } from '../../screens/account/registration/registration-finished-route'
+import { RegistrationFormRouteConfig } from '../../screens/account/registration/registration-form-route'
+import { RegistrationPreferencesRouteConfig } from '../../screens/account/registration/registration-preferences-route'
+import { RegistrationSuccessRouteConfig } from '../../screens/account/registration/registration-success-route'
+import { AppConfigRouteConfig } from '../../screens/app/developer-settings/app-config-route'
+import { DarkModePreviewRouteConfig } from '../../screens/app/developer-settings/dark-mode-preview-route'
+import { DeveloperMenuRouteConfig } from '../../screens/app/developer-settings/developer-menu-route'
+import { EnvironmentConfigRouteConfig } from '../../screens/app/developer-settings/environment-config-route'
+import { NotificationsRouteConfig } from '../../screens/app/developer-settings/notifications-route'
+import { SimulationCardConfigRouteConfig } from '../../screens/app/developer-settings/simulation-card-config-route'
+import { StorybookRouteConfig } from '../../screens/app/developer-settings/storybook-route'
+import { ForceUpdateRouteConfig } from '../../screens/app/force-update-route'
+import { OnboardingNotificationPermissionRouteConfig } from '../../screens/app/onboarding/onboarding-notification-permission-route'
+import { ReleaseNotesModalRouteConfig } from '../../screens/app/release-notes-modal-route'
+import { LogInRouteConfig } from '../../screens/auth/log-in-route'
+import { LogOutRouteConfig } from '../../screens/auth/log-out-route'
 import { ModalStackWrapper } from './modal-stack-wrapper'
 import { ModalParamList } from './types'
 
@@ -63,6 +65,7 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...DeveloperMenuRouteConfig} />
         <Stack.Screen {...EnvironmentConfigRouteConfig} />
         <Stack.Screen {...AppConfigRouteConfig} />
+        <Stack.Screen {...NotificationsRouteConfig} />
         <Stack.Screen {...SimulationCardConfigRouteConfig} />
         <Stack.Screen {...StorybookRouteConfig} />
         <Stack.Screen {...DarkModePreviewRouteConfig} />
@@ -70,6 +73,8 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...ReleaseNotesModalRouteConfig} />
 
         <Stack.Screen {...LocationSharingRouteConfig} />
+
+        <Stack.Screen {...OnboardingNotificationPermissionRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

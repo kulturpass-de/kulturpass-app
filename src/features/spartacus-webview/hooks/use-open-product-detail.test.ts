@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native'
+import { ProductDetailRouteConfig } from '../../../screens/product-details/product-detail-route'
 import { mockListenerOnce } from '../../../services/testing/mock-listener-once'
-import { ProductDetailRouteConfig } from '../../product-detail/screens/product-detail-route'
 import { mockedBridgeAdapterApi } from '../services/webview-bridge-adapter/__mocks__/create-bridge-adapter-api'
 import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewEvents } from '../services/webview-bridge-adapter/types'

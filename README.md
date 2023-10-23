@@ -35,10 +35,10 @@ This project uses:
 ## Requirements
 These instructions presume a macOS installation.
 
-Check required dependencies and versions using
+Check required dependencies and versions using [solidarity](https://infinitered.github.io/solidarity/#/):
 
-    $ yarn solidarity --verbose
-    $ yarn solidarity report
+    $ solidarity --verbose
+    $ solidarity report
 
 Install react native dependencies as described in [environment setup](https://reactnative.dev/docs/environment-setup)
 

@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Platform, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Screen } from '../../components/screen/screen'
+import { HomeHeader } from '../../features/home/components/home-header'
+import { HomeHeaderShrinkable } from '../../features/home/components/home-header-shrinkable'
 import { useDisplayReleaseNotes } from '../../features/release-notes/hooks/use-display-release-notes'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
@@ -15,8 +17,6 @@ import { useGetProfile } from '../../services/user/use-get-profile'
 import { selectHomeHeaderShown } from '../../services/webviews/redux/webviews-selectors'
 import { spacing } from '../../theme/spacing'
 import { useIsScreenReaderActive } from '../../utils/accessibility/hooks/use-is-screen-reader-active'
-import { HomeHeader } from './home-header'
-import { HomeHeaderShrinkable } from './home-header-shrinkable'
 
 export type HomeScreenProps = {}
 

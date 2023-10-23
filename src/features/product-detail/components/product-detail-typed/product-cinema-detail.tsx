@@ -3,7 +3,7 @@ import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { CinemaProductDetail } from '../../types/product-detail'
-import { ProductDetailSectionDateTime } from '../product-detail-section-date-time'
+import { ProductDetailSectionDateTime } from '../product-detail-section/product-detail-section-date-time'
 
 export type ProductCinemaDetailProps = {
   productDetail: Partial<Pick<CinemaProductDetail, 'eventStartDate' | 'durationInMins'>>

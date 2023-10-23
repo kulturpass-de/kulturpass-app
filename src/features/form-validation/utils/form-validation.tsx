@@ -9,19 +9,12 @@ import {
   CdcInvalidLoginIdError,
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
+  CdcInvalidLoginIdDeleteError,
 } from '../../../services/errors/cdc-errors'
-import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
-import {
-  ErrorWithCode,
-  HttpError,
-  HttpStatusBadRequestError,
-  NetworkError,
-  OfflineError,
-  UnknownError,
-} from '../../../services/errors/errors'
-import { logger } from '../../../services/logger'
+import { ErrorWithCode, HttpStatusBadRequestError, NetworkError, OfflineError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
 import { formatFullDateTime } from '../../../utils/date/date-format'
+import { validatePostalCodeField } from '../../../utils/form-field/validate-postal-code-field'
 import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
@@ -62,26 +55,7 @@ export const POSTAL_CODE_SCHEMA = (
         return z.NEVER
       }
 
-      const result = await validatePostalCode({ postalCode })
-
-      if (result.isError) {
-        if (result.error instanceof HttpError && result.error.statusCode === 400) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: t('form_error_not_valid_postal_code_verified'),
-          })
-        } else {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-          })
-          if (result.error instanceof ErrorWithCode) {
-            ErrorAlertManager.current?.showError(result.error)
-          } else {
-            logger.warn('postalcode validation error cannot be interpreted', JSON.stringify(result.error))
-            ErrorAlertManager.current?.showError(new UnknownError('Postalcode Validation'))
-          }
-        }
-      }
+      await validatePostalCodeField(ctx, t, validatePostalCode, postalCode)
     })
 }
 
@@ -136,6 +110,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
         return {
           title: { key: 'cdc_invalid_loginid_title' },
           message: { key: 'cdc_invalid_loginid_message' },
+        }
+      }
+      case CdcInvalidLoginIdDeleteError: {
+        return {
+          title: { key: 'cdc_invalid_loginid_title' },
+          message: { key: 'cdc_invalid_loginid_delete_message' },
         }
       }
       case CdcLoginIdNotExistingError: {

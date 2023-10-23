@@ -7,6 +7,7 @@ import { WebViewId } from '../../features/spartacus-webview/services/webview-bri
 import { webViewBridgeAdapter } from '../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { useTabsNavigation } from '../../navigation/tabs/hooks'
 import { SearchRouteName } from '../../screens/search/search-route'
+import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { selectWebViewState } from '../../services/webviews/redux/webviews-selectors'
 import { HITSLOP } from '../../theme/constants'
 import { spacing } from '../../theme/spacing'
@@ -30,6 +31,7 @@ export const GoToSearchButton: React.FC<GoToSearchButtonProps> = ({
   lineHeight = CHEVRON_SIZE,
   childrenContainerStyle,
 }) => {
+  const { addTestIdModifier } = useTestIdBuilder()
   const tabNavigation = useTabsNavigation()
   const { isReady: searchIsReady } = useSelector(state => selectWebViewState(state, WebViewId.Search))
 
@@ -60,10 +62,13 @@ export const GoToSearchButton: React.FC<GoToSearchButtonProps> = ({
       hitSlop={HITSLOP}
       style={styles.container}
       testID={testID}
+      accessible
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}>
-      <View style={[styles.childrenContainer, childrenContainerStyle]}>{children}</View>
+      <View testID={addTestIdModifier(testID, 'children')} style={[styles.childrenContainer, childrenContainerStyle]}>
+        {children}
+      </View>
 
       <View
         style={[

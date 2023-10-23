@@ -5,7 +5,13 @@ import { CopyToClipboard } from './copy-to-clipboard'
 const componentMeta: ComponentMeta<typeof CopyToClipboard> = {
   title: 'CopyToClipboard',
   component: CopyToClipboard,
-  args: {},
+  args: {
+    accessibilityLabelI18nKey: 'productDetail_offer_copyToClipboard',
+    copiedAccessibilityI18nKey: 'productDetail_offer_copiedToClipboard',
+    onPress: () => {
+      console.log('copied')
+    },
+  },
 }
 
 export default componentMeta

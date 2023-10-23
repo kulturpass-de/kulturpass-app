@@ -1,8 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard'
 import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { CopyToClipboard } from '../../../components/copy-to-clipboard/copy-to-clipboard'
-import { AvailableTranslations } from '../../../components/translated-text/types'
+import { CopyToClipboard, CopyToClipboardProps } from '../../../components/copy-to-clipboard/copy-to-clipboard'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -18,10 +17,11 @@ export type AddressProps = {
   showDistance?: boolean
   showCopyToClipboard: boolean
   baseTestId: string
-  copyToClipboardAccessibilityI18nKey: AvailableTranslations
 }
 
-export const Address: React.FC<AddressProps> = ({
+export const Address: React.FC<
+  AddressProps & Pick<CopyToClipboardProps, 'accessibilityLabelI18nKey' | 'copiedAccessibilityI18nKey'>
+> = ({
   name,
   city,
   postalCode,
@@ -29,7 +29,8 @@ export const Address: React.FC<AddressProps> = ({
   distance,
   showCopyToClipboard,
   baseTestId,
-  copyToClipboardAccessibilityI18nKey,
+  accessibilityLabelI18nKey,
+  copiedAccessibilityI18nKey,
   showDistance = true,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
@@ -45,7 +46,7 @@ export const Address: React.FC<AddressProps> = ({
   }, [city, name, postalCode, street])
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={addTestIdModifier(baseTestId, 'address')}>
       <View style={styles.addressSection}>
         <View style={styles.address}>
           {name ? (
@@ -71,7 +72,8 @@ export const Address: React.FC<AddressProps> = ({
         {showCopyToClipboard ? (
           <CopyToClipboard
             baseTestId={baseTestId}
-            copyToClipboardAccessibilityI18nKey={copyToClipboardAccessibilityI18nKey}
+            accessibilityLabelI18nKey={accessibilityLabelI18nKey}
+            copiedAccessibilityI18nKey={copiedAccessibilityI18nKey}
             onPress={copyToClipboard}
           />
         ) : null}

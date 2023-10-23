@@ -65,7 +65,7 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
           <Pressable onPress={onPressTitle} testID={addTestIdModifier(testID, 'titleButton')}>
             <TranslatedText
               ref={focusRef}
-              testID={addTestIdModifier(testID, 'text')}
+              testID={addTestIdModifier(testID, 'title')}
               i18nKey={titleI18nKey}
               textStyle="SubtitleExtrabold"
               textStyleOverrides={[styles.title, { color: colors.labelColor }]}
@@ -75,7 +75,7 @@ export const ModalScreenHeader: React.FC<ModalScreenHeaderProps> = ({
         ) : (
           <TranslatedText
             ref={focusRef}
-            testID={addTestIdModifier(testID, 'text')}
+            testID={addTestIdModifier(testID, 'title')}
             i18nKey={titleI18nKey}
             textStyle="SubtitleExtrabold"
             textStyleOverrides={[styles.title, { color: colors.labelColor }]}

@@ -47,8 +47,8 @@
       "id": "2032",
       "price": {
         "currencyIso": "EUR",
-        "formattedValue": "EUR40.00",
-        "value": 40
+        "formattedValue": "EUR140.00",
+        "value": 140
       },
       "productCode": "AD1234",
       "quantity": 40,

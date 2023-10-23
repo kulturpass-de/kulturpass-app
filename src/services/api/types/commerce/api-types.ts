@@ -316,13 +316,13 @@ export interface Cart {
   /**
    * Date of cart expiration time
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   expirationTime?: string
   /**
    * Date of saving cart
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   saveTime?: string
   /** Representation of a Principal webservice DTO used for defining User data types */
@@ -376,7 +376,7 @@ export interface Catalog {
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-08-11T10:19:10Z"
+   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
@@ -400,7 +400,7 @@ export interface CatalogVersion {
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-08-11T10:19:10Z"
+   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
@@ -430,7 +430,7 @@ export interface CategoryHierarchy {
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-08-11T10:19:10Z"
+   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
@@ -481,13 +481,13 @@ export interface Consent {
   /**
    * Date of consenting
    * @format date-time
-   * @example "2023-08-11T10:19:08Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   consentGivenDate?: string
   /**
    * Consent withdrawn date
    * @format date-time
-   * @example "2023-08-11T10:19:08Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   consentWithdrawnDate?: string
 }
@@ -528,7 +528,7 @@ export interface Consignment {
   /**
    * Consignment status date
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   statusDate?: string
   /** List of consignment entries */
@@ -638,7 +638,7 @@ export interface CustomerBalance {
   expired?: boolean
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   expirationDate?: string
 }
@@ -702,7 +702,7 @@ export interface DeliveryOrderEntryGroup {
 export interface Document {
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   dateUploaded?: string
   fileName?: string
@@ -753,7 +753,7 @@ export interface Evaluation {
   comment?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   date?: string
   firstName?: string
@@ -854,7 +854,7 @@ export interface FutureStock {
   /**
    * Date of future stock
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   date?: string
   /**
@@ -862,6 +862,20 @@ export interface FutureStock {
    * @example "31/12/2056"
    */
   formattedDate?: string
+}
+
+export interface GeoLocatedCityList {
+  results?: GeoLocatedCity[]
+}
+
+export interface GeoLocatedCity {
+  id?: string
+  name?: string
+  info?: string
+  /** @format double */
+  latitude?: number
+  /** @format double */
+  longitude?: number
 }
 
 /** Representation of a GeoPoint */
@@ -969,6 +983,10 @@ export interface OfferOverview {
   quantity?: number
   /** @format int32 */
   minPurchasableQty?: number
+  /** @format int32 */
+  maxPurchasableQty?: number
+  /** @format int32 */
+  packageQty?: number
   stateCode?: string
   allOfferPricingsJSON?: string
 }
@@ -1003,24 +1021,24 @@ export interface Offer {
   stateLabel?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   discountStartDate?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   discountEndDate?: string
   /** Representation of a Price */
   discountPrice?: Price
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   availableStartDate?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   availableEndDate?: string
   /** @format int32 */
@@ -1031,7 +1049,6 @@ export interface Offer {
   shopGrade?: number
   /** @format int32 */
   shopEvaluationCount?: number
-  shopDescription?: string
   volumePrices?: Price[]
   volumeOriginPrices?: Price[]
   /** @format int32 */
@@ -1040,6 +1057,7 @@ export interface Offer {
   minOrderQuantity?: number
   /** @format int32 */
   maxOrderQuantity?: number
+  shopDescription?: string
   /** @format double */
   shopDistance?: number
   shopAddress?: ShopAddress
@@ -1138,7 +1156,7 @@ export interface Order {
   /**
    * Date of order creation
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   created?: string
   /** Status of order */
@@ -1241,6 +1259,9 @@ export interface OrderEntry {
   barcodeDisplayType?: string
   /** Representation of a Price */
   refundAmount?: Price
+  shopDescription?: string
+  offerDescription?: string
+  offerPriceAdditionalInfo?: string
 }
 
 /** Representation of an Order entry list consumed */
@@ -1260,7 +1281,7 @@ export interface OrderHistory {
   /**
    * Date of placing order
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   placed?: string
   /** Guest user identifier */
@@ -1586,6 +1607,7 @@ export interface Product {
   lowestOfferPrice?: number
   seller?: string
   fulfillmentOption?: string
+  reservationSuspended?: boolean
 }
 
 /** Representation of a Product Express Update Element */
@@ -1693,6 +1715,15 @@ export interface ProductSearchPage {
   facets?: Facet[]
 }
 
+export interface ProductWithOffers {
+  productCode?: string
+  offers?: Offer[]
+}
+
+export interface ProductsWithOffersList {
+  productsWithOffers?: ProductWithOffers[]
+}
+
 /** Representation of a Promotion */
 export interface Promotion {
   /** Code of the promotion */
@@ -1704,13 +1735,13 @@ export interface Promotion {
   /**
    * The initial date of the promotion
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   startDate?: string
   /**
    * Last date of validity of the promotion
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   endDate?: string
   /** Description of the promotion */
@@ -1785,6 +1816,12 @@ export interface PromotionResultList {
   promotions?: PromotionResult[]
 }
 
+export interface PushNotificationToken {
+  fcmToken?: string
+  apnsToken?: string
+  previousFcmToken?: string
+}
+
 export interface ReasonList {
   reasons?: Reason[]
 }
@@ -1842,7 +1879,7 @@ export interface ReturnRequest {
   /**
    * Date of the return request creation
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:12Z"
    */
   creationTime?: string
   /** Representation of a Price */
@@ -1948,7 +1985,7 @@ export interface Review {
   /**
    * Date of the review
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   date?: string
   /** Alias name for the review */
@@ -2038,7 +2075,7 @@ export interface Shop {
   evaluationCount?: number
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:14Z"
    */
   registrationDate?: string
   /** @format int64 */
@@ -2073,7 +2110,7 @@ export interface SpecialOpeningDay {
   /**
    * Date of special opening day
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   date?: string
   /** Text representation of the date of special opening day */
@@ -2259,12 +2296,12 @@ export interface ThreadDetails {
   currentParticipantsDisplayValue?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   dateCreated?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   dateUpdated?: string
   entityType?: string
@@ -2293,7 +2330,7 @@ export interface ThreadMessage {
   body?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   dateCreated?: string
   attachments?: ThreadMessageAttachment[]
@@ -2321,12 +2358,12 @@ export interface Thread {
   currentParticipantsDisplayValue?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   dateCreated?: string
   /**
    * @format date-time
-   * @example "2023-08-11T10:19:09Z"
+   * @example "2023-10-19T11:10:13Z"
    */
   dateUpdated?: string
   entityType?: string
@@ -2391,7 +2428,7 @@ export interface User {
   /**
    * Deactivation date
    * @format date-time
-   * @example "2023-08-11T10:19:07Z"
+   * @example "2023-10-19T11:10:11Z"
    */
   deactivationDate?: string
   /**

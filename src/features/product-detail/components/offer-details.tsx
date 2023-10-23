@@ -5,7 +5,7 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { ProductDetailSection } from './product-detail-section'
+import { ProductDetailSection } from './product-detail-section/product-detail-section'
 
 export type OfferDetailsProps = {
   description: Offer['description']

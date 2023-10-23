@@ -55,9 +55,10 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
             <CopyToClipboard
               baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
-              copyToClipboardAccessibilityI18nKey={
+              accessibilityLabelI18nKey={
                 'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
               }
+              copiedAccessibilityI18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_copiedToClipboard"
               onPress={onPressVoucherCodeCopy}
               style={styles.voucherCodeCopyIcon}
             />
