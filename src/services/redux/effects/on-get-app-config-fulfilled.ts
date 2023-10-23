@@ -5,8 +5,9 @@ import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { ErrorWithCode } from '../../errors/errors'
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../listener-middleware'
 import { persistedAppCoreSlice } from '../slices/persisted-app-core'
+import { AppConfigSchema } from '../utils/app-config-schema'
 import { verifyJwsWithJwk } from '../utils/verify-jws-with-jwk'
-import { AppConfig, AppConfigSchema } from '../versions/current'
+import { AppConfig } from '../versions/current'
 
 export const onGetAppConfigFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getAppConfig.matchFulfilled>

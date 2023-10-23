@@ -1,6 +1,6 @@
 import { rootNavigationRef } from '../../../navigation/navigation-container'
-import { ForceUpdateRouteName } from '../../../screens/app/force-update-route'
 import { AppConfig } from '../../../services/redux/versions/current'
+import { ForceUpdateRouteName } from '../screens/force-update-route'
 import { enforceAppConfigMinVersion } from './enforce-app-config-min-version'
 
 jest.mock('../../../../package.json', () => ({ version: '0.5.0' }))

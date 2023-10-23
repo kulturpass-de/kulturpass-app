@@ -40,7 +40,6 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   const { colors } = useTheme()
 
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
-  const eidIdentificationVideo = useFaqLink('IDENTIFICATION_VIDEO')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
   const { isLoading: initLoading } = useInitAA2Sdk(onError)
@@ -112,17 +111,10 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
               link={eidGeneralFaqLink}
             />
           </View>
-          <View style={styles.textPadding}>
-            <LinkText
-              testID={buildTestId('eid_aboutVerification_video_link')}
-              i18nKey="eid_aboutVerification_video_link"
-              link={eidIdentificationVideo}
-            />
-          </View>
           <TranslatedText
             i18nKey="eid_aboutVerification_accept_text"
             textStyle="BodySmallRegular"
-            textStyleOverrides={[styles.acceptText, { color: colors.labelColor }]}
+            textStyleOverrides={[styles.textPadding, { color: colors.labelColor }]}
             testID={buildTestId('eid_aboutVerification_accept_text')}
           />
           <View style={styles.textPadding}>
@@ -185,8 +177,5 @@ export const styles = StyleSheet.create({
   },
   textPadding: {
     paddingTop: spacing[6],
-  },
-  acceptText: {
-    paddingTop: spacing[8],
   },
 })

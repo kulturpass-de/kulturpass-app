@@ -1,8 +1,4 @@
-import { getNotificationOnboardingShown } from '../../../features/onboarding/redux/onboarding-selectors'
-import { authValidateSession } from '../../auth/store/thunks/auth-validate-session'
-import { refreshLocation } from '../../location/redux/thunks/refresh-location'
-import { logger } from '../../logger'
-import { notificationsStartup } from '../../notifications/store/thunks/notifications-startup'
+import { rehydrateCommerceApiCache } from '../../api/redux/thunks/rehydrate-commerce-api-cache'
 import { clearSecurePersistedSession } from '../../session/redux/thunks/clear-secure-persisted-session'
 import { restoreSession } from '../../session/redux/thunks/restore-session'
 import { translation } from '../../translation/translation'
@@ -15,26 +11,16 @@ export const startup = createThunk<void, { appFirstRun: boolean }>('root/startup
     await thunkApi.dispatch(clearSecurePersistedSession())
     thunkApi.dispatch(persistedAppCoreSlice.actions.setIsBootstrapped())
   } else {
-    try {
-      await thunkApi.dispatch(restoreSession()).unwrap()
-      await thunkApi.dispatch(authValidateSession()).unwrap()
-    } catch (error: unknown) {
-      logger.logError('startup restoring session failed', error)
-    }
+    await thunkApi.dispatch(restoreSession()).unwrap()
+    await thunkApi.dispatch(rehydrateCommerceApiCache()).unwrap()
   }
 
   const state = thunkApi.getState()
 
   const lastUsedTranslationLanguage = selectLastUsedTranslationLanguage(state)
   if (lastUsedTranslationLanguage) {
-    await translation.changeLanguage(lastUsedTranslationLanguage)
+    translation.changeLanguage(lastUsedTranslationLanguage)
   }
 
-  await thunkApi.dispatch(refreshLocation())
-
-  if (getNotificationOnboardingShown(state)) {
-    await thunkApi.dispatch(notificationsStartup()).unwrap()
-  }
-
-  await thunkApi.dispatch(pollAppConfig()).unwrap()
+  thunkApi.dispatch(pollAppConfig())
 })

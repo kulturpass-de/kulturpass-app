@@ -10,7 +10,6 @@ export type WebViewState = {
   previousSubmittedUserLocationState: GeolocationState | undefined | null
   showHeader: boolean | null
   routesToLogin: boolean | null
-  filtersOrSortOpen: boolean | null
 }
 
 export type WebviewsState = {
@@ -25,7 +24,6 @@ const initialState: WebviewsState = {
     previousSubmittedUserLocationState: null,
     showHeader: true,
     routesToLogin: null,
-    filtersOrSortOpen: null,
   },
   [WebViewId.Search]: {
     isLoggedIn: null,
@@ -34,7 +32,6 @@ const initialState: WebviewsState = {
     previousSubmittedUserLocationState: null,
     showHeader: null,
     routesToLogin: null,
-    filtersOrSortOpen: null,
   },
 }
 
@@ -68,9 +65,6 @@ export const webviewsSlice = createSlice({
       }
       if (typeof payload.state.previousSubmittedUserLocationState !== 'undefined') {
         state[payload.webViewId].previousSubmittedUserLocationState = payload.state.previousSubmittedUserLocationState
-      }
-      if (typeof payload.state.filtersOrSortOpen !== 'undefined') {
-        state[payload.webViewId].filtersOrSortOpen = payload.state.filtersOrSortOpen
       }
     },
     setPreviousSubmittedUserLocationWebviewState: (

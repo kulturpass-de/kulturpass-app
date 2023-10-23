@@ -3,7 +3,7 @@ import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { AudioProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductAudioDetailProps = {
   productDetail: AudioProductDetail
@@ -18,18 +18,16 @@ export const ProductAudioDetail: React.FC<ProductAudioDetailProps> = ({ productD
 
   return (
     <>
-      {audioFormat || ean ? (
+      {audioFormat ? (
         <ProductDetailSection
           testID={sectionTestID}
           iconSource="tag"
           sectionCaptioni18nKey="productDetail_audio_caption">
-          {ean ? <ProductDetailEntry i18nKey="productDetail_audio_ean" value={ean} /> : null}
-          {audioFormat ? (
-            <ProductDetailEntry
-              i18nKey="productDetail_audio_audioFormat"
-              value={t(`productDetail_audio_audioFormat_${audioFormat}`)}
-            />
-          ) : null}
+          <ProductDetailEntry i18nKey="productDetail_audio_ean" value={ean} />
+          <ProductDetailEntry
+            i18nKey="productDetail_audio_audioFormat"
+            value={t(`productDetail_audio_audioFormat_${audioFormat}`)}
+          />
         </ProductDetailSection>
       ) : null}
     </>

@@ -10,11 +10,9 @@ export const svgForProductType: { [productType in ProductTypes]?: ThemedSvgImage
   exhibitProductWsDTO: 'pic-museum-2',
   cinemaProductWsDTO: 'pic-cinema-2',
   bookProductWsDTO: 'pic-books-2',
-  seasonTicketProductWsDTO: 'pic-books-2',
   audioProductWsDTO: 'pic-soundcarrier-2',
   sheetMusicProductWsDTO: 'pic-notes-2',
   musicInstrumentProductWsDTO: 'pic-instruments-2',
-  culturalWorkshopProductWsDTO: 'pic-workshop-confirm',
 }
 
 export const svgForVoucherCategory: { [key: string]: ThemedSvgImageType | undefined } = {
@@ -44,32 +42,3 @@ ${address.postalCode} ${address.city}`)
 export const isVoucher = (fulfillmentOption: ProductDetail['fulfillmentOption'] | string) => {
   return fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
 }
-
-export const isDefinedAddress = (address?: {
-  name?: string
-  street?: string
-  city?: string
-  postalCode?: string
-}): address is {
-  name?: string
-  street?: string
-  city?: string
-  postalCode?: string
-} => {
-  return (
-    address !== undefined &&
-    (address.name !== undefined ||
-      address.city !== undefined ||
-      address.postalCode !== undefined ||
-      address.street !== undefined)
-  )
-}
-
-export const isFiveDigitNumber = (str: string | undefined = ''): boolean => /^\d{5}$/.test(str)
-
-export const containsSpecialCharacter = (str: string | undefined = ''): boolean => /[!@#$%^*_<>?+\\]/.test(str)
-
-export const isStartingWithNumber = (str: string | undefined = ''): boolean => /^\d/.test(str.trim())
-
-export const isValidLocationSuggestionString = (str: string | undefined = ''): boolean =>
-  str.length > 1 && !isStartingWithNumber(str) && !containsSpecialCharacter(str)

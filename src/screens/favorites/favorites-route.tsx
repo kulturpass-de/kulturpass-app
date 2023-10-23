@@ -6,7 +6,7 @@ import { useModalNavigation } from '../../navigation/modal/hooks'
 import { RootStackParams } from '../../navigation/types'
 import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
-import { LogInRouteConfig } from '../auth/log-in-route'
+import { LogInRouteConfig } from '../log-in/log-in-route'
 import { FavoritesScreen, FavoritesScreenProps } from './favorites-screen'
 import { FavoritesUnauthorizedScreen, type FavoritesUnauthorizedScreenProps } from './favorites-unauthorized-screen'
 

@@ -1,4 +1,3 @@
-import { LottieViewProps } from 'lottie-react-native'
 import { ButtonVariant } from '../components/button/types'
 
 export type ColorMappings = {
@@ -39,7 +38,6 @@ export type ColorMappings = {
   badgeBackground: string
   badgeBackground2: string
   badgeColor2: string
-  itemSeparator: string
 }
 
 export type PreferencesButtonColors = {
@@ -50,7 +48,6 @@ export type PreferencesButtonColors = {
   audioMedia: string
   sheetMusic: string
   musicInstrument: string
-  culturalWorkshop: string
   unknown: string
 }
 
@@ -84,5 +81,3 @@ export type ButtonColors = {
 export type ButtonColorMappings = Record<ButtonVariant, ButtonColors>
 
 export type TryAgainButtonColors = Array<ButtonColors>
-
-export type RequiredAnimatedIllustration = LottieViewProps['source'] & { w?: number; h?: number }

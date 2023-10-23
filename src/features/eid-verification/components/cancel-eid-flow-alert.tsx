@@ -31,6 +31,7 @@ export const CancelEidFlowAlert: React.FC<CancelEidFlowAlertProps> = ({ visible,
   useFocusEffect(setFocus)
 
   const { closeFlow, loading } = useCloseFlow()
+  //TODO: Refactor loading and debouncedLoading
   const debouncedLoading = useDebouncedLoading(loading)
 
   const handleResume = useCallback(() => {

@@ -39,8 +39,3 @@ export const selectTcTokenUrlSubdomains = createSelector(
   selectPersistedAppCoreState,
   persistedAppCoreState => persistedAppCoreState.appConfig?.eid.tcTokenUrlSubdomains,
 )
-
-export const selectIdentificationDisabled = createSelector(
-  selectPersistedAppCoreState,
-  persistedAppCoreState => persistedAppCoreState.appConfig?.disableIdentification === true,
-)

@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { LocationSharingRouteName } from '../../../screens/account/preferences/location-sharing-route'
 import { AppDispatch } from '../../../services/redux/configure-store'
 import { forceRefreshLocation } from '../redux/thunks/force-refresh-location'
+import { LocationSharingRouteName } from '../screen/location-sharing-route'
 
 export const useRequestLocationPopup = (onLocationPopupFinished?: (isGranted: boolean) => void) => {
   const modalNavigation = useModalNavigation()

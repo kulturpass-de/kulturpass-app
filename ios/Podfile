@@ -1,27 +1,9 @@
-def node_require(script)
-  # Resolve script with node to allow for hoisting
-  require Pod::Executable.execute_command('node', ['-p',
-    "require.resolve(
-      '#{script}',
-      {paths: [process.argv[1]]},
-    )", __dir__]).strip
-end
-
-node_require('react-native/scripts/react_native_pods.rb')
-node_require('react-native-permissions/scripts/setup.rb')
-
-if %r{^0$}i.match ENV['NO_FLIPPER']
-  # https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1527949355
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'FirebaseCoreExtension', :modular_headers => true
-  pod 'FirebaseInstallations', :modular_headers => true
-  pod 'GoogleDataTransport', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
-  pod 'nanopb', :modular_headers => true
-  $RNFirebaseAsStaticFramework = true
-else
-  use_frameworks! :linkage => :static
-end
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
 platform :ios, '14.0'
 install! 'cocoapods', :deterministic_uuids => false
@@ -30,8 +12,9 @@ target 'cultureapp' do
   # Set OpenSSL Version, to mitigate an issue with react-native-quick-crypto and OpenSSL 3
   # https://github.com/margelo/react-native-quick-crypto/issues/189
   pod "OpenSSL-Universal", "1.1.1100"
-
-  setup_permissions(['LocationAccuracy', 'LocationAlways', 'LocationWhenInUse', 'Notifications'])
+  # React Native Permissions
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 
   config = use_native_modules!
 

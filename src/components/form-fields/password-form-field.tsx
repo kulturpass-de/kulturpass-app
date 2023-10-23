@@ -5,13 +5,12 @@ import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'
 import { SvgImage } from '../svg-image/svg-image'
-import { AvailableTextStyles, type AvailableTranslations } from '../translated-text/types'
+import { type AvailableTranslations } from '../translated-text/types'
 import { TextFormField } from './text-form-field'
 
 export type PasswordFormFieldProps = {
   testID: TestId
   labelI18nKey: AvailableTranslations
-  labelTextStyle?: AvailableTextStyles
   error?: FieldError
   containerStyle?: ViewStyle
   isRequired?: boolean
@@ -28,7 +27,6 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
     {
       testID,
       labelI18nKey,
-      labelTextStyle,
       error,
       containerStyle,
       isRequired,
@@ -53,7 +51,6 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
         ref={ref}
         testID={testID}
         labelI18nKey={labelI18nKey}
-        labelTextStyle={labelTextStyle}
         error={error}
         containerStyle={containerStyle}
         isRequired={isRequired}

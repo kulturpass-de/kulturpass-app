@@ -9,8 +9,7 @@ test('Should render CopyToClipboard', async () => {
   renderScreen(
     <CopyToClipboard
       baseTestId={buildTestId('copy_to_clipboard_wrapper')}
-      accessibilityLabelI18nKey="productDetail_offer_copyToClipboard"
-      copiedAccessibilityI18nKey="productDetail_offer_copiedToClipboard"
+      copyToClipboardAccessibilityI18nKey="productDetail_offer_copyToClipboard"
       onPress={onPress}
     />,
   )

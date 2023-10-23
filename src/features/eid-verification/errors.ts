@@ -30,6 +30,8 @@ export class AA2Error extends ErrorWithCode {
   }
 }
 
+// TODO: Replace messages with real detail texts (TBD as of story implementation)
+
 export class AA2AuthErrorResultError extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
     super(AA2ErrorCode.AA2_AUTH_ERROR_RESULT, detailCode)

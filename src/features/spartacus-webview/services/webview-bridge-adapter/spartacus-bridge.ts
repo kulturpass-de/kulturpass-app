@@ -114,29 +114,8 @@ export namespace SpartacusBridge {
       }
     }
 
-    export type MobileAppEvent = MobileAppEventLog | MobileAppEventWindowError | MobileAppEventAndroidError
-
-    export interface MobileAppEventLog extends Event {
+    export interface MobileAppEvent extends Event {
       source: Source.MobileApp
-      type: 'CONSOLE'
-      data: { type: string; log: Serializable | Serializable[] }
-    }
-
-    export interface MobileAppEventWindowError extends Event {
-      source: Source.MobileApp
-      type: 'WINDOW_ERROR'
-      data: {
-        message: string
-        error: string
-        sourcefile: string
-        lineno: number
-        colno: number
-      }
-    }
-
-    export interface MobileAppEventAndroidError extends Event {
-      source: Source.MobileApp
-      type: 'ANDROID_ERROR'
       data: 'ERR_UNKNOWN'
     }
 
@@ -155,26 +134,6 @@ export namespace SpartacusBridge {
     export interface SearchLocationOpenEvent extends Event {
       source: Source.Search
       name: 'locationOpen'
-    }
-
-    export interface SearchFiltersOpenEvent extends Event {
-      source: Source.Search
-      name: 'filtersOpen'
-    }
-
-    export interface SearchFiltersCloseEvent extends Event {
-      source: Source.Search
-      name: 'filtersClose'
-    }
-
-    export interface SearchSortOpenEvent extends Event {
-      source: Source.Search
-      name: 'sortOpen'
-    }
-
-    export interface SearchSortCloseEvent extends Event {
-      source: Source.Search
-      name: 'sortClose'
     }
   }
 

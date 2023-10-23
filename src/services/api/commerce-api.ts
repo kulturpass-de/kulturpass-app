@@ -6,7 +6,6 @@ import { sendCommerceDeleteRequest } from './commerce/send-commerce-delete-reque
 import { sendCommerceGetRequest } from './commerce/send-commerce-get-request'
 import { sendCommerceOauthTokenRequest } from './commerce/send-commerce-oauth-token-request'
 import { sendCommercePostRequest } from './commerce/send-commerce-post-request'
-import { sendCommercePutRequest } from './commerce/send-commerce-put-request'
 import { sendCommerceRevokeOauthTokenRequest } from './commerce/send-commerce-revoke-oauth-token-request'
 import { axiosBaseQuery } from './common/base-query'
 import {
@@ -24,10 +23,6 @@ import { CancelReservationParams } from './types/commerce/commerce-cancel-reserv
 import { CreateReservationParams } from './types/commerce/commerce-create-reservation'
 import { DeleteCartEntryParams } from './types/commerce/commerce-delete-cart-entry'
 import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
-import {
-  GetLocationSuggestionsParams,
-  GetLocationSuggestionsResponse,
-} from './types/commerce/commerce-get-location-suggestions'
 import { GetOrderDetailParams, GetOrderDetailResponse } from './types/commerce/commerce-get-order-detail'
 import {
   GetPostalCodeIsValidParams,
@@ -37,7 +32,6 @@ import { GetProfileRequestParams, GetProfileResponseBody } from './types/commerc
 import { GetRandomProductParams, GetRandomProductResponse } from './types/commerce/commerce-get-random-product'
 import { GetReservationsParams, GetReservationsResponse } from './types/commerce/commerce-get-reservations'
 import { PostRevokeAuthTokenParams, PostRevokeAuthTokenResponse } from './types/commerce/commerce-post-revoke-token'
-import { PutPushTokenParams, PutPushTokenResponse } from './types/commerce/commerce-put-push-token'
 
 const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 
@@ -53,7 +47,6 @@ export const commerceApi = createRtkApi({
     'product-detail',
     'language',
     'valid-postal-code',
-    'location-suggestions',
   ],
   endpoints: builder => ({
     getIsValidPostalCode: builder.query<GetPostalCodeIsValidResponse, GetPostalCodeIsValidParams>({
@@ -61,15 +54,6 @@ export const commerceApi = createRtkApi({
       queryFn: sendCommerceGetRequest(params => {
         return {
           path: `geolocation/postalcode/${params.postalCode}`,
-        }
-      }),
-    }),
-    getLocationSuggestions: builder.query<GetLocationSuggestionsResponse, GetLocationSuggestionsParams>({
-      providesTags: ['location-suggestions'],
-      queryFn: sendCommerceGetRequest(queryParams => {
-        return {
-          path: 'location/suggestions',
-          queryParams,
         }
       }),
     }),
@@ -206,12 +190,6 @@ export const commerceApi = createRtkApi({
       invalidatesTags: ['favorites'],
       queryFn: sendCommerceDeleteRequest(params => ({
         path: `users/current/favourites/entry/${params.productCode}`,
-      })),
-    }),
-    putPushToken: builder.mutation<PutPushTokenResponse, PutPushTokenParams>({
-      queryFn: sendCommercePutRequest(params => ({
-        path: 'users/current/pushtoken',
-        bodyPayload: params,
       })),
     }),
   }),

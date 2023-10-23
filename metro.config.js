@@ -1,5 +1,5 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+
 const defaultConfig = getDefaultConfig(__dirname);
 const { assetExts, sourceExts } = defaultConfig.resolver;
 
@@ -41,15 +41,14 @@ const quickCryptoConfig = {
  * react-native-svg-transformer setup, as described here:
  * https://github.com/kristerkari/react-native-svg-transformer
  */
-const svgAndInjectedCodeTransformerConfig = {
+const svgTransformerConfig = {
   transformer: {
-    babelTransformerPath: require.resolve('./injected-code-transformer.js'),
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
   },
   resolver: {
     assetExts: assetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...sourceExts, 'svg'],
-    blacklistRE: exclusionList([/webview-injected-code\/src\/.*/]),
   },
 };
 
-module.exports = mergeConfig(defaultConfig, quickCryptoConfig, svgAndInjectedCodeTransformerConfig, config);
+module.exports = mergeConfig(defaultConfig, quickCryptoConfig, svgTransformerConfig, config);

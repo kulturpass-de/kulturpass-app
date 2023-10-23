@@ -1,12 +1,17 @@
 import React, { PropsWithChildren, createContext, useEffect, useMemo } from 'react'
-import { StatusBar } from 'react-native'
+import { Appearance, StatusBar, useColorScheme } from 'react-native'
 import SystemNavigationBar from 'react-native-system-navigation-bar'
 import { useSelector } from 'react-redux'
-import { useColorScheme } from '../hooks/use-color-scheme'
+import { store } from '../../app'
 import { getDarkThemePreviewEnabled, getForcedTheme } from '../redux/theme-selectors'
-import { getTheme, ThemeValue } from '../utils'
+import { getTheme } from '../utils'
 
-export const ThemeContext = createContext<ThemeValue | null>(null)
+const initialTheme = getTheme(
+  store.getState().theme.forcedTheme ?? Appearance.getColorScheme(),
+  store.getState().theme.darkThemePreviewEnabled,
+)
+
+export const ThemeContext = createContext(initialTheme)
 
 export const Theme: React.FC<PropsWithChildren> = ({ children }) => {
   const systemColorScheme = useColorScheme()

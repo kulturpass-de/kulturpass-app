@@ -30,17 +30,14 @@ export const getAccountVerificationStatus = createSelector(
 
 export const getIsUserVerificationPending = createSelector(getAccountVerificationStatus, status => status === 'pending')
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
 export const getIsUserLoggedInToCdc = createSelector(getAuthState, auth => {
   return isUserLoggedInToCdc(auth.cdc)
 })
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
 export const getIsUserLoggedInToCommerce = createSelector(getAuthState, auth => {
   return isUserLoggedInToCommerce(auth.commerce)
 })
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
 export const getIsUserLoggedIn = createSelector(
   getIsUserLoggedInToCdc,
   getIsUserLoggedInToCommerce,
@@ -58,3 +55,11 @@ export const getRegistrationToken = createSelector(getCdcSessionData, data => da
 export const getCommerceSessionData = createSelector(getAuthState, auth => auth.commerce)
 
 export const getCommerceAccessToken = createSelector(getCommerceSessionData, data => data?.access_token)
+
+export const selectValidCommerceAccessToken = createSelector([getCommerceSessionData], commerceSessionData => {
+  if (!commerceSessionData || !isUserLoggedInToCommerce(commerceSessionData)) {
+    return null
+  }
+
+  return commerceSessionData.access_token
+})
