@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import { SerializedError } from '@reduxjs/toolkit'
-import React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Alert } from '../../../components/alert/alert'
 import { AlertButtonDismiss } from '../../../components/alert/alert-button-dismiss'
 import { AlertContent } from '../../../components/alert/alert-content'
@@ -18,11 +17,11 @@ export type ErrorAlertError = ErrorWithCode | SerializedError
 export type ErrorAlertProps = {
   error: ErrorAlertError | undefined
   onDismiss: (error: undefined) => void
-  hideErrorCode?: boolean
 }
 
-export const ErrorAlert = ({ error, onDismiss, hideErrorCode = false }: ErrorAlertProps) => {
-  const { buildTestId } = useTestIdBuilder()
+export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('error_alert')
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -42,20 +41,28 @@ export const ErrorAlert = ({ error, onDismiss, hideErrorCode = false }: ErrorAle
   return (
     <Alert visible={error !== undefined} onChange={onErrorAlertChange} dismissable={true}>
       <AlertContent ref={focusRef}>
-        <AlertTitle i18nKey={errorDescription.title.key} testID={buildTestId('error_alert_title')} />
+        <AlertTitle i18nKey={errorDescription.title.key} testID={addTestIdModifier(testID, 'title')} />
         <AlertMessage
           i18nKey={errorDescription.message.key}
           i18nParams={errorDescription.message.values}
-          testID={buildTestId('error_alert_message')}
+          testID={addTestIdModifier(testID, 'message')}
         />
-        {!hideErrorCode && errorWithCode?.presentableErrorCode ? (
+        {errorWithCode?.presentableErrorCode ? (
           <AlertMessage
             i18nKey="error_alert_message_details"
             i18nParams={{ errorCode: errorWithCode?.errorCode, detailCode: errorWithCode?.detailCode }}
-            testID={buildTestId('error_alert_message_details')}
+            testID={addTestIdModifier(testID, 'message_details')}
           />
         ) : null}
-        <AlertButtonDismiss i18nKey="error_alert_cta" testID={buildTestId('error_alert_cta')} />
+
+        {errorWithCode?.errorDetails ? (
+          <AlertMessage
+            i18nKey="error_alert_message_details_extra"
+            i18nParams={{ errorDetails: errorWithCode?.errorDetails }}
+            testID={addTestIdModifier(testID, 'message_details_extra')}
+          />
+        ) : null}
+        <AlertButtonDismiss buttonPadding={false} i18nKey="error_alert_cta" testID={addTestIdModifier(testID, 'cta')} />
       </AlertContent>
     </Alert>
   )

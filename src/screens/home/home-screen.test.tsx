@@ -14,6 +14,10 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+jest.mock('../../features/release-notes/hooks/use-display-release-notes', () => ({
+  useDisplayReleaseNotes: jest.fn(),
+}))
+
 const renderScreen = () => {
   const Stack = createStackNavigator()
   render(
@@ -36,6 +40,7 @@ test('Should render home screen with hint to identify', async () => {
         ctx.status(200),
         ctx.json({
           firstName: 'Max',
+          name: 'Max Mustermann',
           identificationStatus: 'NOT_VERIFIED',
           balanceStatus: 'NOT_ENTITLED',
           balance: {
@@ -60,6 +65,7 @@ test('Should render home screen with budget', async () => {
         ctx.status(200),
         ctx.json({
           firstName: 'Max',
+          name: 'Max Mustermann',
           identificationStatus: 'VERIFIED',
           balanceStatus: 'ENTITLED',
           balance: {
@@ -92,6 +98,7 @@ test('Should render home screen with hint of identified as duplicate', async () 
         ctx.status(200),
         ctx.json({
           firstName: 'Max',
+          name: 'Max Mustermann',
           identificationStatus: 'DUPLICATE',
           balanceStatus: 'NOT_ENTITLED',
           balance: {
@@ -116,6 +123,7 @@ test('Should render home screen with hint of not yet entitled', async () => {
         ctx.status(200),
         ctx.json({
           firstName: 'Max',
+          name: 'Max Mustermann',
           identificationStatus: 'VERIFIED',
           balanceStatus: 'NOT_YET_ENTITLED',
           balance: {

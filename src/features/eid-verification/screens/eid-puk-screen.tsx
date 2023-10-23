@@ -10,7 +10,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
@@ -25,6 +25,7 @@ export type EidPukScreenProps = {
 
 export const EidPukScreen: React.FC<EidPukScreenProps> = ({ onNext, onClose, retry }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const form = useForm<{ puk: string }>({
@@ -65,10 +66,10 @@ export const EidPukScreen: React.FC<EidPukScreenProps> = ({ onNext, onClose, ret
             testID={buildTestId('eid_pukView_content_text')}
             i18nKey="eid_pukView_content_text"
             textStyle="BodyRegular"
-            textStyleOverrides={styles.contentText}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
           />
           <TranslatedText
-            textStyleOverrides={{ color: colors.moonDarkest }}
+            textStyleOverrides={{ color: colors.labelColor }}
             testID={buildTestId('eid_pukView_content_title')}
             i18nKey="eid_pukView_content_title"
             textStyle="HeadlineH4Extrabold"
@@ -109,7 +110,6 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     paddingBottom: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   canView: {
     paddingTop: spacing[9],

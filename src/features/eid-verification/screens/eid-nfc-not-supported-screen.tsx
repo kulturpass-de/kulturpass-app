@@ -10,7 +10,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export type EidNFCNotSupportedScreenProps = {
@@ -19,6 +19,8 @@ export type EidNFCNotSupportedScreenProps = {
 
 export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> = ({ onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
 
   const screenTestId = buildTestId('eid_nfcNotSupported')
@@ -34,15 +36,21 @@ export const EidNFCNotSupportedScreen: React.FC<EidNFCNotSupportedScreenProps> =
         <Illustration testID={buildTestId('stopSign_image_alt')} i18nKey="stopSign_image_alt" type="stop-sign" />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={addTestIdModifier(screenTestId, 'content_title')}
             i18nKey="eid_nfcNotSupported_content_title"
             textStyle="HeadlineH4Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
-            testID={addTestIdModifier(screenTestId, 'content_text')}
-            i18nKey="eid_nfcNotSupported_content_text"
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={addTestIdModifier(screenTestId, 'content_text_first')}
+            i18nKey="eid_nfcNotSupported_content_text_first"
+            textStyle="BodyRegular"
+          />
+          <TranslatedText
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={addTestIdModifier(screenTestId, 'content_text_second')}
+            i18nKey="eid_nfcNotSupported_content_text_second"
             textStyle="BodyRegular"
           />
           <View style={styles.linkContainer}>
@@ -81,12 +89,11 @@ export const styles = StyleSheet.create({
   },
   contentTitle: {
     paddingTop: spacing[7],
+    paddingBottom: spacing[2],
     flexWrap: 'wrap',
-    color: colors.moonDarker,
   },
   contentText: {
-    paddingTop: spacing[7],
-    color: colors.moonDarkest,
+    paddingTop: spacing[6],
   },
   linkContainer: {
     paddingTop: spacing[9],

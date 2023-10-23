@@ -46,6 +46,14 @@ Line2<br />
 <br />
 <strong>Test</strong></p>`
 
+const productDescriptionExample3 = `
+Franky’s 17 euer Vertrauenswürdiger Ticketanbieter.
+<br />
+<a href="mailto:mail@kulturpass.de" rel="nofollow noreferrer" target="_blank">mail@kulturpass.de</a><br />
+<a href="tel:05373920733" rel="nofollow noreferrer" target="_blank">05373920733</a><br />
+<br />
+`
+
 const componentMeta: ComponentMeta<typeof HtmlText> = {
   title: 'HtmlText',
   component: HtmlText,
@@ -71,5 +79,10 @@ export const ProductDescription1: ComponentStory<typeof HtmlText> = args => (
 export const ProductDescription2: ComponentStory<typeof HtmlText> = args => (
   <ScrollView>
     <HtmlText {...args} html={productDescriptionExample2} />
+  </ScrollView>
+)
+export const ProductDescription3: ComponentStory<typeof HtmlText> = args => (
+  <ScrollView>
+    <HtmlText {...args} html={productDescriptionExample3} />
   </ScrollView>
 )

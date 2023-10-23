@@ -3,6 +3,8 @@ import { persistStore } from 'redux-persist'
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { ErrorWithCode } from '../errors/errors'
+import { subscribeToNotifications } from '../notifications/subscriptions/subscribe-to-notifications'
+import { subscribeToPressAction } from '../notifications/subscriptions/subscribe-to-press-action'
 import { listenerMiddleware } from './listener-middleware'
 import { reduxPersistIgnoredActions } from './persist-reducer'
 import { rootReducer } from './root-reducer'
@@ -13,9 +15,7 @@ export type SetupStoreProps = {
   preloadedState?: Partial<RootState>
 }
 
-export const setupStore = (props: SetupStoreProps) => {
-  const { preloadedState } = props
-
+export const setupStore = (props?: SetupStoreProps) => {
   const middlewares: Middleware<any>[] = []
   if (__DEV__ && !process.env.JEST_WORKER_ID) {
     const createReduxDebugger = require('redux-flipper').default
@@ -35,15 +35,19 @@ export const setupStore = (props: SetupStoreProps) => {
             }
             return isPlain(value)
           },
+          warnAfter: 128,
         },
+        immutableCheck: { warnAfter: 128 },
       }).concat(middlewares),
-    preloadedState,
+    preloadedState: props?.preloadedState,
   })
 
   const persistor = persistStore(store)
 
   subscribeToAppState(store)
   subscribeToTranslationLanguageChanged(store)
+  subscribeToNotifications(store)
+  subscribeToPressAction(store)
 
   return { store, persistor }
 }

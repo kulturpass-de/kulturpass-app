@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import React, { useCallback, useState } from 'react'
 import { LayoutChangeEvent, ScrollView, StyleSheet, View, type ViewProps } from 'react-native'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type AlertContentProps = PropsWithChildren<{
@@ -9,6 +9,7 @@ export type AlertContentProps = PropsWithChildren<{
 }>
 
 export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, children }, ref) => {
+  const { colors } = useTheme()
   const [contentHeight, setContentHeight] = useState(0)
 
   const onLayout = useCallback((evt: LayoutChangeEvent) => {
@@ -23,7 +24,11 @@ export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, c
 
   if (contentHeight === 0) {
     return (
-      <View ref={ref} accessibilityRole="alert" onLayout={onLayout} style={[styles.container, styles.content, style]}>
+      <View
+        ref={ref}
+        accessibilityRole="alert"
+        onLayout={onLayout}
+        style={[styles.container, { backgroundColor: colors.secondaryBackground }, styles.content, style]}>
         {children}
       </View>
     )
@@ -33,7 +38,7 @@ export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, c
     <ScrollView
       ref={ref}
       accessibilityRole="alert"
-      style={[styles.container, { maxHeight: contentHeight }]}
+      style={[styles.container, { backgroundColor: colors.secondaryBackground }, { maxHeight: contentHeight }]}
       contentContainerStyle={[styles.content, style]}>
       {children}
     </ScrollView>
@@ -43,7 +48,6 @@ export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, c
 export const styles = StyleSheet.create({
   container: {
     borderRadius: spacing[5],
-    backgroundColor: colors.basicWhite,
 
     // https://ethercreative.github.io/react-native-shadow-generator/
     shadowColor: '#000',

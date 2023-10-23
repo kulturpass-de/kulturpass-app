@@ -10,7 +10,7 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import {
   useLocalizedEnvironmentUrl,
@@ -23,7 +23,8 @@ type OnboardingScreenProps = {
   illustrationType: IllustrationType
   illustrationI18nKey: AvailableTranslations
   contentTitleI18nKey: AvailableTranslations
-  contentTextI18nKey: AvailableTranslations
+  contentTextI18nKeyFirst: AvailableTranslations
+  contentTextI18nKeySecond: AvailableTranslations
   dataprivacyI18nKey?: AvailableTranslations
   acceptButtonI18nKey: AvailableTranslations
   denyButtonI18nKey?: AvailableTranslations
@@ -38,7 +39,8 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   illustrationType,
   illustrationI18nKey,
   contentTitleI18nKey,
-  contentTextI18nKey,
+  contentTextI18nKeyFirst,
+  contentTextI18nKeySecond,
   dataprivacyI18nKey,
   onAccept,
   onDeny,
@@ -47,6 +49,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   additionalContent,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const screenTestID = buildTestId(testID)
 
@@ -74,15 +77,21 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={buildTestId(contentTitleI18nKey)}
             i18nKey={contentTitleI18nKey}
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
-            testID={buildTestId(contentTextI18nKey)}
-            i18nKey={contentTextI18nKey}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId(contentTextI18nKeyFirst)}
+            i18nKey={contentTextI18nKeyFirst}
+            textStyle="BodyRegular"
+          />
+          <TranslatedText
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId(contentTextI18nKeySecond)}
+            i18nKey={contentTextI18nKeySecond}
             textStyle="BodyRegular"
           />
           {additionalContent}
@@ -130,12 +139,10 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     flexWrap: 'wrap',
     textAlign: 'center',
-    color: colors.moonDarkest,
   },
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   linkContainer: {
     paddingTop: spacing[6],

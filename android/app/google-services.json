@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "644412826416",
+    "project_id": "kulturpass-fcm-prod",
+    "storage_bucket": "kulturpass-fcm-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644412826416:android:b3ca6090ac8b0698071ef5",
+        "android_client_info": {
+          "package_name": "de.bkm.kulturpass"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArZhzCMeYYfmRzHtAkoDbUC5hh-CM_yA0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,18 +1,19 @@
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { useCancelFlow } from './use-cancel-flow'
+import { RootStackParams } from '../../../navigation/types'
+import { eidAusweisApp2Service } from '../services/eid-ausweisapp2-service'
 
 export const useCloseFlow = () => {
   const [loading, setLoading] = useState(false)
-  const modalNavigation = useModalNavigation()
-  const cancelFlow = useCancelFlow()
+  const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
 
   const closeFlow = useCallback(async () => {
     setLoading(true)
-    await cancelFlow()
-    modalNavigation.closeModal()
+    await eidAusweisApp2Service.stopSDK()
+    navigation.navigate('Tabs')
     setLoading(false)
-  }, [cancelFlow, modalNavigation])
+  }, [navigation])
 
   return { closeFlow, loading }
 }

@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { EnvironmentConfigurationState } from '../../redux/versions/current'
 import { environmentConfigurations } from '../environment-configuration'
-
-export type EnvironmentConfigurationState = {
-  currentEnvironmentName: string
-}
 
 export const environmentConfigurationInitialState: EnvironmentConfigurationState = {
   currentEnvironmentName: environmentConfigurations.data[0].name,

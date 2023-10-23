@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Alert } from '../../../components/alert/alert'
 import { AlertButtonDismiss } from '../../../components/alert/alert-button-dismiss'
 import { AlertContent } from '../../../components/alert/alert-content'
@@ -16,8 +15,13 @@ export type ConfirmCancellationAlertProps = {
   onDismiss: () => void
 }
 
-export const ConfirmCancellationAlert = ({ visible, onConfirm, onDismiss }: ConfirmCancellationAlertProps) => {
-  const { buildTestId } = useTestIdBuilder()
+export const ConfirmCancellationAlert: React.FC<ConfirmCancellationAlertProps> = ({
+  visible,
+  onConfirm,
+  onDismiss,
+}) => {
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('cancellation_confirmation_alert')
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -33,22 +37,19 @@ export const ConfirmCancellationAlert = ({ visible, onConfirm, onDismiss }: Conf
   return (
     <Alert visible={visible} onChange={onChange} dismissable={false}>
       <AlertContent ref={focusRef}>
-        <AlertTitle
-          i18nKey="cancellation_confirmation_alert_title"
-          testID={buildTestId('canellation_confirmation_alert_title')}
-        />
+        <AlertTitle i18nKey="cancellation_confirmation_alert_title" testID={addTestIdModifier(testID, 'title')} />
         <AlertMessage
           i18nKey="cancellation_confirmation_alert_description"
-          testID={buildTestId('canellation_confirmation_alert_message')}
+          testID={addTestIdModifier(testID, 'message')}
         />
         <Button
           i18nKey="cancellation_confirmation_alert_confirm_button"
-          testID={buildTestId('cancellation_confirmation_alert_confirm_button')}
+          testID={addTestIdModifier(testID, 'confirm_button')}
           onPress={onConfirm}
         />
         <AlertButtonDismiss
           i18nKey="cancellation_confirmation_alert_cancel_button"
-          testID={buildTestId('cancellation_confirmation_alert_cancel_button')}
+          testID={addTestIdModifier(testID, 'cancel_button')}
           variant="transparent"
         />
       </AlertContent>

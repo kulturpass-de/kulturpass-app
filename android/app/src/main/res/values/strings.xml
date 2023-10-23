@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">KulturPass DE</string>
-    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
 </resources>

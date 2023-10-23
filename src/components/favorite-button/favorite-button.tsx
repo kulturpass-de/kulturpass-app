@@ -1,36 +1,44 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Pressable, PressableProps } from 'react-native'
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HITSLOP } from '../../theme/constants'
-import { Icon } from '../icon/icon'
+import { useIsReduceMotionActive } from '../../utils/accessibility/hooks/use-is-reduce-motion-active'
+import { AnimatedIcon, AnimatedIconRef } from '../animated-icon/animated-icon'
+import { SvgImage } from '../svg-image/svg-image'
 
 export type FavoriteButtonProps = {
   isFavorite: boolean
   onPress: () => void
   testID: TestId
   hitSlop?: PressableProps['hitSlop']
+  size?: number
 }
 
-export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress, testID, hitSlop }) => {
+export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress, testID, hitSlop, size = 36 }) => {
   const { t } = useTranslation()
+  const animatedIconRef = useRef<AnimatedIconRef>(null)
+  const isReduceMotionActive = useIsReduceMotionActive()
 
-  if (!isFavorite) {
-    // NOTE: Currently, when the item is removed from favourites - we display only an "empty" icon without Pressable.
-    // Later when the api is available to re-add the item to favourites - we need to add a Pressable with the same props
-    // as the ones on the "remove from favourites" Pressable, with the only difference in
-    // `accessibilityLabel={t('favorites_item_add_a11y_label')}`
-    return <Icon source="HeartUnselected" width={36} height={36} />
-  }
+  const handlePress = useCallback(() => {
+    if (!isReduceMotionActive && !isFavorite) {
+      animatedIconRef.current?.playAnimation()
+    }
+    onPress()
+  }, [isFavorite, isReduceMotionActive, onPress])
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={t('favorites_item_remove_a11y_label')}
+      accessibilityLabel={isFavorite ? t('favorites_item_remove_a11y_label') : t('favorites_item_add_a11y_label')}
       testID={testID}
-      onPress={onPress}
+      onPress={handlePress}
       hitSlop={hitSlop || HITSLOP}>
-      <Icon source="HeartSelected" width={36} height={36} />
+      {isReduceMotionActive ? (
+        <SvgImage type={isFavorite ? 'heart-selected' : 'heart-unselected'} width={size} height={size} />
+      ) : (
+        <AnimatedIcon ref={animatedIconRef} speed={1.5} active={isFavorite} type="heart" width={size} height={size} />
+      )}
     </Pressable>
   )
 }

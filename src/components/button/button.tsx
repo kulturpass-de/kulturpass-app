@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, PropsWithChildren, useCallback, useMemo, useState } from 'react'
 import {
   AccessibilityRole,
   Pressable,
@@ -7,19 +7,17 @@ import {
   ViewStyle,
   Text,
   View,
+  LayoutChangeEvent,
 } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { IconProps } from '../icon/icon'
-import { Icon } from '../icon/icon'
+import { buttonColorMappings as darkButtonColorMappings } from '../../theme/dark/color-mappings'
+import { useTheme } from '../../theme/hooks/use-theme'
+import { buttonColorMappings as lightButtonColorMappings } from '../../theme/light/color-mappings'
+import { ButtonColors } from '../../theme/types'
+import { SvgImage, SvgImageProps } from '../svg-image/svg-image'
 import { AvailableTranslations } from '../translated-text/types'
-import {
-  buttonModifierStyle,
-  baseButtonStyle,
-  buttonVariantStyles,
-  buttonWidthOptionStyle,
-  ButtonTypeStyle,
-} from './button-style'
+import { buttonModifierStyle, baseButtonStyle, shadow, noShadow, buttonWidthOptionStyle } from './button-style'
 import { ButtonModifier, ButtonVariant, ButtonWidthOption } from './types'
 
 export type ButtonProps = {
@@ -32,8 +30,8 @@ export type ButtonProps = {
   onPress: () => void
   disabled?: boolean
   bodyStyleOverrides?: ViewStyle
-  buttonVariantStyleOverrides?: Partial<ButtonTypeStyle>
-  iconSource?: IconProps['source']
+  buttonColorOverrides?: ButtonColors
+  iconSource?: SvgImageProps['type']
   iconPosition?: 'left' | 'right'
   accessibilityRole?: AccessibilityRole
   accessibilityHint?: string
@@ -49,13 +47,14 @@ export const Button: FC<ButtonProps> = ({
   onPress,
   testID,
   bodyStyleOverrides = {},
-  buttonVariantStyleOverrides,
+  buttonColorOverrides,
   iconSource,
   iconPosition = 'right',
   accessibilityRole = 'button',
   accessibilityHint,
 }) => {
   const { t } = useTranslation()
+  const { colorScheme } = useTheme()
 
   const { addTestIdModifier } = useTestIdBuilder()
 
@@ -64,74 +63,129 @@ export const Button: FC<ButtonProps> = ({
     return buttonWidth
   }, [widthOption])
 
-  const buttonVariantStyle: ButtonTypeStyle = useMemo(() => {
-    const buttonStyles = buttonVariantStyles[buttonVariant]
-    return buttonVariantStyleOverrides !== undefined
-      ? { ...buttonStyles, ...buttonVariantStyleOverrides }
-      : buttonStyles
-  }, [buttonVariant, buttonVariantStyleOverrides])
+  const buttonColors: ButtonColors = useMemo(() => {
+    if (buttonColorOverrides !== undefined) {
+      return buttonColorOverrides
+    }
+
+    if (colorScheme === 'dark') {
+      return darkButtonColorMappings[buttonVariant]
+    } else {
+      return lightButtonColorMappings[buttonVariant]
+    }
+  }, [buttonColorOverrides, buttonVariant, colorScheme])
 
   const buttonContainerStyle = useCallback<(state: PressableStateCallbackType) => StyleProp<ViewStyle>>(
     ({ pressed }) => {
       const { buttonContainer } = baseButtonStyle
       const { size: buttonSize } = buttonModifierStyle[modifier]
       const { width: buttonWidth } = buttonWidthOptionStyle[widthOption]
-      const { baseContainer, disabledContainer, pressedContainer } = buttonVariantStyle
-      const style = [buttonContainer, buttonSize, buttonWidth, baseContainer]
 
+      let buttonBackgroundColor = buttonColors.containerBackground
+      let buttonBorderColor = buttonColors.containerBorder
+      let buttonOpacity: number | undefined
       if (disabled) {
-        style.push(disabledContainer)
+        buttonBackgroundColor = buttonColors.containerBackgroundDisabled ?? buttonBackgroundColor
+        buttonBorderColor = buttonColors.containerBorderDisabled ?? buttonBorderColor
+        buttonOpacity = buttonColors.opacityDisabled
+      } else if (pressed) {
+        buttonBackgroundColor = buttonColors.containerBackgroundPressed ?? buttonBackgroundColor
+        buttonBorderColor = buttonColors.containerBorderPressed ?? buttonBorderColor
+        buttonOpacity = buttonColors.opacityPressed
+      } else {
+        buttonOpacity = buttonColors.opacity
       }
-      if (pressed) {
-        style.push(pressedContainer)
+
+      const style: StyleProp<ViewStyle> = [
+        buttonContainer,
+        buttonSize,
+        buttonWidth,
+        { backgroundColor: buttonBackgroundColor, borderColor: buttonBorderColor, opacity: buttonOpacity },
+      ]
+
+      if (buttonBorderColor === undefined) {
+        style.push({ borderWidth: 0 })
       }
       style.push(bodyStyleOverrides)
-
       return style
     },
-    [modifier, widthOption, buttonVariantStyle, disabled, bodyStyleOverrides],
+    [modifier, widthOption, buttonColors, disabled, bodyStyleOverrides],
   )
 
   const buttonShadowStyle = useCallback<(state: PressableStateCallbackType) => StyleProp<ViewStyle>>(
     ({ pressed }) => {
-      const { baseShadow, pressedShadow, disabledShadow } = buttonVariantStyle
+      let buttonShadowColor = buttonColors.shadow
+      let buttonOpacity: number | undefined
+      if (disabled) {
+        buttonShadowColor = buttonColors.shadowDisabled ?? buttonShadowColor
+        buttonOpacity = buttonColors.opacityDisabled
+      } else if (pressed) {
+        buttonShadowColor = buttonColors.shadowPressed ?? buttonShadowColor
+        buttonOpacity = buttonColors.opacityPressed
+      } else {
+        buttonOpacity = buttonColors.opacity
+      }
+
+      if (buttonShadowColor === undefined) {
+        return noShadow
+      }
+
       const { size: buttonSize } = buttonModifierStyle[modifier]
       const { width: buttonWidth } = buttonWidthOptionStyle[widthOption]
-      const style = [baseShadow, buttonSize, buttonWidth]
 
-      if (disabled) {
-        style.push(disabledShadow)
-      }
-      if (pressed) {
-        style.push(pressedShadow)
-      }
+      const style: StyleProp<ViewStyle> = [
+        shadow,
+        { backgroundColor: buttonShadowColor, opacity: buttonOpacity },
+        buttonSize,
+        buttonWidth,
+      ]
 
       return style
     },
-    [buttonVariantStyle, modifier, widthOption, disabled],
+    [disabled, modifier, widthOption, buttonColors],
   )
 
   const buttonTextStyle = useCallback(
     (pressed: boolean) => {
       const { text: buttonText } = buttonModifierStyle[modifier]
 
-      const { baseText, disabledText, pressedText } = buttonVariantStyle
-      const style = [buttonText, baseText]
-
+      let buttonTextColor = buttonColors.text
       if (disabled) {
-        style.push(disabledText)
+        buttonTextColor = buttonColors.disabledText ?? buttonTextColor
+      } else if (pressed) {
+        buttonTextColor = buttonColors.pressedText ?? buttonTextColor
       }
-      if (pressed) {
-        style.push(pressedText)
-      }
+
+      const style: StyleProp<ViewStyle> = [buttonText, { color: buttonTextColor }]
 
       return style
     },
-    [buttonVariantStyle, disabled, modifier],
+    [buttonColors, disabled, modifier],
   )
 
   const buttonText = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
   const iconSize = modifier === 'small' ? 20 : 24
+
+  const ContainerWrapper = useCallback(
+    ({ children }: PropsWithChildren) => {
+      if (widthOption === 'content') {
+        return <View>{children}</View>
+      }
+
+      return <React.Fragment>{children}</React.Fragment>
+    },
+    [widthOption],
+  )
+
+  const [buttonContainerHeight, setButtonContainerHeight] = useState<ViewStyle['height']>(undefined)
+  const [buttonContainerWidth, setButtonContainerWidth] = useState<ViewStyle['width']>(undefined)
+
+  const onLayoutButtonContainer = useCallback((evt: LayoutChangeEvent) => {
+    // use specific height for the shadow, since this seems to be the only reliable
+    // size, especially in combination with an increased font scale
+    setButtonContainerHeight(Math.floor(evt.nativeEvent.layout.height))
+    setButtonContainerWidth(Math.floor(evt.nativeEvent.layout.width))
+  }, [])
 
   return (
     <Pressable
@@ -145,27 +199,27 @@ export const Button: FC<ButtonProps> = ({
       accessibilityState={disabled ? { disabled: true } : undefined}
       style={[baseButtonStyle.pressed, buttonPressableStyle]}>
       {state => (
-        <>
-          <View style={buttonShadowStyle(state)} />
-          <View style={buttonContainerStyle(state)}>
+        <ContainerWrapper>
+          <View style={[buttonShadowStyle(state), { height: buttonContainerHeight, width: buttonContainerWidth }]} />
+          <View style={buttonContainerStyle(state)} onLayout={onLayoutButtonContainer}>
             <View style={baseButtonStyle.buttonContainerInner}>
               {iconSource && iconPosition === 'left' && (
-                <Icon source={iconSource} width={iconSize} height={iconSize} style={baseButtonStyle.buttonIconLeft} />
+                <SvgImage type={iconSource} width={iconSize} height={iconSize} />
               )}
               <Text testID={addTestIdModifier(testID ?? i18nKey, 'text')} style={buttonTextStyle(state.pressed)}>
                 {buttonText}
               </Text>
               {iconSource && iconPosition === 'right' && (
-                <Icon
-                  source={iconSource}
+                <SvgImage
+                  type={iconSource}
                   width={iconSize}
                   height={iconSize}
-                  style={[baseButtonStyle.buttonIconRight, disabled ? baseButtonStyle.buttonIconDisabled : undefined]}
+                  style={[disabled ? baseButtonStyle.buttonIconDisabled : undefined]}
                 />
               )}
             </View>
           </View>
-        </>
+        </ContainerWrapper>
       )}
     </Pressable>
   )

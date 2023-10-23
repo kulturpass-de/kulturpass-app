@@ -1,21 +1,24 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { type FieldError } from 'react-hook-form'
-import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
+import { Platform, StyleSheet, TextInput, TextInputProps } from 'react-native'
 import {
   FormFieldContainer,
   FormFieldContainerProps,
 } from '../../features/form-validation/components/form-field-container'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { AvailableTranslations } from '../translated-text/types'
+import { toTransparentColor } from '../../theme/utils'
+import { useInputState } from '../../utils/input/hooks/use-input-state'
+import { AvailableTextStyles, AvailableTranslations } from '../translated-text/types'
 
 export type TextFormFieldProps = React.PropsWithChildren<
   {
     testID: TestId
     labelI18nKey: AvailableTranslations
+    labelTextStyle?: AvailableTextStyles
     error?: FieldError
     containerStyle?: FormFieldContainerProps['containerStyle']
     isRequired?: boolean
@@ -29,11 +32,14 @@ export type TextFormFieldProps = React.PropsWithChildren<
     | 'autoCorrect'
     | 'keyboardType'
     | 'onBlur'
+    | 'onFocus'
     | 'placeholder'
     | 'secureTextEntry'
     | 'value'
     | 'editable'
     | 'maxLength'
+    | 'textContentType'
+    | 'accessibilityRole'
   >
 >
 
@@ -42,58 +48,65 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     {
       testID,
       labelI18nKey,
+      labelTextStyle,
       error,
       containerStyle,
       isRequired,
       disableAccessibilityForLabel,
       onChange,
       onBlur,
+      onFocus,
       children,
       editable = true,
+      textContentType,
+      accessibilityRole,
       ...textInputProps
     },
     ref,
   ) => {
     const { t } = useTranslation()
+    const { colors } = useTheme()
     const { addTestIdModifier } = useTestIdBuilder()
-    const [state, setState] = useState<{ isFocused?: boolean }>({})
+    const { state, handleBlur, handleFocus } = useInputState({ onBlur, onFocus })
     const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
 
-    const handleBlur: NonNullable<TextInputProps['onBlur']> = useCallback(
-      event => {
-        setState(currentState => ({ ...currentState, isFocused: false }))
-        onBlur?.(event)
-      },
-      [onBlur],
-    )
-
-    const handleFocus: NonNullable<TextInputProps['onFocus']> = useCallback(() => {
-      setState(currentState => ({ ...currentState, isFocused: true }))
-    }, [])
-
-    const borderColor: StyleProp<TextStyle> = useMemo(() => {
+    const borderColor: string = useMemo(() => {
       if (error) {
-        return { borderColor: colors.redBase }
+        return colors.textFieldBorderError
       } else if (state.isFocused) {
-        return { borderColor: colors.primaryLight }
+        return colors.textFieldBorderFocused
       } else {
-        return { borderColor: colors.moonDarkest }
+        return colors.textFieldBorder
       }
-    }, [state.isFocused, error])
+    }, [error, state.isFocused, colors.textFieldBorderError, colors.textFieldBorderFocused, colors.textFieldBorder])
 
     return (
       <FormFieldContainer
         testID={testID}
         labelI18nKey={labelI18nKey}
+        labelTextStyle={labelTextStyle}
         error={error}
         containerStyle={containerStyle}
         disableAccessibilityForLabel={disableAccessibilityForLabel}
         isRequired={isRequired}>
         <TextInput
           ref={ref}
-          placeholderTextColor={colors.moonBase}
+          placeholderTextColor={colors.textFieldPlaceholder}
+          accessibilityRole={accessibilityRole}
           onChangeText={onChange}
-          style={[textStyles.BodyRegular, styles.textInput, borderColor, !editable ? styles.textInputDisabled : {}]}
+          style={[
+            textStyles.BodyRegular,
+            styles.textInput,
+            {
+              color: toTransparentColor(colors.labelColor, 0.4, !editable),
+              backgroundColor: toTransparentColor(colors.secondaryBackground, 0.4, !editable),
+              borderColor: toTransparentColor(borderColor, 0.5, !editable),
+            },
+            Platform.OS === 'ios' && {
+              // fix line break issue. https://github.com/facebook/react-native/issues/28012
+              lineHeight: undefined,
+            },
+          ]}
           testID={addTestIdModifier(testID, 'input')}
           accessibilityLabel={t(labelI18nKey)}
           accessibilityHint={accessibilityHint}
@@ -101,6 +114,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
           onBlur={handleBlur}
           onFocus={handleFocus}
           editable={editable}
+          textContentType={textContentType}
           {...textInputProps}
         />
         {children}
@@ -116,12 +130,5 @@ const styles = StyleSheet.create({
     paddingRight: spacing[4],
     borderWidth: spacing[0],
     borderRadius: spacing[2],
-    color: colors.moonDarkest,
-    backgroundColor: colors.basicWhite,
-  },
-  textInputDisabled: {
-    color: colors.transparentBlack40,
-    borderColor: colors.transparentBlack40,
-    backgroundColor: colors.transparentWhite50,
   },
 })

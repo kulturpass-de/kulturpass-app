@@ -2,6 +2,7 @@ import { Price } from './api-types'
 
 export type Profile = {
   firstName: string
+  name: string
   balance: {
     availableBalance?: Price
     grantedBalance?: Price

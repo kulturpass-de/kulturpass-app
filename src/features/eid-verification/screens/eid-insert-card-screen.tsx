@@ -13,7 +13,7 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { ScanInProgressModal } from '../components/scan-in-progress-modal'
 import { useStartCardScanning } from '../hooks/use-start-card-scanning'
@@ -51,6 +51,8 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   errorModalVisible,
 }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
 
   const { isLoading, startScanning } = useStartCardScanning({
@@ -82,6 +84,16 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   const illustrationAltI18nKey: AvailableTranslations =
     Platform.OS === 'ios' ? 'eid_cardPositioning_ios_image_alt' : 'eid_cardPositioning_android_image_alt'
 
+  const contentText: ReactNode =
+    Platform.OS !== 'ios' ? (
+      <TranslatedText
+        textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+        testID={buildTestId('eid_insertCard_content_text_third')}
+        i18nKey="eid_insertCard_content_text_android_third"
+        textStyle="BodyRegular"
+      />
+    ) : null
+
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_insertCard')}>
       {loadingModal}
@@ -98,17 +110,34 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={buildTestId('eid_insertCard_content_title')}
             i18nKey="eid_insertCard_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={styles.contentText}
-            testID={buildTestId('eid_insertCard_content_text')}
-            i18nKey={Platform.OS === 'ios' ? 'eid_insertCard_content_text_ios' : 'eid_insertCard_content_text_android'}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId('eid_insertCard_content_text_first')}
+            i18nKey={
+              Platform.OS === 'ios'
+                ? 'eid_insertCard_content_text_ios_first'
+                : 'eid_insertCard_content_text_android_first'
+            }
             textStyle="BodyRegular"
           />
+          <TranslatedText
+            key={'eid_insertCard_content_text_second'}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId('eid_insertCard_content_text_second')}
+            i18nKey={
+              Platform.OS === 'ios'
+                ? 'eid_insertCard_content_text_ios_second'
+                : 'eid_insertCard_content_text_android_second'
+            }
+            textStyle="BodyRegular"
+          />
+          {contentText}
+          <View style={styles.spacer} />
           <LinkText
             link={eidGeneralFaqLink}
             testID={buildTestId('eid_insertCard_faq_link')}
@@ -146,11 +175,12 @@ export const styles = StyleSheet.create({
   contentTitle: {
     paddingTop: spacing[7],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
   },
   contentText: {
-    paddingVertical: spacing[6],
+    paddingTop: spacing[6],
     flexWrap: 'wrap',
-    color: colors.moonDarkest,
+  },
+  spacer: {
+    height: spacing[6],
   },
 })

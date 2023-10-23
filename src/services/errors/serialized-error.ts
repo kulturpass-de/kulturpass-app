@@ -9,7 +9,7 @@ export const toErrorWithCode = (serializedError: SerializedError | undefined): E
   }
 
   if (!serializedError.code) {
-    return new UnknownError()
+    return new UnknownError('Serialized Error without Code')
   }
 
   const ccError = mapCcErrorCodeToError(serializedError.code)
@@ -17,7 +17,7 @@ export const toErrorWithCode = (serializedError: SerializedError | undefined): E
     return ccError
   }
 
-  const cdcError = mapCdcErrorCodeToError(serializedError.code)
+  const cdcError = mapCdcErrorCodeToError(serializedError.code, undefined)
   if (cdcError) {
     return cdcError
   }

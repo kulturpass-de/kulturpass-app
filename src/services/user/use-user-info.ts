@@ -1,10 +1,9 @@
 import isEqual from 'lodash.isequal'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { commerceApi } from '../api/commerce-api'
 import { getCdcSessionData, getIsUserLoggedIn } from '../auth/store/auth-selectors'
 import { AppDispatch } from '../redux/configure-store'
-import { selectUserPreferences } from './redux/user-selectors'
+import { selectUserPreferences, selectUserProfile } from './redux/user-selectors'
 import { userSlice } from './redux/user-slice'
 import { useGetAccountInfo } from './use-get-account-info'
 import { useSetAccountInfo } from './use-set-account-info'
@@ -12,9 +11,10 @@ import { useSetAccountInfo } from './use-set-account-info'
 export const useUserInfo = (regToken?: string) => {
   const dispatch = useDispatch<AppDispatch>()
   const isLoggedIn = useSelector(getIsUserLoggedIn)
-  const { data: userProfile } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
   const userPreferences = useSelector(selectUserPreferences)
   const cdcSessionData = useSelector(getCdcSessionData)
+  const userProfile = useSelector(selectUserProfile)
+
   regToken = cdcSessionData?.regToken || regToken
   const accountInfo = useGetAccountInfo(regToken)
   const setAccountInfo = useSetAccountInfo(regToken)
@@ -33,11 +33,10 @@ export const useUserInfo = (regToken?: string) => {
     }
   }, [isLoggedIn, regToken, accountInfo, userPreferences, dispatch])
 
-  const firstName = useMemo(
-    // at the time of registration userProfile is not in redux yet, so the first name is empty
-    () => ((isLoggedIn || regToken) && userProfile?.firstName) || '',
-    [isLoggedIn, regToken, userProfile],
+  const name = useMemo(
+    () => (isLoggedIn && userProfile ? userProfile?.firstName : undefined),
+    [isLoggedIn, userProfile],
   )
 
-  return { firstName, userPreferences, setAccountInfo, accountInfo }
+  return { name, userPreferences, setAccountInfo, accountInfo }
 }
