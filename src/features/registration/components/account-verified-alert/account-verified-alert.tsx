@@ -1,6 +1,7 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
+import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { Alert } from '../../../../components/alert/alert'
 import { AlertContent } from '../../../../components/alert/alert-content'
@@ -40,7 +41,11 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
     <Alert visible={true}>
       <AlertContent ref={focusRef}>
         <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey="account_verified_alert_title" />
-        <AlertMessage testID={addTestIdModifier(testID, 'text')} i18nKey="account_verified_alert_content" />
+        <AlertMessage
+          testID={addTestIdModifier(testID, 'text')}
+          i18nKey="account_verified_alert_content"
+          textStyleOverrides={styles.text}
+        />
         <Button
           testID={addTestIdModifier(testID, 'confirm_button')}
           i18nKey="account_verified_alert_button"
@@ -51,3 +56,9 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
     </Alert>
   )
 }
+
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'center',
+  },
+})

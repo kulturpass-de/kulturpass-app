@@ -2,15 +2,16 @@ import React, { ReactNode, useMemo } from 'react'
 import { AccessibilityState, Pressable, StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { useTheme } from '../../theme/hooks/use-theme'
+import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
+import { Icon } from '../icon/icon'
 import { SvgImage } from '../svg-image/svg-image'
 
 export type ListItemProps = {
   title: string
   testID: TestId
-  icon?: React.ReactElement
+  icon?: JSX.Element
   type?: 'navigation' | 'link'
   onPress?: () => void
   noBorderBottom?: boolean
@@ -27,14 +28,13 @@ export const ListItem: React.FC<ListItemProps> = ({
   accessibilityState,
 }) => {
   const { t } = useTranslation()
-  const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.listItemBorder }
+  const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.basicBlack }
 
   const iconElement: ReactNode = useMemo(() => {
     if (type === 'navigation') {
-      return <SvgImage testID={addTestIdModifier(testID, 'icon')} type="chevron" height={24} width={24} />
-    } else if (type === 'link' || type === 'navigation') {
+      return <Icon source="Chevron" height={24} width={24} />
+    } else if (type === 'link') {
       return <SvgImage testID={addTestIdModifier(testID, 'icon')} type="list-link" height={24} width={24} />
     } else {
       return null
@@ -45,7 +45,7 @@ export const ListItem: React.FC<ListItemProps> = ({
 
   return (
     <Pressable
-      style={[styles.container, { backgroundColor: colors.secondaryBackground }, borderBottomStyle]}
+      style={[styles.container, borderBottomStyle]}
       onPress={onPress}
       testID={testID}
       accessibilityRole="button"
@@ -53,8 +53,8 @@ export const ListItem: React.FC<ListItemProps> = ({
       accessibilityState={accessibilityState}
       accessibilityHint={accessibilityHint}
       accessible>
-      {icon ? icon : null}
-      <Text style={[textStyles.BodyRegular, styles.text, { color: colors.labelColor }]}>{title}</Text>
+      {icon && icon}
+      <Text style={[textStyles.BodyRegular, styles.text]}>{title}</Text>
       {iconElement}
     </Pressable>
   )
@@ -69,8 +69,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: colors.basicWhite,
   },
   text: {
     flex: 1,
+    color: colors.moonDarkest,
   },
 })

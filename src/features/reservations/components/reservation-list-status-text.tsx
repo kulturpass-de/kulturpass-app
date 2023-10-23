@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { SvgImage, SvgImageProps } from '../../../components/svg-image/svg-image'
+import { Icon, IconProps } from '../../../components/icon/icon'
 import {
   DELIVERY_SCENARIO_IN_APP_VOUCHER,
   DELIVERY_SCENARIO_PICKUP,
@@ -14,11 +14,8 @@ import {
 } from '../../../services/api/types/commerce/commerce-get-reservations'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { reservationListStatusTextColors as reservationListStatusTextColorsDark } from '../../../theme/dark/color-mappings'
-import { useTheme } from '../../../theme/hooks/use-theme'
-import { reservationListStatusTextColors as reservationListStatusTextColorsLight } from '../../../theme/light/color-mappings'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
-import { ReservationListStatusTextColors } from '../../../theme/types'
 import { textStyles } from '../../../theme/typography'
 
 export type ReservationListStatusTextProps = {
@@ -28,35 +25,25 @@ export type ReservationListStatusTextProps = {
 
 export const ReservationListStatusText: React.FC<ReservationListStatusTextProps> = ({ status, deliveryScenario }) => {
   const { t } = useTranslation()
-  const { colorScheme } = useTheme()
-  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId } = useTestIdBuilder()
 
-  const colors: ReservationListStatusTextColors = useMemo(() => {
-    if (colorScheme === 'dark') {
-      return reservationListStatusTextColorsDark
-    } else {
-      return reservationListStatusTextColorsLight
-    }
-  }, [colorScheme])
-
-  const { icon, color }: { icon: SvgImageProps['type']; color: string } = useMemo(() => {
-    const textColor = colors[status as keyof ReservationListStatusTextColors] ?? colors.default
+  const { icon, color }: { icon: IconProps['source']; color: keyof typeof colors } = useMemo(() => {
     switch (status) {
       case ORDER_STATUS_READY_FOR_PICKUP:
-        return { icon: 'ready', color: textColor }
+        return { icon: 'Ready', color: 'greenDarkest' }
       case ORDER_STATUS_RECEIVED:
       case ORDER_STATUS_COMPLETED:
-        return { icon: 'completed', color: textColor }
+        return { icon: 'Completed', color: 'moonDarkest' }
       case ORDER_STATUS_CANCELLING:
-        return { icon: 'cancelled', color: textColor }
+        return { icon: 'Cancelled', color: 'redDarkest' }
       case ORDER_STATUS_CANCELLED:
-        return { icon: 'cancelled', color: textColor }
+        return { icon: 'Cancelled', color: 'redDarkest' }
       default:
-        return { icon: 'processing', color: textColor }
+        return { icon: 'Processing', color: 'primaryDarkest' }
     }
-  }, [colors, status])
+  }, [status])
 
-  const colorStyle = { color }
+  const colorStyle = { color: colors[color] }
 
   const i18nKey = useMemo(() => {
     if (status === ORDER_STATUS_CREATED || status === ORDER_STATUS_SHIPPING) {
@@ -83,12 +70,9 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   }
 
   return (
-    <View style={styles.container} testID={buildTestId(i18nKey)}>
-      <SvgImage testID={addTestIdModifier(i18nKey, 'icon')} type={icon} width={16} height={16} />
-      <Text
-        testID={addTestIdModifier(i18nKey, 'text')}
-        accessible
-        style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
+    <View style={styles.container}>
+      <Icon source={icon} width={16} height={16} />
+      <Text testID={buildTestId(i18nKey)} accessible style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
         {t(i18nKey)}
       </Text>
     </View>

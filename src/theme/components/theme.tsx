@@ -1,35 +1,17 @@
-import React, { PropsWithChildren, createContext, useEffect, useMemo } from 'react'
-import { StatusBar } from 'react-native'
+import React, { PropsWithChildren, useEffect } from 'react'
 import SystemNavigationBar from 'react-native-system-navigation-bar'
-import { useSelector } from 'react-redux'
-import { useColorScheme } from '../hooks/use-color-scheme'
-import { getDarkThemePreviewEnabled, getForcedTheme } from '../redux/theme-selectors'
-import { getTheme, ThemeValue } from '../utils'
-
-export const ThemeContext = createContext<ThemeValue | null>(null)
+import { useTheme } from '../hooks/use-theme'
 
 export const Theme: React.FC<PropsWithChildren> = ({ children }) => {
-  const systemColorScheme = useColorScheme()
-
-  const darkModePreviewEnabled = useSelector(getDarkThemePreviewEnabled)
-  const forcedTheme = useSelector(getForcedTheme)
-
-  const providerValue = useMemo(
-    () => getTheme(forcedTheme ?? systemColorScheme, darkModePreviewEnabled),
-    [darkModePreviewEnabled, forcedTheme, systemColorScheme],
-  )
+  const { colorScheme, colors } = useTheme()
 
   useEffect(() => {
     SystemNavigationBar.setNavigationColor(
-      providerValue.colors.secondaryBackground,
-      providerValue.colorScheme === 'light' ? 'dark' : 'light',
+      colors.secondaryBackground,
+      colorScheme === 'light' ? 'dark' : 'light',
       'both',
     )
-  }, [providerValue.colorScheme, providerValue.colors.secondaryBackground])
+  }, [colorScheme, colors.secondaryBackground])
 
-  useEffect(() => {
-    StatusBar.setBarStyle(providerValue.colorScheme === 'dark' ? 'light-content' : 'dark-content')
-  }, [providerValue.colorScheme])
-
-  return <ThemeContext.Provider value={providerValue}>{children}</ThemeContext.Provider>
+  return <>{children}</>
 }

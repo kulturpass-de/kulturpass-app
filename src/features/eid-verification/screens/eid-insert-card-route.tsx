@@ -1,8 +1,7 @@
-import { useNavigation } from '@react-navigation/core'
-import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
-import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/create-route-config'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { ModalScreenProps } from '../../../navigation/modal/types'
+import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
@@ -27,50 +26,63 @@ export type EidInsertCardRouteParams = {
   can?: string
 }
 
-export type ProfileScreenProps = EidScreenProps<'EidInsertCard'>
+export type ProfileScreenProps = ModalScreenProps<'EidInsertCard'>
 
 export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
-  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidInsertCard'>>()
+  const modalNavigation = useModalNavigation()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
   const [errorModalVisible, setErrorModalVisible] = useState(false)
   const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
   const flow = route.params.flow
 
   const onAuthSuccess = useCallback(() => {
-    navigation.replace(EidVerificationCompletionRouteName)
-  }, [navigation])
+    modalNavigation.replace({
+      screen: EidVerificationCompletionRouteName,
+    })
+  }, [modalNavigation])
 
   const onChangePinSuccess = useCallback(() => {
-    navigation.replace(EidChangePinCompletionRouteName)
-  }, [navigation])
+    modalNavigation.replace({
+      screen: EidChangePinCompletionRouteName,
+    })
+  }, [modalNavigation])
 
   const onPinRetry = useCallback(
     (retryCounter?: number) => {
-      navigation.replace(flow === 'Auth' ? EidPinRouteName : EidTransportPinRouteName, {
-        retryCounter,
+      modalNavigation.replace({
+        screen: flow === 'Auth' ? EidPinRouteName : EidTransportPinRouteName,
+        params: {
+          retryCounter,
+        },
       })
     },
-    [flow, navigation],
+    [flow, modalNavigation],
   )
 
   const onCanRetry = useCallback(
     (retry: boolean) => {
-      navigation.replace(EidCanRouteName, {
-        flow,
-        retry,
+      modalNavigation.replace({
+        screen: EidCanRouteName,
+        params: {
+          flow,
+          retry,
+        },
       })
     },
-    [flow, navigation],
+    [flow, modalNavigation],
   )
 
   const onPukRetry = useCallback(
     (retry: boolean) => {
-      navigation.replace(EidPukRouteName, {
-        flow,
-        retry,
+      modalNavigation.replace({
+        screen: EidPukRouteName,
+        params: {
+          flow,
+          retry,
+        },
       })
     },
-    [flow, navigation],
+    [flow, modalNavigation],
   )
 
   const onClose = useCallback(() => {

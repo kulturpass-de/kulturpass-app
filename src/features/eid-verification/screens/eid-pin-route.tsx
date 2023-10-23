@@ -1,16 +1,17 @@
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
-import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/create-route-config'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { ModalScreenProps } from '../../../navigation/modal/types'
+import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
-import { eidAusweisApp2Service } from '../services/eid-ausweisapp2-service'
 import { EidInsertCardRouteName } from './eid-insert-card-route'
 import { EidPinScreen } from './eid-pin-screen'
+import { EidTransportPinRouteName } from './eid-transport-pin-route'
 
 export const EidPinRouteName = 'EidPin'
 
@@ -18,34 +19,42 @@ export type EidPinRouteParams = {
   retryCounter?: number
 }
 
-export type EidPinRouteProps = EidScreenProps<'EidPin'>
+export type EidPinRouteProps = ModalScreenProps<'EidPin'>
 
 export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
-  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidCan'>>()
+  const modalNavigation = useModalNavigation()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const onNext = useCallback(
     (pin: string) => {
-      navigation.replace(EidInsertCardRouteName, {
-        flow: 'Auth',
-        pin,
+      modalNavigation.navigate({
+        screen: EidInsertCardRouteName,
+        params: {
+          flow: 'Auth',
+          pin,
+        },
       })
     },
-    [navigation],
+    [modalNavigation],
   )
 
   const onChangePin = useCallback(async () => {
     setIsLoading(true)
     try {
-      await eidAusweisApp2Service.cancelFlow()
+      await AA2CommandService.cancel({ msTimeout: AA2_TIMEOUTS.CANCEL })
+    } catch {
+      // Will be handled by error EidErrorAlert
     } finally {
       setIsLoading(false)
     }
-    navigation.replace(EidInsertCardRouteName, {
-      flow: 'ChangePin',
+    modalNavigation.navigate({
+      screen: EidTransportPinRouteName,
+      params: {
+        retryCounter: route.params.retryCounter,
+      },
     })
-  }, [navigation])
+  }, [modalNavigation, route.params.retryCounter])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)

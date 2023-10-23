@@ -1,49 +1,41 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
+import { Icon } from '../../../../components/icon/icon'
 import { InfoBox } from '../../../../components/info-box/info-box'
-import { SvgImage } from '../../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { useModalNavigation } from '../../../../navigation/modal/hooks'
-import { LogInRouteName } from '../../../../screens/auth/log-in-route'
+import { LogInRouteName } from '../../../../screens/log-in/log-in-route'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
-import { useTranslation } from '../../../../services/translation/translation'
-import { useTheme } from '../../../../theme/hooks/use-theme'
+import { colors } from '../../../../theme/colors'
 import { spacing } from '../../../../theme/spacing'
 
 export const RegisterNowButton: React.FC = () => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
   const modalNavigation = useModalNavigation()
-  const { t } = useTranslation()
 
   const startVerification = useCallback(() => {
     modalNavigation.navigate({ screen: LogInRouteName })
   }, [modalNavigation])
 
   return (
-    <Pressable
-      onPress={startVerification}
-      accessible
-      accessibilityRole="button"
-      accessibilityLabel={t('register_now_button_title')}
-      accessibilityHint={t('register_now_button_text')}>
-      <InfoBox containerStyle={styles.container} testID={buildTestId('register_now_button_container')}>
+    <Pressable onPress={startVerification} accessible accessibilityRole="button">
+      <InfoBox containerStyle={styles.container}>
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('register_now_button_title')}
             i18nKey={'register_now_button_title'}
             textStyle="HeadlineH4Extrabold"
-            textStyleOverrides={{ color: colors.labelColor }}
+            textStyleOverrides={{ color: colors.moonDarkest }}
           />
           <View style={styles.content}>
-            <SvgImage type="id-card" width={36} height={36} />
+            <Icon source="IDCard" width={36} height={36} />
             <TranslatedText
-              textStyleOverrides={[styles.text, { color: colors.labelColor }]}
+              textStyleOverrides={styles.text}
               testID={buildTestId('register_now_button_text')}
               i18nKey="register_now_button_text"
               textStyle="BodySmallMedium"
             />
-            <SvgImage type="chevron" height={24} width={24} /* tintColor={colors.labelColor} */ />
+            <Icon source="Chevron" height={24} width={24} tintColor={colors.basicBlack} />
           </View>
         </View>
       </InfoBox>
@@ -62,6 +54,7 @@ const styles = StyleSheet.create({
     paddingRight: spacing[4],
     flexShrink: 1,
     flexWrap: 'wrap',
+    color: colors.moonDarkest,
   },
   shrink: {
     flexShrink: 1,
@@ -70,6 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 16,
+    backgroundColor: colors.secondaryLighter,
     paddingHorizontal: spacing[5],
     paddingVertical: spacing[4],
     overflow: 'hidden',

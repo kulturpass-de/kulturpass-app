@@ -80,36 +80,18 @@ describe('on-webview-state-change', () => {
       store.expectActions([{ type: webviewsValidateSession.pending.type, meta: { arg: WebViewId.Search } }])
     })
 
-    it('should not dispatch webviewsValidateSession when webViewState routesToLogin is changed', async () => {
+    it('should not dispatch webviewsValidateSession when webViewState routerUrl is changed', async () => {
       const store = configureMockStore()
 
       await onWebViewStateChangeEffect(
-        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { routesToLogin: false } }),
+        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { routerUrl: '' } }),
         store as any,
       )
 
       store.expectActionNotDispatched(webviewsValidateSession.pending.match)
 
       await onWebViewStateChangeEffect(
-        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { routesToLogin: true } }),
-        store as any,
-      )
-
-      store.expectActionNotDispatched(webviewsValidateSession.pending.match)
-    })
-
-    it('should not dispatch webviewsValidateSession when webViewState showHeader is changed', async () => {
-      const store = configureMockStore()
-
-      await onWebViewStateChangeEffect(
-        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { showHeader: false } }),
-        store as any,
-      )
-
-      store.expectActionNotDispatched(webviewsValidateSession.pending.match)
-
-      await onWebViewStateChangeEffect(
-        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { showHeader: true } }),
+        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Search, state: { routerUrl: '/login' } }),
         store as any,
       )
 

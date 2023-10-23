@@ -1,9 +1,8 @@
-import { useNavigation } from '@react-navigation/core'
-import { StackNavigationProp } from '@react-navigation/stack'
 import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
-import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/create-route-config'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
+import { ModalScreenProps } from '../../../navigation/modal/types'
+import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
@@ -15,15 +14,15 @@ export type EidServiceProviderDetailsRouteParams = {
   certificate: Certificate
 }
 
-export type EidServiceProviderDetailsRouteProps = EidScreenProps<'EidServiceProviderDetails'>
+export type EidServiceProviderDetailsRouteProps = ModalScreenProps<'EidServiceProviderDetails'>
 
 export const EidServiceProviderDetailsRoute: React.FC<EidServiceProviderDetailsRouteProps> = ({ route }) => {
-  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidServiceProviderDetails'>>()
+  const modalNavigation = useModalNavigation()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onBack = useCallback(() => {
-    navigation.goBack()
-  }, [navigation])
+    modalNavigation.goBack()
+  }, [modalNavigation])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)

@@ -4,14 +4,13 @@ import { Pressable, StyleSheet, TextInput, type TextInputProps, type ViewStyle }
 import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { spacing } from '../../theme/spacing'
-import { SvgImage } from '../svg-image/svg-image'
-import { AvailableTextStyles, type AvailableTranslations } from '../translated-text/types'
+import { Icon } from '../icon/icon'
+import { type AvailableTranslations } from '../translated-text/types'
 import { TextFormField } from './text-form-field'
 
 export type PasswordFormFieldProps = {
   testID: TestId
   labelI18nKey: AvailableTranslations
-  labelTextStyle?: AvailableTextStyles
   error?: FieldError
   containerStyle?: ViewStyle
   isRequired?: boolean
@@ -28,7 +27,6 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
     {
       testID,
       labelI18nKey,
-      labelTextStyle,
       error,
       containerStyle,
       isRequired,
@@ -53,7 +51,6 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
         ref={ref}
         testID={testID}
         labelI18nKey={labelI18nKey}
-        labelTextStyle={labelTextStyle}
         error={error}
         containerStyle={containerStyle}
         isRequired={isRequired}
@@ -73,7 +70,7 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
           accessibilityRole="button"
           accessibilityLabel={t(state.isPasswordVisible ? 'login_form_password_hide' : 'login_form_password_show')}
           testID={addTestIdModifier(testID, 'showPasswordButton')}>
-          <SvgImage type={state.isPasswordVisible ? 'show-password' : 'hide-password'} width={24} height={24} />
+          <Icon source={state.isPasswordVisible ? 'ShowPassword' : 'HidePassword'} width={24} height={24} />
         </Pressable>
       </TextFormField>
     )

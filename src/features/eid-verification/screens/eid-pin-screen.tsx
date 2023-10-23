@@ -7,7 +7,7 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
@@ -25,7 +25,6 @@ const PIN_LENGTH = 6
 
 export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin, onClose, retryCounter }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   const { form, onPressSubmit } = usePinFormValidation(3, PIN_LENGTH, onNext, retryCounter)
 
@@ -39,7 +38,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentTitle}
             testID={buildTestId('eid_pinView_content_title')}
             i18nKey="eid_pinView_content_title"
             textStyle="HeadlineH4Extrabold"
@@ -48,7 +47,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
             testID={buildTestId('eid_pinView_content_text')}
             i18nKey="eid_pinView_content_text"
             textStyle="BodyRegular"
-            textStyleOverrides={{ color: colors.labelColor }}
+            textStyleOverrides={{ color: colors.moonDarkest }}
           />
           <View style={styles.pinView}>
             <FormFieldWithControl
@@ -64,7 +63,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
             testID={buildTestId('eid_pinView_notChanged_text')}
             i18nKey="eid_pinView_notChanged_text"
             textStyle="BodyRegular"
-            textStyleOverrides={{ color: colors.labelColor }}
+            textStyleOverrides={{ color: colors.moonDarkest }}
           />
           <View style={styles.changePinButton}>
             <Button
@@ -73,7 +72,7 @@ export const EidPinScreen: React.FC<EidPinScreenProps> = ({ onNext, onChangePin,
               variant="tertiary"
               widthOption="content"
               modifier="small"
-              iconSource="arrow-right"
+              iconSource="ArrowForward"
               onPress={onChangePin}
             />
           </View>
@@ -102,6 +101,7 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[6],
     paddingBottom: spacing[2],
     flexWrap: 'wrap',
+    color: colors.moonDarkest,
   },
   pinView: {
     paddingTop: spacing[8],

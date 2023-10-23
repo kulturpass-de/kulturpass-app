@@ -1,6 +1,5 @@
 import { BaseQueryApi as RtkBaseQueryApi } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
-import { userAgent } from '../../../utils/user-agent/utils'
 import { HttpError, NetworkError, UnknownError } from '../../errors/errors'
 import { axiosBaseQuery } from './base-query'
 
@@ -12,19 +11,13 @@ jest.mock('axios', () => ({
 
 describe('base-query', () => {
   it('should return a function that will execute axios with given args', async () => {
-    const args = {
-      url: 'http://my_url',
-      params: { my: 'params' },
-      data: { my: 'data' },
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 15000,
-    }
+    const args = { url: 'http://my_url', params: { my: 'params' }, data: { my: 'data' }, timeout: 15000 }
     const api = {} as RtkBaseQueryApi
     const extraOptions = {}
 
     axiosBaseQuery()(args, api, extraOptions)
 
-    expect(axios).toBeCalledWith({ ...args, headers: { ...args.headers, 'User-Agent': userAgent } })
+    expect(axios).toBeCalledWith(args)
   })
 
   it('should return a function that will return the data property of the returned value from axios', async () => {

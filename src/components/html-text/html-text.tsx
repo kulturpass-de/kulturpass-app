@@ -1,10 +1,9 @@
 import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
+import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
-import { StyleProp, Text, TextStyle } from 'react-native'
-import { ElementType, parseDocument } from '../../services/html-parser/html-parser'
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
-import { textHighlighting } from '../../theme/typography'
-import { linkLogger, openLink } from '../../utils/links/utils'
+import { openLink } from '../../utils/links/utils'
 
 type InlineTextLinkProps = {
   text: string
@@ -13,11 +12,11 @@ type InlineTextLinkProps = {
 }
 const InlineTextLink: React.FC<InlineTextLinkProps> = ({ text, link, textStyle }) => {
   const { t } = useTranslation()
-  const handlePress = useCallback(() => openLink(link).catch(linkLogger), [link])
+  const handlePress = useCallback(() => openLink(link), [link])
 
   return (
     <Text
-      style={[textStyle, textHighlighting.Link]}
+      style={[textStyle, styles.linkText]}
       accessible
       accessibilityLabel={text}
       accessibilityRole="link"
@@ -66,9 +65,9 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
       if (element.children[0].type === ElementType.Text) {
         switch (element.name) {
           case 'b':
-            return renderTextNode(element.children[0], elementKey, [textStyle, textHighlighting.Bold])
+            return renderTextNode(element.children[0], elementKey, [textStyle, styles.boldText])
           case 'i':
-            return renderTextNode(element.children[0], elementKey, [textStyle, textHighlighting.Italic])
+            return renderTextNode(element.children[0], elementKey, [textStyle, styles.italicText])
           case 'a':
             return renderInlineLink(element.children[0], elementKey + '-0', textStyle)
         }
@@ -110,3 +109,10 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
     </Text>
   )
 }
+
+const styles = StyleSheet.create({
+  boldText: { fontWeight: '700' },
+  // TODO: extract textStyles below
+  linkText: { textDecorationLine: 'underline' },
+  italicText: { fontStyle: 'italic' },
+})

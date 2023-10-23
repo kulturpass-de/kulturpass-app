@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
-import { OrderHistory } from '../../../services/api/types/commerce/api-types'
+import { Order } from '../../../services/api/types/commerce/api-types'
 import { spacing } from '../../../theme/spacing'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { ReservationsListItem } from './reservations-list-item'
 
 type ReservationListProps = {
-  orderEntries: OrderHistory[]
-  onOrderPressed: (order: OrderHistory) => void
+  orderEntries: Order[]
+  onOrderPressed: (order: Order) => void
   onRefresh: () => void
   loading: boolean
   completedReservations: boolean
@@ -15,8 +15,8 @@ type ReservationListProps = {
 }
 
 type ListItemProps = {
-  item: OrderHistory
-  onOrderPressed: (item: OrderHistory) => void
+  item: Order
+  onOrderPressed: (item: Order) => void
   completedReservations: boolean
 }
 
@@ -34,7 +34,6 @@ const ListItem: React.FC<ListItemProps> = ({ item, onOrderPressed, completedRese
         shopName={entry?.shopName}
         completed={completedReservations}
         imageUrl={productImage?.imageUrl}
-        fulfillmentOption={entry?.product?.fulfillmentOption}
         status={item.status}
         deliveryScenario={entry?.deliveryScenario}
       />
@@ -50,7 +49,7 @@ export const ReservationList: React.FC<ReservationListProps> = ({
   completedReservations,
   listEmptyComponent,
 }) => {
-  const renderItem: ListRenderItem<OrderHistory> = useCallback(
+  const renderItem: ListRenderItem<Order> = useCallback(
     ({ item }) => (
       <ListItem
         key={item.code}

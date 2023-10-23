@@ -3,21 +3,16 @@ import { StackScreenProps } from '@react-navigation/stack'
 import {
   OnboardingAboutAppRouteName,
   OnboardingAboutAppRouteParams,
-} from '../../screens/app/onboarding/onboarding-about-app-route'
+} from '../../features/onboarding/screens/onboarding-about-app-route'
 import {
   OnboardingLocationPermissionRouteName,
   OnboardingLocationPermissionRouteParams,
-} from '../../screens/app/onboarding/onboarding-location-permission-route'
-import {
-  OnboardingNotificationPermissionRouteName,
-  OnboardingNotificationPermissionRouteParams,
-} from '../../screens/app/onboarding/onboarding-notification-permission-route'
+} from '../../features/onboarding/screens/onboarding-location-permission-route'
 import { OnboardingStackParams } from '../types'
 
 export type OnboardingParamList = {
   [OnboardingAboutAppRouteName]: OnboardingAboutAppRouteParams
   [OnboardingLocationPermissionRouteName]: OnboardingLocationPermissionRouteParams
-  [OnboardingNotificationPermissionRouteName]: OnboardingNotificationPermissionRouteParams
 }
 
 export type OnboardingScreenProps<RouteName extends keyof OnboardingParamList> = CompositeScreenProps<

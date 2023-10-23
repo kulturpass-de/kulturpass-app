@@ -1,11 +1,13 @@
 #!/usr/bin/env ts-node
-import fs from 'fs'
+
+import { generateApi } from 'swagger-typescript-api'
 import yaml from 'js-yaml'
 import path from 'path'
-import { generateApi } from 'swagger-typescript-api'
+import fs from 'fs'
+
 import { EnvironmentConfigurationContent } from '../src/services/environment-configuration/environment-configuration'
 
-const environmentConfigurationName = process.argv[2] || 'qa'
+const environmentConfigurationName = process.argv[2] || 'dev'
 
 const filePath = path.resolve(process.cwd(), './src/services/environment-configuration/environment-configuration.yaml')
 const environmentConfigurations = yaml.load(fs.readFileSync(filePath, 'utf-8')) as EnvironmentConfigurationContent

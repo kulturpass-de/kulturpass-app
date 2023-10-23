@@ -2,7 +2,7 @@ import React from 'react'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { SheetMusicProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductSheetMusicDetailProps = {
   productDetail: SheetMusicProductDetail
@@ -17,7 +17,7 @@ export const ProductSheetMusicDetail: React.FC<ProductSheetMusicDetailProps> = (
   return (
     <ProductDetailSection
       testID={sectionTestID}
-      iconSource="music"
+      iconSource="Music"
       sectionCaptioni18nKey="productDetail_sheetMusic_caption">
       <ProductDetailEntry i18nKey="productDetail_sheetMusic_isbn" value={isbn} />
       {arrangement ? <ProductDetailEntry i18nKey="productDetail_sheetMusic_arrangement" value={arrangement} /> : null}

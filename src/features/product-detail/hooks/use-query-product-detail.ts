@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 import { commerceApi } from '../../../services/api/commerce-api'
-import { GetProductDetailParams } from '../../../services/api/types'
 
-export const useQueryProductDetail = (productCode?: string, offersByLocation?: GetProductDetailParams['location']) => {
+export const useQueryProductDetail = (productCode?: string) => {
   const [queryTrigger, queryResult] = commerceApi.useLazyGetProductDetailQuery()
 
   useEffect(() => {
     if (productCode) {
-      queryTrigger({ productCode, location: offersByLocation })
+      queryTrigger({ productCode })
     }
-  }, [queryTrigger, productCode, offersByLocation])
+  }, [queryTrigger, productCode])
 
   return queryResult
 }

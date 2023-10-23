@@ -7,7 +7,3 @@ declare module '@env' {
   export const DEBUG_TRANSLATION: string | undefined
   export const DEBUG_SKIP_REQUEST_LOGGING: string | undefined
 }
-declare module '*/transparent.macro' {
-  const toTransparentColor: (color: string, opacity: number) => string
-  export default toTransparentColor
-}

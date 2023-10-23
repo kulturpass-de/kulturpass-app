@@ -3,38 +3,26 @@ import { NavigationContainer } from '@react-navigation/native'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { buildTestId } from '../../../services/test-id/test-id'
-import { AppProviders, StoreProvider } from '../../../services/testing/test-utils'
-import { usePreferences } from '../hooks/use-preferences'
+import { AppProviders } from '../../../services/testing/test-utils'
 import { Preferences } from './preferences'
 
 const renderScreen = (children: React.ReactNode) => {
   render(
-    <StoreProvider>
-      <NavigationContainer>
-        <AppProviders>{children}</AppProviders>
-      </NavigationContainer>
-    </StoreProvider>,
-  )
-}
-
-const PreferencesWrapper = ({ postalCodeValidatorError }: { postalCodeValidatorError: boolean }) => {
-  const getIsValidPostalCode = (async () => ({ isError: postalCodeValidatorError })) as any
-
-  const preferencesForm = usePreferences({ getIsValidPostalCode })
-
-  return (
-    <Preferences
-      form={preferencesForm}
-      inModal={false}
-      onPressSubmit={async () => {}}
-      submitButtonI18nKey="preferences_form_profile_edit_submit"
-      getIsValidPostalCode={getIsValidPostalCode}
-    />
+    <NavigationContainer>
+      <AppProviders>{children}</AppProviders>
+    </NavigationContainer>,
   )
 }
 
 const renderPreferences = (postalCodeValidatorError = false) => {
-  renderScreen(<PreferencesWrapper postalCodeValidatorError={postalCodeValidatorError} />)
+  renderScreen(
+    <Preferences
+      inModal={false}
+      onPressSubmit={async () => {}}
+      submitButtonI18nKey="preferences_form_profile_edit_submit"
+      getIsValidPostalCode={(async () => ({ isError: postalCodeValidatorError })) as any}
+    />,
+  )
 }
 
 test('Should render preferences', async () => {
@@ -43,17 +31,19 @@ test('Should render preferences', async () => {
   const submitButton = await screen.findByTestId(buildTestId('preferences_form_submit'))
 
   expect(submitButton).toBeOnTheScreen()
-  expect(submitButton).toBeEnabled()
+  expect(submitButton).toBeDisabled()
+
+  await waitFor(() => expect(submitButton).toBeEnabled())
 })
 
-test('Should render preferences, type a post code and only enable the submit button once post code is valid', async () => {
+test('Should render preferences, type a post code only enable the submit button once post code is valid', async () => {
   renderPreferences(true)
 
   let submitButton = await screen.findByTestId(buildTestId('preferences_form_submit'))
   let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
 
   expect(submitButton).toBeOnTheScreen()
-  expect(submitButton).toBeEnabled()
+  expect(submitButton).toBeDisabled()
 
   expect(postalCodeInput).toBeOnTheScreen()
 

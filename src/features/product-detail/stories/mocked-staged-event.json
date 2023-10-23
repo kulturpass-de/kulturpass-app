@@ -59,7 +59,6 @@
       "quantity": 40,
       "shopId": "1011",
       "shopName": "Munich Seller Shop",
-      "shopDescription": "Some test shop.<br /><a href=\"mailto:mail@kulturpass.de\" rel=\"nofollow noreferrer\" target=\"_blank\">mail@kulturpass.de</a><br /><a href=\"tel:05373920733\" rel=\"nofollow noreferrer\" target=\"_blank\">05373920733</a>",
       "shopDistance": 4.1,
       "shopAddress": {
         "street": "Konrad-Zuse-Ring 10",

@@ -1,21 +1,21 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { useIsFocused } from '@react-navigation/native'
 import { AA2Messages, FailureCodes, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
 import { useEffect } from 'react'
-import { EidParamList } from '../../../navigation/eid/types'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import {
   AA2AuthError,
   AA2AuthErrorResultError,
   AA2CardDeactivated,
+  AA2CardRemoved,
   createAA2ErrorFromMessage,
   extractDetailCode,
-  isCardDeactivated,
   isErrorUserCancellation,
-  reasonToError,
 } from '../errors'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
 import { useCloseFlow } from './use-close-flow'
+
+//TODO: Refactor flow logic in hooks - also consider changes on the native aa2 library
 
 /**
  * Hook that handles AusweisApp2 SDK message errors.
@@ -33,7 +33,7 @@ export const useHandleErrors = (
   cancelEidFlowAlertVisible: boolean = false,
 ) => {
   const isFocused = useIsFocused()
-  const navigation = useNavigation<StackNavigationProp<EidParamList>>()
+  const modalNavigation = useModalNavigation()
   const { closeFlow } = useCloseFlow()
 
   useEffect(() => {
@@ -56,15 +56,23 @@ export const useHandleErrors = (
             return
           }
 
-          const reasonError = reasonToError(msg.result?.reason)
+          if (
+            msg.result?.reason === FailureCodes.Card_Removed ||
+            msg.result?.reason === FailureCodes.Did_Authenticate_Eac2_Card_Command_Failed
+          ) {
+            onError(new AA2CardRemoved())
+            return
+          }
 
-          if (reasonError !== undefined) {
-            onError(reasonError)
+          if (msg.result?.reason === FailureCodes.Connect_Card_Eid_Inactive) {
+            onError(new AA2CardDeactivated())
             return
           }
 
           if (msg.result?.reason === FailureCodes.Establish_Pace_Channel_Puk_Inoperative) {
-            navigation.replace(EidPukInoperativeRouteName)
+            modalNavigation.replace({
+              screen: EidPukInoperativeRouteName,
+            })
             return
           }
 
@@ -86,13 +94,6 @@ export const useHandleErrors = (
             return
           }
 
-          const reasonError = reasonToError(msg.reason)
-
-          if (reasonError !== undefined) {
-            onError(reasonError)
-            return
-          }
-
           onError(new AA2AuthErrorResultError(msg.reason))
         }
       } else if (msg.msg === AA2Messages.Reader) {
@@ -100,7 +101,7 @@ export const useHandleErrors = (
          * Reader messages can happen as long as the SDK is started.
          * A deactivated Card was detected if we have to handle this message.
          */
-        if (isCardDeactivated(msg.card)) {
+        if (msg.card?.deactivated === true) {
           onError(new AA2CardDeactivated())
         }
       } else {
@@ -113,5 +114,5 @@ export const useHandleErrors = (
     })
 
     return () => sub.unsubscribe()
-  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, navigation])
+  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, modalNavigation])
 }

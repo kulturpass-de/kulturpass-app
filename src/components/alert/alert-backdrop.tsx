@@ -1,7 +1,7 @@
 import React from 'react'
-import { StatusBar, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
-import { useTheme } from '../../theme/hooks/use-theme'
+import { colors } from '../../theme/colors'
 import { useAlert } from './alert-context'
 
 export type AlertBackdropProps = ViewProps &
@@ -10,23 +10,16 @@ export type AlertBackdropProps = ViewProps &
   }>
 
 export const AlertBackdrop: React.FC<AlertBackdropProps> = ({ dismissable, style, ...props }) => {
-  const { colors } = useTheme()
   const alertContext = useAlert()
 
   return (
-    <>
-      <StatusBar backgroundColor={colors.alertBackdrop} translucent />
-      <View
-        {...props}
-        onTouchEnd={dismissable ? alertContext?.dismiss : undefined}
-        style={[styles.container, { backgroundColor: colors.alertBackdrop }, style]}
-      />
-    </>
+    <View {...props} onTouchEnd={dismissable ? alertContext?.dismiss : undefined} style={[styles.container, style]} />
   )
 }
 
 export const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: colors.transparentMoonDarker80,
   },
 })

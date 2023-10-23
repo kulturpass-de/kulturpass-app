@@ -2,10 +2,10 @@ import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, TextStyle } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { useTheme } from '../../theme/hooks/use-theme'
+import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { linkLogger, openLink } from '../../utils/links/utils'
-import { SvgImage } from '../svg-image/svg-image'
+import { openLink } from '../../utils/links/utils'
+import { Icon } from '../icon/icon'
 import { TranslatedText, TranslatedTextProps } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
 
@@ -15,22 +15,13 @@ type LinkTextInlineProps = {
   style?: TextStyle
   iconSize?: number
   textStyle?: TranslatedTextProps['textStyle']
-  textStyleOverrides?: TranslatedTextProps['textStyleOverrides']
 }
 
-export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
-  link,
-  i18nKey,
-  iconSize,
-  textStyle,
-  textStyleOverrides,
-  style,
-}) => {
+export const LinkTextInline: React.FC<LinkTextInlineProps> = ({ link, i18nKey, iconSize = 24, textStyle, style }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
   const { t } = useTranslation()
 
-  const handlePress = useCallback(() => openLink(link).catch(linkLogger), [link])
+  const handlePress = useCallback(() => openLink(link), [link])
 
   const linkTestId = buildTestId(i18nKey)
 
@@ -42,12 +33,10 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
       accessibilityLabel={t(i18nKey)}
       accessible>
       <Text style={[styles.container, style]}>
-        {iconSize !== undefined && (
-          <SvgImage width={iconSize} height={iconSize} type="link-arrow" style={styles.icon} />
-        )}
+        <Icon width={iconSize} height={iconSize} source="LinkArrow" style={styles.icon} />
         <TranslatedText
           testID={linkTestId}
-          textStyleOverrides={[styles.text, { color: colors.labelColor }, textStyleOverrides]}
+          textStyleOverrides={styles.text}
           textStyle={textStyle ?? 'BodyRegular'}
           i18nKey={i18nKey}
         />
@@ -65,6 +54,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flexWrap: 'wrap',
+    color: colors.moonDarkest,
     textDecorationLine: 'underline',
   },
 })

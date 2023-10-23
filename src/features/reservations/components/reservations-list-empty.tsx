@@ -4,7 +4,7 @@ import { Illustration, IllustrationType } from '../../../components/illustration
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export type ReservationsListEmptyProps = {
@@ -13,7 +13,6 @@ export type ReservationsListEmptyProps = {
   i18nContentKey: AvailableTranslations
   i18nIllustrationAltKey: AvailableTranslations
   illustrationType: IllustrationType
-  animationSpeed?: number
 }
 
 export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
@@ -22,10 +21,8 @@ export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
   i18nContentKey,
   i18nIllustrationAltKey,
   illustrationType,
-  animationSpeed,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   return (
     <View style={styles.container} testID={testID}>
@@ -33,19 +30,18 @@ export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
         testID={addTestIdModifier(testID, 'image')}
         i18nKey={i18nIllustrationAltKey}
         type={illustrationType}
-        animationSpeed={animationSpeed}
       />
       <View style={styles.textContainer}>
         <TranslatedText
           testID={addTestIdModifier(testID, 'title')}
           textStyle="HeadlineH4Extrabold"
-          textStyleOverrides={[styles.noItemsTitle, { color: colors.labelColor }]}
+          textStyleOverrides={styles.noItemsTitle}
           i18nKey={i18nTitleKey}
         />
         <TranslatedText
           testID={addTestIdModifier(testID, 'content')}
           textStyle="BodyRegular"
-          textStyleOverrides={[styles.noItemsContent, { color: colors.labelColor }]}
+          textStyleOverrides={styles.noItemsContent}
           i18nKey={i18nContentKey}
         />
       </View>
@@ -65,9 +61,11 @@ const styles = StyleSheet.create({
   },
   noItemsTitle: {
     textAlign: 'center',
+    color: colors.basicBlack,
   },
   noItemsContent: {
     paddingTop: spacing[2],
     textAlign: 'center',
+    color: colors.primaryDark,
   },
 })

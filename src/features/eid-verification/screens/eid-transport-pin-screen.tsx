@@ -6,7 +6,7 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { AboutPinLinkSection } from '../components/about-pin-link-section'
 import { EidButtonFooter } from '../components/eid-button-footer'
@@ -23,7 +23,6 @@ const PIN_LENGTH = 5
 
 export const EidTransportPinScreen: React.FC<EidTransportPinScreenProps> = ({ onNext, onClose, retryCounter }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   const { form, onPressSubmit } = usePinFormValidation(3, PIN_LENGTH, onNext, retryCounter)
 
@@ -37,7 +36,7 @@ export const EidTransportPinScreen: React.FC<EidTransportPinScreenProps> = ({ on
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentText}
             testID={buildTestId('eid_transportPinView_content_text')}
             i18nKey="eid_transportPinView_content_text"
             textStyle="BodyRegular"
@@ -46,7 +45,7 @@ export const EidTransportPinScreen: React.FC<EidTransportPinScreenProps> = ({ on
             testID={buildTestId('eid_transportPinView_transportPin_title')}
             i18nKey="eid_transportPinView_transportPin_title"
             textStyle="HeadlineH4Extrabold"
-            textStyleOverrides={{ color: colors.labelColor }}
+            textStyleOverrides={{ color: colors.moonDarkest }}
           />
           <View style={styles.transportPinView}>
             <FormFieldWithControl
@@ -82,6 +81,7 @@ export const styles = StyleSheet.create({
   contentText: {
     paddingVertical: spacing[6],
     flexWrap: 'wrap',
+    color: colors.moonDarkest,
   },
   transportPinView: {
     paddingTop: spacing[9],

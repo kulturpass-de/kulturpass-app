@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react-native'
 import React from 'react'
-import { OfferSelectionScreen } from '../../../screens/product-details/offer-selection-screen'
+import { OfferSelectionScreen } from '../screens/offer-selection-screen'
 import { ProductDetail } from '../types/product-detail'
 
 const componentMeta: ComponentMeta<typeof OfferSelectionScreen> = {

@@ -23,7 +23,6 @@ export const colors = {
   primaryLight: '#767FF9',
   primaryLighter: '#ABA8FC',
   primaryLightest: '#D7D3FE',
-  newSecondaryDarkest: '#8F005F',
   secondaryDarkest: '#F12AAE',
   secondaryBase: '#F566C5',
   secondaryLight: '#FB90D3',
@@ -48,15 +47,21 @@ export const colors = {
   basicWhite: '#FFFFFF',
   basicBlack: '#0C0016',
   basicBackground: '#F3F3F7',
-  primaryDarkestTile: '#000DB8',
 
-  // Needed because tertiary buttons have a background as shadow and opacity cannot be used
-  tertiaryButtonBackgroundPressed: '#E7E1FF',
-  tertiaryButtonBackgroundPressedDark: '#2C2B77',
+  transparentPrimaryLight50: '#367fff7F',
+  transparentPrimaryLight20: '#367fff33',
+  transparentPrimaryLightest50: '#D7D3FE7F',
 
-  tryAgainTextDarkSecondary: '#75004E',
-  tryAgainTextDarkYellow: '#534100',
-  tryAgainTextDarkGreen: '#004C5C',
-  tryAgainTextDarkPrimary: '#000987',
-  tryAgainBorderGreen: '#00576A',
+  transparentBlack80: '#0C0016CC',
+  transparentBlack70: '#0C0016B3',
+  transparentBlack60: '#0C001699',
+  transparentBlack50: '#0C00167F',
+  transparentBlack40: '#0C001666',
+  transparentBlack30: '#0C00164D',
+
+  transparentWhite80: '#FFFFFFCC',
+  transparentWhite50: '#FFFFFF7F',
+  transparentWhite00: '#FFFFFF00',
+
+  transparentMoonDarker80: '#202325CC',
 } as const
