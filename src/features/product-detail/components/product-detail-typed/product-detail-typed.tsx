@@ -21,6 +21,8 @@ export const ProductDetailTyped: React.FC<ProductDetailTypedProps> = ({ productD
   const testID = buildTestId('productDetail')
 
   switch (productDetail.productType) {
+    case ProductTypes.SeasonTicket:
+      return null
     case ProductTypes.Book:
       return <ProductBookDetail productDetail={productDetail} testID={testID} />
     case ProductTypes.StagedEvent:

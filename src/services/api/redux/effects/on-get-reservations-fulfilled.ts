@@ -2,7 +2,6 @@ import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '
 import { commerceApi } from '../../commerce-api'
 import { PENDING_STATUSES } from '../../types/commerce/commerce-get-reservations'
 import { setCommerceApiEndpointCache } from '../api-offline-cache-slice'
-import { cacheReservationsProductsDetails } from '../thunks/cache-reservations-products-details'
 
 export const onGetReservationsFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getReservations.matchFulfilled>
@@ -24,8 +23,6 @@ export const onGetReservationsFulfilledEffect: ListenerEffect<
       payload: { ...action.payload, orders: orderHistoryList },
     }),
   )
-
-  await listenerApi.dispatch(cacheReservationsProductsDetails(orderHistoryList)).unwrap()
 }
 
 export const onGetReservationsFulfilled = (startListening: AppStartListening) =>

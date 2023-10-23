@@ -41,8 +41,8 @@ export const BookDetail: ComponentStory<typeof ProductDetailScreen> = args => (
   <ProductDetailScreen {...args} productDetail={require('./mocked-book.json')} />
 )
 
-export const BookLibraryDetail: ComponentStory<typeof ProductDetailScreen> = args => (
-  <ProductDetailScreen {...args} productDetail={require('./mocked-book-library.json')} />
+export const SeasonTicketLibraryDetail: ComponentStory<typeof ProductDetailScreen> = args => (
+  <ProductDetailScreen {...args} productDetail={require('./mocked-season-ticket-library.json')} />
 )
 
 export const CinemaDetail: ComponentStory<typeof ProductDetailScreen> = args => (

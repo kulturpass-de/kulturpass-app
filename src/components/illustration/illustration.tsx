@@ -114,7 +114,7 @@ export const Illustration: React.FC<IllustrationProps> = ({ type, i18nKey, testI
           }).start()
         })
       } else {
-        animationProgress.current.stopAnimation(() => animationProgress.current.setValue(0))
+        animationProgress.current.resetAnimation()
       }
     }
   }, [animation, animationSpeed, isFocused])

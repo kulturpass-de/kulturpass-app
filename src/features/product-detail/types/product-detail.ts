@@ -8,6 +8,7 @@ export const isCityOrPostCode = (filterType?: SelectedFilterType): boolean =>
 export enum ProductTypes {
   Audio = 'audioProductWsDTO',
   Book = 'bookProductWsDTO',
+  SeasonTicket = 'seasonTicketProductWsDTO',
   Cinema = 'cinemaProductWsDTO',
   Exhibit = 'exhibitProductWsDTO',
   MusicInstrument = 'musicInstrumentProductWsDTO',
@@ -105,6 +106,8 @@ export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
    */
   bookFormat?: 'PAPERBACK' | 'HARDBACK'
 }
+
+export type SeasonTicketDetail = ProductDetailBase<ProductTypes.SeasonTicket>
 
 export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
   /**
@@ -246,3 +249,4 @@ export type ProductDetail =
   | StagedEventProductDetail
   | VoucherProductDetail
   | CulturalWorkshopDetail
+  | SeasonTicketDetail

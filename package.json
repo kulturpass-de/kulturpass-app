@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.9.0",
-  "buildNumber": "1",
+  "buildNumber": "2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -154,8 +154,6 @@
     "react-native-svg-transformer": "^1.1.0",
     "react-test-renderer": "18.2.0",
     "redux-flipper": "^2.0.2",
-    "solidarity": "^3.0.4",
-    "solidarity-react-native": "^2.1.2",
     "typed-emitter": "^2.1.0",
     "typescript": "^4.9.5"
   },
@@ -199,14 +197,12 @@
     }
   },
   "resolutions": {
-    "ejs": "3.1.7",
     "yargs-parser": "21.1.1",
     "yargs": "17.7.2",
     "json5": "2.2.2",
     "glob-parent": "5.1.2",
     "ansi-regex": "5.0.1",
     "unset-value": "2.0.1",
-    "fast-xml-parser": "4.2.4",
     "semver": "7.5.4"
   },
   "reactNativePermissionsIOS": [
