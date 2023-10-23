@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
 
 import com.android.build.OutputFile
 
@@ -94,7 +95,6 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "de.bkm.kulturpass"
-  
 
     defaultConfig {
         applicationId "de.bkm.kulturpass"
@@ -113,10 +113,19 @@ android {
             + versionBuild.toInteger()
         )
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        archivesBaseName "cultureapp-v${versionName}-rc${VERSION_BUILD}"
 
         packagingOptions {
             // Fixes build error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
             pickFirst "lib/arm64-v8a/libc++_shared.so"
+
+            // Fixes build error:  2 files found with path 'lib/arm64-v8a/libcrypto.so'
+            // https://github.com/margelo/react-native-quick-crypto/issues/186
+            pickFirst 'lib/x86/libcrypto.so'
+            pickFirst 'lib/x86_64/libcrypto.so'
+            pickFirst 'lib/armeabi-v7a/libcrypto.so'
+            pickFirst 'lib/arm64-v8a/libcrypto.so'
+
             // Needed for aab (Android App Bundle) creation.
             // The AusweisApp2 SDK will not work correctly without it
             // See also https://www.ausweisapp.bund.de/sdk/android.html#app-bundle
@@ -173,7 +182,7 @@ android {
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
             // Example: versionCode 1 will generate 1001 for armeabi-v7a, 1002 for x86, etc.
-            def apkName = "cultureapp-v${versionName}-rc${VERSION_BUILD}-${variant.buildType.name}.apk"
+            def apkName = "${archivesBaseName}-${variant.buildType.name}.apk"
             output.outputFileName = apkName
             def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
             def abi = output.getFilter(OutputFile.ABI)
@@ -193,6 +202,8 @@ dependencies {
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    implementation platform('com.google.firebase:firebase-bom:32.2.3')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

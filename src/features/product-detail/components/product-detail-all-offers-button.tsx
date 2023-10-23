@@ -1,5 +1,4 @@
-import React from 'react'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
@@ -7,13 +6,20 @@ import { buildTestId } from '../../../services/test-id/test-id'
 import { spacing } from '../../../theme/spacing'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { isPriceWithValue } from '../../../utils/price/utils'
+import { ProductDetail } from '../types/product-detail'
+import { isVoucher } from '../utils'
 
 type ProductDetailAllOffersButtonProps = {
   offers: Offer[]
+  fulfillmentOption: ProductDetail['fulfillmentOption']
   onPress: () => void
 }
 
-export const ProductDetailAllOffersButton: React.FC<ProductDetailAllOffersButtonProps> = ({ offers, onPress }) => {
+export const ProductDetailAllOffersButton: React.FC<ProductDetailAllOffersButtonProps> = ({
+  offers,
+  fulfillmentOption,
+  onPress,
+}) => {
   const lowestPrice = useMemo(() => {
     const prices = offers.map(offer => offer.price).filter(isPriceWithValue)
     prices.sort((a, b) => a.value - b.value)
@@ -33,7 +39,9 @@ export const ProductDetailAllOffersButton: React.FC<ProductDetailAllOffersButton
         variant="tertiary"
         widthOption="content"
         modifier="small"
-        i18nKey="productDetail_allOffers_button"
+        i18nKey={
+          isVoucher(fulfillmentOption) ? 'productDetail_allOffers_voucher_button' : 'productDetail_allOffers_button'
+        }
         i18nParams={{ price: formattedPrice }}
         iconSource="arrow-right"
         onPress={onPress}

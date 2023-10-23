@@ -1,3 +1,4 @@
 NSLocationWhenInUseUsageDescription = "Um dir passendere Kulturangebote in deiner Nähe zu bieten, möchten wir während der Verwendung der App deine Standortdaten verwenden.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "Um dir passendere Kulturangebote in deiner Nähe zu bieten, möchten wir während der Verwendung der App deine Standortdaten verwenden.";
 NFCReaderUsageDescription = "KulturPass DE nutzt die NFC-Schnittstelle, um auf die Online-Ausweisfunktion des Ausweises zuzugreifen.";
+NSUserNotificationsUsageDescription = "Wir versenden Push-Nachrichten, um dich über Statusänderungen von Reservierungen, Stornos und Erstattungen deines Budgets usw. zu informieren und dich an die Abholung von Produkten oder die Einlösung von Einlöse-Codes zu erinnern.";

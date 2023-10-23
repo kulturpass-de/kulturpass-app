@@ -2,9 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>aps-environment</key>
+	<string>production</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:kulturpass.de</string>
+		<string>applinks:storefront.prod.kulturpass.de</string>
 	</array>
 	<key>com.apple.developer.nfc.readersession.formats</key>
 	<array>

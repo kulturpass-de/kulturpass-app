@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../../../../components/button/button'
 import { InfoBox } from '../../../../components/info-box/info-box'
 import { LoadingIndicator } from '../../../../components/loading-indicator/loading-indicator'
@@ -8,12 +8,15 @@ import { SvgImage } from '../../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
+import { ErrorAlertManager } from '../../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
+import { logger } from '../../../../services/logger'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { userSlice } from '../../../../services/user/redux/user-slice'
+import { useGetAccountInfoLazyQuery } from '../../../../services/user/use-get-account-info-lazy-query'
 import { useUserInfo } from '../../../../services/user/use-user-info'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
-import { ErrorAlert } from '../../../form-validation/components/error-alert'
 
 const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 
@@ -24,10 +27,12 @@ export const AccountVerificationHero: React.FC = () => {
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const timerRef = useRef<NodeJS.Timeout>()
   const [canResend, setCanResend] = useState(true)
   const [accountsResendVerificationCode, result] = cdcApi.endpoints.accountsResendVerificationCode.useLazyQuery()
+
+  const dispatch = useDispatch()
+  const getAccountInfoLazyQuery = useGetAccountInfoLazyQuery()
 
   useEffect(() => {
     return () => {
@@ -41,22 +46,29 @@ export const AccountVerificationHero: React.FC = () => {
     }
 
     try {
+      const { isVerified } = await getAccountInfoLazyQuery(regToken)
+
+      if (isVerified) {
+        dispatch(userSlice.actions.setDisplayVerifiedAlert(true))
+        return
+      }
+
       await accountsResendVerificationCode({ regToken })
       setCanResend(false)
       timerRef.current = setTimeout(() => setCanResend(true), RESEND_MAIL_VERIFICATION_AFTER_1MIN)
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        logger.warn('resend verification error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Resend Verification'))
       }
     }
-  }, [accountsResendVerificationCode, regToken])
+  }, [accountsResendVerificationCode, regToken, getAccountInfoLazyQuery, dispatch])
 
   return (
     <>
       <LoadingIndicator loading={result.isLoading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <InfoBox>
         <TranslatedText
           textStyle="HeadlineH4Extrabold"

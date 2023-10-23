@@ -1,5 +1,8 @@
-import { PixelRatio } from 'react-native'
+import { ColorSchemeName, PixelRatio } from 'react-native'
 import { logger } from '../services/logger'
+import { colorMappings as colorMappingsDark } from './dark/color-mappings'
+import { colorMappings as colorMappingsLight } from './light/color-mappings'
+import { ColorMappings } from './types'
 
 export const modalCardStyle = {
   backgroundColor: 'transparent',
@@ -31,4 +34,30 @@ export const toTransparentColor = (color: string, opacity: number, transparencyE
       .toUpperCase()
       .padStart(2, '0')
   )
+}
+
+export type ThemeValue = {
+  colorScheme: 'light' | 'dark'
+  colors: ColorMappings
+}
+
+export const getTheme = (colorScheme: ColorSchemeName, darkModePreviewEnabled: boolean): ThemeValue => {
+  if (!darkModePreviewEnabled) {
+    return {
+      colorScheme: 'light',
+      colors: colorMappingsLight,
+    }
+  }
+
+  if (colorScheme === 'dark') {
+    return {
+      colorScheme: 'dark',
+      colors: colorMappingsDark,
+    }
+  } else {
+    return {
+      colorScheme: 'light',
+      colors: colorMappingsLight,
+    }
+  }
 }

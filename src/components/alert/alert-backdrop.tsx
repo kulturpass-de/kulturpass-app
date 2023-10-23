@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { StatusBar } from 'react-native'
+import { StatusBar, StyleSheet, View } from 'react-native'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { useAlert } from './alert-context'

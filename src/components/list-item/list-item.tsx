@@ -10,7 +10,7 @@ import { SvgImage } from '../svg-image/svg-image'
 export type ListItemProps = {
   title: string
   testID: TestId
-  icon?: JSX.Element
+  icon?: React.ReactElement
   type?: 'navigation' | 'link'
   onPress?: () => void
   noBorderBottom?: boolean
@@ -53,7 +53,7 @@ export const ListItem: React.FC<ListItemProps> = ({
       accessibilityState={accessibilityState}
       accessibilityHint={accessibilityHint}
       accessible>
-      {icon && icon}
+      {icon ? icon : null}
       <Text style={[textStyles.BodyRegular, styles.text, { color: colors.labelColor }]}>{title}</Text>
       {iconElement}
     </Pressable>

@@ -1,10 +1,8 @@
 import { Action } from '@reduxjs/toolkit'
 import { REHYDRATE } from 'redux-persist'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { startup } from '../thunks/startup'
+import { appCoreSlice } from '../slices/app-core'
 import { onPersistRehydrate, onPersistRehydrateEffect } from './on-persist-rehydrate'
-
-jest.mock('../thunks/startup')
 
 describe('on-persist-rehydrate', () => {
   const store = configureMockStore()
@@ -14,7 +12,7 @@ describe('on-persist-rehydrate', () => {
   })
 
   describe('onPersistRehydrate', () => {
-    it('should match with setEnvironmentConfiguration action', async () => {
+    it('should match with REHYDRATE action', async () => {
       let effectDefinition: any
 
       onPersistRehydrate(((action: Action) => {
@@ -26,10 +24,10 @@ describe('on-persist-rehydrate', () => {
   })
 
   describe('onPersistRehydrateEffect', () => {
-    it('should dispatch pollAppConfig thunk', async () => {
+    it('should dispatch setIsStoreRehydrated thunk', async () => {
       await onPersistRehydrateEffect({ type: REHYDRATE }, store as any)
 
-      store.expectActions([{ type: startup.pending.type }])
+      store.expectActions([{ type: appCoreSlice.actions.setIsStoreRehydrated.type }])
     })
   })
 })

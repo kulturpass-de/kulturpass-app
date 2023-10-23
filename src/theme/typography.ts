@@ -208,4 +208,33 @@ export const textStyles = StyleSheet.create({
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
+
+  BodyPrimary1Dark: {
+    fontFamily: typography.primary,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 13,
+    lineHeight: 16,
+    letterSpacing: 0.4,
+  },
+  SuggestionInfo: {
+    fontFamily: typography.primary,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 13,
+    lineHeight: 19.5,
+    letterSpacing: 0.4,
+  },
+})
+
+export const textHighlighting = StyleSheet.create({
+  Bold: {
+    fontWeight: '700',
+  },
+  Link: {
+    textDecorationLine: 'underline',
+  },
+  Italic: {
+    fontStyle: 'italic',
+  },
 })

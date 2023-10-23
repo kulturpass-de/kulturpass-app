@@ -4,7 +4,6 @@ import { WebViewErrorEvent, WebViewHttpErrorEvent } from 'react-native-webview/l
 import { logger } from '../../../services/logger'
 import { ERR_NO_INTERNET, ERR_UNKNOWN } from '../components/webview-error-view'
 import { BridgeAdapterAPI } from '../services/webview-bridge-adapter/create-bridge-adapter-api'
-import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 
 export const useHandleWebviewErrors = (bridgeAdapterApi: BridgeAdapterAPI) => {
   const [errorCode, setErrorCode] = useState<number | typeof ERR_NO_INTERNET | typeof ERR_UNKNOWN | undefined>()
@@ -38,13 +37,15 @@ export const useHandleWebviewErrors = (bridgeAdapterApi: BridgeAdapterAPI) => {
       return
     }
 
-    const eventHandler = (data: SpartacusBridge.EventForwarding.MobileAppEvent['data']) => {
-      if (errorCode === undefined) {
-        setErrorCode(data)
+    const subscription = bridgeAdapterApi.onMobileAppEvents(event => {
+      if (event.type !== 'ANDROID_ERROR') {
+        return
       }
-    }
 
-    const subscription = bridgeAdapterApi.onMobileAppEvents(event => eventHandler(event.data))
+      if (errorCode === undefined) {
+        setErrorCode(event.data)
+      }
+    })
 
     return subscription.unsubscribe
   }, [bridgeAdapterApi, errorCode])

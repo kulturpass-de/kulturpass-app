@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -26,7 +26,7 @@ export const EidAboutServiceProviderRoute: React.FC<EidAboutServiceProviderRoute
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(() => {
-    navigation.navigate(EidInsertCardRouteName, {
+    navigation.replace(EidInsertCardRouteName, {
       flow: 'Auth',
     })
   }, [navigation])

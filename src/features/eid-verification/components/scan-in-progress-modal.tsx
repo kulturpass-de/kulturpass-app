@@ -3,17 +3,19 @@ import React from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
 import { AlertBackdrop } from '../../../components/alert/alert-backdrop'
 import { AlertContent } from '../../../components/alert/alert-content'
+import { AlertMessage } from '../../../components/alert/alert-message'
+import { AlertTitle } from '../../../components/alert/alert-title'
 import { LoadingAnimation } from '../../../components/loading-animation/loading-animation'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { spacing } from '../../../theme/spacing'
 
 export type ScanInProgressModalProps = {
   scanning: boolean
 }
 export const ScanInProgressModal: React.FC<ScanInProgressModalProps> = ({ scanning }) => {
-  const { colors } = useTheme()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('scan_in_progress_modal')
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -22,16 +24,8 @@ export const ScanInProgressModal: React.FC<ScanInProgressModalProps> = ({ scanni
       <View style={styles.container}>
         <AlertBackdrop />
         <AlertContent ref={focusRef}>
-          <TranslatedText
-            textStyleOverrides={{ color: colors.labelColor }}
-            i18nKey="eid_insertCard_android_scanModal_title"
-            textStyle="HeadlineH3Extrabold"
-          />
-          <TranslatedText
-            textStyleOverrides={[styles.text, { color: colors.labelColor }]}
-            i18nKey="eid_insertCard_android_scanModal_text"
-            textStyle="BodyRegular"
-          />
+          <AlertTitle testID={addTestIdModifier(testID, 'title')} i18nKey="eid_insertCard_android_scanModal_title" />
+          <AlertMessage testID={addTestIdModifier(testID, 'message')} i18nKey="eid_insertCard_android_scanModal_text" />
           <LoadingAnimation />
         </AlertContent>
       </View>
@@ -46,9 +40,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: spacing[5],
-  },
-  text: {
-    paddingTop: spacing[3],
-    paddingBottom: spacing[6],
   },
 })

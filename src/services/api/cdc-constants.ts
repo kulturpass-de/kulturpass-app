@@ -1,0 +1,1 @@
+export const CDC_SESSION_EXPIRATION_INFINITE = -2

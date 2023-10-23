@@ -1,0 +1,1 @@
+var kp_webview_set_padding;(()=>{"use strict";var e,d={};(e=d).__esModule=!0,e.setWebviewPadding=void 0,e.setWebviewPadding=function(e){document.body.style.paddingTop="".concat(e,"px")},kp_webview_set_padding=d})();

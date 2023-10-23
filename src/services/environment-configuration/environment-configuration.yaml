@@ -1,0 +1,47 @@
+$schema: https://kulturpass.sap.com/json-schema/environment-config.yml
+data:
+  - name: prod
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.prod.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.prod.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.prod.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.prod.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.prod.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: https://storefront.prod.kulturpass.de
+      searchUrl: https://storefront.prod.kulturpass.de/search
+      imageBaseUrl: https://storefront.prod.kulturpass.de
+    cdc:
+      baseUrl: https://users.prod.kulturpass.de
+      apiKey: 4_BKaRVlTUdJVIjH62FJZamw
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.prod.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.prod.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.u5EA-HEj-mmqCwQDy8BAP8T1bcypmJW1h2pzccgtCxd_sHZoBTOqlW0DHnRAIHGNku_Ktm9NeoWZEs-3DQaxDw
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAu6ZpG+4Jdb3WJRYace2La2IKRt0VFlZKAhwbpmRD8krk/o4f0LTPPcvURIEZ/zu7kW1rfzAxoheWLAEUhnxsQ==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEC8uDWPA8Z6su3gcxg1YcbQ+ew1QQzN6wTPi+eOKsEor+biKkDtRGYown7L6WwPGu5HXD3a0WtQqHJO/f6XJ4bg==

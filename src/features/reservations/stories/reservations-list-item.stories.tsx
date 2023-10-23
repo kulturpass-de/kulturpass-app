@@ -84,13 +84,3 @@ export const VoucherReceived: ComponentStory<typeof ReservationsListItem> = args
     />
   )
 }
-
-export const VoucherCompleted: ComponentStory<typeof ReservationsListItem> = args => {
-  return (
-    <ReservationsListItem
-      status={ORDER_STATUS_READY_FOR_PICKUP}
-      deliveryScenario={DELIVERY_SCENARIO_IN_APP_VOUCHER}
-      {...args}
-    />
-  )
-}
