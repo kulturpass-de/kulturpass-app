@@ -4,7 +4,7 @@ import { RootState } from '../../redux/configure-store'
 
 export type NotificationEvent = {
   id: string
-  type: 'initialNotification' | 'notificationOpenedApp' | 'message' | 'backgroundMessage'
+  type: 'message' | 'backgroundMessage'
   payload: Record<string, any>
 }
 

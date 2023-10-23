@@ -10,6 +10,7 @@ export const svgForProductType: { [productType in ProductTypes]?: ThemedSvgImage
   exhibitProductWsDTO: 'pic-museum-2',
   cinemaProductWsDTO: 'pic-cinema-2',
   bookProductWsDTO: 'pic-books-2',
+  seasonTicketProductWsDTO: 'pic-books-2',
   audioProductWsDTO: 'pic-soundcarrier-2',
   sheetMusicProductWsDTO: 'pic-notes-2',
   musicInstrumentProductWsDTO: 'pic-instruments-2',

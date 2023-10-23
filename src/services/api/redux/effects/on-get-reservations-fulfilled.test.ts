@@ -4,8 +4,6 @@ import { ORDER_STATUS_COMPLETED, ORDER_STATUS_CREATED } from '../../types/commer
 import { apiOfflineCacheSlice } from '../api-offline-cache-slice'
 import { onGetReservationsFulfilled, onGetReservationsFulfilledEffect } from './on-get-reservations-fulfilled'
 
-jest.mock('../thunks/cache-reservations-products-details')
-
 describe('on-get-reservations-fulfilled', () => {
   const store = configureMockStore()
 
@@ -52,17 +50,6 @@ describe('on-get-reservations-fulfilled', () => {
         cacheKey: 'all',
         payload: { orders: [{ code: 'order_created', status: ORDER_STATUS_CREATED }] },
       })
-
-      store.expectActions([expectedAction])
-    })
-
-    it('should dispatch cacheReservationsProductsDetails with pending orders', async () => {
-      await onGetReservationsFulfilledEffect(expectedTriggerAction as any, store as any)
-
-      const expectedAction = {
-        meta: { arg: [{ code: 'order_created', status: ORDER_STATUS_CREATED }] },
-        type: 'apiOfflineCache/cacheReservationsProductsDetails/pending',
-      }
 
       store.expectActions([expectedAction])
     })

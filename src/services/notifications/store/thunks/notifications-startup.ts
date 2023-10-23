@@ -1,10 +1,7 @@
 import notifee from '@notifee/react-native'
-import { firebase } from '@react-native-firebase/messaging'
-import { v4 as uuid } from 'uuid'
 import { logger } from '../../../logger'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { subscribeToPushTokenChanges } from '../../subscriptions/subscribe-to-push-token-changes'
-import { notificationsDebugActions } from '../notifications-debug-slice'
 import { notificationsHandleStoredBackgroundPressNotification } from './notifications-handle-stored-backround-press-notification'
 import { notificationsRefreshTokens } from './notifications-refresh-tokens'
 
@@ -19,14 +16,5 @@ export const notificationsStartup = createThunk('notifications/startup', async (
   }
   logger.log('--- notifications permission granted')
 
-  /**
-   * Check for notifications that need to be processed on boot
-   */
-  const notification = await firebase.messaging().getInitialNotification()
-  if (notification) {
-    thunkAPI.dispatch(
-      notificationsDebugActions.addEvent({ id: uuid(), type: 'initialNotification', payload: notification }),
-    )
-  }
   subscribeToPushTokenChanges(thunkAPI)
 })

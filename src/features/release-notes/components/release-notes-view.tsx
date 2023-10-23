@@ -52,7 +52,7 @@ export const ReleaseNotesView: React.FC<ReleaseNotesViewProps> = ({
         i18nKey={bodyTextGenericI18nKey}
         testID={bodyTextGenericI18nKey}
         textStyle="BodyRegular"
-        textStyleOverrides={[{ color: colors.labelColor }]}
+        textStyleOverrides={[styles.text, { color: colors.labelColor }]}
       />
       <ReleaseNotesBulletList bodyTextListBaseI18nKey={bodyTextListBaseI18nKey} />
     </ScrollView>
@@ -71,5 +71,8 @@ export const styles = StyleSheet.create({
   },
   headline: {
     alignSelf: 'center',
+  },
+  text: {
+    paddingBottom: spacing[2],
   },
 })

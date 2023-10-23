@@ -33,7 +33,8 @@ import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
 
 export type ReservationDetailScreenProps = {
-  productDetail?: ProductDetail
+  productDetail: ProductDetail
+  selectedOffer?: Offer
   order: Order
   onClose: () => void
   afterCancelReservationTriggered: () => void
@@ -43,6 +44,7 @@ export type ReservationDetailScreenProps = {
 
 export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({
   productDetail,
+  selectedOffer,
   onClose,
   afterCancelReservationTriggered,
   onPressReportButton,
@@ -93,7 +95,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   if (!productDetail || !orderEntry) {
     return null
   }
-  const selectedOffer: Offer | undefined = productDetail.offers?.find(offer => offer.id === orderEntry.offerId)
+
   const orderStatusTranslattions = getReservationOrderTranslations(productDetail, orderStatus)
 
   return (
@@ -149,25 +151,25 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           <View style={styles.report}>
             <TextWithIcon iconType="report" i18nKey="reservationDetail_report_button" onPress={onPressReportButton} />
           </View>
-          {selectedOffer?.priceAdditionalInfo || selectedOffer?.description ? (
+          {orderEntry.offerPriceAdditionalInfo || orderEntry.offerDescription ? (
             <View style={styles.offerDetailsSection}>
               <Divider marginBottom={0} marginTop={0} />
               <View style={styles.offerDetailsSectionVerticalSpacing}>
                 <OfferDetails
                   testID={addTestIdModifier(testID, 'accessibility')}
-                  description={selectedOffer.description}
-                  priceAdditionalInfo={selectedOffer.priceAdditionalInfo}
+                  description={orderEntry.offerDescription}
+                  priceAdditionalInfo={orderEntry.offerPriceAdditionalInfo}
                 />
               </View>
             </View>
           ) : null}
-          {selectedOffer?.shopDescription ? (
+          {orderEntry.shopDescription ? (
             <View style={styles.offerDetailsSection}>
               <Divider marginBottom={0} marginTop={0} />
               <View style={styles.offerDetailsSectionVerticalSpacing}>
                 <ShopDescription
                   testID={addTestIdModifier(testID, 'shop_description')}
-                  shopDescription={selectedOffer.shopDescription}
+                  shopDescription={orderEntry.shopDescription}
                 />
               </View>
             </View>
