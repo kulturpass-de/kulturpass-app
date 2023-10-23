@@ -1,31 +1,19 @@
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../../../redux/listener-middleware'
 import { commerceApi } from '../../commerce-api'
 import { COMPLETED_STATUSES } from '../../types/commerce/commerce-get-reservations'
-import { removeCommerceApiEndpointCache, setCommerceApiEndpointCache } from '../api-offline-cache-slice'
+import { apiOfflineCacheActions } from '../api-offline-cache-actions'
 
 export const onGetOrderDetailFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getOrderDetail.matchFulfilled>
 > = async (action, listenerApi) => {
-  const orderCode = action.meta.arg.originalArgs.orderCode
-
-  if (!orderCode || !action.payload.status) {
-    return
-  }
-  if (COMPLETED_STATUSES.includes(action.payload.status)) {
-    listenerApi.dispatch(
-      removeCommerceApiEndpointCache({
-        endpointName: 'getOrderDetail',
-        cacheKey: orderCode,
-      }),
-    )
+  if (!action.payload.status || COMPLETED_STATUSES.includes(action.payload.status)) {
     return
   }
 
   listenerApi.dispatch(
-    setCommerceApiEndpointCache({
+    apiOfflineCacheActions.setCommerceApiEndpointCache({
       endpointName: 'getOrderDetail',
-      cacheKey: orderCode,
-      payload: action.payload,
+      cache: { args: action.meta.arg.originalArgs, payload: action.payload },
     }),
   )
 }

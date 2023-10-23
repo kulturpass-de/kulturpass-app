@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ApiOfflineCacheState } from '../../redux/versions/current'
-import {
-  CommerceApiEndpointName,
-  RemoveCommerceApiEndpointCachePayload,
-  SetCommerceApiEndpointCachePayload,
-} from './types'
+import { CommerceApiEndpointName, SetCommerceApiEndpointCachePayload } from './types'
 
 export const initialState: ApiOfflineCacheState = {
   commerceApi: {},
@@ -18,7 +14,9 @@ export const apiOfflineCacheSlice = createSlice({
       state,
       action: PayloadAction<SetCommerceApiEndpointCachePayload<CommerceApiEndpointName>>,
     ) => {
-      const { endpointName, payload, cacheKey } = action.payload
+      const { endpointName, cache } = action.payload
+
+      const cacheKey = JSON.stringify(cache.args)
 
       return {
         ...state,
@@ -26,35 +24,21 @@ export const apiOfflineCacheSlice = createSlice({
           ...state.commerceApi,
           [endpointName]: {
             ...(state.commerceApi[endpointName] || {}),
-            [cacheKey]: payload,
+            [cacheKey]: cache,
           },
         },
       }
     },
-    removeCommerceApiEndpointCache: (
-      state,
-      action: PayloadAction<RemoveCommerceApiEndpointCachePayload<CommerceApiEndpointName>>,
-    ) => {
-      const { endpointName, cacheKey } = action.payload
+    clearCommerceApiEndpointCache: (state, action: PayloadAction<{ endpointName: CommerceApiEndpointName }>) => {
+      const { endpointName } = action.payload
+
       return {
         ...state,
         commerceApi: {
           ...state.commerceApi,
-          [endpointName]: {
-            ...(state.commerceApi[endpointName] || {}),
-            [cacheKey]: undefined,
-          },
+          [endpointName]: {},
         },
-      }
-    },
-    resetCommerceApiCache: state => {
-      return {
-        ...state,
-        commerceApi: {},
       }
     },
   },
 })
-
-export const { resetCommerceApiCache, setCommerceApiEndpointCache, removeCommerceApiEndpointCache } =
-  apiOfflineCacheSlice.actions

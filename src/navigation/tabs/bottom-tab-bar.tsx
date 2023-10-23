@@ -11,7 +11,6 @@ import { selectFiltersOrSortOpen } from '../../services/webviews/redux/webviews-
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { useIsReduceMotionActive } from '../../utils/accessibility/hooks/use-is-reduce-motion-active'
 import { TabsParamList } from './types'
 
 type BottomTabItemProps = {
@@ -19,16 +18,9 @@ type BottomTabItemProps = {
   navigation: BottomTabBarProps['navigation']
   isFocused: boolean
   accessibilityHint: AccessibilityProps['accessibilityHint']
-  isReduceMotionActive: boolean
 }
 
-const BottomTabItem: React.FC<BottomTabItemProps> = ({
-  route,
-  isFocused,
-  navigation,
-  accessibilityHint,
-  isReduceMotionActive,
-}) => {
+const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigation, accessibilityHint }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
@@ -39,6 +31,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
       target: route.key,
       canPreventDefault: true,
     })
+
     if (!isFocused && !event.defaultPrevented) {
       // The `merge: true` option makes sure that the params inside the tab screen are preserved
       navigation.navigate({ name: route.name, params: {}, merge: true })
@@ -65,7 +58,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
       accessibilityRole="tab"
       accessibilityHint={accessibilityHint}
       accessible>
-      <TabBarIcon isReduceMotionActive={isReduceMotionActive} isFocused={isFocused} name={route.name} />
+      <TabBarIcon isFocused={isFocused} name={route.name} />
       <View style={styles.tabBarLabelContainer}>
         <Text
           testID={buildTestId(`${routeName}_bottomNavigation_label`)}
@@ -88,8 +81,6 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
 }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
-  const isReduceMotionActive = useIsReduceMotionActive()
-
   const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(WebViewId.Search))
 
   if (filtersOrSortOpen) {
@@ -117,7 +108,6 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
               current: index + 1,
               total: state.routes.length,
             })}
-            isReduceMotionActive={isReduceMotionActive}
           />
         ))}
       </View>

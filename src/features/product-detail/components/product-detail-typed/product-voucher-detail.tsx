@@ -4,7 +4,7 @@ import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { VoucherProductDetail } from '../../types/product-detail'
 import { isDefinedAddress } from '../../utils'
 import { Address } from '../address'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 import { ProductCinemaDetail } from './product-cinema-detail'
 
 export type ProductVoucherDetailProps = {
@@ -33,8 +33,7 @@ export const ProductVoucherDetail: React.FC<ProductVoucherDetailProps> = ({ prod
       showDistance
       showCopyToClipboard={detailType === 'OrderDetail'}
       baseTestId={sectionTestID}
-      accessibilityLabelI18nKey="productDetail_voucher_copyToClipboard"
-      copiedAccessibilityI18nKey="productDetail_voucher_copiedToClipboard"
+      copyToClipboardAccessibilityI18nKey="productDetail_voucher_copyToClipboard"
     />
   ) : undefined
 

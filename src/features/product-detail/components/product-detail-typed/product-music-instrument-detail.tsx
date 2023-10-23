@@ -2,7 +2,7 @@ import React from 'react'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { MusicInstrumentProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductMusicInstrumentDetailProps = {
   productDetail: MusicInstrumentProductDetail

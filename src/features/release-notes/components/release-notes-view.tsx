@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import { Illustration } from '../../../components/illustration/illustration'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
@@ -36,10 +36,13 @@ export const ReleaseNotesView: React.FC<ReleaseNotesViewProps> = ({
 
   return (
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
-      <Illustration
+      <SvgImage
         testID={buildTestId('release_notes_img_alt')}
         type="release-notes"
         i18nKey="release_notes_img_alt"
+        width={255}
+        height={99}
+        style={styles.image}
       />
       <TranslatedText
         i18nKey={bodyTitleI18nKey}
@@ -52,7 +55,7 @@ export const ReleaseNotesView: React.FC<ReleaseNotesViewProps> = ({
         i18nKey={bodyTextGenericI18nKey}
         testID={bodyTextGenericI18nKey}
         textStyle="BodyRegular"
-        textStyleOverrides={[styles.text, { color: colors.labelColor }]}
+        textStyleOverrides={[{ color: colors.labelColor }]}
       />
       <ReleaseNotesBulletList bodyTextListBaseI18nKey={bodyTextListBaseI18nKey} />
     </ScrollView>
@@ -65,14 +68,15 @@ export const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flexGrow: 1,
-    paddingBottom: spacing[6],
+    paddingVertical: spacing[6],
     paddingHorizontal: spacing[5],
     rowGap: spacing[6],
   },
+  image: {
+    alignSelf: 'center',
+    marginBottom: spacing[4],
+  },
   headline: {
     alignSelf: 'center',
-  },
-  text: {
-    paddingBottom: spacing[2],
   },
 })

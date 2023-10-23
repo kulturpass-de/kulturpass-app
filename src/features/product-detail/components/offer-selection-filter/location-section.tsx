@@ -9,11 +9,10 @@ import { spacing } from '../../../../theme/spacing'
 
 export type LocationSectionProps = {
   onSubmit: () => void
-  testID: string
 }
 
-export const LocationSection = ({ onSubmit, testID }: LocationSectionProps) => {
-  const { addTestIdModifier } = useTestIdBuilder()
+export const LocationSection = ({ onSubmit }: LocationSectionProps) => {
+  const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
 
   return (
@@ -23,13 +22,9 @@ export const LocationSection = ({ onSubmit, testID }: LocationSectionProps) => {
         textStyle="CaptionSemibold"
         textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
         i18nKey="offerSelectionFilter_hint"
-        testID={addTestIdModifier(testID, 'hint')}
+        testID={buildTestId('offerSelectionFilter_hint')}
       />
-      <Button
-        i18nKey="offerSelectionFilter_submit_button_label"
-        testID={addTestIdModifier(testID, 'submit_button')}
-        onPress={onSubmit}
-      />
+      <Button i18nKey="offerSelectionFilter_submit_button_label" onPress={onSubmit} />
     </View>
   )
 }

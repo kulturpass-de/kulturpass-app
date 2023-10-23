@@ -1,6 +1,5 @@
 import { ImageSourcePropType } from 'react-native'
 import { IllustrationType } from '../../components/illustration/illustration'
-import { RequiredAnimatedIllustration } from '../types'
 
 export function requireIllustrationImage(type: IllustrationType): ImageSourcePropType {
   switch (type) {
@@ -40,34 +39,5 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/no-network.png')
     case 'location-sharing':
       return require('./illustrations/location-sharing.png')
-    case 'notification-permission':
-      return require('./illustrations/notification-permission.png')
-    case 'password':
-      return require('./illustrations/password.png')
-    case 'release-notes':
-      return require('./illustrations/release-notes.png')
-  }
-}
-
-export function requireIllustrationAnimation(type: IllustrationType): RequiredAnimatedIllustration | undefined {
-  switch (type) {
-    case 'onboarding':
-      return require('./illustrations/onboarding.json')
-    case 'empty-state-reservations':
-      return require('./illustrations/empty-state-reservations.json')
-    case 'empty-state-reservations-closed':
-      return require('./illustrations/empty-state-reservations-closed.json')
-    case 'favorites-empty-state':
-      return require('./illustrations/favorites-empty-state.json')
-    case 'registration-finished':
-      return require('./illustrations/registration-finished.json')
-    case 'verify-mail':
-      return require('./illustrations/verify-mail.json')
-    case 'release-notes':
-      return require('./illustrations/release-notes.json')
-    case 'localisation-consent':
-      return require('./illustrations/localisation-consent.json')
-    case 'notification-permission':
-      return require('./illustrations/notification-permission.json')
   }
 }

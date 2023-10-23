@@ -6,7 +6,9 @@ export const useIsScreenReaderActive = () => {
   useEffect(() => {
     const screenReaderChangedSubscription = AccessibilityInfo.addEventListener(
       'screenReaderChanged',
-      setScreenReaderEnabled,
+      isScreenReaderEnabled => {
+        setScreenReaderEnabled(isScreenReaderEnabled)
+      },
     )
 
     AccessibilityInfo.isScreenReaderEnabled().then(setScreenReaderEnabled)

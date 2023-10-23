@@ -1,6 +1,6 @@
 import { GeoPosition } from 'react-native-geolocation-service'
 import { z } from 'zod'
-import { simulationCards } from '../../../screens/app/developer-settings/simulation-cards/simulation-cards'
+import { simulationCards } from '../../../screens/developer-settings/simulation-cards/simulation-cards'
 
 export type EnvironmentConfigurationState = {
   currentEnvironmentName: string

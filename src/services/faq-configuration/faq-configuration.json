@@ -61,10 +61,6 @@
       "BROWSER_TRANSLATION": {
         "de": "https://service.kulturpass.de/help/de-de/2/169",
         "en": "https://service.kulturpass.de/help/en-gb/2/169"
-      },
-      "IDENTIFICATION_VIDEO": {
-        "de": "https://www.kulturpass.de/jugendliche/eid-video",
-        "en": "https://www.kulturpass.de/jugendliche/eid-video"
       }
     }
   }

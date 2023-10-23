@@ -3,7 +3,7 @@ import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { BookProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductBookDetailProps = {
   productDetail: BookProductDetail
@@ -16,14 +16,10 @@ export const ProductBookDetail: React.FC<ProductBookDetailProps> = ({ productDet
   const sectionTestID = addTestIdModifier(testID, 'book')
   const { t } = useTranslation()
 
-  if (!isbn && !publisher && !language && !bookFormat) {
-    return null
-  }
-
   return (
     <ProductDetailSection testID={sectionTestID} iconSource="book" sectionCaptioni18nKey="productDetail_book_caption">
-      {isbn ? <ProductDetailEntry i18nKey="productDetail_book_isbn" value={isbn} /> : null}
-      {publisher ? <ProductDetailEntry i18nKey="productDetail_book_publisher" value={publisher} /> : null}
+      <ProductDetailEntry i18nKey="productDetail_book_isbn" value={isbn} />
+      <ProductDetailEntry i18nKey="productDetail_book_publisher" value={publisher} />
       {language ? <ProductDetailEntry i18nKey="productDetail_book_language" value={language} /> : null}
       {bookFormat ? (
         <ProductDetailEntry

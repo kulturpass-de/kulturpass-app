@@ -7,7 +7,7 @@ describe('on-get-product-detail-fulfilled', () => {
   const store = configureMockStore()
 
   const expectedTriggerAction = {
-    meta: { arg: { endpointName: 'getProductDetail', originalArgs: { productCode: 'my_product_code' } } },
+    meta: { arg: { endpointName: 'getProductDetail', originalArgs: { product: 'my_product_code' } } },
     payload: {},
     type: 'commerceApi/executeQuery/fulfilled',
   }
@@ -41,8 +41,7 @@ describe('on-get-product-detail-fulfilled', () => {
 
       const expectedAction = apiOfflineCacheSlice.actions.setCommerceApiEndpointCache({
         endpointName: 'getProductDetail',
-        cacheKey: 'my_product_code',
-        payload: {},
+        cache: { args: { product: 'my_product_code' }, payload: {} },
       })
 
       store.expectActions([expectedAction])
