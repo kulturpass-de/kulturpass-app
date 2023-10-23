@@ -5,13 +5,14 @@ import React, { useCallback, useMemo } from 'react'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useQueryProductDetail } from '../../features/product-detail/hooks/use-query-product-detail'
+import { ProductDetail } from '../../features/product-detail/types/product-detail'
 import { PdpParamList, PdpScreenProps } from '../../navigation/pdp/types'
 import { RootStackParams } from '../../navigation/types'
 import { createRouteConfig } from '../../navigation/utils/create-route-config'
 import { commerceApi } from '../../services/api/commerce-api'
 import { useOfflineOrderDetail } from '../../services/api/redux/hooks/use-offline-order-detail'
 import { useOfflineProductDetail } from '../../services/api/redux/hooks/use-offline-product-detail'
-import { Order, OrderEntry } from '../../services/api/types/commerce/api-types'
+import { Offer, Order, OrderEntry } from '../../services/api/types/commerce/api-types'
 import { COMPLETED_STATUSES } from '../../services/api/types/commerce/commerce-get-reservations'
 import { useDismissableError } from '../../services/errors/use-dismissable-error'
 import { modalCardStyle } from '../../theme/utils'
@@ -48,18 +49,23 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
     }
   }, [offlineOrderDetail, orderDetailResponse.data])
 
+  // NOTE: The productDetail is fetched because of the offer and its accessibility data.
+  // The offer might randomly be undefined, as the offer list is not stable
+  // and could change for each productDetail fetch.
+  // A better approach would be getting the accessibility information out of the order. (currently not supported)
   const { data: productDetail, isLoading, error } = useQueryProductDetail(orderEntry?.product?.code)
   const offlineProductDetail = useOfflineProductDetail(orderEntry?.product?.code)
+  const selectedOffer: Offer | undefined = useMemo(
+    () =>
+      orderEntry
+        ? (productDetail ?? offlineProductDetail)?.offers?.find(offer => offer.id === orderEntry.offerId)
+        : undefined,
+    [offlineProductDetail, orderEntry, productDetail],
+  )
 
   const dataMissing = useMemo(() => {
-    return (
-      order === undefined ||
-      orderEntry === undefined ||
-      (productDetail === undefined && offlineProductDetail === undefined) ||
-      orderEntry.product?.code === undefined ||
-      orderEntry.offerId === undefined
-    )
-  }, [offlineProductDetail, order, orderEntry, productDetail])
+    return order === undefined || orderEntry === undefined || orderEntry.product === undefined
+  }, [order, orderEntry])
 
   const onClose = useCallback(() => {
     rootNavigation.navigate('Tabs')
@@ -92,9 +98,10 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
         error={netInfo.isConnected || dataMissing ? visibleError : undefined}
         onDismiss={handleDismissErrorAndClose}
       />
-      {order && !dataMissing ? (
+      {order && !dataMissing && orderEntry?.product ? (
         <ReservationDetailScreen
-          productDetail={productDetail ?? offlineProductDetail}
+          productDetail={orderEntry.product as ProductDetail}
+          selectedOffer={selectedOffer}
           order={order}
           onClose={onClose}
           onPressReportButton={onPressReportButton}

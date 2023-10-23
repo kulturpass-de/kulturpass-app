@@ -4,8 +4,8 @@ import { AccountsFinalizeRegistrationResponse } from '../../api/types/cdc/accoun
 import { CdcSessionData, CommerceSessionData } from '../../session/types'
 import { isUserPending } from './auth-selectors'
 
-export const isNotEmptyString = (s?: string) => {
-  return s && typeof s === 'string' && s.length > 0 ? true : false
+export const isNotEmptyString = (s?: string): boolean => {
+  return typeof s === 'string' && s.length > 0
 }
 
 export const isCdcSessionValid = (sessionValidity: number, sessionStartTimestamp: number) => {
@@ -34,12 +34,12 @@ export const isUserLoggedInToCdc = (cdcSessionData?: CdcSessionData | null) => {
   )
 }
 
-export const isCommerceSessionValid = (expiresIn?: number, tokenValidUntil?: number) => {
+export const isCommerceSessionValid = (expiresIn?: number, tokenValidUntil?: number): boolean => {
   if (expiresIn === undefined || expiresIn <= 0) {
     return false
   }
 
-  return (tokenValidUntil && tokenValidUntil > Date.now()) || false
+  return (tokenValidUntil !== undefined && tokenValidUntil > Date.now()) || false
 }
 
 export const isUserLoggedInToCommerce = (commerceSessionData?: CommerceSessionData | null) => {

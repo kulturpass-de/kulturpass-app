@@ -22,6 +22,7 @@ export const notificationsOpenReservation = createThunk<void, { orderCode: strin
   async (payload, thunkAPI) => {
     // Validate session, as the commerce login token might be expired
     await thunkAPI.dispatch(authValidateSession())
+    // Memoized value updated through authValidateSession, using selector is fine here
     const isUserLoggedIn = getIsUserLoggedIn(thunkAPI.getState())
     if (!isUserLoggedIn) {
       logger.warn('openReservation User is not logged in')
