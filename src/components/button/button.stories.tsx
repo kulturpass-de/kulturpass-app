@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
 import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Button } from './button'
 
 const componentMeta: ComponentMeta<typeof Button> = {
@@ -30,6 +31,30 @@ export const TertiarySmall: ComponentStory<typeof Button> = args => (
 export const TertiaryWidthContent: ComponentStory<typeof Button> = args => (
   <Button {...args} variant="tertiary" widthOption="content" iconSource="arrow-right" />
 )
+export const TertiaryWidthGrowContainerWidth80Percent: ComponentStory<typeof Button> = args => (
+  <View style={styles.width80Percent}>
+    <Button
+      {...args}
+      variant="tertiary"
+      i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
+      iconSource="link-arrow"
+      iconPosition="left"
+      widthOption="grow"
+    />
+  </View>
+)
+export const TertiaryWidthGrowContainerWidth10Percent: ComponentStory<typeof Button> = args => (
+  <View style={styles.width10Percent}>
+    <Button
+      {...args}
+      variant="tertiary"
+      i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
+      iconSource="link-arrow"
+      iconPosition="left"
+      widthOption="grow"
+    />
+  </View>
+)
 
 export const White: ComponentStory<typeof Button> = args => <Button {...args} variant="white" />
 
@@ -44,3 +69,12 @@ export const VariantStyleOverrides: ComponentStory<typeof Button> = args => (
     }}
   />
 )
+
+const styles = StyleSheet.create({
+  width10Percent: {
+    width: '10%',
+  },
+  width80Percent: {
+    width: '10%',
+  },
+})

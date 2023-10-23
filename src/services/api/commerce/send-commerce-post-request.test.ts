@@ -97,7 +97,7 @@ describe('send-commerce-post-request', () => {
     expect(baseQuery).toBeCalledWith(args, api, extraOptions)
   })
 
-  it('should call baseQUery with Authorization header and Content-Type header set to application/json', async () => {
+  it('should call baseQuery with Authorization header and Content-Type header set to application/json', async () => {
     const prepare = () => ({ path: 'my_path' })
     const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
 
@@ -110,7 +110,7 @@ describe('send-commerce-post-request', () => {
     expect(baseQuery).toBeCalledWith(args, api, extraOptions)
   })
 
-  it('should call baseQUery with method POST', async () => {
+  it('should call baseQuery with method POST', async () => {
     const prepare = () => ({ path: 'my_path' })
     const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
 

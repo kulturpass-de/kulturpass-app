@@ -1,3 +1,4 @@
+import toTransparentColor from '../../../transparent.macro'
 import { colors } from '../colors'
 import {
   ButtonColorMappings,
@@ -6,7 +7,6 @@ import {
   ReservationListStatusTextColors,
   TryAgainButtonColors,
 } from '../types'
-import { toTransparentColor } from '../utils'
 
 export const colorMappings: ColorMappings = {
   labelColor: colors.moonDarkest,
@@ -31,6 +31,8 @@ export const colorMappings: ColorMappings = {
   preferencesCategoryShadow: colors.moonDarkest,
   emphasizedPriceColor: colors.basicWhite,
   emphasizedPriceBackground: colors.primaryDarkest,
+  emphasizedPriceVoucherColor: colors.moonDarkest,
+  emphasizedPriceVoucherBackground: colors.secondaryLighter,
   divider: toTransparentColor(colors.basicBlack, 0.1),
   alertBackdrop: toTransparentColor(colors.moonDarker, 0.8),
   tokenBackground: toTransparentColor(colors.basicWhite, 0.8),
@@ -41,6 +43,10 @@ export const colorMappings: ColorMappings = {
   chipBorder: colors.moonDarkest,
   chipText: colors.moonDarkest,
   chipTextActive: colors.basicWhite,
+  badgeBackground: colors.primaryLightest,
+  badgeBackground2: colors.primaryBase,
+  badgeColor2: colors.basicWhite,
+  itemSeparator: colors.sunLighter,
 }
 
 export const preferenceButtonColors: PreferencesButtonColors = {
@@ -51,6 +57,7 @@ export const preferenceButtonColors: PreferencesButtonColors = {
   audioMedia: colors.primaryLightest,
   sheetMusic: colors.secondaryLightest,
   musicInstrument: colors.yellowLightest,
+  culturalWorkshop: colors.primaryDarkestTile,
   unknown: colors.secondaryLightest,
 }
 

@@ -2,6 +2,7 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import { v4 as uuid } from 'uuid'
 import { env } from '../../../../env'
 import { logger } from '../../../../services/logger'
+import { injectionService } from '../../../../services/webviews/injection-service'
 import {
   BridgeFCNonParsableJson,
   BridgeFCSameWebViewId,
@@ -91,7 +92,9 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
       throw new BridgeFCNonParsableJson(undefined, message, type)
     }
 
-    logger.log('WebViewBridgeAdapter', webViewId, 'webviewMessageHandler', object)
+    if (object.type !== 'CONSOLE') {
+      logger.log('WebViewBridgeAdapter', webViewId, 'webviewMessageHandler', object)
+    }
 
     if (isAnyWebViewEvent(object)) {
       this.eventEmitter.emit('handleWebViewEvent', { webViewId, object })
@@ -136,62 +139,12 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
 
   public goToPage(webViewId: WebViewId, uri: string) {
     const webView = this.availableWebViews.get(webViewId)
-    /*
-     * This script gets inserted into the webview each time this function gets called
-     * This means, we can't redefine 'injectedUri' each time new with
-     * 'let' or 'const' but with `var`.
-     *
-     * Better would be, to insert a function once into the webview like
-     *
-     * webView?.injectJavaScript(`
-     *  function goToPage(uri: string) {
-     *    try {
-     *      var injectedUri = new URL(uri);
-     *      if (document.location.origin !== injectedUri.origin
-     *  || document.location.pathname !== injectedUri.pathname) {
-     *        document.location.href = injectedUri;
-     *      }
-     *    } catch {}
-     *  }
-     *
-     *   // Don't remove
-     *   true;
-     * `)
-     *
-     * And then calling the function inside of the webview each time like:
-     *
-     * webView?.injectJavaScript(`goToPage(${JSON.stringify(uri)}); true;`)
-     *
-     */
-
-    webView?.injectJavaScript(`
-      try {
-        var injectedUri = new URL(${JSON.stringify(uri)});
-
-        if (document.location.origin !== injectedUri.origin || document.location.pathname !== injectedUri.pathname) {
-          document.location.href = injectedUri;
-        }
-      } catch {}
-
-      // Don't remove
-      true;
-    `)
+    webView?.injectJavaScript(injectionService.webviewGoToPage(uri))
   }
 
   public scrollToTop(webViewId: WebViewId) {
     const webView = this.availableWebViews.get(webViewId)
-    webView?.injectJavaScript(`
-      try {
-        window.scroll({
-          top: 0, 
-          left: 0, 
-          behavior: 'smooth'
-        });
-      } catch {}
-
-      // Don't remove
-      true;
-    `)
+    webView?.injectJavaScript(injectionService.webviewScrollToTop())
   }
 
   public reload(webViewId: WebViewId) {

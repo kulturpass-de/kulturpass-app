@@ -15,6 +15,7 @@ export type PreferencesCategorySelectorItemProps = {
   category: PreferenceCategory
   onSelect: (category: PreferenceCategory) => void
   style?: StyleProp<ViewStyle>
+  variant: 'column' | 'rows'
 }
 
 const SHIFT_LEFT = -7
@@ -27,6 +28,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
   category,
   onSelect,
   style,
+  variant,
 }) => {
   const { colors, colorScheme } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
@@ -49,7 +51,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
       disabled={!isSelectable}
       accessibilityLabel={category.name}
       accessibilityRole="togglebutton"
-      accessibilityState={{ checked: isSelected }}
+      accessibilityState={{ selected: isSelected }}
       accessible>
       {({ pressed }) => (
         <>
@@ -64,15 +66,31 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
               !isSelectable && styles.disabled,
               style,
             ]}>
-            <View style={[styles.image, { left: SHIFT_LEFT }]}>
-              <SvgImage
-                type={buttonStyle.svgImageType}
-                screenWidthRelativeSize={0.17}
-                testID={addTestIdModifier(testID, 'image')}
-              />
+            <View style={styles.imageContainer}>
+              <View style={[styles.image, { transform: [{ translateX: SHIFT_LEFT }] }]}>
+                <SvgImage
+                  type={buttonStyle.svgImageType}
+                  screenWidthRelativeSize={0.17}
+                  testID={addTestIdModifier(testID, 'image')}
+                />
+              </View>
             </View>
-            <View style={[styles.content, { transform: [{ translateX: SHIFT_LEFT + SHIFT_LEFT_IMAGE_SCALE }] }]}>
-              <Text style={[textStyles.CaptionExtrabold, { color: colors.labelColor }]}>{category.name}</Text>
+            <View style={styles.contentContainer}>
+              <View
+                style={[
+                  styles.content,
+                  variant === 'rows' ? styles.contentAbsolute : styles.contentRelative,
+                  {
+                    left: SHIFT_LEFT + SHIFT_LEFT_IMAGE_SCALE,
+                  },
+                ]}>
+                <Text
+                  numberOfLines={4}
+                  android_hyphenationFrequency="normal"
+                  style={[textStyles.CaptionExtrabold, styles.categoryName, { color: colors.labelColor }]}>
+                  {category.name}
+                </Text>
+              </View>
             </View>
           </View>
         </>
@@ -104,18 +122,34 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 0,
   },
+  imageContainer: {
+    position: 'relative',
+  },
   image: {
     zIndex: 2,
-    left: SHIFT_LEFT,
+  },
+  contentContainer: {
+    flex: 1,
+    position: 'relative',
   },
   content: {
     zIndex: 20,
     minHeight: 64,
-    padding: spacing[4] / 2,
-    paddingRight: spacing[5] + SHIFT_LEFT + SHIFT_LEFT_IMAGE_SCALE,
+    paddingVertical: spacing[4] / 2,
+    paddingRight: spacing[0],
     paddingLeft: spacing[2],
-    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  contentAbsolute: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
+  contentRelative: {},
+  categoryName: {
+    letterSpacing: 0.2,
   },
 })

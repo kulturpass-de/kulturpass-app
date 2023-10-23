@@ -1,13 +1,37 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
+if %r{^0$}i.match ENV['NO_FLIPPER']
+  # https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1527949355
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
+  $RNFirebaseAsStaticFramework = true
+else
+  use_frameworks! :linkage => :static
+end
 
 platform :ios, '14.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'cultureapp' do
-  # React Native Permissions
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  # Set OpenSSL Version, to mitigate an issue with react-native-quick-crypto and OpenSSL 3
+  # https://github.com/margelo/react-native-quick-crypto/issues/189
+  pod "OpenSSL-Universal", "1.1.1100"
+
+  setup_permissions(['LocationAccuracy', 'LocationAlways', 'LocationWhenInUse', 'Notifications'])
 
   config = use_native_modules!
 
@@ -23,8 +47,6 @@ target 'cultureapp' do
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
-    # Upcoming versions of React Native may rely on get_default_flags(), but
-    # we make it explicit here to aid in the React Native upgrade process.
     :hermes_enabled => flags[:hermes_enabled],
     :fabric_enabled => flags[:fabric_enabled],
     # Enables Flipper.
@@ -42,10 +64,10 @@ target 'cultureapp' do
   end
 
   post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
-      # Set `mac_catalyst_enabled` to `true` in order to apply patches
-      # necessary for Mac Catalyst builds
+      config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)

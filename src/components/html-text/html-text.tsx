@@ -1,10 +1,10 @@
 import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
-import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
 import { StyleProp, Text, TextStyle } from 'react-native'
+import { ElementType, parseDocument } from '../../services/html-parser/html-parser'
 import { useTranslation } from '../../services/translation/translation'
 import { textHighlighting } from '../../theme/typography'
-import { openLink } from '../../utils/links/utils'
+import { linkLogger, openLink } from '../../utils/links/utils'
 
 type InlineTextLinkProps = {
   text: string
@@ -13,7 +13,7 @@ type InlineTextLinkProps = {
 }
 const InlineTextLink: React.FC<InlineTextLinkProps> = ({ text, link, textStyle }) => {
   const { t } = useTranslation()
-  const handlePress = useCallback(() => openLink(link), [link])
+  const handlePress = useCallback(() => openLink(link).catch(linkLogger), [link])
 
   return (
     <Text

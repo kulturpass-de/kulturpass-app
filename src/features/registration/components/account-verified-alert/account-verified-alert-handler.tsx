@@ -42,8 +42,8 @@ export const AccountVerifiedAlertHandler = () => {
 
     const updateVerificationStatus = async () => {
       try {
-        const { data } = await getAccountInfoLazyQuery(regToken)
-        dispatch(userSlice.actions.setDisplayVerifiedAlert(data?.isVerified === true))
+        const { isVerified } = await getAccountInfoLazyQuery(regToken)
+        dispatch(userSlice.actions.setDisplayVerifiedAlert(isVerified === true))
       } catch (_error: unknown) {}
     }
 

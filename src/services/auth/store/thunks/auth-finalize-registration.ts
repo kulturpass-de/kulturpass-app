@@ -14,14 +14,10 @@ export const authFinalizeRegistration = createThunk<void, { url: URL }>(
 
     const { url } = payload
 
-    if (!url.pathname.startsWith('/redirect/email-verification')) {
-      throw new UnknownError()
-    }
-
     const regToken = url.searchParams.get('regToken')
 
     if (regToken === null) {
-      throw new UnknownError()
+      throw new UnknownError('RegToken is null')
     }
     thunkAPI.dispatch(userSlice.actions.setRegistrationFinalizationInProgess(true))
     try {

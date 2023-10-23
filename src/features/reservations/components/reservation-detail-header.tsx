@@ -1,11 +1,8 @@
 import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
-import { SvgImage } from '../../../components/svg-image/svg-image'
+import { StyleSheet, View } from 'react-native'
+import { CircleIconButton } from '../../../components/circle-icon-button/circle-icon-button'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTranslation } from '../../../services/translation/translation'
-import { HITSLOP } from '../../../theme/constants'
-import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import BackdropLarge0 from '../assets/backdrop-large-0.svg'
 import BackdropLarge1 from '../assets/backdrop-large-1.svg'
@@ -30,8 +27,6 @@ export type ReservationDetailHeaderProps = {
 }
 
 export const ReservationDetailHeader: React.FC<ReservationDetailHeaderProps> = ({ order, onClose }) => {
-  const { t } = useTranslation()
-  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const orderHasBarcode = order.status === 'READY_FOR_PICKUP' && order.entries?.find(() => true)?.barcodeData
@@ -47,15 +42,12 @@ export const ReservationDetailHeader: React.FC<ReservationDetailHeaderProps> = (
         <Backdrop style={backdropStyle} />
       </View>
       <View style={styles.content}>
-        <Pressable
-          hitSlop={HITSLOP}
-          style={[styles.closeButton, { backgroundColor: colors.secondaryBackground }]}
+        <CircleIconButton
+          iconSource="close"
+          accessibilityLabelI18nKey="reservationDetail_header_deliveryScenario_pickup_closeButton"
           testID={buildTestId('reservationDetail_header_deliveryScenario_pickup_closeButton')}
-          accessibilityRole="button"
-          accessibilityLabel={t('reservationDetail_header_deliveryScenario_pickup_closeButton')}
-          onPress={onClose}>
-          <SvgImage type="close" width={24} />
-        </Pressable>
+          onPress={onClose}
+        />
       </View>
     </View>
   )
@@ -76,13 +68,5 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'flex-end',
     padding: spacing[5],
-  },
-  closeButton: {
-    borderRadius: 24,
-    height: spacing[8],
-    width: spacing[8],
-    opacity: 0.85,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })

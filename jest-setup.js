@@ -18,6 +18,33 @@ jest.mock('@react-native-async-storage/async-storage', () => {
   };
 });
 
+jest.mock('react-native-webview', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  const WebView = React.forwardRef((props, ref) => {
+    React.useImperativeHandle(ref, () => ({
+      goBack: jest.fn(),
+      goForward: jest.fn(),
+      reload: jest.fn(),
+      stopLoading: jest.fn(),
+      injectJavaScript: jest.fn(),
+      requestFocus: jest.fn(),
+      postMessage: jest.fn(),
+      clearFormData: jest.fn(),
+      clearCache: jest.fn(),
+      clearHistory: jest.fn(),
+    }));
+    return <View {...props} />;
+  });
+
+  return {
+    WebView,
+    default: WebView,
+    __esModule: true,
+  };
+});
+
 jest.mock('react-native-encrypted-storage', () => {
   const store = {};
   return {
@@ -38,6 +65,14 @@ jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+jest.mock('./src/theme/hooks/use-theme');
+jest.mock('./src/utils/accessibility/hooks/use-is-screen-reader-active');
+jest.mock('./src/utils/accessibility/hooks/use-is-reduce-motion-active');
+jest.mock('./src/services/webviews/injection-service');
+jest.mock('./src/services/api/redux/hooks/use-offline-order-detail');
+jest.mock('./src/services/api/redux/hooks/use-offline-product-detail');
+jest.mock('./src/services/api/redux/hooks/use-offline-reservations');
 
 jest.mock('./src/env', () => {
   return {

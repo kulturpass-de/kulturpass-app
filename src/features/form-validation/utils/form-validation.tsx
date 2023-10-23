@@ -2,16 +2,20 @@ import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { z } from 'zod'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { CcGetProfileError } from '../../../services/errors/cc-errors'
 import {
   CdcAccountDeletionRequestedError,
   CdcAccountDisabledError,
   CdcInvalidLoginIdError,
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
+  CdcInvalidLoginIdDeleteError,
 } from '../../../services/errors/cdc-errors'
-import { ErrorWithCode, HttpStatusBadRequestError } from '../../../services/errors/errors'
-import { logger } from '../../../services/logger'
+import { ErrorWithCode, HttpStatusBadRequestError, NetworkError, OfflineError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
+import { formatFullDateTime } from '../../../utils/date/date-format'
+import { validatePostalCodeField } from '../../../utils/form-field/validate-postal-code-field'
+import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
 
@@ -51,23 +55,7 @@ export const POSTAL_CODE_SCHEMA = (
         return z.NEVER
       }
 
-      try {
-        const result = await validatePostalCode({ postalCode })
-
-        if (result.isError) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: t('form_error_not_valid_postal_code_verified'),
-          })
-        }
-      } catch (error) {
-        logger.log(error)
-
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: t('form_error_not_valid_postal_code_verified'),
-        })
-      }
+      await validatePostalCodeField(ctx, t, validatePostalCode, postalCode)
     })
 }
 
@@ -124,10 +112,34 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: { key: 'cdc_invalid_loginid_message' },
         }
       }
+      case CdcInvalidLoginIdDeleteError: {
+        return {
+          title: { key: 'cdc_invalid_loginid_title' },
+          message: { key: 'cdc_invalid_loginid_delete_message' },
+        }
+      }
       case CdcLoginIdNotExistingError: {
         return {
           title: { key: 'cdc_loginid_not_existing_title' },
           message: { key: 'cdc_loginid_not_existing_message' },
+        }
+      }
+      case MailToError: {
+        const mailError = error as MailToError
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: { key: 'error_alert_mailto_message', values: { mail: mailError.mail } },
+        }
+      }
+      case NetworkError: {
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: {
+            key: 'error_alert_networkError_message',
+            values: {
+              dateTime: formatFullDateTime(Date.now()),
+            },
+          },
         }
       }
       case HttpStatusBadRequestError: {
@@ -136,6 +148,21 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
             title: { key: 'cc_insufficient_balance_title' },
             message: { key: 'cc_insufficient_balance_message' },
           }
+        }
+        break
+      }
+      case OfflineError: {
+        return {
+          title: { key: 'error_alert_offline_title' },
+          message: { key: 'error_alert_offline_message' },
+        }
+      }
+      case CcGetProfileError: {
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: {
+            key: 'cc_get_profile_bad_request_message',
+          },
         }
       }
     }

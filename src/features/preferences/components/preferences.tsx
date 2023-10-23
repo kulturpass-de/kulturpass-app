@@ -12,11 +12,12 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { commerceApi } from '../../../services/api/commerce-api'
 import { AccountInfoData, PreferenceCategory } from '../../../services/api/types'
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
+import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../form-validation/hooks/use-validation-errors'
 import { UsePreferencesReturnType } from '../hooks/use-preferences'
@@ -78,31 +79,31 @@ export const Preferences: React.FC<PreferencesProps> = ({
 
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
-  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async formValues => {
     setLoading(true)
-    const selectedCategoryIds = sanitizeSelectedCategories({
-      availableCategories,
-      selectedCategoryIds: formValues.categories,
-    })
-    const preferences: AccountInfoData = {
-      preferredPostalCode: formValues.postalCode,
-      preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
-      preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
-      preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
-      preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
-    }
-
     try {
+      const selectedCategoryIds = sanitizeSelectedCategories({
+        availableCategories,
+        selectedCategoryIds: formValues.categories,
+      })
+      const preferences: AccountInfoData = {
+        preferredPostalCode: formValues.postalCode,
+        preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
+        preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
+        preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
+        preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
+      }
+
       await onPressSubmit(preferences)
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        setVisibleError(error)
+        ErrorAlertManager.current?.showError(error)
       } else {
-        setVisibleError(new UnknownError())
+        logger.warn('preferences submit error cannot be interpreted', JSON.stringify(error))
+        ErrorAlertManager.current?.showError(new UnknownError('Preferences Submit'))
       }
     } finally {
       setLoading(false)
@@ -112,10 +113,10 @@ export const Preferences: React.FC<PreferencesProps> = ({
   return (
     <>
       <LoadingIndicator loading={loading} />
-      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent>
         <View style={styles.content}>
           <TranslatedText
+            accessibilityRole="header"
             textStyle="HeadlineH4Bold"
             textStyleOverrides={[styles.yourPreferencesTitle, { color: colors.labelColor }]}
             i18nKey="preferences_your_preferences"
@@ -144,6 +145,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
           />
           <View style={styles.postalCodeContainer}>
             <TranslatedText
+              accessibilityRole="header"
               textStyle="HeadlineH4Bold"
               textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
               i18nKey="preferences_postal_code_title"
@@ -157,6 +159,7 @@ export const Preferences: React.FC<PreferencesProps> = ({
                 testID={buildTestId('preferences_form_postal_code')}
                 control={form.control}
                 maxLength={5}
+                disableAccessibilityForLabel
                 keyboardType="number-pad"
               />
               <TranslatedText

@@ -20,7 +20,11 @@ export const Alert = ({ visible, onChange, children, dismissable, ...modalProps 
   return (
     <AlertContextImpl.Provider value={providerValue}>
       <Modal
-        animationType="fade"
+        // DO NOT USE `animationType`
+        // this leads to a ui issue
+        // in which the refresh control is not hiding anymore when opening a modal in parallel
+        // the workaround is to animate the modal on our own
+        // see `AlertContainer`
         presentationStyle="overFullScreen"
         transparent={true}
         visible={visible}
@@ -28,7 +32,7 @@ export const Alert = ({ visible, onChange, children, dismissable, ...modalProps 
         onShow={onShow}
         onDismiss={onHide}
         {...modalProps}>
-        <AlertContainer>
+        <AlertContainer visible={visible}>
           <AlertBackdrop dismissable={dismissable} />
           {children}
         </AlertContainer>

@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AccountInfo } from '../../api/types'
+import { CdcSessionData } from '../../session/types'
 
 export type UserState = {
-  profile: Pick<NonNullable<AccountInfo['profile']>, 'firstName'> | null
+  profile: Pick<CdcSessionData['user'], 'firstName'> | null
   data: AccountInfo['data'] | null
   userDeniedLocationServices: boolean
   displayVerifiedAlert: boolean

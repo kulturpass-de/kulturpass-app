@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
-import { AvailableTranslations } from '../../../components/translated-text/types'
+import { AvailableTextStyles, AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -12,6 +12,7 @@ import { textStyles } from '../../../theme/typography'
 export type FormFieldContainerProps = PropsWithChildren<{
   testID: TestId
   labelI18nKey?: AvailableTranslations
+  labelTextStyle?: AvailableTextStyles
   error?: FieldError
   containerStyle?: ViewStyle
   isRequired?: boolean
@@ -21,6 +22,7 @@ export type FormFieldContainerProps = PropsWithChildren<{
 export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   testID,
   labelI18nKey,
+  labelTextStyle = 'BodyRegular',
   error,
   containerStyle,
   isRequired,
@@ -43,7 +45,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
           testID={addTestIdModifier(testID, 'label')}
           accessibilityLabel={t(labelI18nKey)}
           accessible={!disableAccessibilityForLabel}
-          style={[textStyles.BodyRegular, { color: colors.labelColor }]}>
+          style={[textStyles[labelTextStyle], { color: colors.labelColor }]}>
           {t(labelI18nKey) + (isRequired ? ' *' : '')}
         </Text>
       )}

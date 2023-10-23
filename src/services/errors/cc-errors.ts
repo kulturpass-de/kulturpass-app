@@ -55,6 +55,13 @@ export class CcOAuthServerError extends CcOAuthError {
   }
 }
 
+export class CcGetProfileError extends CcError {
+  constructor(detailCode?: string, errorCode: string = 'CC_GET_PROFILE_ERROR') {
+    super(errorCode)
+    this.detailCode = detailCode
+  }
+}
+
 export const createCcErrorFromStatusCode = (statusCode: number): CcError => {
   switch (statusCode) {
     case 401:

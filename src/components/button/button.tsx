@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useCallback, useMemo } from 'react'
+import React, { FC, PropsWithChildren, useCallback, useMemo, useState } from 'react'
 import {
   AccessibilityRole,
   Pressable,
@@ -7,6 +7,7 @@ import {
   ViewStyle,
   Text,
   View,
+  LayoutChangeEvent,
 } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -176,6 +177,16 @@ export const Button: FC<ButtonProps> = ({
     [widthOption],
   )
 
+  const [buttonContainerHeight, setButtonContainerHeight] = useState<ViewStyle['height']>(undefined)
+  const [buttonContainerWidth, setButtonContainerWidth] = useState<ViewStyle['width']>(undefined)
+
+  const onLayoutButtonContainer = useCallback((evt: LayoutChangeEvent) => {
+    // use specific height for the shadow, since this seems to be the only reliable
+    // size, especially in combination with an increased font scale
+    setButtonContainerHeight(Math.floor(evt.nativeEvent.layout.height))
+    setButtonContainerWidth(Math.floor(evt.nativeEvent.layout.width))
+  }, [])
+
   return (
     <Pressable
       onPress={onPress}
@@ -189,8 +200,8 @@ export const Button: FC<ButtonProps> = ({
       style={[baseButtonStyle.pressed, buttonPressableStyle]}>
       {state => (
         <ContainerWrapper>
-          <View style={buttonShadowStyle(state)} />
-          <View style={buttonContainerStyle(state)}>
+          <View style={[buttonShadowStyle(state), { height: buttonContainerHeight, width: buttonContainerWidth }]} />
+          <View style={buttonContainerStyle(state)} onLayout={onLayoutButtonContainer}>
             <View style={baseButtonStyle.buttonContainerInner}>
               {iconSource && iconPosition === 'left' && (
                 <SvgImage type={iconSource} width={iconSize} height={iconSize} />

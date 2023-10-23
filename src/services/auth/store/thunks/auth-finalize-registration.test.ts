@@ -107,6 +107,7 @@ describe('authFinalizeRegistration', () => {
         res(ctx.status(400), ctx.json(cdcFinalizeRegistrationResult)),
       ),
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
@@ -133,6 +134,7 @@ describe('authFinalizeRegistration', () => {
       ),
       rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))),
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
