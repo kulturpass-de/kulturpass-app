@@ -1,14 +1,16 @@
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../../../redux/listener-middleware'
 import { commerceApi } from '../../commerce-api'
-import { apiOfflineCacheActions } from '../api-offline-cache-actions'
+import { setCommerceApiEndpointCache } from '../api-offline-cache-slice'
 
 export const onGetProductDetailFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getProductDetail.matchFulfilled>
 > = async (action, listenerApi) => {
+  const productCode = action.meta.arg.originalArgs.productCode
   listenerApi.dispatch(
-    apiOfflineCacheActions.setCommerceApiEndpointCache({
+    setCommerceApiEndpointCache({
       endpointName: 'getProductDetail',
-      cache: { args: action.meta.arg.originalArgs, payload: action.payload },
+      cacheKey: productCode,
+      payload: action.payload,
     }),
   )
 }

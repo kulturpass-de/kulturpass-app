@@ -82,7 +82,7 @@ export const usePinField = ({
               ? `eid_${variant}_form_accessibilityLabel_label_ios`
               : `eid_${variant}_form_accessibilityLabel_label_android`,
           )}
-          accessibilityRole={'none'} //TODO: find a way to replace "none" with a TextInput one
+          accessibilityRole={'none'} // NOTE: leave 'none' here, if removed the screenreaders will read out "button", which we do not want
           accessibilityActions={[{ name: 'activate' }]}
           accessibilityValue={{ text: fieldValue }}
           // eslint-disable-next-line react/jsx-no-bind

@@ -3,11 +3,13 @@ import { combineReducers } from '@reduxjs/toolkit'
 import * as ReduxPersist from 'redux-persist'
 import createMigrate from 'redux-persist/es/createMigrate'
 import { cardSimulationSlice } from '../../features/eid-verification/redux/simulated-card'
+import { inAppReviewSlice } from '../../features/in-app-review/redux/in-app-review'
 import { onboardingSlice } from '../../features/onboarding/redux/onboarding'
 import { releaseNotesSlice } from '../../features/release-notes/redux/release-notes-slice'
 import { apiOfflineCacheSlice } from '../api/redux/api-offline-cache-slice'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
 import { locationSlice } from '../location/redux/location-slice'
+import { persistedNotificationsSlice } from '../notifications/store/notifications-slice'
 import { currentPersistVersion, migrations } from './migrations'
 import { persistedAppCoreSlice } from './slices/persisted-app-core'
 import { PersistState } from './versions/current'
@@ -23,6 +25,8 @@ const persistedReducer = combineReducers({
   [persistedAppCoreSlice.name]: persistedAppCoreSlice.reducer,
   [cardSimulationSlice.name]: cardSimulationSlice.reducer,
   [apiOfflineCacheSlice.name]: apiOfflineCacheSlice.reducer,
+  [inAppReviewSlice.name]: inAppReviewSlice.reducer,
+  [persistedNotificationsSlice.name]: persistedNotificationsSlice.reducer,
 })
 
 const persistConfig: ReduxPersist.PersistConfig<PersistState> = {

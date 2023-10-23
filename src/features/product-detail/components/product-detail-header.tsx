@@ -1,3 +1,4 @@
+import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Animated, LayoutChangeEvent, Share, StyleSheet, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -7,6 +8,7 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
+import { useIsScreenReaderActive } from '../../../utils/accessibility/hooks/use-is-screen-reader-active'
 import { createProductLink } from '../../../utils/links/utils'
 import { UseProductDetailHeaderHeightReturnType } from '../hooks/use-product-detail-header-height'
 import { ProductDetail } from '../types/product-detail'
@@ -20,6 +22,7 @@ type ProductDetailHeaderProps = UseProductDetailHeaderHeightReturnType & {
 
 const SHARE_BUTTON_TRANSITION_DISTANCE = 32
 const SHARE_BUTTON_HIDDEN_POSITION = 20
+const ROUTER_EFFECT_THROTTLE_TIME_MS = 1000
 
 export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   onClose,
@@ -35,17 +38,27 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const testID = buildTestId('productDetail_header')
 
+  const isScreenReaderActive = useIsScreenReaderActive()
   const [shareButtonInHeader, setShareButtonInHeader] = useState(false)
 
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
 
-  const onShare = useCallback(() => {
-    const productUrl = createProductLink(homeUrl, productDetail.code, productDetail.name)
+  const shareHandler = useCallback(() => {
+    const productUrl = createProductLink(homeUrl, productDetail.code)
 
     Share.share({
       message: t('productDetail_header_shareButton_message', { link: productUrl }),
     })
-  }, [homeUrl, productDetail.code, productDetail.name, t])
+  }, [homeUrl, productDetail.code, t])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onShare = useCallback(
+    throttle(shareHandler, ROUTER_EFFECT_THROTTLE_TIME_MS, {
+      leading: true,
+      trailing: false,
+    }),
+    [shareHandler],
+  )
 
   const onLayout = useCallback(
     (evt: LayoutChangeEvent) => {
@@ -85,7 +98,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   }, [scrollY, headerHeightDiff])
 
   const shareButtonStyle: Animated.AnimatedProps<ViewStyle> = useMemo(() => {
-    if (headerHeightDiff === null || headerMinHeight === null) {
+    if (headerHeightDiff === null || headerMinHeight === null || isScreenReaderActive) {
       return {}
     }
 
@@ -100,7 +113,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
     return {
       opacity: shareButtonOpacity,
     }
-  }, [headerHeightDiff, headerMinHeight, scrollY])
+  }, [headerHeightDiff, headerMinHeight, isScreenReaderActive, scrollY])
 
   useEffect(() => {
     if (headerHeightDiff === null) {
@@ -142,7 +155,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
       </View>
       <View testID={addTestIdModifier(testID, 'button_container')} style={styles.headerContainer}>
         <View style={styles.buttonContainer}>
-          {shareButtonInHeader ? shareButton : null}
+          {shareButtonInHeader || isScreenReaderActive ? shareButton : null}
           <CircleIconButton
             accessibilityLabelI18nKey="productDetail_header_closeButton"
             testID={addTestIdModifier(testID, 'closeButton')}
@@ -150,7 +163,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
             onPress={onClose}
           />
         </View>
-        {!shareButtonInHeader ? (
+        {!(shareButtonInHeader || isScreenReaderActive) ? (
           <Animated.View style={[styles.initialShareButton, shareButtonStyle]}>{shareButton}</Animated.View>
         ) : null}
       </View>

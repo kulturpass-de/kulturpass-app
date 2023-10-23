@@ -1,7 +1,7 @@
 import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
-import { ElementType, parseDocument } from 'htmlparser2'
 import React, { useCallback } from 'react'
 import { StyleProp, Text, TextStyle } from 'react-native'
+import { ElementType, parseDocument } from '../../services/html-parser/html-parser'
 import { useTranslation } from '../../services/translation/translation'
 import { textHighlighting } from '../../theme/typography'
 import { linkLogger, openLink } from '../../utils/links/utils'

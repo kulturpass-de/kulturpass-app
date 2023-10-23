@@ -217,6 +217,14 @@ export const textStyles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
   },
+  SuggestionInfo: {
+    fontFamily: typography.primary,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 13,
+    lineHeight: 19.5,
+    letterSpacing: 0.4,
+  },
 })
 
 export const textHighlighting = StyleSheet.create({

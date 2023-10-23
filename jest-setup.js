@@ -68,6 +68,11 @@ jest.mock('react-native-safe-area-context', () => require('react-native-safe-are
 
 jest.mock('./src/theme/hooks/use-theme');
 jest.mock('./src/utils/accessibility/hooks/use-is-screen-reader-active');
+jest.mock('./src/utils/accessibility/hooks/use-is-reduce-motion-active');
+jest.mock('./src/services/webviews/injection-service');
+jest.mock('./src/services/api/redux/hooks/use-offline-order-detail');
+jest.mock('./src/services/api/redux/hooks/use-offline-product-detail');
+jest.mock('./src/services/api/redux/hooks/use-offline-reservations');
 
 jest.mock('./src/env', () => {
   return {

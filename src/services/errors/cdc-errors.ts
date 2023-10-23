@@ -55,6 +55,12 @@ export class CdcInvalidLoginIdError extends CdcError {
   }
 }
 
+export class CdcInvalidLoginIdDeleteError extends CdcError {
+  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_INVALID_LOGINID_DELETE') {
+    super(errorBody, errorCode)
+  }
+}
+
 export class CdcLoginIdNotExistingError extends CdcError {
   constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_LOGINID_NOT_EXISTING') {
     super(errorBody, errorCode)
@@ -183,6 +189,8 @@ export const mapCdcErrorCodeToError = (errorCode: string, errorBody?: CdcApiErro
       return new CdcAccountDisabledError(errorBody)
     case 'CDC_INVALID_LOGINID':
       return new CdcInvalidLoginIdError(errorBody)
+    case 'CDC_INVALID_LOGINID_DELETE':
+      return new CdcInvalidLoginIdDeleteError(errorBody)
     case 'CDC_LOGINID_NOT_EXISTING':
       return new CdcLoginIdNotExistingError(errorBody)
     case 'CDC_STATUS_BAD_REQUEST':

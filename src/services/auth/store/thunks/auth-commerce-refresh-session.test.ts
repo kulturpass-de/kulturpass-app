@@ -25,9 +25,13 @@ describe('authValidateSession', () => {
       rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
     )
 
+    const preloadedState = mockedLoggedInAuthState
+    // Commerce must be logged out for a refresh to happen
+    preloadedState.auth.commerce = null
+
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
-      preloadedState: mockedLoggedInAuthState,
+      preloadedState,
     })
 
     await store.dispatch(authCommerceRefreshSession(mockedLoggedInAuthState.auth.cdc!))

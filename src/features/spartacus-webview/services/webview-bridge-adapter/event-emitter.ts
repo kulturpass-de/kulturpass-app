@@ -8,7 +8,8 @@ export class EventEmitter<EventMap extends {}> {
   protected eventEmitter = new ReactNativeEventEmitter()
 
   public constructor() {
-    //TODO: figure out a way to have less event emitters
+    /* NOTE: this value might need to be increased if the webview's content
+    sends more messages and if we see a warning in the app */
     this.eventEmitter.setMaxListeners(20)
   }
 

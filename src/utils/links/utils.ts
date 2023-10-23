@@ -39,8 +39,8 @@ export const sendMail = async (recipient: string, subject?: string, content?: st
   }
 }
 
-export const createProductLink = (baseUrl: string, productId: string, productTitle: string): string => {
-  return new URL(`/product/${productId}/${productTitle}`, baseUrl).href
+export const createProductLink = (baseUrl: string, productId: string): string => {
+  return new URL(`/product/${productId}/details`, baseUrl).href
 }
 
 export const linkLogger = (error: unknown) => {
