@@ -19,7 +19,7 @@ export const useHandleGestures = (handleClose: () => void, disableBack: boolean 
       const { type, source } = e.data.action
       // Whenever you pull down the modal, this event will fire
       // {"type":"POP","source":"Eid-211PKHM5e-pCW4oXPEdTz"}
-      if (type === 'POP' && source?.startsWith('Eid-')) {
+      if (type === 'POP' && source?.startsWith('Eid')) {
         // On swipe down show close alert
         e.preventDefault()
         handleClose()

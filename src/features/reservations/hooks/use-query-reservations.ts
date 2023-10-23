@@ -1,55 +1,42 @@
-import { useNetInfo } from '@react-native-community/netinfo'
 import { useFocusEffect } from '@react-navigation/native'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { commerceApi } from '../../../services/api/commerce-api'
-import { useOfflineReservations } from '../../../services/api/redux/hooks/use-offline-reservations'
-import { COMPLETED_STATUSES, PENDING_STATUSES } from '../../../services/api/types/commerce/commerce-get-reservations'
-import { ErrorWithCode, OfflineError } from '../../../services/errors/errors'
+import {
+  ORDER_STATUS_CANCELLING,
+  ORDER_STATUS_CANCELLED,
+  ORDER_STATUS_COMPLETED,
+  ORDER_STATUS_CREATED,
+  ORDER_STATUS_READY_FOR_PICKUP,
+  ORDER_STATUS_RECEIVED,
+  ORDER_STATUS_SHIPPING,
+} from '../../../services/api/types/commerce/commerce-get-reservations'
+
+const PENDING_STATUSES = [ORDER_STATUS_CREATED, ORDER_STATUS_SHIPPING, ORDER_STATUS_READY_FOR_PICKUP]
+const COMPLETED_STATUSES = [
+  ORDER_STATUS_RECEIVED,
+  ORDER_STATUS_COMPLETED,
+  ORDER_STATUS_CANCELLING,
+  ORDER_STATUS_CANCELLED,
+]
 
 export const useQueryReservations = () => {
-  const { data, refetch: queryRefetch, error: queryError, ...rest } = commerceApi.useGetReservationsQuery({})
-  const offlineReservations = useOfflineReservations()
-  const netInfo = useNetInfo()
-  const [state, setState] = useState<{ customError?: ErrorWithCode }>({})
+  const { data, refetch, ...rest } = commerceApi.useGetReservationsQuery({})
 
   const pendingReservations = useMemo(
-    () =>
-      (data ?? offlineReservations)?.orders?.filter(order => order.status && PENDING_STATUSES.includes(order.status)) ||
-      [],
-    [data, offlineReservations],
+    () => data?.orders?.filter(order => order.status && PENDING_STATUSES.includes(order.status)) || [],
+    [data],
   )
 
   const completedReservations = useMemo(
-    () =>
-      (data ?? offlineReservations)?.orders?.filter(
-        order => order.status && COMPLETED_STATUSES.includes(order.status),
-      ) || [],
-    [data, offlineReservations],
+    () => data?.orders?.filter(order => order.status && COMPLETED_STATUSES.includes(order.status)) || [],
+    [data],
   )
 
   useFocusEffect(
     useCallback(() => {
-      queryRefetch()
-    }, [queryRefetch]),
+      refetch()
+    }, [refetch]),
   )
 
-  const error = useMemo(() => {
-    if (state.customError && !netInfo.isConnected) {
-      return state.customError
-    }
-
-    if (queryError && netInfo.isConnected) {
-      return queryError
-    }
-  }, [state.customError, netInfo, queryError])
-
-  const refetch = useCallback(async () => {
-    if (!netInfo.isConnected) {
-      return setState(currentState => ({ ...currentState, customError: new OfflineError() }))
-    }
-
-    queryRefetch()
-  }, [netInfo, queryRefetch])
-
-  return { ...rest, pendingReservations, completedReservations, refetch, error }
+  return { ...rest, pendingReservations, completedReservations, refetch }
 }

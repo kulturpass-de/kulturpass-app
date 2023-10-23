@@ -5,12 +5,11 @@ import { Badge } from '../../../components/badge/badge'
 import { Button } from '../../../components/button/button'
 import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 import { applyAccessibilityReplacements } from '../../../components/translated-text/accessibility-replacements'
-import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { commerceApi } from '../../../services/api/commerce-api'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { useGetProfile } from '../../../services/user/use-get-profile'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
@@ -24,14 +23,12 @@ type ProductDetailFooterProps = {
   onReserve: () => void
   selectedOffer?: Offer
   fulfillmentOption: ProductDetail['fulfillmentOption']
-  reservationSuspended: ProductDetail['reservationSuspended']
 }
 
 export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
   onReserve,
   selectedOffer,
   fulfillmentOption,
-  reservationSuspended = false,
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -40,7 +37,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
 
-  const { data } = useGetProfile()
+  const { data } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
 
   const canAfford = useMemo(() => {
     const availableBalance = data?.balance?.availableBalance?.value
@@ -49,20 +46,19 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
     return shouldValidateBalance ? availableBalance >= offerPrice : true
   }, [data, selectedOffer])
 
-  const { showPrice, showReserveButton, showCannotAfford, showNoOffer } = useMemo(() => {
+  const { showPrice, showReserveButton, showCannotAfford } = useMemo(() => {
     const isEntitled = data?.balanceStatus === 'ENTITLED'
     const hasSelectedOffer = selectedOffer !== undefined && selectedOffer.code !== undefined
     return {
-      showNoOffer: !hasSelectedOffer,
-      showPrice: hasSelectedOffer && canAfford && formattedPrice,
-      showReserveButton: !reservationSuspended && hasSelectedOffer && isLoggedIn && canAfford && isEntitled,
-      showCannotAfford: !reservationSuspended && hasSelectedOffer && isLoggedIn && !canAfford && isEntitled,
+      showPrice: canAfford && formattedPrice,
+      showReserveButton: hasSelectedOffer && isLoggedIn && canAfford && isEntitled,
+      showCannotAfford: hasSelectedOffer && isLoggedIn && !canAfford && isEntitled,
     }
-  }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, reservationSuspended, isLoggedIn])
+  }, [data?.balanceStatus, selectedOffer, canAfford, formattedPrice, isLoggedIn])
 
   const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
 
-  if (!(showPrice || showReserveButton || showCannotAfford || showNoOffer)) {
+  if (!(showPrice || showReserveButton || showCannotAfford)) {
     return null
   }
 
@@ -70,21 +66,6 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
     <View
       style={[styles.container, { backgroundColor: colors.secondaryBackground, borderTopColor: colors.footerBorder }]}
       testID={buildTestId('productDetail_footer')}>
-      {showNoOffer ? (
-        <View style={styles.noOfferRow}>
-          <Badge
-            i18nKey="productDetail_footer_noOffer_badge"
-            backgroundColorVariant="blue"
-            testID={buildTestId('productDetail_footer_noOffer_badge')}
-          />
-          <TranslatedText
-            textStyle="CaptionSemibold"
-            i18nKey="productDetail_footer_noOffer_text"
-            testID={buildTestId('productDetail_footer_noOffer_text')}
-            textStyleOverrides={{ color: colors.labelColor }}
-          />
-        </View>
-      ) : null}
       {showPrice && formattedPrice ? (
         <View style={styles.row}>
           {productIsVoucher ? (
@@ -93,7 +74,6 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
             </View>
           ) : null}
           <View
-            testID={buildTestId('productDetail_footer_priceTitleAndPrice')}
             style={styles.priceRow}
             accessible
             accessibilityLabel={
@@ -195,12 +175,5 @@ const styles = StyleSheet.create({
   },
   favoriteButtonNotEntitled: {
     marginLeft: spacing[5],
-  },
-  noOfferRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: spacing[2],
-    paddingBottom: spacing[4],
-    gap: spacing[2],
   },
 })

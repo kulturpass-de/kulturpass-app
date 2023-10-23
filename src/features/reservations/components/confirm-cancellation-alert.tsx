@@ -15,13 +15,8 @@ export type ConfirmCancellationAlertProps = {
   onDismiss: () => void
 }
 
-export const ConfirmCancellationAlert: React.FC<ConfirmCancellationAlertProps> = ({
-  visible,
-  onConfirm,
-  onDismiss,
-}) => {
-  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-  const testID = buildTestId('cancellation_confirmation_alert')
+export const ConfirmCancellationAlert = ({ visible, onConfirm, onDismiss }: ConfirmCancellationAlertProps) => {
+  const { buildTestId } = useTestIdBuilder()
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -37,19 +32,22 @@ export const ConfirmCancellationAlert: React.FC<ConfirmCancellationAlertProps> =
   return (
     <Alert visible={visible} onChange={onChange} dismissable={false}>
       <AlertContent ref={focusRef}>
-        <AlertTitle i18nKey="cancellation_confirmation_alert_title" testID={addTestIdModifier(testID, 'title')} />
+        <AlertTitle
+          i18nKey="cancellation_confirmation_alert_title"
+          testID={buildTestId('canellation_confirmation_alert_title')}
+        />
         <AlertMessage
           i18nKey="cancellation_confirmation_alert_description"
-          testID={addTestIdModifier(testID, 'message')}
+          testID={buildTestId('canellation_confirmation_alert_message')}
         />
         <Button
           i18nKey="cancellation_confirmation_alert_confirm_button"
-          testID={addTestIdModifier(testID, 'confirm_button')}
+          testID={buildTestId('cancellation_confirmation_alert_confirm_button')}
           onPress={onConfirm}
         />
         <AlertButtonDismiss
           i18nKey="cancellation_confirmation_alert_cancel_button"
-          testID={addTestIdModifier(testID, 'cancel_button')}
+          testID={buildTestId('cancellation_confirmation_alert_cancel_button')}
           variant="transparent"
         />
       </AlertContent>

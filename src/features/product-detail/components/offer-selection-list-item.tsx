@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button } from '../../../components/button/button'
-import { GoToSearchButton } from '../../../components/go-to-search-button/go-to-search-button'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
@@ -19,7 +18,7 @@ type OfferSelectionListItemProps = {
 export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ offer, isVoucher, onPress }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
-  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId } = useTestIdBuilder()
 
   const formattedPrice = useFormattedPrice(offer.price)
   const onButtonPress = useCallback(() => {
@@ -39,44 +38,28 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
     }
   }, [offer.shopAddress, offer.shopDistance, t])
 
-  const testID = buildTestId('offerSelection_offer')
-
   return (
     <View style={styles.container}>
-      <View accessible style={styles.contentContainer}>
+      <View accessible>
         <View style={styles.titleContainer}>
-          <GoToSearchButton
-            searchTerm={offer.shopName}
-            accessibilityLabel={offer.shopName}
-            lineHeight={textStyles.SubtitleExtrabold.lineHeight}
-            childrenContainerStyle={styles.goToSearchButtonChildrenContainerStyle}
-            testID={addTestIdModifier(testID, 'shopName_button')}>
-            <Text
-              testID={addTestIdModifier(testID, 'shopName')}
-              style={[textStyles.SubtitleExtrabold, styles.shopName, { color: colors.labelColor }]}>
-              {offer.shopName}
-            </Text>
-          </GoToSearchButton>
+          <Text
+            testID={buildTestId('offerSelection_offer_shopName')}
+            style={[textStyles.SubtitleExtrabold, styles.shopName, { color: colors.labelColor }]}>
+            {offer.shopName}
+          </Text>
           {formattedPrice ? (
             <Text
-              testID={addTestIdModifier(testID, 'price')}
-              style={[textStyles.SubtitleBlack, { color: colors.labelColor }, styles.formattedPrice]}>
+              testID={buildTestId('offerSelection_offer_price')}
+              style={[textStyles.SubtitleBlack, { color: colors.labelColor }]}>
               {formattedPrice}
             </Text>
           ) : null}
         </View>
         <Text
-          testID={addTestIdModifier(testID, 'address')}
+          testID={buildTestId('offerSelection_offer_address')}
           style={[textStyles.BodyRegular, styles.address, { color: colors.labelColor }]}>
           {addressText}
         </Text>
-        {offer.priceAdditionalInfo ? (
-          <Text
-            testID={addTestIdModifier(testID, 'priceAdditionalInfo')}
-            style={[textStyles.BodyBold, { color: colors.labelColor }]}>
-            {offer.priceAdditionalInfo}
-          </Text>
-        ) : null}
       </View>
       <Button
         onPress={onButtonPress}
@@ -98,19 +81,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  formattedPrice: {
-    marginLeft: spacing[4],
-    width: 82,
-    textAlign: 'right',
-  },
   shopName: {
-    lineHeight: 24,
+    flex: 1,
   },
   address: {
     marginTop: spacing[1],
+    marginBottom: 18,
   },
-  contentContainer: {
-    paddingBottom: spacing[5],
-  },
-  goToSearchButtonChildrenContainerStyle: { flex: 1 },
 })

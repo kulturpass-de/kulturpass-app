@@ -1,14 +1,14 @@
 import { Platform } from 'react-native'
-import DeviceInfo from 'react-native-device-info'
 import Geolocation, { GeoPosition, PositionError } from 'react-native-geolocation-service'
 import { check, PERMISSIONS, RESULTS, request, PermissionStatus } from 'react-native-permissions'
 import { logger } from '../../services/logger'
+import { LocationService } from './types'
 
-const createLocationService = () => {
+const createLocationService = (): LocationService => {
   return {
-    async requestLocationPermission(): Promise<PermissionStatus> {
-      if ((await this.checkLocationPermission()) === RESULTS.GRANTED) {
-        return RESULTS.GRANTED
+    async requestLocationPermission() {
+      if (await this.checkLocationPermission()) {
+        return true
       }
       let permissionStatus: PermissionStatus
       if (Platform.OS === 'ios') {
@@ -17,27 +17,28 @@ const createLocationService = () => {
         permissionStatus = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
       } else {
         console.error('Platform not supported')
-        return RESULTS.UNAVAILABLE
+        return false
       }
 
       if (permissionStatus !== RESULTS.GRANTED) {
         logger.log('Location Permission not granted')
+        return false
       }
 
-      return permissionStatus
+      return true
     },
-    async checkLocationPermission(): Promise<PermissionStatus> {
+    async checkLocationPermission() {
       if (Platform.OS === 'ios') {
-        return await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+        return (await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)) === RESULTS.GRANTED
       } else if (Platform.OS === 'android') {
-        return await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+        return (await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)) === RESULTS.GRANTED
       } else {
         console.error('Platform not supported')
-        return RESULTS.UNAVAILABLE
+        return false
       }
     },
     async getCurrentLocation(): Promise<GeoPosition | undefined> {
-      if ((await DeviceInfo.isLocationEnabled()) && (await this.checkLocationPermission()) === RESULTS.GRANTED) {
+      if (await this.checkLocationPermission()) {
         return new Promise((res, rej) => {
           Geolocation.getCurrentPosition(res, rej, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 })
         })

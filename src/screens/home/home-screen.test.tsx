@@ -14,10 +14,6 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-jest.mock('../../features/release-notes/hooks/use-display-release-notes', () => ({
-  useDisplayReleaseNotes: jest.fn(),
-}))
-
 const renderScreen = () => {
   const Stack = createStackNavigator()
   render(

@@ -5,13 +5,12 @@ import { spacing } from '../../theme/spacing'
 
 type InfoBoxProps = PropsWithChildren<{
   containerStyle?: StyleProp<ViewStyle>
-  testID?: string
 }>
 
-export const InfoBox: React.FC<InfoBoxProps> = ({ children, containerStyle, testID }) => {
+export const InfoBox: React.FC<InfoBoxProps> = ({ children, containerStyle }) => {
   const { colors } = useTheme()
   return (
-    <View style={styles.button} testID={testID}>
+    <View style={styles.button}>
       <View
         style={[
           styles.shadow,

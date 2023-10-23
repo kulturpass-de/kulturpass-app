@@ -51,6 +51,25 @@ describe('useHandleWebviewNavigation', () => {
     jest.clearAllMocks()
   })
 
+  it('should setWebViewState with every navigation', async () => {
+    const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
+    const { result } = renderHook(
+      () => {
+        useHandleWebviewNavigation(WebViewId.Home, mockedBridgeAdapterApi)
+        return useStore<RootState>()
+      },
+      { wrapper: Wrapper },
+    )
+
+    await act(() => sendRouterEvent.current?.({ data: { url: '/product/123' } } as WebViewEvents['router.events']))
+
+    expect(result.current.getState().webviews.Home.routerUrl).toBe('/product/123')
+
+    await act(() => sendRouterEvent.current?.({ data: { url: '/some-url' } } as WebViewEvents['router.events']))
+
+    expect(result.current.getState().webviews.Home.routerUrl).toBe('/some-url')
+  })
+
   it('should navigate to search instead of home', async () => {
     const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
     renderHook(() => useHandleWebviewNavigation(WebViewId.Search, mockedBridgeAdapterApi), { wrapper: Wrapper })
@@ -66,69 +85,5 @@ describe('useHandleWebviewNavigation', () => {
     expect(mockedBridgeAdapterApi.routerNavigate.mock.calls).toHaveLength(1)
 
     expect(mockedBridgeAdapterApi.routerNavigate.mock.calls[0][0][0]).toEqual('/search')
-  })
-
-  it('should setWebViewState routesToLogin if routes to login', async () => {
-    const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
-    const { result } = renderHook(
-      () => {
-        useHandleWebviewNavigation(WebViewId.Home, mockedBridgeAdapterApi)
-        return useStore<RootState>()
-      },
-      { wrapper: Wrapper },
-    )
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/login' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Home.routesToLogin).toBe(true)
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/some-url' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Home.routesToLogin).toBe(false)
-  })
-
-  it('should setWebViewState showHeader if routes to home page', async () => {
-    const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
-    const { result } = renderHook(
-      () => {
-        useHandleWebviewNavigation(WebViewId.Home, mockedBridgeAdapterApi)
-        return useStore<RootState>()
-      },
-      { wrapper: Wrapper },
-    )
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/?abc=123' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Home.showHeader).toBe(true)
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/some-url' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Home.showHeader).toBe(false)
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/homepage' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Home.showHeader).toBe(true)
-
-    await act(() =>
-      sendRouterEvent.current?.({ data: { url: '/some-other-url?asds=432' } } as WebViewEvents['router.events']),
-    )
-
-    expect(result.current.getState().webviews.Home.showHeader).toBe(false)
-  })
-
-  it('should not setWebViewState showHeader and routesToLogin if routes to product', async () => {
-    const sendRouterEvent = mockListenerOnce(mockedBridgeAdapterApi.onRouterEvents)
-    const { result } = renderHook(
-      () => {
-        useHandleWebviewNavigation(WebViewId.Search, mockedBridgeAdapterApi)
-        return useStore<RootState>()
-      },
-      { wrapper: Wrapper },
-    )
-
-    await act(() => sendRouterEvent.current?.({ data: { url: '/product' } } as WebViewEvents['router.events']))
-
-    expect(result.current.getState().webviews.Search.showHeader).toBe(null)
-    expect(result.current.getState().webviews.Search.routesToLogin).toBe(null)
   })
 })

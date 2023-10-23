@@ -1,60 +1,60 @@
 import { useFocusEffect } from '@react-navigation/native'
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Platform, StyleSheet, View } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Animated } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Screen } from '../../components/screen/screen'
-import { HomeHeader } from '../../features/home/components/home-header'
-import { HomeHeaderShrinkable } from '../../features/home/components/home-header-shrinkable'
 import { useDisplayReleaseNotes } from '../../features/release-notes/hooks/use-display-release-notes'
 import { SpartacusWebView } from '../../features/spartacus-webview/components/webview'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
+import { commerceApi } from '../../services/api/commerce-api'
+import { getIsUserLoggedIn } from '../../services/auth/store/auth-selectors'
 import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
-import { NetworkError } from '../../services/errors/errors'
+import { ErrorWithCode, NetworkError, UnknownError } from '../../services/errors/errors'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { useGetProfile } from '../../services/user/use-get-profile'
-import { selectHomeHeaderShown } from '../../services/webviews/redux/webviews-selectors'
-import { spacing } from '../../theme/spacing'
-import { useIsScreenReaderActive } from '../../utils/accessibility/hooks/use-is-screen-reader-active'
+import { HomeHeader } from './home-header'
+import { HomeHeaderShrinkable } from './home-header-shrinkable'
+import { HomeHeaderWithWebView } from './home-header-with-webview'
 
 export type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   useDisplayReleaseNotes()
   const { buildTestId } = useTestIdBuilder()
-  const isScreenReaderActive = useIsScreenReaderActive()
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
-  const showHeader = useSelector(selectHomeHeaderShown)
 
-  const { data, refetch, error } = useGetProfile()
+  const isLoggedIn = useSelector(getIsUserLoggedIn)
+
+  const { data, refetch, error } = commerceApi.useGetProfileQuery({}, { skip: !isLoggedIn })
 
   useEffect(() => {
-    // Ignore NetworkError, so that the user is not spammed with error messages while being offline
-    if (error && !(error instanceof NetworkError)) {
-      ErrorAlertManager.current?.showError(error)
+    if (error instanceof ErrorWithCode && !(error instanceof NetworkError)) {
+      ErrorAlertManager.current?.showError(new UnknownError())
     }
   }, [error])
 
-  useFocusEffect(refetch)
+  useFocusEffect(
+    useCallback(() => {
+      if (isLoggedIn) {
+        refetch()
+      }
+    }, [refetch, isLoggedIn]),
+  )
 
   const { l: language } = useTranslation()
 
   const offset = useRef(new Animated.Value(0)).current
   const [contentOffset, setContentOffset] = useState<number>(0)
-
-  const homeHeader = showHeader === true ? <HomeHeader profile={data} /> : null
   return (
     <Screen withBasicBackground testID={buildTestId('home')}>
-      {isScreenReaderActive ? (
-        <View style={styles.screenReaderHeaderContainer}>{homeHeader}</View>
-      ) : (
-        <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
-          {homeHeader}
-        </HomeHeaderShrinkable>
-      )}
+      <HomeHeaderShrinkable offset={offset} onHeight={setContentOffset}>
+        <HomeHeaderWithWebView>
+          <HomeHeader profile={data} />
+        </HomeHeaderWithWebView>
+      </HomeHeaderShrinkable>
       <SpartacusWebView
-        contentOffset={isScreenReaderActive ? 0 : contentOffset}
+        contentOffset={contentOffset}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}
         webViewId={WebViewId.Home}
         url={homeUrl}
@@ -64,11 +64,3 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
     </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  screenReaderHeaderContainer: {
-    paddingHorizontal: spacing[2],
-    marginHorizontal: spacing[2],
-    paddingTop: Platform.OS === 'ios' ? spacing[1] : spacing[4],
-  },
-})

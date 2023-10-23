@@ -10,7 +10,6 @@ import { cdcApi } from '../../../../services/api/cdc-api'
 import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
 import { ErrorAlertManager } from '../../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
-import { logger } from '../../../../services/logger'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { userSlice } from '../../../../services/user/redux/user-slice'
 import { useGetAccountInfoLazyQuery } from '../../../../services/user/use-get-account-info-lazy-query'
@@ -60,8 +59,7 @@ export const AccountVerificationHero: React.FC = () => {
       if (error instanceof ErrorWithCode) {
         ErrorAlertManager.current?.showError(error)
       } else {
-        logger.warn('resend verification error cannot be interpreted', JSON.stringify(error))
-        ErrorAlertManager.current?.showError(new UnknownError('Resend Verification'))
+        ErrorAlertManager.current?.showError(new UnknownError())
       }
     }
   }, [accountsResendVerificationCode, regToken, getAccountInfoLazyQuery, dispatch])

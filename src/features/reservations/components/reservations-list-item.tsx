@@ -3,7 +3,6 @@ import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { Price } from '../../../services/api/types/commerce/api-types'
-import { DELIVERY_SCENARIO_IN_APP_VOUCHER } from '../../../services/api/types/commerce/commerce-get-reservations'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -22,7 +21,6 @@ type ReservationsListItemProps = {
   completed: boolean
   status?: string
   deliveryScenario?: string
-  fulfillmentOption?: string
 }
 
 export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
@@ -34,7 +32,6 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
   completed,
   status,
   deliveryScenario,
-  fulfillmentOption,
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -43,8 +40,7 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
 
   return (
     <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>
-      {/* Do NOT remove this wrapper and it's testID,
-          otherwise the views contained testIDs will not be found on iOS (bug) */}
+      {/* Do NOT remove this wrapper and it's testID, otherwise the views will not be accessable on iOS (bug) */}
       <View testID={buildTestId('reservations_listItem_inner')}>
         <View style={[styles.shadow, { backgroundColor: toTransparentColor(colors.boxShadow, 0.7, completed) }]} />
         <View style={[styles.container, { backgroundColor: colors.secondaryBackground }]}>
@@ -77,18 +73,7 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
               </Text>
             </View>
             <View style={styles.bottomContainer}>
-              {status ? (
-                <ReservationListStatusText
-                  status={status}
-                  deliveryScenario={
-                    fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
-                      ? DELIVERY_SCENARIO_IN_APP_VOUCHER
-                      : deliveryScenario
-                  }
-                />
-              ) : (
-                <View />
-              )}
+              {status ? <ReservationListStatusText status={status} deliveryScenario={deliveryScenario} /> : <View />}
               {formattedPrice ? (
                 <Text
                   testID={buildTestId('reservations_listItem_price')}

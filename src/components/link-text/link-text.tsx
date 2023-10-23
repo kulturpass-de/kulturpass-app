@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, TextStyle, View } from 'react-native'
+import { logger } from '../../services/logger'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
-import { linkLogger, openLink } from '../../utils/links/utils'
+import { openLink } from '../../utils/links/utils'
 import { SvgImage } from '../svg-image/svg-image'
 import { TranslatedText, TranslatedTextProps } from '../translated-text/translated-text'
 import { AvailableTranslations } from '../translated-text/types'
@@ -31,7 +32,7 @@ export const LinkText: React.FC<LinkTextProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
 
-  const handlePress = useCallback(() => openLink(link).catch(linkLogger), [link])
+  const handlePress = useCallback(() => openLink(link).catch(logger.logError), [link])
 
   return (
     <View style={[styles.container, style]}>

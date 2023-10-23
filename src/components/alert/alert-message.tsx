@@ -19,8 +19,6 @@ export const AlertMessage = ({ textStyleOverrides, ...props }: AlertMessageProps
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: spacing[6],
-    textAlign: 'center',
-    flexWrap: 'wrap',
+    marginBottom: spacing[8],
   },
 })

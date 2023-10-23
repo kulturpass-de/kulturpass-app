@@ -44,9 +44,6 @@ export const colorMappings: ColorMappings = {
   chipText: colors.basicWhite,
   chipTextActive: colors.basicWhite,
   badgeBackground: colors.primaryDarkest,
-  badgeBackground2: colors.primaryDarkestTile,
-  badgeColor2: colors.sunLightest,
-  itemSeparator: colors.moonDarker,
 }
 
 export const preferenceButtonColors: PreferencesButtonColors = {
@@ -57,7 +54,6 @@ export const preferenceButtonColors: PreferencesButtonColors = {
   audioMedia: colors.primaryDarkestTile,
   sheetMusic: colors.newSecondaryDarkest,
   musicInstrument: colors.newYellowDarkest,
-  culturalWorkshop: colors.primaryDarkestTile,
   unknown: colors.newSecondaryDarkest,
 }
 

@@ -1,12 +1,14 @@
-import Clipboard from '@react-native-clipboard/clipboard'
 import React, { useCallback } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { CopyToClipboard, CopyToClipboardProps } from '../../../components/copy-to-clipboard/copy-to-clipboard'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { SvgImage } from '../../../components/svg-image/svg-image'
+import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { HITSLOP } from '../../../theme/constants'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
+import { copyAddressToClipboard } from '../utils'
 
 export type AddressProps = {
   name?: string
@@ -17,11 +19,10 @@ export type AddressProps = {
   showDistance?: boolean
   showCopyToClipboard: boolean
   baseTestId: string
+  copyToClipboardAccessibilityI18nKey: AvailableTranslations
 }
 
-export const Address: React.FC<
-  AddressProps & Pick<CopyToClipboardProps, 'accessibilityLabelI18nKey' | 'copiedAccessibilityI18nKey'>
-> = ({
+export const Address: React.FC<AddressProps> = ({
   name,
   city,
   postalCode,
@@ -29,13 +30,13 @@ export const Address: React.FC<
   distance,
   showCopyToClipboard,
   baseTestId,
-  accessibilityLabelI18nKey,
-  copiedAccessibilityI18nKey,
+  copyToClipboardAccessibilityI18nKey,
   showDistance = true,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+
   const copyToClipboard = useCallback(() => {
     copyAddressToClipboard({
       name,
@@ -46,7 +47,7 @@ export const Address: React.FC<
   }, [city, name, postalCode, street])
 
   return (
-    <View style={styles.container} testID={addTestIdModifier(baseTestId, 'address')}>
+    <>
       <View style={styles.addressSection}>
         <View style={styles.address}>
           {name ? (
@@ -70,12 +71,14 @@ export const Address: React.FC<
           </Text>
         </View>
         {showCopyToClipboard ? (
-          <CopyToClipboard
-            baseTestId={baseTestId}
-            accessibilityLabelI18nKey={accessibilityLabelI18nKey}
-            copiedAccessibilityI18nKey={copiedAccessibilityI18nKey}
-            onPress={copyToClipboard}
-          />
+          <Pressable
+            hitSlop={HITSLOP}
+            testID={addTestIdModifier(baseTestId, 'copyToClipboard')}
+            accessibilityRole="button"
+            accessibilityLabel={t(copyToClipboardAccessibilityI18nKey)}
+            onPress={copyToClipboard}>
+            {({ pressed }) => <SvgImage type={pressed ? 'copy-clipboard' : 'clipboard'} width={24} height={24} />}
+          </Pressable>
         ) : null}
       </View>
       {showDistance && distance ? (
@@ -85,16 +88,11 @@ export const Address: React.FC<
           {t('productDetail_offer_distance', { distance })}
         </Text>
       ) : null}
-    </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    flexGrow: 1,
-    flex: 1,
-  },
   distance: {
     paddingTop: spacing[3],
   },
@@ -107,17 +105,3 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
 })
-
-const copyAddressToClipboard = (address: Address) => {
-  // YES, this is formatted correctly
-  Clipboard.setString(`${address.name}
-${address.street}
-${address.postalCode} ${address.city}`)
-}
-
-type Address = {
-  name?: string
-  street?: string
-  city?: string
-  postalCode?: string
-}

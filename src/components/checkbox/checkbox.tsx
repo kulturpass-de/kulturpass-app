@@ -22,7 +22,7 @@ export type CheckboxProps = {
 export const Checkbox: FC<CheckboxProps> = props => {
   const { i18nKey, testID, selected = false, textStyle = DEFAULT_CHECKBOX_FONT, i18nParams, onChange } = props
   const { colors } = useTheme()
-  const { addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { t } = useTranslation()
   const text = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
 
@@ -32,7 +32,7 @@ export const Checkbox: FC<CheckboxProps> = props => {
 
   return (
     <Pressable
-      testID={testID}
+      testID={buildTestId(testID)}
       accessibilityLabel={text}
       accessibilityState={{ checked: selected }}
       accessibilityRole="checkbox"

@@ -17,7 +17,6 @@ const preferenceButtonImages: { [key: PreferenceCategoryId]: SvgImageProps['type
   audioMedia: 'pic-soundcarrier',
   sheetMusic: 'pic-notes',
   musicInstrument: 'pic-instruments',
-  culturalWorkshop: 'pic-workshop',
 }
 
 export const buttonStyleForPreferenceCategory = (

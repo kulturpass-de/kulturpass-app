@@ -39,8 +39,6 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
       const type = item.toLowerCase() as Lowercase<AccessRight>
       const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${type}` as const
       const accessRightText = t(accessRightI18NKey, '')
-      const accessibilityLabel =
-        item === 'GivenNames' ? t('eid_aboutServiceProvider_accessRights_givennames_label') : undefined
 
       if (!accessRightText) {
         return null
@@ -50,7 +48,6 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
         <Text
           key={item}
           accessible
-          accessibilityLabel={accessibilityLabel}
           testID={buildTestId(accessRightI18NKey)}
           style={[textStyles.BodyRegular, { color: colors.labelColor }]}>{`\u2022 ${accessRightText}`}</Text>
       )

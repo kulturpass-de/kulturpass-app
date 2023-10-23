@@ -69,7 +69,6 @@ export const EidNFCDisabledScreen: React.FC<EidNFCDisabledScreenProps> = ({ onCl
               modifier="small"
               onPress={showNFCSettings}
               i18nKey="eid_nfcDisabled_activateNfc_openNfcSettings_button"
-              testID={addTestIdModifier(screenTestId, 'activateNfc_openNfcSettings_button')}
             />
           </InfoBox>
           <TranslatedText

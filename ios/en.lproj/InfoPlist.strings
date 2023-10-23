@@ -1,4 +1,3 @@
 NSLocationWhenInUseUsageDescription = "To suggest more suitable cultural offers to you, we want to use your location while using the app.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "To suggest more suitable cultural offers to you, we want to use your location while using the app.";
 NFCReaderUsageDescription = "KulturPass DE needs NFC to access the ID card.";
-NSUserNotificationsUsageDescription = "We are sending push notifications to inform you about changes of the status of reservations, cancellations, and refunds for your budget etc., and to  remind you to pick up products or to redeem your codes.";

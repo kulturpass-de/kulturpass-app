@@ -10,4 +10,4 @@
  * and create the migration in the 'migrations.ts' file
  */
 
-export * from './version-2'
+export * from './version-0'

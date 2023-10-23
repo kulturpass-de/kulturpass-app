@@ -9,7 +9,6 @@ type PersistState1 = PersistState0 & {
 }
 
 test('Should migrate from -1 to 1', async () => {
-  jest.spyOn(global.console, 'log').mockImplementation(() => {})
   /**
    * This is the state how it will look when the first migration will run
    */

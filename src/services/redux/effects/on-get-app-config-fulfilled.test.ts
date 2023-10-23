@@ -2,7 +2,7 @@ import { Action } from '@reduxjs/toolkit'
 import * as enforceAppConfigMinVersionModule from '../../../features/force-update/utils/enforce-app-config-min-version'
 import { ErrorWithCode } from '../../errors/errors'
 import { configureMockStore } from '../../testing/configure-mock-store'
-import { persistedAppCoreSlice } from '../slices/persisted-app-core'
+import { appCoreSlice } from '../slices/app-core'
 import { AppConfig } from '../versions/current'
 import { onGetAppConfigFulfilled, onGetAppConfigFulfilledEffect } from './on-get-app-config-fulfilled'
 
@@ -64,7 +64,7 @@ describe('on-get-app-config-fulfilled', () => {
     it('should dispatch setAppConfig thunk', async () => {
       await onGetAppConfigFulfilledEffect(expectedTriggerAction as any, store as any)
 
-      store.expectActions([{ type: persistedAppCoreSlice.actions.setAppConfig.type, payload: mockedAppConfig }])
+      store.expectActions([{ type: appCoreSlice.actions.setAppConfig.type, payload: mockedAppConfig }])
     })
 
     it('should should throw ErrorWithCode if appConfigString is not JSON-parsable', async () => {

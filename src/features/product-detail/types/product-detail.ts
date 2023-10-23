@@ -1,21 +1,14 @@
 import { Category, Image, Offer, Price } from '../../../services/api/types/commerce/api-types'
 
-export type SelectedFilterType = 'location' | 'city' | 'postalCode'
-
-export const isCityOrPostCode = (filterType?: SelectedFilterType): boolean =>
-  filterType === 'city' || filterType === 'postalCode'
-
 export enum ProductTypes {
   Audio = 'audioProductWsDTO',
   Book = 'bookProductWsDTO',
-  SeasonTicket = 'seasonTicketProductWsDTO',
   Cinema = 'cinemaProductWsDTO',
   Exhibit = 'exhibitProductWsDTO',
   MusicInstrument = 'musicInstrumentProductWsDTO',
   SheetMusic = 'sheetMusicProductWsDTO',
   StagedEvent = 'stagedEventProductWsDTO',
   Voucher = 'voucherProductWsDTO',
-  CulturalWorkshop = 'culturalWorkshopProductWsDTO',
 }
 
 export type ProductDetailBase<ProductType extends ProductTypes> = {
@@ -59,17 +52,13 @@ export type ProductDetailBase<ProductType extends ProductTypes> = {
    * If it is required to pickup the voucher from the vendor or it is available digitally through the app
    */
   fulfillmentOption?: 'PICKUP_CODE' | 'REDEMPTION_CODE' | 'VENDOR_CODE'
-  /**
-   * Reservation for this product is suspended
-   */
-  reservationSuspended?: boolean
 }
 
 export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
   /**
    * The ean of the audio product
    */
-  ean?: string
+  ean: string
   /**
    * The artist of the audio product
    */
@@ -77,14 +66,14 @@ export type AudioProductDetail = ProductDetailBase<ProductTypes.Audio> & {
   /**
    * One of: Dvd, Vinyl, Other  - optional
    */
-  audioFormat?: 'DVD' | 'VINYL' | 'OTHER' | 'CD'
+  audioFormat?: 'DVD' | 'VINYL' | 'OTHER'
 }
 
 export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
   /**
    * Isbn13 identifier
    */
-  isbn?: string
+  isbn: string
   /**
    * Isbn10 identifier - optional
    */
@@ -92,11 +81,11 @@ export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
   /**
    * The author of the book
    */
-  author?: string
+  author: string
   /**
    * The publisher of the book
    */
-  publisher?: string
+  publisher: string
   /**
    * The language used in the book - optional
    */
@@ -107,8 +96,6 @@ export type BookProductDetail = ProductDetailBase<ProductTypes.Book> & {
   bookFormat?: 'PAPERBACK' | 'HARDBACK'
 }
 
-export type SeasonTicketDetail = ProductDetailBase<ProductTypes.SeasonTicket>
-
 export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
   /**
    * One of: NoRestriction, Over6, Over12, Over16, Over18
@@ -118,17 +105,25 @@ export type CinemaProductDetail = ProductDetailBase<ProductTypes.Cinema> & {
    * the length of the event in minutes
    */
   durationInMins: number
-  /**
-   * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
-   */
-  eventStartDate?: string
 }
 
-export type VenueDetails = {
+export type ExhibitProductDetail = ProductDetailBase<ProductTypes.Exhibit> & {
   /**
    * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
    */
   eventDateTime?: string
+  /**
+   * the length of the event in minutes
+   */
+  durationInMins?: number
+  /**
+   * The starting date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
+   */
+  exhibitStartDate?: string
+  /**
+   * The ending date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
+   */
+  exhibitEndDate?: string
   /**
    * The location/ address of the event
    */
@@ -144,39 +139,11 @@ export type VenueDetails = {
   venueDistance?: string
 }
 
-export type ExhibitProductDetail = VenueDetails &
-  ProductDetailBase<ProductTypes.Exhibit> & {
-    /**
-     * the length of the event in minutes
-     */
-    durationInMins?: number
-    /**
-     * The starting date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
-     */
-    exhibitStartDate?: string
-    /**
-     * The ending date of the event in format: : YYYY-MM-DDThh:mm:ss.sssZ
-     */
-    exhibitEndDate?: string
-  }
-
-export type CulturalWorkshopDetail = VenueDetails &
-  ProductDetailBase<ProductTypes.CulturalWorkshop> & {
-    /**
-     * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
-     */
-    eventStartDate?: string
-    /**
-     * The end date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
-     */
-    eventEndDate?: string
-  }
-
 export type MusicInstrumentProductDetail = ProductDetailBase<ProductTypes.MusicInstrument> & {
   /**
    * The ean of the music instrument product
    */
-  ean?: string
+  ean: string
   /**
    * The manufacturer of the instrument - optional
    */
@@ -206,15 +173,7 @@ export type SheetMusicProductDetail = ProductDetailBase<ProductTypes.SheetMusic>
   publisher?: string
 }
 
-export type StagedEventProductDetail = VenueDetails &
-  ProductDetailBase<ProductTypes.StagedEvent> & {
-    /**
-     * the length of the event in minutes
-     */
-    durationInMins?: number
-  }
-
-export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
+export type StagedEventProductDetail = ProductDetailBase<ProductTypes.StagedEvent> & {
   /**
    * The starting date/time of the event in the format: YYYY-MM-DDThh:mm:ss.sssZ
    */
@@ -223,6 +182,22 @@ export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
    * the length of the event in minutes
    */
   durationInMins?: number
+  /**
+   * The location / address of the event
+   */
+  venue?: {
+    name?: string
+    street: string
+    city: string
+    postalCode: string
+  }
+  /**
+   * The location distance
+   */
+  venueDistance?: string
+}
+
+export type VoucherProductDetail = ProductDetailBase<ProductTypes.Voucher> & {
   voucherPickupPoint?: {
     name?: string
     street?: string
@@ -248,5 +223,3 @@ export type ProductDetail =
   | SheetMusicProductDetail
   | StagedEventProductDetail
   | VoucherProductDetail
-  | CulturalWorkshopDetail
-  | SeasonTicketDetail

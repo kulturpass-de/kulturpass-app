@@ -27,13 +27,13 @@ describe('on-webview-router-url-change', () => {
   })
 
   describe('onWebViewRouterUrlChangeEffect', () => {
-    it('should dispatch webViewBridgeAdapter.reload if webViewState.routesToLogin is true', async () => {
+    it('should dispatch webViewBridgeAdapter.reload if newWebViewState.routerUrl is /login', async () => {
       const store = configureMockStore()
 
       const reload = jest.spyOn(webViewBridgeAdapter, 'reload')
 
       await onWebViewRouterUrlChangeEffect(
-        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Home, state: { routesToLogin: true } }),
+        webviewsSlice.actions.setWebViewState({ webViewId: WebViewId.Home, state: { routerUrl: '/login' } }),
         store as any,
       )
 
@@ -41,9 +41,9 @@ describe('on-webview-router-url-change', () => {
       expect(reload).toHaveBeenCalledWith(WebViewId.Home)
     })
 
-    it('should dispatch webViewBridgeAdapter.reload if current webViewState.routesToLogin is true and newWebViewState.isLoggedIn is true', async () => {
+    it('should dispatch webViewBridgeAdapter.reload if current webViewState.routerUrl is /login and newWebViewState.isLoggedIn is true', async () => {
       const store = configureMockStore({
-        preloadedState: { webviews: { [WebViewId.Search]: { routesToLogin: true } } } as RootState,
+        preloadedState: { webviews: { [WebViewId.Search]: { routerUrl: '/login' } } } as RootState,
       })
 
       const reload = jest.spyOn(webViewBridgeAdapter, 'reload')

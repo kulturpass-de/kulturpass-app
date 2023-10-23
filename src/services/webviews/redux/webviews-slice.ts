@@ -6,11 +6,9 @@ export type GeolocationState = { latitude: number; longitude: number }
 export type WebViewState = {
   isLoggedIn: boolean | null
   isReady: boolean | null
+  routerUrl: string | null
   lastAccessToken: string | null
   previousSubmittedUserLocationState: GeolocationState | undefined | null
-  showHeader: boolean | null
-  routesToLogin: boolean | null
-  filtersOrSortOpen: boolean | null
 }
 
 export type WebviewsState = {
@@ -21,20 +19,16 @@ const initialState: WebviewsState = {
   [WebViewId.Home]: {
     isLoggedIn: null,
     isReady: null,
+    routerUrl: null,
     lastAccessToken: null,
     previousSubmittedUserLocationState: null,
-    showHeader: true,
-    routesToLogin: null,
-    filtersOrSortOpen: null,
   },
   [WebViewId.Search]: {
     isLoggedIn: null,
     isReady: null,
+    routerUrl: null,
     lastAccessToken: null,
     previousSubmittedUserLocationState: null,
-    showHeader: null,
-    routesToLogin: null,
-    filtersOrSortOpen: null,
   },
 }
 
@@ -57,20 +51,14 @@ export const webviewsSlice = createSlice({
       if (typeof payload.state.isReady !== 'undefined') {
         state[payload.webViewId].isReady = payload.state.isReady
       }
-      if (typeof payload.state.showHeader !== 'undefined') {
-        state[payload.webViewId].showHeader = payload.state.showHeader
-      }
-      if (typeof payload.state.routesToLogin !== 'undefined') {
-        state[payload.webViewId].routesToLogin = payload.state.routesToLogin
+      if (typeof payload.state.routerUrl !== 'undefined') {
+        state[payload.webViewId].routerUrl = payload.state.routerUrl
       }
       if (typeof payload.state.lastAccessToken !== 'undefined') {
         state[payload.webViewId].lastAccessToken = payload.state.lastAccessToken
       }
       if (typeof payload.state.previousSubmittedUserLocationState !== 'undefined') {
         state[payload.webViewId].previousSubmittedUserLocationState = payload.state.previousSubmittedUserLocationState
-      }
-      if (typeof payload.state.filtersOrSortOpen !== 'undefined') {
-        state[payload.webViewId].filtersOrSortOpen = payload.state.filtersOrSortOpen
       }
     },
     setPreviousSubmittedUserLocationWebviewState: (
