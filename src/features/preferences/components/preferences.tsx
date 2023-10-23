@@ -1,6 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
+import { z } from 'zod'
 import { Button } from '../../../components/button/button'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { TextFormField } from '../../../components/form-fields/text-form-field'
@@ -12,15 +15,15 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { commerceApi } from '../../../services/api/commerce-api'
 import { AccountInfoData, PreferenceCategory } from '../../../services/api/types'
 import { CdcStatusValidationError } from '../../../services/errors/cdc-errors'
-import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
+import { ErrorAlert } from '../../form-validation/components/error-alert'
 import { useFocusErrors } from '../../form-validation/hooks/use-focus-errors'
 import { useValidationErrors } from '../../form-validation/hooks/use-validation-errors'
-import { UsePreferencesReturnType } from '../hooks/use-preferences'
+import { POSTAL_CODE_SCHEMA } from '../../form-validation/utils/form-validation'
 import { sanitizeSelectedCategories } from '../utils/sanitize-selected-categories'
 import { PreferencesCategorySelector } from './preferences-category-selector'
 
@@ -37,7 +40,6 @@ export type PreferencesProps = {
   onPressSubmit: (preferences: AccountInfoData) => Promise<void>
   submitButtonI18nKey: AvailableTranslations
   getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
-  form: UsePreferencesReturnType
 }
 
 export const Preferences: React.FC<PreferencesProps> = ({
@@ -47,12 +49,27 @@ export const Preferences: React.FC<PreferencesProps> = ({
   userPreferences,
   onPressSubmit,
   submitButtonI18nKey,
-  form,
+  getIsValidPostalCode,
 }) => {
-  const { colors } = useTheme()
+  const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
   const [loading, setLoading] = useState(false)
+
+  const form = useForm<PreferencesFormData>({
+    shouldFocusError: false,
+    mode: 'onChange',
+    resolver: zodResolver(
+      z.object({
+        postalCode: z.literal('').or(POSTAL_CODE_SCHEMA(t, getIsValidPostalCode, true)),
+        categories: z.string().array().min(0),
+      }),
+    ),
+    defaultValues: {
+      postalCode: '',
+      categories: [],
+    },
+  })
 
   useEffect(() => {
     if (!userPreferences) {
@@ -79,31 +96,31 @@ export const Preferences: React.FC<PreferencesProps> = ({
 
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
 
   const onSubmit = form.handleSubmit(async formValues => {
     setLoading(true)
-    try {
-      const selectedCategoryIds = sanitizeSelectedCategories({
-        availableCategories,
-        selectedCategoryIds: formValues.categories,
-      })
-      const preferences: AccountInfoData = {
-        preferredPostalCode: formValues.postalCode,
-        preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
-        preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
-        preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
-        preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
-      }
+    const selectedCategoryIds = sanitizeSelectedCategories({
+      availableCategories,
+      selectedCategoryIds: formValues.categories,
+    })
+    const preferences: AccountInfoData = {
+      preferredPostalCode: formValues.postalCode,
+      preferredProductCategoryId1: selectedCategoryIds[0] ?? null,
+      preferredProductCategoryId2: selectedCategoryIds[1] ?? null,
+      preferredProductCategoryId3: selectedCategoryIds[2] ?? null,
+      preferredProductCategoryId4: selectedCategoryIds[3] ?? null,
+    }
 
+    try {
       await onPressSubmit(preferences)
     } catch (error: unknown) {
       if (error instanceof CdcStatusValidationError) {
         setErrors(error)
       } else if (error instanceof ErrorWithCode) {
-        ErrorAlertManager.current?.showError(error)
+        setVisibleError(error)
       } else {
-        logger.warn('preferences submit error cannot be interpreted', JSON.stringify(error))
-        ErrorAlertManager.current?.showError(new UnknownError('Preferences Submit'))
+        setVisibleError(new UnknownError())
       }
     } finally {
       setLoading(false)
@@ -113,25 +130,25 @@ export const Preferences: React.FC<PreferencesProps> = ({
   return (
     <>
       <LoadingIndicator loading={loading} />
+      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <ScreenContent>
         <View style={styles.content}>
           <TranslatedText
-            accessibilityRole="header"
             textStyle="HeadlineH4Bold"
-            textStyleOverrides={[styles.yourPreferencesTitle, { color: colors.labelColor }]}
+            textStyleOverrides={styles.yourPreferencesTitle}
             i18nKey="preferences_your_preferences"
             testID={buildTestId('preferences_your_preferences_title')}
           />
           <TranslatedText
             textStyle="BodyRegular"
-            textStyleOverrides={[styles.yourPreferencesDescription, { color: colors.labelColor }]}
+            textStyleOverrides={styles.yourPreferencesDescription}
             i18nKey="preferences_your_preferences_description"
             testID={buildTestId('preferences_your_preferences_description')}
           />
           {withCategoriesLabel ? (
             <TranslatedText
               textStyle="CaptionSemibold"
-              textStyleOverrides={[styles.yourPreferencesSelectionTitle, { color: colors.labelColor }]}
+              textStyleOverrides={styles.yourPreferencesSelectionTitle}
               i18nKey="preferences_your_preferences_selection_title"
               testID={buildTestId('preferences_your_preferences_selection_title')}
             />
@@ -145,11 +162,10 @@ export const Preferences: React.FC<PreferencesProps> = ({
           />
           <View style={styles.postalCodeContainer}>
             <TranslatedText
-              accessibilityRole="header"
               textStyle="HeadlineH4Bold"
-              textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
+              textStyleOverrides={styles.postalCodeTitle}
               i18nKey="preferences_postal_code_title"
-              testID={buildTestId('preferences_postal_code_title')}
+              testID={buildTestId('preferences_your_preferences_title')}
             />
             <View>
               <FormFieldWithControl
@@ -159,12 +175,11 @@ export const Preferences: React.FC<PreferencesProps> = ({
                 testID={buildTestId('preferences_form_postal_code')}
                 control={form.control}
                 maxLength={5}
-                disableAccessibilityForLabel
                 keyboardType="number-pad"
               />
               <TranslatedText
                 textStyle="BodyRegular"
-                textStyleOverrides={[styles.description, { color: colors.labelColor }]}
+                textStyleOverrides={styles.description}
                 i18nKey="preferences_location"
                 testID={buildTestId('preferences_location_text')}
               />
@@ -191,11 +206,14 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: spacing[6],
+    color: colors.moonDarkest,
   },
   yourPreferencesTitle: {
     marginBottom: spacing[2],
+    color: colors.moonDarkest,
   },
   yourPreferencesDescription: {
+    color: colors.moonDarkest,
     marginBottom: spacing[5],
   },
   yourPreferencesSelectionTitle: {
@@ -203,11 +221,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: spacing[6] / 2,
     lineHeight: spacing[5],
+    color: colors.moonDarkest,
   },
   postalCodeContainer: {
     marginTop: spacing[5],
   },
   postalCodeTitle: {
     marginBottom: spacing[5],
+    color: colors.moonDarkest,
   },
 })

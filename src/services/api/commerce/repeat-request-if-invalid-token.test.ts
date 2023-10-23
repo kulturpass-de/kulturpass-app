@@ -21,18 +21,18 @@ describe('repeatRequestIfInvalidToken', () => {
     sessionValidity: Date.now() + 10000,
   }
 
+  const store = configureMockStore({
+    preloadedState: {
+      auth: {
+        cdc: authCdcState,
+      },
+    } as RootState,
+  })
+
   it('Should successfully obtain a new OAuth Token and repeat the request successfully', async () => {
     let obtainedNewToken = false
     let success = false
     let gotNewProfile = false
-
-    const store = configureMockStore({
-      preloadedState: {
-        auth: {
-          cdc: authCdcState,
-        },
-      } as RootState,
-    })
 
     server.use(
       rest.get('*/current/profile', (_req, res, ctx) => {
@@ -78,14 +78,6 @@ describe('repeatRequestIfInvalidToken', () => {
   it('Should logout if obtaining a new token fails', async () => {
     let requestProfileCounter = 0
     let requestLogout = false
-
-    const store = configureMockStore({
-      preloadedState: {
-        auth: {
-          cdc: authCdcState,
-        },
-      } as RootState,
-    })
 
     server.use(
       rest.get('*/current/profile', (_req, res, ctx) => {

@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { GeoPosition } from 'react-native-geolocation-service'
-import { LocationState } from '../../redux/versions/current'
+
+export type LocationState = {
+  currentUserLocation: GeoPosition | undefined
+}
 
 export const locationInitialState: LocationState = {
   currentUserLocation: undefined,

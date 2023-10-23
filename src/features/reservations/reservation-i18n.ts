@@ -32,9 +32,10 @@ const RESERVATION_DETAILS_I18N_KEYS_MAP: I18N_KEYS_MAP_TYPE = {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_headline',
     copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_copytext',
   },
+  // TODO: cleanup orderState - received and completed seem to be same usecase
   RECEIVED: {
-    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_headline',
-    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_copytext',
+    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_headline',
+    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_copytext',
   },
   COMPLETED: {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_headline',
@@ -59,22 +60,16 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
     return { headline: undefined, copytext: undefined }
   }
 
-  const { fulfillmentOption } = productDetail
-
-  if (orderStatus === 'READY_FOR_PICKUP') {
-    if (fulfillmentOption === 'REDEMPTION_CODE') {
+  if (productDetail.productType === ProductTypes.Voucher && orderStatus === 'READY_FOR_PICKUP') {
+    if (productDetail.isVoucherPickupRequired) {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
-    } else if (fulfillmentOption === 'PICKUP_CODE') {
-      return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP
-    } else if (fulfillmentOption === 'VENDOR_CODE') {
+    } else {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_NOT_REQUIRED_VOUCHER
     }
   }
 
   if (
-    (productDetail.productType === ProductTypes.Voucher ||
-      fulfillmentOption === 'REDEMPTION_CODE' ||
-      fulfillmentOption === 'VENDOR_CODE') &&
+    productDetail.productType === ProductTypes.Voucher &&
     (orderStatus === 'RECEIVED' || orderStatus === 'COMPLETED')
   ) {
     return RESERVATION_DETAILS_I18N_KEYS_MAP.RECEIVED_VOUCHER

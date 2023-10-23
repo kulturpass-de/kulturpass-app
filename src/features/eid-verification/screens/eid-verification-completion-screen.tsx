@@ -8,7 +8,7 @@ import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export type EidVerificationCompletionScreenProps = {
@@ -17,7 +17,6 @@ export type EidVerificationCompletionScreenProps = {
 
 export const EidVerificationCompletionScreen: React.FC<EidVerificationCompletionScreenProps> = ({ onNext }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_verificationCompletion')}>
@@ -34,13 +33,13 @@ export const EidVerificationCompletionScreen: React.FC<EidVerificationCompletion
         />
         <View style={styles.contentTitleContainer}>
           <TranslatedText
-            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentTitle}
             testID={buildTestId('eid_verificationCompletion_content_title')}
             i18nKey="eid_verificationCompletion_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentText}
             testID={buildTestId('eid_verificationCompletion_content_text')}
             i18nKey="eid_verificationCompletion_content_text"
             textStyle="BodyRegular"
@@ -78,10 +77,12 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     flexWrap: 'wrap',
     textAlign: 'center',
+    color: colors.basicBlack,
   },
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
     textAlign: 'center',
+    color: colors.moonDarkest,
   },
 })

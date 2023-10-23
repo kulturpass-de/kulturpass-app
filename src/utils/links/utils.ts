@@ -1,48 +1,20 @@
 import { Linking } from 'react-native'
 import strictUriEncode from 'strict-uri-encode'
-import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
-import { logger } from '../../services/logger'
-import { LinkError, MailToError } from './errors'
 
 export const openLink = async (link: string) => {
   try {
     if (await Linking.canOpenURL(link)) {
       await Linking.openURL(link)
     } else {
-      throw new LinkError('Link not supported by system', link)
+      console.error('Link not supported by system', link)
     }
-  } catch (error: unknown) {
-    throw new LinkError('Failed opening the link', link)
+  } catch (e) {
+    console.error('Failed opening the link', link)
   }
 }
 
 export const sendMail = async (recipient: string, subject?: string, content?: string) => {
-  let link = `mailto:${recipient}`
+  const link = `mailto:${recipient}?subject=${strictUriEncode(subject ?? '')}&body=${strictUriEncode(content ?? '')}`
 
-  if (subject) {
-    link += `?subject=${strictUriEncode(subject)}`
-  }
-
-  if (content) {
-    if (subject) {
-      link += '&'
-    } else {
-      link += '?'
-    }
-    link += `body=${strictUriEncode(content)}`
-  }
-
-  try {
-    await openLink(link)
-  } catch (error: unknown) {
-    ErrorAlertManager.current?.showError(new MailToError(recipient))
-  }
-}
-
-export const createProductLink = (baseUrl: string, productId: string): string => {
-  return new URL(`/product/${productId}/details`, baseUrl).href
-}
-
-export const linkLogger = (error: unknown) => {
-  logger.logError('Open link failed', error)
+  await openLink(link.toString())
 }

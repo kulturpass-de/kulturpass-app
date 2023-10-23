@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { addIsLoadingAsyncThunkCases } from '../../redux/utils/add-is-loading-async-thunk-cases'
 import { CdcSessionData, CommerceSessionData } from '../../session/types'
-import { authFinalizeRegistration } from './thunks/auth-finalize-registration'
 import { authLogin } from './thunks/auth-login'
 import { authLogout } from './thunks/auth-logout'
 
@@ -37,13 +36,11 @@ export const authSlice = createSlice({
   },
   extraReducers: builder => {
     /**
-     * The following lines modify `AuthState.isLoading` depending on the status of
-     * `authLogin`, `authLogout` and `authFinalizeRegistration` thunks,
+     * The following lines modify `AuthState.isLoading` depending on the status of `authLogin` and `authLogout` thunks,
      * setting `isLoading = true` when any of the two thunks emit "pending state", and setting `isLoading = false` when
      * any of the two thunks emit "fulfilled / rejected state".
      */
     addIsLoadingAsyncThunkCases(builder, authLogin, 'isLoading')
     addIsLoadingAsyncThunkCases(builder, authLogout, 'isLoading')
-    addIsLoadingAsyncThunkCases(builder, authFinalizeRegistration, 'isLoading')
   },
 })

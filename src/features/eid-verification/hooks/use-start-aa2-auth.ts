@@ -1,12 +1,20 @@
-import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
+import { SerializedError } from '@reduxjs/toolkit'
+import {
+  AccessRights,
+  Certificate,
+  WorkflowMessages,
+  AA2CommandService,
+  AA2WorkflowHelper,
+} from '@sap/react-native-ausweisapp2-wrapper'
 import { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { env } from '../../../env'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
-import { logger } from '../../../services/logger'
-import { AppDispatch } from '../../../services/redux/configure-store'
-import { eidAusweisApp2Service } from '../services/eid-ausweisapp2-service'
-import { EidFlowResponse } from '../types'
-import { useWorkflowMessages } from './use-workflow-messages'
+import { useTranslation } from '../../../services/translation/translation'
+import { AA2_TIMEOUTS } from '../eid-command-timeouts'
+import { AA2Timeout, isTimeoutError } from '../errors'
+import { getSimulateCard } from '../redux/simulated-card-selectors'
+import { useGetTcTokenUrl } from './use-get-tc-token-url'
 
 /**
  * Hook that returns a callback for starting the AA2 Auth flow.
@@ -15,38 +23,53 @@ import { useWorkflowMessages } from './use-workflow-messages'
 export const useStartAA2Auth = (
   onSuccess: (accessRights: AccessRights, certificate: Certificate) => void,
   onNFCNotSupported: () => void,
-  onError: (error: ErrorWithCode) => void,
+  onError: (error: ErrorWithCode | SerializedError) => void,
 ) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const dispatch = useDispatch<AppDispatch>()
-  const messages = useWorkflowMessages()
+  const { t } = useTranslation()
+  const simulateCard = useSelector(getSimulateCard)
+  const getTcTokenUrl = useGetTcTokenUrl()
 
+  const [isLoading, setIsLoading] = useState(false)
   const startAuth = useCallback(async () => {
     setIsLoading(true)
     try {
-      const result = await dispatch(eidAusweisApp2Service.startAA2AuthFlow({ messages })).unwrap()
-      if (result.response === EidFlowResponse.EidMessageError) {
-        // AusweisApp2 Message errors are handled by the useHandleErrors hook
-        logger.log('eID start auth failed with message', result.msg.msg)
-      } else if (result.response === EidFlowResponse.EidNFCNotSupported) {
-        logger.log('eID start auth failed. NFC not supported')
-        onNFCNotSupported()
-      } else {
-        logger.log('eID start auth succeeded.')
-        const { accessRights, certificate } = result
-        onSuccess(accessRights, certificate)
+      const isReaderAvailable = await AA2WorkflowHelper.readerIsAvailable(
+        simulateCard,
+        'NFC',
+        AA2_TIMEOUTS.GET_READER_LIST,
+      )
+      if (!isReaderAvailable) {
+        if (simulateCard) {
+          return onError(new UnknownError())
+        } else {
+          return onNFCNotSupported()
+        }
       }
-    } catch (error: unknown) {
-      if (error instanceof ErrorWithCode) {
-        onError(error)
-      } else {
-        logger.warn('eID start auth error cannot be interpreted', JSON.stringify(error))
-        onError(new UnknownError('eID Start Auth'))
+
+      const tokenUrl = await getTcTokenUrl()
+
+      const messages: WorkflowMessages = {
+        sessionStarted: t('eid_iosScanDialog_sessionStarted'),
+        sessionFailed: t('eid_iosScanDialog_sessionFailed'),
+        sessionSucceeded: t('eid_iosScanDialog_sessionSucceeded'),
+        sessionInProgress: t('eid_iosScanDialog_sessionInProgress'),
       }
+      const accessRights = await AA2CommandService.runAuth(tokenUrl, env.AA2_DEVELOPER_MODE, false, true, messages, {
+        msTimeout: AA2_TIMEOUTS.RUN_AUTH,
+      })
+      const certificate = await AA2CommandService.getCertificate({ msTimeout: AA2_TIMEOUTS.GET_CERTIFICATE })
+      onSuccess(accessRights, certificate)
+    } catch (e) {
+      if (e instanceof ErrorWithCode) {
+        onError(e)
+      } else if (isTimeoutError(e)) {
+        onError(new AA2Timeout())
+      }
+      // AusweisApp2 Message errors are handled by the useHandleErrors hook
     } finally {
       setIsLoading(false)
     }
-  }, [dispatch, messages, onNFCNotSupported, onSuccess, onError])
+  }, [simulateCard, getTcTokenUrl, t, onSuccess, onError, onNFCNotSupported])
 
   return { startAuth, isLoading }
 }

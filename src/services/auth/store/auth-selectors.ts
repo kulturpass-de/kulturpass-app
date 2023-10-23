@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { RootState } from '../../redux/configure-store'
 import { CdcSessionData } from '../../session/types'
-import { isUserLoggedInToCdc, isUserLoggedInToCommerce } from './utils'
+import { isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'
 
 export const getAuthState = (state: RootState) => state.auth
 
@@ -30,17 +30,32 @@ export const getAccountVerificationStatus = createSelector(
 
 export const getIsUserVerificationPending = createSelector(getAccountVerificationStatus, status => status === 'pending')
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
-export const getIsUserLoggedInToCdc = createSelector(getAuthState, auth => {
-  return isUserLoggedInToCdc(auth.cdc)
-})
+export const getIsUserLoggedInToCdc = createSelector(
+  getAuthState,
+  getIsUserVerificationPending,
+  (auth, isUserPendingVerification) => {
+    if (!auth.cdc) {
+      return false
+    }
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
+    if (isUserPendingVerification) {
+      const pendingTimestamp = auth.cdc.sessionStartTimestamp + auth.cdc.sessionValidity
+
+      return isSessionTimestampValid(pendingTimestamp)
+    }
+
+    return (
+      isNotEmptyString(auth.cdc?.sessionToken) &&
+      isNotEmptyString(auth.cdc?.sessionSecret) &&
+      isSessionTimestampValid(auth.cdc?.sessionValidity)
+    )
+  },
+)
+
 export const getIsUserLoggedInToCommerce = createSelector(getAuthState, auth => {
-  return isUserLoggedInToCommerce(auth.commerce)
+  return isNotEmptyString(auth.commerce?.access_token) && isExpiresInValid(auth.commerce?.expires_in)
 })
 
-// NOTE: Selectors are memoized, so time based valid checks do not work as expected
 export const getIsUserLoggedIn = createSelector(
   getIsUserLoggedInToCdc,
   getIsUserLoggedInToCommerce,
@@ -58,3 +73,15 @@ export const getRegistrationToken = createSelector(getCdcSessionData, data => da
 export const getCommerceSessionData = createSelector(getAuthState, auth => auth.commerce)
 
 export const getCommerceAccessToken = createSelector(getCommerceSessionData, data => data?.access_token)
+
+export const selectValidCommerceAccessToken = createSelector([getCommerceSessionData], commerceSessionData => {
+  if (!commerceSessionData) {
+    return null
+  }
+
+  const { access_token, token_valid_until } = commerceSessionData
+
+  const isValid = (token_valid_until && token_valid_until > Date.now()) || false
+
+  return isValid ? access_token : null
+})

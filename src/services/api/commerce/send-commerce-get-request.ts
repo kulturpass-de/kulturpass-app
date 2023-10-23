@@ -1,7 +1,6 @@
 import { AxiosHeaders, AxiosRequestConfig } from 'axios'
 import { getAuthState } from '../../auth/store/auth-selectors'
 import { RootState } from '../../redux/configure-store'
-import { UserLocationProvider } from '../../user/redux/user-selectors'
 import { CreateQueryFn } from '../common/types'
 import { appendLanguageParameters } from './append-language-parameters'
 import { appendLocationParameters } from './append-location-parameters'
@@ -13,7 +12,6 @@ export const sendCommerceGetRequest: CreateQueryFn<
     appendLanguageQueryParams?: boolean
     appendLocationQueryParams?: boolean
     appendNoCacheHeader?: boolean
-    location?: UserLocationProvider
   }
 > = prepare => async (arg, api, extraOptions, baseQuery) => {
   const rootState = api.getState() as RootState
@@ -27,7 +25,7 @@ export const sendCommerceGetRequest: CreateQueryFn<
     prepared.queryParams = appendLanguageParameters(prepared.queryParams)
   }
   if (prepared.appendLocationQueryParams) {
-    prepared.queryParams = appendLocationParameters(prepared.queryParams, rootState, prepared.location)
+    prepared.queryParams = appendLocationParameters(prepared.queryParams, rootState)
   }
 
   const url = 'url' in prepared ? prepared.url : buildCommerceApiUrl(prepared.path, rootState)

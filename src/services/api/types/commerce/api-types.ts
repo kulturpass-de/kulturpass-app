@@ -1,8 +1,5 @@
 /* eslint-disable max-len */
 /* tslint:disable */
-
-type File = any
-
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -12,66 +9,76 @@ type File = any
  * ---------------------------------------------------------------
  */
 
-/** Address object */
+/**
+ * Address
+ * Request body fields required and optional to operate on address data. The DTO is in XML or .json format
+ */
 export interface Address {
-  /** Unique id value of the address which is optional while creating new address. While performing other address operations this value is the key */
-  id?: string
-  /** Title of the address person */
-  title?: string
-  /** Code of the title */
-  titleCode: string
-  /** First name of the address person */
-  firstName: string
-  /** Last name of the address person */
-  lastName: string
+  /** Cellphone number */
+  cellphone?: string
   /** Company Name */
   companyName?: string
+  /** Country where address is located */
+  country?: Country
+  /** Boolean flag if address is default */
+  defaultAddress?: boolean
+  /** District name */
+  district?: string
+  /** Email address */
+  email?: string
+  /** First name of the address person */
+  firstName: string
+  /** Boolean flag if address is formatted */
+  formattedAddress?: string
+  /** Unique id value of the address which is optional while creating new address. While performing other address operations this value is the key */
+  id?: string
+  /** Last name of the address person */
+  lastName: string
   /** First line of the address */
   line1: string
   /** Second line of the address */
   line2?: string
-  /** Town, field required */
-  town: string
-  /** Response body fields which will be returned while fetching the list of country's regions. */
-  region?: Region
-  /** District name */
-  district?: string
-  /** Postal code of the address */
-  postalCode: string
   /** Phone number */
   phone?: string
-  /** Cellphone number */
-  cellphone?: string
-  /** Email address */
-  email?: string
-  /** Response body fields which will be returned while fetching the list of countries. The DTO is in XML or .json format */
-  country?: Country
+  /** Postal code of the address */
+  postalCode: string
+  /** Region where address belongs to */
+  region?: Region
   /** Boolean flag if address is for shipping */
   shippingAddress?: boolean
-  /** Boolean flag if address is default */
-  defaultAddress?: boolean
+  /** Title of the address person */
+  title?: string
+  /** Code of the title */
+  titleCode: string
+  /** Town, field required */
+  town: string
   /** Boolean flag if address is visible in the Address Book */
   visibleInAddressBook?: boolean
-  /** Boolean flag if address is formatted */
-  formattedAddress?: string
 }
 
-/** Representation of an Address list */
+/**
+ * AddressList
+ * Representation of an Address list
+ */
 export interface AddressList {
   /** List of addresses */
   addresses?: Address[]
 }
 
-/** Representation of an Address Validation */
+/**
+ * AddressValidation
+ * Representation of an Address Validation
+ */
 export interface AddressValidation {
-  /** List of errors */
-  errors?: ErrorList
   /** Decision */
   decision?: string
+  /** List of errors */
+  errors?: ErrorList
   /** List of suggested addresses */
   suggestedAddresses?: Address[]
 }
 
+/** Assessment */
 export interface Assessment {
   code?: string
   label?: string
@@ -79,96 +86,119 @@ export interface Assessment {
   type?: string
 }
 
+/** Assessments */
 export interface Assessments {
   assessments?: Assessment[]
 }
 
-/** Representation of a Base Option */
-export interface BaseOption {
-  /** Variant type of base option */
-  variantType?: string
-  /** List of all variant options */
-  options?: VariantOption[]
-  /** Representation of a Variant Option */
-  selected?: VariantOption
+/** Balance */
+export interface Balance {
+  /** Representation of a Price */
+  availableBalance?: Price
+  /** Representation of a Price */
+  grantedBalance?: Price
+  hasEntitlement?: boolean
+  /** Representation of a Price */
+  reservedBalance?: Price
 }
 
-/** Representation of a Base Site */
+/**
+ * BaseOption
+ * Representation of a Base Option
+ */
+export interface BaseOption {
+  /** List of all variant options */
+  options?: VariantOption[]
+  /** Variant option selected */
+  selected?: VariantOption
+  /** Variant type of base option */
+  variantType?: string
+}
+
+/**
+ * BaseSite
+ * Representation of a Base Site
+ */
 export interface BaseSite {
-  /** Unique identifier of Basesite */
-  uid?: string
-  /** Name of Basesite */
-  name?: string
-  /** List of Basestores */
-  stores?: BaseStore[]
-  /** Theme of Basesite */
-  theme?: string
-  /** Representation of a Language */
-  defaultLanguage?: Language
-  /** Locale data for Basesite */
-  locale?: string
   /** Channel */
   channel?: string
-  /** List of url encoding attributes */
-  urlEncodingAttributes?: string[]
-  /** List of url patterns */
-  urlPatterns?: string[]
+  /** Default language for Basesite */
+  defaultLanguage?: Language
   /** Default preview catalog id */
   defaultPreviewCatalogId?: string
   /** Default preview category code */
   defaultPreviewCategoryCode?: string
   /** Default preview product code */
   defaultPreviewProductCode?: string
-  /** Indicates whether customer data isolation is enabled for this site. If true, customer can get site information after registration, For example registerd username is name@sap.com, returned uid will be name@sap.com|baseSiteUid */
-  isolated?: boolean
-  /** Configuration information of captcha */
-  captchaConfig?: CaptchaConfig
+  /** Locale data for Basesite */
+  locale?: string
+  /** Name of Basesite */
+  name?: string
+  /** List of Basestores */
+  stores?: BaseStore[]
+  /** Theme of Basesite */
+  theme?: string
+  /** Unique identifier of Basesite */
+  uid?: string
+  /** List of url encoding attributes */
+  urlEncodingAttributes?: string[]
+  /** List of url patterns */
+  urlPatterns?: string[]
 }
 
-/** Representation of a Base Site List */
+/**
+ * BaseSiteList
+ * Representation of a Base Site List
+ */
 export interface BaseSiteList {
   /** List of basesites */
   baseSites?: BaseSite[]
 }
 
-/** Representation of a Base Store */
+/**
+ * BaseStore
+ * Representation of a Base Store
+ */
 export interface BaseStore {
-  /** Base store name */
-  name?: string
-  /** Flag defining is external tax is enabled */
-  externalTaxEnabled?: boolean
-  /** Payment provider */
-  paymentProvider?: string
   /** Create return process code */
   createReturnProcessCode?: string
+  /** List of currencies */
+  currencies?: Currency[]
+  /** Default currency */
+  defaultCurrency?: Currency
+  /** Point of service being default delivery origin */
+  defaultDeliveryOrigin?: PointOfService
+  /** Default language */
+  defaultLanguage?: Language
+  /** List of delivery countries */
+  deliveryCountries?: Country[]
+  /** List of delivery modes */
+  deliveryModes?: DeliveryModeList
+  /** Flag specifying whether the express checkout option is enabled */
+  expressCheckoutEnabled?: boolean
+  /** Flag defining is external tax is enabled */
+  externalTaxEnabled?: boolean
+  /** List of languages */
+  languages?: Language[]
   /**
    * Maximum radius for searching point of service
    * @format double
    */
   maxRadiusForPosSearch?: number
-  /** Submit order process code */
-  submitOrderProcessCode?: string
-  /** List of currencies */
-  currencies?: Currency[]
-  /** Representation of a Currency */
-  defaultCurrency?: Currency
-  /** Representation of a Point of service */
-  defaultDeliveryOrigin?: PointOfService
-  /** Representation of a Language */
-  defaultLanguage?: Language
-  /** List of delivery countries */
-  deliveryCountries?: Country[]
-  /** Representation of a Delivery mode list */
-  deliveryModes?: DeliveryModeList
-  /** List of languages */
-  languages?: Language[]
+  /** Base store name */
+  name?: string
+  /** Payment provider */
+  paymentProvider?: string
   /** List of points of service */
   pointsOfService?: PointOfService[]
-  /** Flag specifying whether the express checkout option is enabled */
-  expressCheckoutEnabled?: boolean
+  /** Submit order process code */
+  submitOrderProcessCode?: string
 }
 
-/** Representation of a Breadcrumb */
+/**
+ * Breadcrumb
+ * Representation of a Breadcrumb
+ */
 export interface Breadcrumb {
   /** Code of the facet */
   facetCode?: string
@@ -178,13 +208,16 @@ export interface Breadcrumb {
   facetValueCode?: string
   /** Value name of the facet */
   facetValueName?: string
-  /** Representation of a Search State */
+  /** Remove query */
   removeQuery?: SearchState
-  /** Representation of a Search State */
+  /** Truncate query */
   truncateQuery?: SearchState
 }
 
-/** Representation of a cancellation request entry input for an order */
+/**
+ * CancellationRequestEntryInput
+ * Representation of a cancellation request entry input for an order
+ */
 export interface CancellationRequestEntryInput {
   /**
    * Order entry number of the cancelled product
@@ -200,27 +233,19 @@ export interface CancellationRequestEntryInput {
   quantity: number
 }
 
-/** Cancellation request input list for the current order. */
+/**
+ * CancellationRequestEntryInputList
+ * Representation of a cancellation request entry input list for an order
+ */
 export interface CancellationRequestEntryInputList {
   /** Cancellation request entry inputs which contain information about the order entries which are requested to be cancelled */
   cancellationRequestEntryInputs: CancellationRequestEntryInput[]
 }
 
-/** Configuration information of captcha */
-export interface CaptchaConfig {
-  /**
-   * Indicates if the captcha is enabled or not
-   * @example true
-   */
-  enabled?: boolean
-  /**
-   * The public key used in captcha validation
-   * @example "6LdeF6tgAAAAAE_T55TB0nmg--qmbnkwqC4LPQbg"
-   */
-  publicKey?: string
-}
-
-/** Representation of a Card Type */
+/**
+ * CardType
+ * Representation of a Card Type
+ */
 export interface CardType {
   /** Card type code */
   code?: string
@@ -228,338 +253,385 @@ export interface CardType {
   name?: string
 }
 
-/** Representation of a Card Type List */
+/**
+ * CardTypeList
+ * Representation of a Card Type List
+ */
 export interface CardTypeList {
   /** List of card types */
   cardTypes?: CardType[]
 }
 
-/** Representation of a Cart */
+/**
+ * Cart
+ * Representation of a Cart
+ */
 export interface Cart {
-  /** Code number of order */
-  code?: string
-  /** Flag stating iv value is net-value */
-  net?: boolean
-  /** Representation of a Price */
-  totalPriceWithTax?: Price
-  /** Representation of a Price */
-  totalPrice?: Price
-  /** Representation of a Price */
-  totalTax?: Price
-  /** Representation of a Price */
-  subTotal?: Price
-  /** Representation of a Price */
-  deliveryCost?: Price
-  /** List of order entries */
-  entries?: OrderEntry[]
-  /** List of entry groups */
-  entryGroups?: EntryGroup[]
-  /** @format int32 */
-  totalItems?: number
-  /** Representation of a Delivery mode */
-  deliveryMode?: DeliveryMode
-  /** Address object */
-  deliveryAddress?: Address
-  /** Payment details object */
-  paymentInfo?: PaymentDetails
   /** List of applied order promotions */
   appliedOrderPromotions?: PromotionResult[]
   /** List of applied product promotions */
   appliedProductPromotions?: PromotionResult[]
-  /** Representation of a Price */
-  productDiscounts?: Price
-  /** Representation of a Price */
-  orderDiscounts?: Price
-  /** Representation of a Price */
-  totalDiscounts?: Price
-  /** Site */
-  site?: string
-  /** Store */
-  store?: string
-  /** Guest user id identifier */
-  guid?: string
-  /** Flag showing if order is calculated */
-  calculated?: boolean
   /** List of applied vouchers */
   appliedVouchers?: Voucher[]
-  /** Representation of a Principal webservice DTO used for defining User data types */
-  user?: Principal
-  /** List of pickup order entry group */
-  pickupOrderGroups?: PickupOrderEntryGroup[]
-  /** List of delivery order entries group */
-  deliveryOrderGroups?: DeliveryOrderEntryGroup[]
-  /**
-   * Quantity of pickup items
-   * @format int64
-   */
-  pickupItemsQuantity?: number
+  /** Flag showing if order is calculated */
+  calculated?: boolean
+  /** Code number of order */
+  code?: string
+  /** Delivery address */
+  deliveryAddress?: Address
+  /** Delivery cost */
+  deliveryCost?: Price
   /**
    * Quantity of delivery items
    * @format int64
    */
   deliveryItemsQuantity?: number
-  /** Customer requested date for order retrieval */
-  requestedRetrievalAt?: string
+  /** Delivery mode information */
+  deliveryMode?: DeliveryMode
+  /** List of delivery order entries group */
+  deliveryOrderGroups?: DeliveryOrderEntryGroup[]
+  /** Description of the cart */
+  description?: string
+  /** List of order entries */
+  entries?: OrderEntry[]
+  /** List of entry groups */
+  entryGroups?: EntryGroup[]
+  /**
+   * Date of cart expiration time
+   * @format date-time
+   */
+  expirationTime?: string
+  /** Guest user id identifier */
+  guid?: string
+  /** Name of the cart */
+  name?: string
+  /** Flag stating iv value is net-value */
+  net?: boolean
+  /** Order discounts */
+  orderDiscounts?: Price
+  /** Payment information */
+  paymentInfo?: PaymentDetails
+  /**
+   * Quantity of pickup items
+   * @format int64
+   */
+  pickupItemsQuantity?: number
+  /** List of pickup order entry group */
+  pickupOrderGroups?: PickupOrderEntryGroup[]
+  /** List of potential order promotions for cart */
+  potentialOrderPromotions?: PromotionResult[]
+  /** List of potential product promotions for cart */
+  potentialProductPromotions?: PromotionResult[]
+  /** Product discounts */
+  productDiscounts?: Price
+  /**
+   * Date of saving cart
+   * @format date-time
+   */
+  saveTime?: string
+  /** Information about person who saved cart */
+  savedBy?: Principal
+  /** Site */
+  site?: string
+  /** Store */
+  store?: string
+  /** Subtotal price */
+  subTotal?: Price
+  /** Total discounts */
+  totalDiscounts?: Price
+  /** @format int32 */
+  totalItems?: number
+  /** Total price value */
+  totalPrice?: Price
+  /** Total price with tax */
+  totalPriceWithTax?: Price
+  /** Total tax price */
+  totalTax?: Price
   /**
    * Total unit count
    * @format int32
    */
   totalUnitCount?: number
-  /** List of potential order promotions for cart */
-  potentialOrderPromotions?: PromotionResult[]
-  /** List of potential product promotions for cart */
-  potentialProductPromotions?: PromotionResult[]
-  /** Name of the cart */
-  name?: string
-  /** Description of the cart */
-  description?: string
-  /**
-   * Date of cart expiration time
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  expirationTime?: string
-  /**
-   * Date of saving cart
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  saveTime?: string
-  /** Representation of a Principal webservice DTO used for defining User data types */
-  savedBy?: Principal
-  /** Earliest possible retrieval date available for order */
-  earliestRetrievalAt?: string
+  /** User information */
+  user?: Principal
 }
 
-/** Representation of a Cart list */
+/**
+ * CartList
+ * Representation of a Cart list
+ */
 export interface CartList {
   /** List of carts */
   carts?: Cart[]
 }
 
-/** Representation of a Cart modification */
+/**
+ * CartModification
+ * Representation of a Cart modification
+ */
 export interface CartModification {
-  /** Status code of cart modification */
-  statusCode?: string
-  /**
-   * Quantity added with cart modification
-   * @format int64
-   */
-  quantityAdded?: number
+  /** Delivery mode changed */
+  deliveryModeChanged?: boolean
+  /** Order entry */
+  entry?: OrderEntry
   /**
    * Final quantity after cart modification
    * @format int64
    */
   quantity?: number
   /**
-   * Request body parameter that contains details such as the quantity of product (quantity), and the pickup store name (deliveryPointOfService.name)
-   *
-   * The DTO is in XML or .json format.
+   * Quantity added with cart modification
+   * @format int64
    */
-  entry?: OrderEntry
-  /** Delivery mode changed */
-  deliveryModeChanged?: boolean
+  quantityAdded?: number
+  /** Status code of cart modification */
+  statusCode?: string
   /** Status message */
   statusMessage?: string
 }
 
-/** Representation of a Cart modification list */
+/**
+ * CartModificationList
+ * Representation of a Cart modification list
+ */
 export interface CartModificationList {
   /** List of cart modifications */
   cartModifications?: CartModification[]
 }
 
-/** Representation of a Catalog */
+/**
+ * Catalog
+ * Representation of an Catalog
+ */
 export interface Catalog {
+  /** List of versions of catalog */
+  catalogVersions?: CatalogVersion[]
   /** Identifier of abstract catalog item */
   id?: string
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
   name?: string
   /** Url address of abstract catalog item */
   url?: string
-  /** List of versions of catalog */
-  catalogVersions?: CatalogVersion[]
 }
 
-/** Representation of a Catalog List */
+/**
+ * CatalogList
+ * Representation of a Catalog List
+ */
 export interface CatalogList {
   /** List of catalog items */
   catalogs?: Catalog[]
 }
 
-/** Representation of a Catalog Version */
+/**
+ * CatalogVersion
+ * Representation of a Catalog Version
+ */
 export interface CatalogVersion {
+  /** List of category hierarchies */
+  categories?: CategoryHierarchy[]
   /** Identifier of abstract catalog item */
   id?: string
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
   name?: string
   /** Url address of abstract catalog item */
   url?: string
-  /** List of category hierarchies */
-  categories?: CategoryHierarchy[]
 }
 
-/** Representation of a Category */
+/**
+ * Category
+ * Representation of a Category
+ */
 export interface Category {
   /** Code of the category */
   code?: string
+  /** Category image */
+  image?: Image
   /** Name of the category */
   name?: string
   /** URL of the category */
   url?: string
-  /** Representation of an Image */
-  image?: Image
 }
 
-/** Representation of a Category Hierarchy */
+/**
+ * CategoryHierarchy
+ * Representation of a Category Hierarchy
+ */
 export interface CategoryHierarchy {
   /** Identifier of abstract catalog item */
   id?: string
   /**
    * Date of last modification
    * @format date-time
-   * @example "2023-10-19T11:10:14Z"
    */
   lastModified?: string
   /** Name of abstract catalog item */
   name?: string
-  /** Url address of abstract catalog item */
-  url?: string
   /** List of subcategory hierarchies */
   subcategories?: CategoryHierarchy[]
+  /** Url address of abstract catalog item */
+  url?: string
 }
 
-/** Representation of a Category List */
+/**
+ * CategoryList
+ * Representation of a Category List
+ */
 export interface CategoryList {
   /** List of categories */
   categories?: Category[]
 }
 
-/** Representation of a Classification */
+/**
+ * Classification
+ * Representation of a Classification
+ */
 export interface Classification {
   /** Code of the classification */
   code?: string
-  /** Name of the classification */
-  name?: string
   /** List of features for given classification */
   features?: Feature[]
+  /** Name of the classification */
+  name?: string
 }
 
-/** List of Component identifiers */
+/** ComponentAdaptedData */
+export type ComponentAdaptedData = object
+
+/** ComponentIDList */
 export interface ComponentIDList {
   idList?: string[]
 }
 
-/** Representation of a Configuration Info */
+/**
+ * ConfigurationInfo
+ * Representation of a Configuration Info
+ */
 export interface ConfigurationInfo {
-  /** Type of configuration info */
-  configuratorType?: string
-  /** Status of configuration info */
-  status?: string
   /** Label of configuration info */
   configurationLabel?: string
   /** Value of configuration info */
   configurationValue?: string
+  /** Type of configuration info */
+  configuratorType?: string
+  /** Status of configuration info */
+  status?: string
 }
 
-/** Representation of a Consent */
+/**
+ * Consent
+ * Representation of a Consent
+ */
 export interface Consent {
   /** Code of consent */
   code?: string
   /**
    * Date of consenting
    * @format date-time
-   * @example "2023-10-19T11:10:12Z"
    */
   consentGivenDate?: string
   /**
    * Consent withdrawn date
    * @format date-time
-   * @example "2023-10-19T11:10:12Z"
    */
   consentWithdrawnDate?: string
 }
 
-/** Representation of a Consent Template */
+/**
+ * ConsentTemplate
+ * Representation of a Consent Template
+ */
 export interface ConsentTemplate {
+  /** Current consent */
+  currentConsent?: Consent
+  /** Consent template description */
+  description?: string
   /** Consent template identifier */
   id?: string
   /** Consent template name */
   name?: string
-  /** Consent template description */
-  description?: string
   /**
    * Consent template version
    * @format int32
    */
   version?: number
-  /** Representation of a Consent */
-  currentConsent?: Consent
 }
 
-/** Representation of a Consent Template List */
+/**
+ * ConsentTemplateList
+ * Representation of a Consent Template List
+ */
 export interface ConsentTemplateList {
   /** List of consent templates */
   consentTemplates?: ConsentTemplate[]
 }
 
-/** Representation of a Consignment */
+/**
+ * Consignment
+ * Representation of a Consignment
+ */
 export interface Consignment {
-  /** Consignment code */
-  code?: string
-  /** Consignment tracking identifier */
-  trackingID?: string
-  /** Consignment status */
-  status?: string
-  /** Consignment status display */
-  statusDisplay?: string
-  /**
-   * Consignment status date
-   * @format date-time
-   * @example "2023-10-19T11:10:12Z"
-   */
-  statusDate?: string
-  /** List of consignment entries */
-  entries?: ConsignmentEntry[]
-  /** Address object */
-  shippingAddress?: Address
-  /** Representation of a Point of service */
-  deliveryPointOfService?: PointOfService
-  /** Label of shipping's type */
-  shippingModeLabel?: string
-  /** Order's state */
-  marketplaceStatus?: string
-  /** Reason's label of the order state */
-  marketplaceStatusLabel?: string
   /** Indicates if the order can be evaluated by the customer */
   canEvaluate?: boolean
   /** Indicates if the customer can write a message */
   canWriteMessage?: boolean
-  /** All the documents available on the order */
-  documents?: Document[]
+  /** Consignment code */
+  code?: string
   /** Indicates if the customer has been debited */
   customerDebited?: boolean
+  /** Delivery point of service */
+  deliveryPointOfService?: PointOfService
+  /** All the documents available on the order */
+  documents?: Document[]
+  /** List of consignment entries */
+  entries?: ConsignmentEntry[]
+  /** Order's state */
+  marketplaceStatus?: string
+  /** Reason's label of the order state */
+  marketplaceStatusLabel?: string
+  /** Shipping address */
+  shippingAddress?: Address
+  /** Label of shipping's type */
+  shippingModeLabel?: string
+  /** Consignment status */
+  status?: string
+  /**
+   * Consignment status date
+   * @format date-time
+   */
+  statusDate?: string
+  /** Consignment status display */
+  statusDisplay?: string
+  /** Consignment tracking identifier */
+  trackingID?: string
 }
 
-/** Representation of a Consignment Entry */
+/**
+ * ConsignmentEntry
+ * Representation of a Consignment Entry
+ */
 export interface ConsignmentEntry {
-  /**
-   * Request body parameter that contains details such as the quantity of product (quantity), and the pickup store name (deliveryPointOfService.name)
-   *
-   * The DTO is in XML or .json format.
-   */
+  /** Indicate if an incident can be opened on the order line */
+  canOpenIncident?: boolean
+  /** The consignment code */
+  consignmentCode?: string
+  /** The mirakl order line's identifier */
+  miraklOrderLineId?: string
+  /** Order line's state */
+  miraklOrderLineStatus?: string
+  /** Reason's label of the order line's state */
+  miraklOrderLineStatusLabel?: string
+  /** Order entry of Consignment entry */
   orderEntry?: OrderEntry
   /**
    * Quantity value of Consignment entry
@@ -571,19 +643,12 @@ export interface ConsignmentEntry {
    * @format int64
    */
   shippedQuantity?: number
-  /** The mirakl order line's identifier */
-  miraklOrderLineId?: string
-  /** The consignment code */
-  consignmentCode?: string
-  /** Order line's state */
-  miraklOrderLineStatus?: string
-  /** Reason's label of the order line's state */
-  miraklOrderLineStatusLabel?: string
-  /** Indicate if an incident can be opened on the order line */
-  canOpenIncident?: boolean
 }
 
-/** Response body fields which will be returned while fetching the list of countries. The DTO is in XML or .json format */
+/**
+ * Country
+ * Response body fields which will be returned while fetching the list of countries. The DTO is in XML or .json format
+ */
 export interface Country {
   /** Country code in iso format */
   isocode?: string
@@ -591,149 +656,130 @@ export interface Country {
   name?: string
 }
 
-/** List of countries */
+/**
+ * CountryList
+ * List of countries
+ */
 export interface CountryList {
   /** This is the list of Country fields that should be returned in the response body */
   countries?: Country[]
 }
 
-/** Create thread message DTO */
-export interface CreateThreadMessage {
-  /** Thread topic */
-  topic: string
-  /** Message body, min length: 3 - max length: 50000 */
-  body: string
-  /** Message recipient: OPERATOR, SHOP or CUSTOMER, comma-separated. */
-  to: string
-  /** List of attachments */
-  attachments?: File[]
-}
-
-/** Representation of a Currency */
+/**
+ * Currency
+ * Representation of a Currency
+ */
 export interface Currency {
+  /** Boolean flag whether currency is active */
+  active?: boolean
   /** Code of the currency in iso format */
   isocode?: string
   /** Name of the currency */
   name?: string
-  /** Boolean flag whether currency is active */
-  active?: boolean
   /** Symbol of the currency */
   symbol?: string
 }
 
-/** Representation of a Currency List */
+/**
+ * CurrencyList
+ * Representation of a Currency List
+ */
 export interface CurrencyList {
   /** List of currencies */
   currencies?: Currency[]
 }
 
-/** Indicates balance values */
-export interface CustomerBalance {
-  /** Representation of a Price */
-  grantedBalance?: Price
-  /** Representation of a Price */
-  reservedBalance?: Price
-  /** Representation of a Price */
-  availableBalance?: Price
-  expired?: boolean
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  expirationDate?: string
-}
-
-/** Indicates preferences */
-export interface CustomerPreferences {
-  preferredPostalCode?: string
-  preferredProductCategoryId1?: string
-  preferredProductCategoryId2?: string
-  preferredProductCategoryId3?: string
-  preferredProductCategoryId4?: string
-}
-
-/** Representation of a Delivery mode */
+/**
+ * DeliveryMode
+ * Representation of a Delivery mode
+ */
 export interface DeliveryMode {
   /** Code of the delivery mode */
   code?: string
-  /** Name of the delivery mode */
-  name?: string
+  /** Cost of the delivery */
+  deliveryCost?: Price
   /** Description of the delivery mode */
   description?: string
-  /** Representation of a Price */
-  deliveryCost?: Price
+  /** Name of the delivery mode */
+  name?: string
 }
 
-/** Representation of a Delivery mode list */
+/**
+ * DeliveryModeList
+ * Representation of a Delivery mode list
+ */
 export interface DeliveryModeList {
   /** List of delivery modes */
   deliveryModes?: DeliveryMode[]
 }
 
-/** Representation of a Delivery Order Entry Group */
+/**
+ * DeliveryOrderEntryGroup
+ * Representation of a Delivery Order Entry Group
+ */
 export interface DeliveryOrderEntryGroup {
-  /** Representation of a Price */
-  totalPriceWithTax?: Price
-  /** List of order entries */
-  entries?: OrderEntry[]
-  /**
-   * Quantity of order entries in a group
-   * @format int64
-   */
-  quantity?: number
-  /** Address object */
-  deliveryAddress?: Address
-  /** The shop identifier */
-  shopId?: string
-  /** The shop name */
-  shopName?: string
-  /** Representation of a Delivery mode */
-  selectedShippingOption?: DeliveryMode
   /** The available shipping options */
   availableShippingOptions?: DeliveryMode[]
+  /** Delivery address for order entry group */
+  deliveryAddress?: Address
+  /** List of order entries */
+  entries?: OrderEntry[]
   /**
    * The lead time to shop
    * @format int32
    */
   leadTimeToShip?: number
+  /**
+   * Quantity of order entries in a group
+   * @format int64
+   */
+  quantity?: number
+  /** The selected shipping options */
+  selectedShippingOption?: DeliveryMode
+  /** The shop identifier */
+  shopId?: string
+  /** The shop name */
+  shopName?: string
+  /** Total price with tax */
+  totalPriceWithTax?: Price
 }
 
-/** All the documents available on the order */
+/** Document */
 export interface Document {
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
+  code?: string
+  /** @format date-time */
   dateUploaded?: string
   fileName?: string
   /** @format int64 */
   fileSize?: number
-  code?: string
   type?: string
 }
 
-/** Representation of an Entry Group */
+/**
+ * EntryGroup
+ * Representation of an Entry Group
+ */
 export interface EntryGroup {
   /** List of order entries */
   entries?: OrderEntry[]
-  /** List of child entry groups */
-  entryGroups?: EntryGroup[]
   /**
    * Identifier of the entry group
    * @format int32
    * @example 1
    */
   entryGroupNumber?: number
-  /**
-   * Label for the entry group
-   * @example "Photo On The Go Package"
-   */
-  label?: string
+  /** List of child entry groups */
+  entryGroups?: EntryGroup[]
   /**
    * Indicates if the entry group is in an error state
    * @example true
    */
   erroneous?: boolean
+  /**
+   * Label for the entry group
+   * @example "Photo On The Go Package"
+   */
+  label?: string
   /**
    * Indicates type of the group, possible values are STANDALONE, CONFIGURABLEBUNDLE or any customer implemented type for any new provider
    * @example "STANDALONE"
@@ -741,29 +787,34 @@ export interface EntryGroup {
   type?: string
 }
 
-export interface EvaluationPage {
-  evaluations?: Evaluation[]
-  /** @format int32 */
-  evaluationPageCount?: number
-}
-
-/** The evaluation */
+/** Evaluation */
 export interface Evaluation {
   assessments?: Assessment[]
   comment?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:12Z"
-   */
+  /** @format date-time */
   date?: string
   firstName?: string
-  lastName?: string
   /** @format int32 */
   grade?: number
+  lastName?: string
 }
 
-/** Representation of a Facet */
+/** EvaluationPage */
+export interface EvaluationPage {
+  /** @format int32 */
+  evaluationPageCount?: number
+  evaluations?: Evaluation[]
+}
+
+/**
+ * Facet
+ * Representation of a Facet
+ */
 export interface Facet {
+  /** Flag stating if facet is category facet */
+  category?: boolean
+  /** Flag stating if facet is multiSelect */
+  multiSelect?: boolean
   /** Name of the facet */
   name?: string
   /**
@@ -771,90 +822,86 @@ export interface Facet {
    * @format int32
    */
   priority?: number
-  /** Flag stating if facet is category facet */
-  category?: boolean
-  /** Flag stating if facet is multiSelect */
-  multiSelect?: boolean
-  /** Flag stating if facet is visible */
-  visible?: boolean
   /** List of top facet values */
   topValues?: FacetValue[]
   /** List of all facet values */
   values?: FacetValue[]
+  /** Flag stating if facet is visible */
+  visible?: boolean
 }
 
-/** Representation of a Facet Value */
+/**
+ * FacetValue
+ * Representation of a Facet Value
+ */
 export interface FacetValue {
-  /** Name of the facet value */
-  name?: string
   /**
    * Count of the facet value
    * @format int64
    */
   count?: number
-  /** Representation of a Search State */
+  /** Name of the facet value */
+  name?: string
+  /** Query of the facet value */
   query?: SearchState
   /** Flag stating if facet value is selected */
   selected?: boolean
 }
 
-export interface FavouritesEntryList {
-  favouritesItems?: FavouritesEntry[]
-}
-
-export interface FavouritesEntry {
-  productCode?: string
-  /** Representation of a Product */
-  product?: Product
-  cartId?: string
-  /** @format int32 */
-  entryNumber?: number
-}
-
-/** Representation of a Feature */
+/**
+ * Feature
+ * Representation of a Feature
+ */
 export interface Feature {
   /** Code of the feature */
   code?: string
-  /** Name of the feature */
-  name?: string
-  /** Description of the feature */
-  description?: string
-  /** Type of the feature */
-  type?: string
-  /** Range number of the feature */
-  range?: boolean
   /** Flag defining it feature is comparable */
   comparable?: boolean
-  /** Representation of a Feature Unit */
+  /** Description of the feature */
+  description?: string
+  /** Feature unit */
   featureUnit?: FeatureUnit
   /** List of feature values */
   featureValues?: FeatureValue[]
+  /** Name of the feature */
+  name?: string
+  /** Range number of the feature */
+  range?: boolean
+  /** Type of the feature */
+  type?: string
 }
 
-/** Representation of a Feature Unit */
+/**
+ * FeatureUnit
+ * Representation of a Feature Unit
+ */
 export interface FeatureUnit {
-  /** Symbol of the feature unit */
-  symbol?: string
   /** Name of the feature unit */
   name?: string
+  /** Symbol of the feature unit */
+  symbol?: string
   /** Type of the feature unit */
   unitType?: string
 }
 
-/** Representation of a Feature Value */
+/**
+ * FeatureValue
+ * Representation of a Feature Value
+ */
 export interface FeatureValue {
   /** Value of the feature */
   value?: string
 }
 
-/** Representation of a Future Stock */
+/**
+ * FutureStock
+ * Representation of a Future Stock
+ */
 export interface FutureStock {
-  /** Representation of a Stock */
-  stock?: Stock
   /**
    * Date of future stock
    * @format date-time
-   * @example "2023-10-19T11:10:11Z"
+   * @example "2056-12-31T09:00:00+0000"
    */
   date?: string
   /**
@@ -862,23 +909,14 @@ export interface FutureStock {
    * @example "31/12/2056"
    */
   formattedDate?: string
+  /** Stock information of future stock */
+  stock?: Stock
 }
 
-export interface GeoLocatedCityList {
-  results?: GeoLocatedCity[]
-}
-
-export interface GeoLocatedCity {
-  id?: string
-  name?: string
-  info?: string
-  /** @format double */
-  latitude?: number
-  /** @format double */
-  longitude?: number
-}
-
-/** Representation of a GeoPoint */
+/**
+ * GeoPoint
+ * Representation of a GeoPoint
+ */
 export interface GeoPoint {
   /**
    * Geopoint latitude
@@ -892,61 +930,76 @@ export interface GeoPoint {
   longitude?: number
 }
 
-/** Representation of an Image */
+/**
+ * Image
+ * Representation of an Image
+ */
 export interface Image {
-  /** Type of the image, can be PRIMARY or GALLERY */
-  imageType?: 'PRIMARY' | 'GALLERY'
-  /** Format of the image, can be zoom, product, thumbnail, store, cartIcon, etc. */
-  format?: string
-  /** URL address of the image */
-  url?: string
   /** Tooltip content which is visible while image mouse hovering */
   altText?: string
+  /** Format of the image, can be zoom, product, thumbnail, store, cartIcon, etc. */
+  format?: string
   /**
    * Index of the image while displayed in gallery
    * @format int32
    */
   galleryIndex?: number
+  /** Type of the image, can be PRIMARY or GALLERY */
+  imageType?: 'PRIMARY' | 'GALLERY'
+  /** URL address of the image */
+  url?: string
 }
 
-/** Representation of a Language */
+/**
+ * Language
+ * Representation of a Language
+ */
 export interface Language {
+  /** true/false indicator when the language is active */
+  active?: boolean
   /** iso code of the language */
   isocode?: string
   /** name of the language */
   name?: string
   /** name the language in native form */
   nativeName?: string
-  /** true/false indicator when the language is active */
-  active?: boolean
 }
 
-/** Lists all available languages (all languages used for a particular store). If the list of languages for a base store is empty, a list of all languages available in the system will be returned */
+/**
+ * LanguageList
+ * Lists all available languages (all languages used for a particular store). If the list of languages for a base store is empty, a list of all languages available in the system will be returned
+ */
 export interface LanguageList {
   /** This is the list of Language fields that should be returned in the response body */
   languages?: Language[]
 }
 
+/** ListAdaptedComponents */
 export interface ListAdaptedComponents {
-  component?: any[]
+  component?: ComponentAdaptedData[]
   /** Pagination info */
   pagination?: Pagination
   sorts?: Sort[]
 }
 
+/** ListAdaptedPages */
 export interface ListAdaptedPages {
-  page?: any[]
+  page?: PageAdaptedData[]
   /** Pagination info */
   pagination?: Pagination
   sorts?: Sort[]
 }
 
-/** List of users to assign to customer group. */
+/**
+ * MemberList
+ * Representation of a Member List
+ */
 export interface MemberList {
   /** List of member */
   members?: Principal[]
 }
 
+/** MiraklThreadCreated */
 export interface MiraklThreadCreated {
   /** @format uuid */
   messageId?: string
@@ -954,6 +1007,7 @@ export interface MiraklThreadCreated {
   threadId?: string
 }
 
+/** MiraklThreadReplyCreated */
 export interface MiraklThreadReplyCreated {
   /** @format uuid */
   messageId?: string
@@ -961,424 +1015,459 @@ export interface MiraklThreadReplyCreated {
   threadId?: string
 }
 
-export interface OfferList {
-  offers?: Offer[]
-}
-
-export interface OfferOverview {
-  code?: string
-  shopId?: string
-  shopName?: string
-  /** @format double */
-  shopGrade?: number
-  /** Representation of a Price */
-  price?: Price
-  /** Representation of a Price */
-  originPrice?: Price
-  /** Representation of a Price */
-  totalPrice?: Price
-  /** Representation of a Price */
-  minShippingPrice?: Price
-  /** @format int32 */
-  quantity?: number
-  /** @format int32 */
-  minPurchasableQty?: number
-  /** @format int32 */
-  maxPurchasableQty?: number
-  /** @format int32 */
-  packageQty?: number
-  stateCode?: string
-  allOfferPricingsJSON?: string
-}
-
-export interface OfferStateSummary {
-  stateCode?: string
-  stateLabel?: string
-  /** @format int64 */
-  offerCount?: number
-  /** Representation of a Price */
-  minPrice?: Price
-}
-
+/** Offer */
 export interface Offer {
-  id?: string
+  /** @format date-time */
+  availableEndDate?: string
+  /** @format date-time */
+  availableStartDate?: string
   code?: string
-  productCode?: string
+  description?: string
+  /** @format date-time */
+  discountEndDate?: string
+  /** Representation of a Price */
+  discountPrice?: Price
+  /** @format date-time */
+  discountStartDate?: string
+  id?: string
+  /** @format int32 */
+  leadTimeToShip?: number
+  /** @format int32 */
+  maxOrderQuantity?: number
+  /** @format int32 */
+  minOrderQuantity?: number
   /** Representation of a Price */
   minShippingPrice?: Price
   /** Representation of a Price */
   minShippingPriceAdditional?: Price
   /** Representation of a Price */
-  price?: Price
-  /** Representation of a Price */
-  totalPrice?: Price
-  /** Representation of a Price */
   originPrice?: Price
-  priceAdditionalInfo?: string
-  /** @format int32 */
-  quantity?: number
-  description?: string
-  stateLabel?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  discountStartDate?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  discountEndDate?: string
-  /** Representation of a Price */
-  discountPrice?: Price
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  availableStartDate?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  availableEndDate?: string
-  /** @format int32 */
-  leadTimeToShip?: number
-  shopId?: string
-  shopName?: string
-  /** @format double */
-  shopGrade?: number
-  /** @format int32 */
-  shopEvaluationCount?: number
-  volumePrices?: Price[]
-  volumeOriginPrices?: Price[]
   /** @format int32 */
   packageQuantity?: number
+  /** Representation of a Price */
+  price?: Price
+  priceAdditionalInfo?: string
+  productCode?: string
   /** @format int32 */
-  minOrderQuantity?: number
-  /** @format int32 */
-  maxOrderQuantity?: number
-  shopDescription?: string
+  quantity?: number
+  shopAddress?: ShopAddress
   /** @format double */
   shopDistance?: number
-  shopAddress?: ShopAddress
+  /** @format int32 */
+  shopEvaluationCount?: number
+  /** @format double */
+  shopGrade?: number
+  shopId?: string
+  shopName?: string
+  stateLabel?: string
+  /** Representation of a Price */
+  totalPrice?: Price
+  volumeOriginPrices?: Price[]
+  volumePrices?: Price[]
+  /** Shop accessibility */
   accessibilityWheelchairShop?: boolean
   accessibilityToiletShop?: boolean
   accessibilityOffer?: string
   accessibilityOfferOthers?: string
 }
 
-/** Offers summary for this product */
-export interface OffersSummary {
-  bestOffer?: OfferOverview
-  states?: OfferStateSummary[]
+/** OfferList */
+export interface OfferList {
+  offers?: Offer[]
+}
+
+/** OfferOverview */
+export interface OfferOverview {
+  allOfferPricingsJSON?: string
+  code?: string
   /** @format int32 */
-  offerCount?: number
-}
-
-/** Representation of an Opening schedule */
-export interface OpeningSchedule {
-  /** Name of the opening schedule */
-  name?: string
-  /** Code of the opening schedule */
-  code?: string
-  /** List of weekday opening days */
-  weekDayOpeningList?: WeekdayOpeningDay[]
-  /** List of special opening days */
-  specialDayOpeningList?: SpecialOpeningDay[]
-}
-
-/** Representation of an Order */
-export interface Order {
-  /** Code number of order */
-  code?: string
-  /** Flag stating iv value is net-value */
-  net?: boolean
+  minPurchasableQty?: number
   /** Representation of a Price */
-  totalPriceWithTax?: Price
+  minShippingPrice?: Price
+  /** Representation of a Price */
+  originPrice?: Price
+  /** Representation of a Price */
+  price?: Price
+  /** @format int32 */
+  quantity?: number
+  /** @format double */
+  shopGrade?: number
+  shopId?: string
+  shopName?: string
+  stateCode?: string
   /** Representation of a Price */
   totalPrice?: Price
+}
+
+/** OfferStateSummary */
+export interface OfferStateSummary {
   /** Representation of a Price */
-  totalTax?: Price
-  /** Representation of a Price */
-  subTotal?: Price
-  /** Representation of a Price */
-  deliveryCost?: Price
-  /** List of order entries */
-  entries?: OrderEntry[]
-  /** List of entry groups */
-  entryGroups?: EntryGroup[]
+  minPrice?: Price
+  /** @format int64 */
+  offerCount?: number
+  stateCode?: string
+  stateLabel?: string
+}
+
+/** OffersSummary */
+export interface OffersSummary {
+  bestOffer?: OfferOverview
   /** @format int32 */
-  totalItems?: number
-  /** Representation of a Delivery mode */
-  deliveryMode?: DeliveryMode
-  /** Address object */
-  deliveryAddress?: Address
-  /** Payment details object */
-  paymentInfo?: PaymentDetails
+  offerCount?: number
+  states?: OfferStateSummary[]
+}
+
+/**
+ * OpeningSchedule
+ * Representation of an Opening schedule
+ */
+export interface OpeningSchedule {
+  /** Code of the opening schedule */
+  code?: string
+  /** Name of the opening schedule */
+  name?: string
+  /** List of special opening days */
+  specialDayOpeningList?: SpecialOpeningDay[]
+  /** List of weekday opening days */
+  weekDayOpeningList?: WeekdayOpeningDay[]
+}
+
+/**
+ * Order
+ * Representation of an Order
+ */
+export interface Order {
   /** List of applied order promotions */
   appliedOrderPromotions?: PromotionResult[]
   /** List of applied product promotions */
   appliedProductPromotions?: PromotionResult[]
-  /** Representation of a Price */
-  productDiscounts?: Price
-  /** Representation of a Price */
-  orderDiscounts?: Price
-  /** Representation of a Price */
-  totalDiscounts?: Price
-  /** Site */
-  site?: string
-  /** Store */
-  store?: string
-  /** Guest user id identifier */
-  guid?: string
-  /** Flag showing if order is calculated */
-  calculated?: boolean
   /** List of applied vouchers */
   appliedVouchers?: Voucher[]
-  /** Representation of a Principal webservice DTO used for defining User data types */
-  user?: Principal
-  /** List of pickup order entry group */
-  pickupOrderGroups?: PickupOrderEntryGroup[]
-  /** List of delivery order entries group */
-  deliveryOrderGroups?: DeliveryOrderEntryGroup[]
-  /**
-   * Quantity of pickup items
-   * @format int64
-   */
-  pickupItemsQuantity?: number
-  /**
-   * Quantity of delivery items
-   * @format int64
-   */
-  deliveryItemsQuantity?: number
-  /** Customer requested date for order retrieval */
-  requestedRetrievalAt?: string
-  /**
-   * Date of order creation
-   * @format date-time
-   * @example "2023-10-19T11:10:12Z"
-   */
-  created?: string
-  /** Status of order */
-  status?: string
-  /** Status display */
-  statusDisplay?: string
-  /** Flag showing if customer is Guest customer */
-  guestCustomer?: boolean
-  /** List of consignment */
-  consignments?: Consignment[]
-  /** Order delivery status */
-  deliveryStatus?: string
-  /** Order delivery status display */
-  deliveryStatusDisplay?: string
-  /** List of unconsigned order entries */
-  unconsignedEntries?: OrderEntry[]
+  /** Flag showing if order is calculated */
+  calculated?: boolean
   /**
    * Boolean flag showing if order is cancellable
    * @example true
    */
   cancellable?: boolean
+  /** Code number of order */
+  code?: string
+  /** List of consignment */
+  consignments?: Consignment[]
+  /**
+   * Date of order creation
+   * @format date-time
+   */
+  created?: string
+  /** Delivery address */
+  deliveryAddress?: Address
+  /** Delivery cost */
+  deliveryCost?: Price
+  /**
+   * Quantity of delivery items
+   * @format int64
+   */
+  deliveryItemsQuantity?: number
+  /** Delivery mode information */
+  deliveryMode?: DeliveryMode
+  /** List of delivery order entries group */
+  deliveryOrderGroups?: DeliveryOrderEntryGroup[]
+  /** Order delivery status */
+  deliveryStatus?: string
+  /** Order delivery status display */
+  deliveryStatusDisplay?: string
+  /** List of order entries */
+  entries?: OrderEntry[]
+  /** List of entry groups */
+  entryGroups?: EntryGroup[]
+  /** Flag showing if customer is Guest customer */
+  guestCustomer?: boolean
+  /** Guest user id identifier */
+  guid?: string
+  /** Flag stating iv value is net-value */
+  net?: boolean
+  /** Order discounts */
+  orderDiscounts?: Price
+  /** Payment information */
+  paymentInfo?: PaymentDetails
+  /**
+   * Quantity of pickup items
+   * @format int64
+   */
+  pickupItemsQuantity?: number
+  /** List of pickup order entry group */
+  pickupOrderGroups?: PickupOrderEntryGroup[]
+  /** Product discounts */
+  productDiscounts?: Price
   /**
    * Boolean flag showing if order is returnable
    * @example true
    */
   returnable?: boolean
+  /** Site */
+  site?: string
+  /** Status of order */
+  status?: string
+  /** Status display */
+  statusDisplay?: string
+  /** Store */
+  store?: string
+  /** Subtotal price */
+  subTotal?: Price
+  /** Total discounts */
+  totalDiscounts?: Price
+  /** @format int32 */
+  totalItems?: number
+  /** Total price value */
+  totalPrice?: Price
+  /** Total price value */
+  total?: Price
+  /** Total price with tax */
+  totalPriceWithTax?: Price
+  /** Total tax price */
+  totalTax?: Price
+  /** Refund */
   refunds?: Refunds
+  /** List of unconsigned order entries */
+  unconsignedEntries?: OrderEntry[]
+  /** User information */
+  user?: Principal
 }
 
 /**
- * Request body parameter that contains details such as the quantity of product (quantity), and the pickup store name (deliveryPointOfService.name)
- *
- * The DTO is in XML or .json format.
+ * Refunds
+ * Representation of Refunds
+ */
+export interface Refunds {
+  refundAmount: Price
+  totalWithoutRefunds: Price
+}
+
+/**
+ * OrderEntry
+ * Representation of an Order entry
  */
 export interface OrderEntry {
-  /**
-   * Entry number of the order entry
-   * @format int32
-   */
-  entryNumber?: number
-  /**
-   * Quantity number of items in order entry
-   * @format int64
-   */
-  quantity?: number
-  /** Representation of a Price */
+  barcodeData?: string
+  barcodeDisplayType?: string
+  /** Base price of order entry item */
   basePrice?: Price
-  /** Representation of a Price */
-  totalPrice?: Price
-  /** Representation of a Product */
-  product?: Product
-  /** Flag defining if order entry item is updateable */
-  updateable?: boolean
-  /** Representation of a Delivery mode */
-  deliveryMode?: DeliveryMode
-  /** Configuration info of order entry */
-  configurationInfos?: ConfigurationInfo[]
-  /** List of aggregated status information per entry, relevant if the entry is configurable and its configuration contains one or many issues in different severities. Note that configurators typically raise such issues only in case the parent document is changeable. In this case the issues (depending on their severity) need to be fixed before a checkout can be done. This means this segment can be present for a cart entry, for order entries it will always be empty */
-  statusSummaryList?: StatusSummary[]
-  /** Representation of a Point of service */
-  deliveryPointOfService?: PointOfService
-  /** Representation of a Price */
-  cancelledItemsPrice?: Price
   /**
    * Quantity number of cancellable items in order entry
    * @format int64
    * @example 5
    */
   cancellableQuantity?: number
-  /** Representation of a Price */
-  returnedItemsPrice?: Price
+  /** Total price of cancelled items which belong to the order entry item */
+  cancelledItemsPrice?: Price
+  /** Configuration info of order entry */
+  configurationInfos?: ConfigurationInfo[]
+  /** Delivery mode */
+  deliveryMode?: DeliveryMode
+  /** Point of service associated with order entry */
+  deliveryPointOfService?: PointOfService
+  deliveryScenario?: string
+  /**
+   * Entry number of the order entry
+   * @format int32
+   */
+  entryNumber?: number
+  /** Selected Shipping Code */
+  lineShippingCode?: string
+  /** Selected Shipping Label */
+  lineShippingLabel?: string
+  /**
+   * Total Line Shipping Price
+   * @format double
+   */
+  lineShippingPrice?: number
+  /** Identifier of the offer */
+  offerId?: string
+  /** Product details of order entry */
+  product?: Product
+  /**
+   * Quantity number of items in order entry
+   * @format int64
+   */
+  quantity?: number
   /**
    * Quantity number of returnable items in order entry
    * @format int64
    * @example 5
    */
   returnableQuantity?: number
-  /** Identifier of the offer */
-  offerId?: string
+  /** Total price of returned items which belong to the order entry item */
+  returnedItemsPrice?: Price
+  shopAddress?: ShopAddress
   /** Identifier of the shop which proposes the offer */
   shopId?: string
   /** Name of the shop which proposes the offer */
   shopName?: string
-  /**
-   * Total Line Shipping Price
-   * @format double
-   */
-  lineShippingPrice?: number
-  /** Selected Shipping Code */
-  lineShippingCode?: string
-  /** Selected Shipping Label */
-  lineShippingLabel?: string
-  shopAddress?: ShopAddress
-  deliveryScenario?: string
+  /** List of aggregated status information per entry, relevant if the entry is configurable and its configuration contains one or many issues in different severities. Note that configurators typically raise such issues only in case the parent document is changeable. In this case the issues (depending on their severity) need to be fixed before a checkout can be done. This means this segment can be present for a cart entry, for order entries it will always be empty */
+  statusSummaryList?: StatusSummary[]
+  /** Total price of order entry item */
+  totalPrice?: Price
+  /** Flag defining if order entry item is updateable */
+  updateable?: boolean
   voucherCode?: string
+  voucherIsValid?: boolean
   voucherRedemptionUrl?: string
   voucherValidTo?: string
-  voucherIsValid?: boolean
-  barcodeData?: string
-  barcodeDisplayType?: string
-  /** Representation of a Price */
-  refundAmount?: Price
-  shopDescription?: string
-  offerDescription?: string
-  offerPriceAdditionalInfo?: string
 }
 
-/** Representation of an Order entry list consumed */
+/**
+ * OrderEntryList
+ * Representation of an Order entry list consumed
+ */
 export interface OrderEntryList {
   /** List of order entries */
   orderEntries?: OrderEntry[]
 }
 
-/** Representation of an Order History */
+/**
+ * OrderHistory
+ * Representation of an Order History
+ */
 export interface OrderHistory {
   /** Code of Order History */
   code?: string
+  entries?: OrderEntry[]
+  /** Guest user identifier */
+  guid?: string
+  /**
+   * Date of placing order
+   * @format date-time
+   */
+  placed?: string
   /** Status of Order History */
   status?: string
   /** Status display */
   statusDisplay?: string
-  /**
-   * Date of placing order
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
-  placed?: string
-  /** Guest user identifier */
-  guid?: string
-  /** Representation of a Price */
+  /** Total price */
   total?: Price
-  entries?: OrderEntry[]
 }
 
-/** Representation of an Order History List */
+/**
+ * OrderHistoryList
+ * Representation of an Order History List
+ */
 export interface OrderHistoryList {
   /** List of order history items */
   orders?: OrderHistory[]
+  /** Pagination items */
+  pagination?: DeprecatedPagination
   /** List of sorts */
   sorts?: Sort[]
-  /** Representation of a search results pagination */
-  pagination?: DeprecatedPagination
 }
 
-/** Representation of an Order Status Update Element */
+/**
+ * OrderStatusUpdateElement
+ * Representation of an Order Status Update Element
+ */
 export interface OrderStatusUpdateElement {
+  /** BaseSite identifier */
+  baseSiteId?: string
   /** Code of update element of order status */
   code?: string
   /** Status of update element */
   status?: string
-  /** BaseSite identifier */
-  baseSiteId?: string
 }
 
-/** Representation of an Order Status Update Element List */
+/**
+ * OrderStatusUpdateElementList
+ * Representation of an Order Status Update Element List
+ */
 export interface OrderStatusUpdateElementList {
   /** List of order status update elements */
   orderStatusUpdateElements?: OrderStatusUpdateElement[]
 }
 
-/** Payment details object */
+/** PageAdaptedData */
+export type PageAdaptedData = object
+
+/**
+ * PaymentDetails
+ * Representation of a Payment Details
+ */
 export interface PaymentDetails {
-  /** Unique identifier of payment detail */
-  id?: string
   /** Name of account holder */
   accountHolderName?: string
-  /** Representation of a Card Type */
-  cardType?: CardType
+  /** Address details to be considered as billing address */
+  billingAddress?: Address
   /** Payment card number */
   cardNumber?: string
-  /** Start month from which payment is valid */
-  startMonth?: string
-  /** Start year from which payment is valid */
-  startYear?: string
+  /** Type of payment card */
+  cardType?: CardType
+  /** Flag to mark if payment the default one */
+  defaultPayment?: boolean
   /** Month of expiration of payment */
   expiryMonth?: string
   /** Year of expiration of payment */
   expiryYear?: string
+  /** Unique identifier of payment detail */
+  id?: string
   /** Issue number */
   issueNumber?: string
-  /** Identifier of subscription */
-  subscriptionId?: string
   /** Flag to mark if payment is saved one */
   saved?: boolean
-  /** Flag to mark if payment the default one */
-  defaultPayment?: boolean
-  /** Address object */
-  billingAddress?: Address
+  /** Start month from which payment is valid */
+  startMonth?: string
+  /** Start year from which payment is valid */
+  startYear?: string
+  /** Identifier of subscription */
+  subscriptionId?: string
 }
 
-/** Representation of a Payment details list */
+/**
+ * PaymentDetailsList
+ * Representation of a Payment details list
+ */
 export interface PaymentDetailsList {
   /** List of payment details */
   payments?: PaymentDetails[]
 }
 
-/** Representation of a Payment Mode */
+/**
+ * PaymentMode
+ * Representation of a Payment Mode
+ */
 export interface PaymentMode {
   /** Payment mode code */
   code?: string
-  /** Payment mode name */
-  name?: string
   /** Payment mode description */
   description?: string
+  /** Payment mode name */
+  name?: string
 }
 
-/** Representation of a Payment Mode List */
+/**
+ * PaymentModeList
+ * Representation of a Payment Mode List
+ */
 export interface PaymentModeList {
   /** List of payment modes */
   paymentModes?: PaymentMode[]
 }
 
+/** PaymentRequest */
 export interface PaymentRequest {
-  postUrl?: string
-  parameters?: Record<string, string>
   mappingLabels?: Record<string, string>
+  parameters?: Record<string, string>
+  postUrl?: string
 }
 
-/** Representation of a Pickup Order Entry Group */
+/**
+ * PickupOrderEntryGroup
+ * Representation of a Pickup Order Entry Group
+ */
 export interface PickupOrderEntryGroup {
-  /** Representation of a Price */
-  totalPriceWithTax?: Price
+  /** Delivery point of service */
+  deliveryPointOfService?: PointOfService
+  /**
+   * Distance calculated to pickup place
+   * @format double
+   */
+  distance?: number
   /** List of order entries */
   entries?: OrderEntry[]
   /**
@@ -1386,153 +1475,157 @@ export interface PickupOrderEntryGroup {
    * @format int64
    */
   quantity?: number
-  /** Representation of a Point of service */
-  deliveryPointOfService?: PointOfService
-  /**
-   * Distance calculated to pickup place
-   * @format double
-   */
-  distance?: number
+  /** Total price with tax */
+  totalPriceWithTax?: Price
 }
 
-/** Representation of a Point of service */
+/**
+ * PointOfService
+ * Representation of a Point of service
+ */
 export interface PointOfService {
-  /**
-   * Name of the point of service
-   * @example "Misato"
-   */
-  name?: string
-  /** Display name of the point of service */
-  displayName?: string
-  /** Url address of the point of service */
-  url?: string
+  /** Address information of point of service */
+  address?: Address
   /** Description of the point of service */
   description?: string
-  /** Representation of an Opening schedule */
-  openingHours?: OpeningSchedule
-  /** Store content of given point of service */
-  storeContent?: string
-  /** List of features for a given point of service */
-  features?: Record<string, string>
-  /** Representation of a GeoPoint */
-  geoPoint?: GeoPoint
-  /** Distance to the point of service as text value */
-  formattedDistance?: string
+  /** Display name of the point of service */
+  displayName?: string
   /**
    * Distance to the point of service as number value
    * @format double
    */
   distanceKm?: number
-  /** Representation of an Image */
+  /** List of features for a given point of service */
+  features?: Record<string, string>
+  /** Distance to the point of service as text value */
+  formattedDistance?: string
+  /** Geopoint localization info about point of service */
+  geoPoint?: GeoPoint
+  /** Image associated with the point of service */
   mapIcon?: Image
-  /** Address object */
-  address?: Address
+  /** Name of the point of service */
+  name?: string
+  /** Opening hours of point of service */
+  openingHours?: OpeningSchedule
+  /** Store content of given point of service */
+  storeContent?: string
   /** Collection of images associated with a point of service */
   storeImages?: Image[]
-  /** Instructions used for picking up an order in store */
-  pickUpInStoreInstructions?: string
+  /** Url address of the point of service */
+  url?: string
 }
 
-/** Representation of a Point of Service List */
+/**
+ * PointOfServiceList
+ * Representation of a Point of Service List
+ */
 export interface PointOfServiceList {
   /** List of points of service */
   pointOfServices?: PointOfService[]
 }
 
-/** Representation of a Point Of Service Stock */
+/**
+ * PointOfServiceStock
+ * Representation of a Point Of Service Stock
+ */
 export interface PointOfServiceStock {
-  /**
-   * Name of the point of service
-   * @example "Misato"
-   */
-  name?: string
-  /** Display name of the point of service */
-  displayName?: string
-  /** Url address of the point of service */
-  url?: string
+  /** Address information of point of service */
+  address?: Address
   /** Description of the point of service */
   description?: string
-  /** Representation of an Opening schedule */
-  openingHours?: OpeningSchedule
-  /** Store content of given point of service */
-  storeContent?: string
-  /** List of features for a given point of service */
-  features?: Record<string, string>
-  /** Representation of a GeoPoint */
-  geoPoint?: GeoPoint
-  /** Distance to the point of service as text value */
-  formattedDistance?: string
+  /** Display name of the point of service */
+  displayName?: string
   /**
    * Distance to the point of service as number value
    * @format double
    */
   distanceKm?: number
-  /** Representation of an Image */
+  /** List of features for a given point of service */
+  features?: Record<string, string>
+  /** Distance to the point of service as text value */
+  formattedDistance?: string
+  /** Geopoint localization info about point of service */
+  geoPoint?: GeoPoint
+  /** Image associated with the point of service */
   mapIcon?: Image
-  /** Address object */
-  address?: Address
+  /** Name of the point of service */
+  name?: string
+  /** Opening hours of point of service */
+  openingHours?: OpeningSchedule
+  /** Stock information about point of service */
+  stockInfo?: Stock
+  /** Store content of given point of service */
+  storeContent?: string
   /** Collection of images associated with a point of service */
   storeImages?: Image[]
-  /** Instructions used for picking up an order in store */
-  pickUpInStoreInstructions?: string
-  /** Representation of a Stock */
-  stockInfo?: Stock
+  /** Url address of the point of service */
+  url?: string
 }
 
-/** Representation of a Price */
+/**
+ * Price
+ * Representation of a Price
+ */
 export interface Price {
   /** Currency iso format */
   currencyIso?: string
-  /** Value of price in BigDecimal format */
-  value?: number
-  /** Type of the price */
-  priceType?: 'BUY' | 'FROM'
   /** Value of price formatted */
   formattedValue?: string
-  /**
-   * Minimum quantity of the price value
-   * @format int64
-   */
-  minQuantity?: number
   /**
    * Maximum quantity of the price value
    * @format int64
    */
   maxQuantity?: number
+  /**
+   * Minimum quantity of the price value
+   * @format int64
+   */
+  minQuantity?: number
+  /** Type of the price */
+  priceType?: 'BUY' | 'FROM'
+  /** Value of price in BigDecimal format */
+  value?: number
 }
 
-/** Representation of a Price Range */
+/**
+ * PriceRange
+ * Representation of a Price Range
+ */
 export interface PriceRange {
-  /** Representation of a Price */
+  /** Maximum value of the Price Range */
   maxPrice?: Price
-  /** Representation of a Price */
+  /** Minium value of the Price Range */
   minPrice?: Price
 }
 
-/** Representation of a Principal webservice DTO used for defining User data types */
+/**
+ * Principal
+ * Representation of a Principal webservice DTO used for defining User data types
+ */
 export interface Principal {
-  /** Unique user identifier */
-  uid?: string
   /** Name of the user */
   name?: string
+  /** Unique user identifier */
+  uid?: string
 }
 
-/** Representation of a Product */
+/**
+ * FavouritesItem
+ * Representation of a FavouritesItem
+ */
+export interface FavouritesItem {
+  product: Product
+  /** The Cart identifier of the wishlist cart */
+  cartId: string
+  /** The entry number of the product in the wishlist cart */
+  entryNumber: number
+}
+
+/**
+ * Product
+ * Representation of a Product
+ */
 export interface Product {
-  /** Code of the product */
-  code?: string
-  /** Name of the product */
-  name?: string
-  /** Url address of the product */
-  url?: string
-  /** Description of the product */
-  description?: string
-  /** Flag defining if product is purchasable */
-  purchasable?: boolean
-  /** Representation of a Stock */
-  stock?: Stock
-  /** List of future stocks */
-  futureStocks?: FutureStock[]
   /** Flag defining if product is available for pickup */
   availableForPickup?: boolean
   /**
@@ -1540,246 +1633,290 @@ export interface Product {
    * @format double
    */
   averageRating?: number
+  /** List of base options related to the product */
+  baseOptions?: BaseOption[]
+  /** Information about base product */
+  baseProduct?: string
+  /** List of categories product belongs to */
+  categories?: Category[]
+  /** List of classifications related to the product */
+  classifications?: Classification[]
+  /** Code of the product */
+  code?: string
+  /** Flag stating if product is configurable */
+  configurable?: boolean
+  /** Configurator type related to the product */
+  configuratorType?: string
+  /** Description of the product */
+  description?: string
+  /** @format date-time */
+  eventEndDate?: string
+  /** @format date-time */
+  eventStartDate?: string
+  /** List of future stocks */
+  futureStocks?: FutureStock[]
+  /** List of images linked to product */
+  images?: Image[]
+  /** The type of product */
+  itemType?:
+    | 'AudioProduct'
+    | 'VideoProduct'
+    | 'BookProduct'
+    | 'SheetMusicProduct'
+    | 'StagedEventProduct'
+    | 'ExhibitProduct'
+    | 'CinemaProduct'
+    | 'MusicInstrumentProduct'
+  leafCategoryName?: string
+  /** @format double */
+  lowestOfferPrice?: number
+  /** Data of product manufacturer */
+  manufacturer?: string
+  /** Flag stating if product is multidimensional */
+  multidimensional?: boolean
+  /** Name of the product */
+  name?: string
   /**
    * Number of reviews associated with the product
    * @format int32
    */
   numberOfReviews?: number
-  /** Product summary */
-  summary?: string
-  /** Data of product manufacturer */
-  manufacturer?: string
-  /** Variant type of the product */
-  variantType?: string
-  /** Representation of a Price */
-  price?: Price
-  /** Information about base product */
-  baseProduct?: string
-  /** List of images linked to product */
-  images?: Image[]
-  /** List of categories product belongs to */
-  categories?: Category[]
-  /** List of reviews associated with the product */
-  reviews?: Review[]
-  /** List of classifications related to the product */
-  classifications?: Classification[]
-  /** List of potential promotions related to the product */
-  potentialPromotions?: Promotion[]
-  /** List of variant options related to the product */
-  variantOptions?: VariantOption[]
-  /** List of base options related to the product */
-  baseOptions?: BaseOption[]
-  /** Flag stating if volume price should be displayed */
-  volumePricesFlag?: boolean
-  /** List of volume prices */
-  volumePrices?: Price[]
-  /** List of product references */
-  productReferences?: ProductReference[]
-  /** List of variant matrixes associated with the product */
-  variantMatrix?: VariantMatrixElement[]
-  /** Representation of a Price Range */
-  priceRange?: PriceRange
-  /** Flag stating if product is multidimensional */
-  multidimensional?: boolean
-  /** Configurator type related to the product */
-  configuratorType?: string
-  /** Flag stating if product is configurable */
-  configurable?: boolean
-  /**
-   * Tags associated with the product
-   * @uniqueItems true
-   */
-  tags?: string[]
-  /** Offers summary for this product */
-  offersSummary?: OffersSummary
-  offers?: Offer[]
-  leafCategoryName?: string
-  topCategoryName?: string
-  itemType?: string
   /** @format int32 */
   offerCount?: number
+  offers?: Offer[]
+  /** Offers summary for this product */
+  offersSummary?: OffersSummary
+  /** List of potential promotions related to the product */
+  potentialPromotions?: Promotion[]
+  /** Price of the product */
+  price?: Price
+  /** Price range assigned to the product */
+  priceRange?: PriceRange
+  /** List of product references */
+  productReferences?: ProductReference[]
+  /** Flag defining if product is purchasable */
+  purchasable?: boolean
+  /** List of reviews associated with the product */
+  reviews?: Review[]
   /** @format double */
   shopDistance?: number
-  eventStartDate?: string
-  eventEndDate?: string
+  /** Stock value of the product */
+  stock?: Stock
+  /** Product summary */
+  summary?: string
+  /** Tags associated with the product */
+  tags?: string[]
+  topCategoryName?: string
+  /** Url address of the product */
+  url?: string
+  /** List of variant matrixes associated with the product */
+  variantMatrix?: VariantMatrixElement[]
+  /** List of variant options related to the product */
+  variantOptions?: VariantOption[]
+  /** Variant type of the product */
+  variantType?: string
+  /** The name of the location of the event - populated only for stagedEvent and exhibit products */
   venueName?: string
-  /** @format double */
-  lowestOfferPrice?: number
+  /** List of volume prices */
+  volumePrices?: Price[]
+  /** Flag stating if volume price should be displayed */
+  volumePricesFlag?: boolean
+  /** Name of the seller of the offer (if offer count = 1) */
   seller?: string
-  fulfillmentOption?: string
-  reservationSuspended?: boolean
 }
 
-/** Representation of a Product Express Update Element */
+/**
+ * ProductExpressUpdateElement
+ * Representation of a Product Express Update Element
+ */
 export interface ProductExpressUpdateElement {
-  /** Code of product express update element */
-  code?: string
   /** Catalog identifier */
   catalogId?: string
   /** Catalog version */
   catalogVersion?: string
+  /** Code of product express update element */
+  code?: string
 }
 
-/** Representation of a Product Express Update Element List */
+/**
+ * ProductExpressUpdateElementList
+ * Representation of a Product Express Update Element List
+ */
 export interface ProductExpressUpdateElementList {
   /** List of product express update element */
   productExpressUpdateElements?: ProductExpressUpdateElement[]
 }
 
-/** Representation of a Product Future Stocks */
+/**
+ * ProductFutureStocks
+ * Representation of a Product Future Stocks
+ */
 export interface ProductFutureStocks {
-  /**
-   * Product identifier
-   * @example "3318057"
-   */
-  productCode?: string
   /** List of future stocks */
   futureStocks?: FutureStock[]
+  /**
+   * Product identifier
+   * @example 3318057
+   */
+  productCode?: string
 }
 
-/** Representation of a Product Future Stocks List */
+/**
+ * ProductFutureStocksList
+ * Representation of a Product Future Stocks List
+ */
 export interface ProductFutureStocksList {
   /** List of product future stocks */
   productFutureStocks?: ProductFutureStocks[]
 }
 
-/** Representation of a Product List */
+/**
+ * ProductList
+ * Representation of a Product List
+ */
 export interface ProductList {
-  /** List of products */
-  products?: Product[]
   /** Catalog of product list */
   catalog?: string
-  /** Version of product list */
-  version?: string
   /**
-   * Total product count
+   * Number of current page
    * @format int32
    */
-  totalProductCount?: number
+  currentPage?: number
+  /** List of products */
+  products?: Product[]
   /**
    * Total page count
    * @format int32
    */
   totalPageCount?: number
   /**
-   * Number of current page
+   * Total product count
    * @format int32
    */
-  currentPage?: number
+  totalProductCount?: number
+  /** Version of product list */
+  version?: string
 }
 
-/** Representation of a Product Reference */
+/**
+ * ProductReference
+ * Representation of a Product Reference
+ */
 export interface ProductReference {
-  /** Reference type */
-  referenceType?: string
   /** Reference description */
   description?: string
+  /** Flag stating if product reference is preselected */
+  preselected?: boolean
   /**
    * Reference quantity
    * @format int32
    */
   quantity?: number
-  /** Representation of a Product */
+  /** Reference type */
+  referenceType?: string
+  /** Target product */
   target?: Product
-  /** Flag stating if product reference is preselected */
-  preselected?: boolean
 }
 
-/** Representation of a Product Reference List */
+/**
+ * ProductReferenceList
+ * Representation of a Product Reference List
+ */
 export interface ProductReferenceList {
   /** List of product references */
   references?: ProductReference[]
 }
 
-/** Representation of a Product Search Page */
+/**
+ * ProductSearchPage
+ * Representation of a Product Search Page
+ */
 export interface ProductSearchPage {
-  /** Free text search */
-  freeTextSearch?: string
+  /** List of breadcrumbs info */
+  breadcrumbs?: Breadcrumb[]
   /** Code of category */
   categoryCode?: string
+  /** Current query */
+  currentQuery?: SearchState
+  /** List of facets */
+  facets?: Facet[]
+  /** Free text search */
+  freeTextSearch?: string
   /** Redirect url address keyword */
   keywordRedirectUrl?: string
-  /** Representation of a Spell Checker Suggestion */
-  spellingSuggestion?: SpellingSuggestion
+  /** Pagination number */
+  pagination?: DeprecatedPagination
   /** List of products */
   products?: Product[]
   /** List of sorts */
   sorts?: Sort[]
-  /** Representation of a search results pagination */
-  pagination?: DeprecatedPagination
-  /** Representation of a Search State */
-  currentQuery?: SearchState
-  /** List of breadcrumbs info */
-  breadcrumbs?: Breadcrumb[]
-  /** List of facets */
-  facets?: Facet[]
+  /** Spelling suggestion */
+  spellingSuggestion?: SpellingSuggestion
 }
 
-export interface ProductWithOffers {
-  productCode?: string
-  offers?: Offer[]
-}
-
-export interface ProductsWithOffersList {
-  productsWithOffers?: ProductWithOffers[]
-}
-
-/** Representation of a Promotion */
+/**
+ * Promotion
+ * Representation of a Promotion
+ */
 export interface Promotion {
   /** Code of the promotion */
   code?: string
-  /** Promotion title */
-  title?: string
-  /** Type of the promotion */
-  promotionType?: string
-  /**
-   * The initial date of the promotion
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  startDate?: string
+  /** Message about promotion which is displayed when planning potential promotion. This field has higher priority over promotion description */
+  couldFireMessages?: string[]
+  /** Description of the promotion */
+  description?: string
+  /** Boolean flag if promotion is enabled */
+  enabled?: boolean
   /**
    * Last date of validity of the promotion
    * @format date-time
-   * @example "2023-10-19T11:10:11Z"
    */
   endDate?: string
-  /** Description of the promotion */
-  description?: string
-  /** Message about promotion which is displayed when planning potential promotion. This field has higher priority over promotion description */
-  couldFireMessages?: string[]
   /** Message fired while the promotion is active. This is info how much you will get when applying the promotion */
   firedMessages?: string[]
-  /** Representation of an Image */
-  productBanner?: Image
-  /** Boolean flag if promotion is enabled */
-  enabled?: boolean
   /**
    * Priority index as numeric value of the promotion. Higher number means higher priority
    * @format int32
    */
   priority?: number
+  /** Image banner of the promotion */
+  productBanner?: Image
   /** Group of the promotion */
   promotionGroup?: string
+  /** Type of the promotion */
+  promotionType?: string
   /** List of promotion restrictions */
   restrictions?: PromotionRestriction[]
+  /**
+   * The initial date of the promotion
+   * @format date-time
+   */
+  startDate?: string
+  /** Promotion title */
+  title?: string
 }
 
-/** Representation of a Promotion list */
+/**
+ * PromotionList
+ * Representation of a Promotion list
+ */
 export interface PromotionList {
   /** List of promotions */
   promotions?: Promotion[]
 }
 
-/** Representation of a Promotion order entry consumed */
+/**
+ * PromotionOrderEntryConsumed
+ * Representation of a Promotion order entry consumed
+ */
 export interface PromotionOrderEntryConsumed {
-  /** Order entry code */
-  code?: string
   /**
    * Adjusted unit price for promotion order entry
    * @format double
    */
   adjustedUnitPrice?: number
+  /** Order entry code */
+  code?: string
   /**
    * Order entry number
    * @format int32
@@ -1792,79 +1929,89 @@ export interface PromotionOrderEntryConsumed {
   quantity?: number
 }
 
-/** Representation of a Promotion Restriction */
+/**
+ * PromotionRestriction
+ * Representation of a Promotion Restriction
+ */
 export interface PromotionRestriction {
-  /** Type of the promotion restriction */
-  restrictionType?: string
   /** Description of the promotion restriction */
   description?: string
+  /** Type of the promotion restriction */
+  restrictionType?: string
 }
 
-/** Representation of a Promotion result */
+/**
+ * PromotionResult
+ * Representation of a Promotion result
+ */
 export interface PromotionResult {
-  /** Description of promotion result */
-  description?: string
-  /** Representation of a Promotion */
-  promotion?: Promotion
   /** List of promotion order entries consumed */
   consumedEntries?: PromotionOrderEntryConsumed[]
+  /** Description of promotion result */
+  description?: string
+  /** Promotion information for given promotion result */
+  promotion?: Promotion
 }
 
-/** Representation of a Promotion result list */
+/**
+ * PromotionResultList
+ * Representation of a Promotion result list
+ */
 export interface PromotionResultList {
   /** List of promotion results */
   promotions?: PromotionResult[]
 }
 
-export interface PushNotificationToken {
-  fcmToken?: string
-  apnsToken?: string
-  previousFcmToken?: string
-}
-
-export interface ReasonList {
-  reasons?: Reason[]
-}
-
+/** Reason */
 export interface Reason {
   code?: string
   label?: string
 }
 
-export interface Refunds {
-  /** Representation of a Price */
-  refundAmount?: Price
-  /** Representation of a Price */
-  totalWithoutRefunds?: Price
+/** ReasonList */
+export interface ReasonList {
+  reasons?: Reason[]
 }
 
-/** Response body fields which will be returned while fetching the list of country's regions. */
+/**
+ * Region
+ * Response body fields which will be returned while fetching the list of country's regions.
+ */
 export interface Region {
+  /** Country code in iso format */
+  countryIso?: string
   /** Country and Region code in iso format */
   isocode?: string
   /** Region code in short iso form */
   isocodeShort?: string
-  /** Country code in iso format */
-  countryIso?: string
   /** Name of the region */
   name?: string
 }
 
-/** List of Regions */
+/**
+ * RegionList
+ * List of Regions
+ */
 export interface RegionList {
   /** This is the list of Region fields that should be returned in the response body */
   regions?: Region[]
 }
 
-/** Request body parameter that contains details such as token and new password */
+/**
+ * ResetPassword
+ * Representation of a Reset Password
+ */
 export interface ResetPassword {
-  /** token value which will be generated as unique string that will be sent with email to allow user for completing reset-password operation */
-  token: string
   /** new password string which is required to complete process of resetting password */
   newPassword: string
+  /** token value which will be generated as unique string that will be sent with email to allow user for completing reset-password operation */
+  token: string
 }
 
-/** Representation of a return request for an order */
+/**
+ * ReturnRequest
+ * Representation of a return request for an order
+ */
 export interface ReturnRequest {
   /**
    * Boolean flag for whether the return request is cancellable
@@ -1879,12 +2026,12 @@ export interface ReturnRequest {
   /**
    * Date of the return request creation
    * @format date-time
-   * @example "2023-10-19T11:10:12Z"
+   * @example "2020-12-31T09:00:00+0000"
    */
   creationTime?: string
-  /** Representation of a Price */
+  /** Delivery cost */
   deliveryCost?: Price
-  /** Representation of an Order */
+  /** Order related to the return request */
   order?: Order
   /**
    * Boolean flag for whether there is a delivery cost for refund
@@ -1902,31 +2049,33 @@ export interface ReturnRequest {
   rma?: string
   /** Status of return request */
   status?: string
-  /** Representation of a Price */
+  /** Subtotal price */
   subTotal?: Price
-  /** Representation of a Price */
+  /** Total price */
   totalPrice?: Price
 }
 
-/** Representation of a return request entry which contains information about the returned product */
+/**
+ * ReturnRequestEntry
+ * Representation of a return request entry which contains information about the returned product
+ */
 export interface ReturnRequestEntry {
-  /**
-   * Request body parameter that contains details such as the quantity of product (quantity), and the pickup store name (deliveryPointOfService.name)
-   *
-   * The DTO is in XML or .json format.
-   */
-  orderEntry?: OrderEntry
   /**
    * Quantity which is expected to be returned for this return request entry
    * @format int64
    * @example 5
    */
   expectedQuantity?: number
-  /** Representation of a Price */
+  /** Order entry related to the return request entry */
+  orderEntry?: OrderEntry
+  /** Refund amount of the entry */
   refundAmount?: Price
 }
 
-/** Representation of a return request entry input for an order */
+/**
+ * ReturnRequestEntryInput
+ * Representation of a return request entry input for an order
+ */
 export interface ReturnRequestEntryInput {
   /**
    * Order entry number of the returned product
@@ -1942,7 +2091,10 @@ export interface ReturnRequestEntryInput {
   quantity: number
 }
 
-/** Return request input list for the current order. */
+/**
+ * ReturnRequestEntryInputList
+ * Representation of a return request entry input list for an order
+ */
 export interface ReturnRequestEntryInputList {
   /**
    * Code of the order which return request is related to
@@ -1953,145 +2105,133 @@ export interface ReturnRequestEntryInputList {
   returnRequestEntryInputs: ReturnRequestEntryInput[]
 }
 
-/** Representation of an Order Return Request List */
+/**
+ * ReturnRequestList
+ * Representation of an Order Return Request List
+ */
 export interface ReturnRequestList {
+  /** Pagination items */
+  pagination?: DeprecatedPagination
   /** List of order return requests */
   returnRequests?: ReturnRequest[]
   /** List of sorts */
   sorts?: Sort[]
-  /** Representation of a search results pagination */
-  pagination?: DeprecatedPagination
 }
 
-/** Return request modification object. */
+/**
+ * ReturnRequestModification
+ * Representation of modifications for a return request
+ */
 export interface ReturnRequestModification {
   /** Status of the return request */
   status?: 'CANCELLING'
 }
 
-/** Object contains review details like : rating, alias, headline, comment */
+/**
+ * Review
+ * Representation of a Review
+ */
 export interface Review {
-  /** Identifier of review */
-  id?: string
-  /** Review headline */
-  headline?: string
+  /** Alias name for the review */
+  alias?: string
   /** Review comment */
   comment?: string
+  /**
+   * Date of the review
+   * @format date-time
+   */
+  date?: string
+  /** Review headline */
+  headline?: string
+  /** Identifier of review */
+  id?: string
+  /** Person related to the review */
+  principal?: User
   /**
    * Review rating value
    * @format double
    */
   rating?: number
-  /**
-   * Date of the review
-   * @format date-time
-   * @example "2023-10-19T11:10:11Z"
-   */
-  date?: string
-  /** Alias name for the review */
-  alias?: string
-  /** User's object. */
-  principal?: User
 }
 
-/** Representation of a Review List */
+/**
+ * ReviewList
+ * Representation of a Review List
+ */
 export interface ReviewList {
   /** List of reviews */
   reviews?: Review[]
 }
 
-/** Representation of an Invoice */
-export interface SAPInvoice {
-  /**
-   * Invoice Id
-   * @example "9560887"
-   */
-  invoiceId?: string
-  /**
-   * Invoice creation date
-   * @format date-time
-   * @example "2020-09-16T04:55:09.505Z"
-   */
-  createdAt?: string
-  /** Representation of a Price */
-  totalAmount?: Price
-  /** Representation of a Price */
-  netAmount?: Price
-  /**
-   * External system identifier where the invoice resides.
-   * @example "S4SALES"
-   */
-  externalSystemId?: string
-}
-
-/** Representation of an Invoice List */
-export interface SAPInvoiceList {
-  /** list of invoice */
-  invoices?: SAPInvoice[]
-  /** sorting information */
-  sorts?: Sort[]
-  /** Pagination info */
-  pagination?: Pagination
-}
-
-/** Representation of a Save Cart Result */
+/**
+ * SaveCartResult
+ * Representation of a Save Cart Result
+ */
 export interface SaveCartResult {
-  /** Representation of a Cart */
+  /** Cart data information for saved cart */
   savedCartData?: Cart
 }
 
-/** Representation of a Search Query */
+/**
+ * SearchQuery
+ * Representation of a Search Query
+ */
 export interface SearchQuery {
   /** Value of search query */
   value?: string
 }
 
-/** Representation of a Search State */
+/**
+ * SearchState
+ * Representation of a Search State
+ */
 export interface SearchState {
+  /** Query of search state */
+  query?: SearchQuery
   /** Url address of search state */
   url?: string
-  /** Representation of a Search Query */
-  query?: SearchQuery
 }
 
+/** Shop */
+export interface Shop {
+  /** @format int64 */
+  approvalDelay?: number
+  /** @format double */
+  approvalRate?: number
+  availableShippingOptions?: DeliveryMode[]
+  banner?: string
+  description?: string
+  /** @format int32 */
+  evaluationCount?: number
+  /** @format double */
+  grade?: number
+  id?: string
+  logo?: string
+  name?: string
+  offersPageUrl?: string
+  premium?: boolean
+  /** @format date-time */
+  registrationDate?: string
+  returnPolicy?: string
+  shippingCountry?: string
+}
+
+/** ShopAddress */
 export interface ShopAddress {
-  street?: string
   city?: string
-  postalCode?: string
   countryIso?: string
   /** @format double */
   latitude?: number
   /** @format double */
   longitude?: number
+  postalCode?: string
+  street?: string
 }
 
-export interface Shop {
-  id?: string
-  name?: string
-  premium?: boolean
-  /** @format double */
-  grade?: number
-  /** @format int32 */
-  evaluationCount?: number
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:14Z"
-   */
-  registrationDate?: string
-  /** @format int64 */
-  approvalDelay?: number
-  /** @format double */
-  approvalRate?: number
-  shippingCountry?: string
-  availableShippingOptions?: DeliveryMode[]
-  description?: string
-  returnPolicy?: string
-  logo?: string
-  banner?: string
-  offersPageUrl?: string
-}
-
-/** Representation a Sort option */
+/**
+ * Sort
+ * Representation a Sort option
+ */
 export interface Sort {
   /** Code of Sort */
   code?: string
@@ -2101,58 +2241,69 @@ export interface Sort {
   selected?: boolean
 }
 
-/** Representation of a special opening day */
+/**
+ * SpecialOpeningDay
+ * Representation of a special opening day
+ */
 export interface SpecialOpeningDay {
-  /** Representation of a Time */
-  openingTime?: Time
-  /** Representation of a Time */
+  /** Flag stating if special opening day is closed */
+  closed?: boolean
+  /** Closing time of opening day */
   closingTime?: Time
+  /** Comment field */
+  comment?: string
   /**
    * Date of special opening day
    * @format date-time
-   * @example "2023-10-19T11:10:11Z"
    */
   date?: string
   /** Text representation of the date of special opening day */
   formattedDate?: string
-  /** Flag stating if special opening day is closed */
-  closed?: boolean
   /** Name of the special opening day event */
   name?: string
-  /** Comment field */
-  comment?: string
+  /** Starting time of opening day */
+  openingTime?: Time
 }
 
-/** Representation of a Spell Checker Suggestion */
+/**
+ * SpellingSuggestion
+ * Representation of a Spell Checker Suggestion
+ */
 export interface SpellingSuggestion {
-  /** Spelling suggestion */
-  suggestion?: string
   /** Query for spelling suggestion */
   query?: string
+  /** Spelling suggestion */
+  suggestion?: string
 }
 
-/** Representation of a status summary, an aggregated view on issues for a specific status or severity. These issues are attached to configurations of products or order entries */
+/**
+ * StatusSummary
+ * Representation of a status summary, an aggregated view on issues for a specific status or severity. These issues are attached to configurations of products or order entries
+ */
 export interface StatusSummary {
-  /**
-   * Status or severity indicator, can be one of ERROR, WARNING, INFO or SUCCESS
-   * @example "ERROR"
-   */
-  status?: string
   /**
    * Number of issues per status
    * @format int32
    * @example 3
    */
   numberOfIssues?: number
+  /**
+   * Status or severity indicator, can be one of ERROR, WARNING, INFO or SUCCESS
+   * @example "ERROR"
+   */
+  status?: string
 }
 
-/** Representation of a Stock */
+/**
+ * Stock
+ * Representation of a Stock
+ */
 export interface Stock {
   /**
-   * Status of stock level
-   * @example "inStock"
+   * Indicate whether Stock level value is rounded
+   * @example false
    */
-  stockLevelStatus?: string
+  isValueRounded?: boolean
   /**
    * Stock level expressed as number
    * @format int64
@@ -2160,65 +2311,56 @@ export interface Stock {
    */
   stockLevel?: number
   /**
-   * Indicate whether Stock level value is rounded
-   * @example false
+   * Status of stock level
+   * @example "inStock"
    */
-  isValueRounded?: boolean
+  stockLevelStatus?: string
 }
 
-/** Representation of a Store Count */
+/**
+ * StoreCount
+ * Representation of a Store Count
+ */
 export interface StoreCount {
-  /** Type of store count */
-  type?: string
-  /** Name of store count */
-  name?: string
-  /** Iso code of store */
-  isoCode?: string
   /**
    * Count
    * @format int32
    */
   count?: number
+  /** Iso code of store */
+  isoCode?: string
+  /** Name of store count */
+  name?: string
   /** List of store counts */
   storeCountDataList?: StoreCount[]
+  /** Type of store count */
+  type?: string
 }
 
-/** Representation of a Store Count List */
+/**
+ * StoreCountList
+ * Representation of a Store Count List
+ */
 export interface StoreCountList {
   /** List of store counts */
   countriesAndRegionsStoreCount?: StoreCount[]
 }
 
-/** Representation of a Store finder search page */
+/**
+ * StoreFinderSearchPage
+ * Representation of a Store finder search page
+ */
 export interface StoreFinderSearchPage {
-  /** List of stores */
-  stores?: PointOfService[]
-  /** List of sortings */
-  sorts?: Sort[]
-  /** Representation of a search results pagination */
-  pagination?: DeprecatedPagination
-  /** Location text */
-  locationText?: string
-  /**
-   * Source latitude
-   * @format double
-   */
-  sourceLatitude?: number
-  /**
-   * Source longitude
-   * @format double
-   */
-  sourceLongitude?: number
-  /**
-   * Bound north latitude
-   * @format double
-   */
-  boundNorthLatitude?: number
   /**
    * Bound east longitude
    * @format double
    */
   boundEastLongitude?: number
+  /**
+   * Bound north latitude
+   * @format double
+   */
+  boundNorthLatitude?: number
   /**
    * Bound south latitude
    * @format double
@@ -2229,18 +2371,12 @@ export interface StoreFinderSearchPage {
    * @format double
    */
   boundWestLongitude?: number
-}
-
-/** Representation of a Store Finder Stock Search Page */
-export interface StoreFinderStockSearchPage {
-  /** List of stores */
-  stores?: PointOfServiceStock[]
-  /** List of sorts */
-  sorts?: Sort[]
-  /** Representation of a search results pagination */
-  pagination?: DeprecatedPagination
   /** Location text */
   locationText?: string
+  /** Pagination */
+  pagination?: DeprecatedPagination
+  /** List of sortings */
+  sorts?: Sort[]
   /**
    * Source latitude
    * @format double
@@ -2251,16 +2387,25 @@ export interface StoreFinderStockSearchPage {
    * @format double
    */
   sourceLongitude?: number
-  /**
-   * Bound to north latitude
-   * @format double
-   */
-  boundNorthLatitude?: number
+  /** List of stores */
+  stores?: PointOfService[]
+}
+
+/**
+ * StoreFinderStockSearchPage
+ * Representation of a Store Finder Stock Search Page
+ */
+export interface StoreFinderStockSearchPage {
   /**
    * Bound to east longitude
    * @format double
    */
   boundEastLongitude?: number
+  /**
+   * Bound to north latitude
+   * @format double
+   */
+  boundNorthLatitude?: number
   /**
    * Bound to south latitude
    * @format double
@@ -2271,52 +2416,102 @@ export interface StoreFinderStockSearchPage {
    * @format double
    */
   boundWestLongitude?: number
-  /** Representation of a Product */
+  /** Location text */
+  locationText?: string
+  /** Pagination */
+  pagination?: DeprecatedPagination
+  /** Product */
   product?: Product
+  /** List of sorts */
+  sorts?: Sort[]
+  /**
+   * Source latitude
+   * @format double
+   */
+  sourceLatitude?: number
+  /**
+   * Source longitude
+   * @format double
+   */
+  sourceLongitude?: number
+  /** List of stores */
+  stores?: PointOfServiceStock[]
 }
 
-/** Representation of a Suggestion */
+/**
+ * Suggestion
+ * Representation of a Suggestion
+ */
 export interface Suggestion {
   /** Suggestion value */
   value?: string
 }
 
-/** Representation of a Suggestion List */
+/**
+ * SuggestionList
+ * Representation of a Suggestion List
+ */
 export interface SuggestionList {
   /** List of suggestions */
   suggestions?: Suggestion[]
 }
 
-export interface ThreadDetails {
-  id?: string
-  topic?: ThreadTopic
+/** Thread */
+export interface Thread {
   authorizedParticipants?: ThreadRecipient[]
-  selectableParticipants?: ThreadRecipient[]
   currentParticipants?: ThreadRecipient[]
   currentParticipantsDisplayValue?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
+  /** @format date-time */
   dateCreated?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
+  /** @format date-time */
   dateUpdated?: string
-  entityType?: string
-  entityLabel?: string
   entityId?: string
-  messages?: ThreadMessage[]
+  entityLabel?: string
+  entityType?: string
+  id?: string
+  selectableParticipants?: ThreadRecipient[]
+  topic?: ThreadTopic
 }
 
+/** ThreadDetails */
+export interface ThreadDetails {
+  authorizedParticipants?: ThreadRecipient[]
+  currentParticipants?: ThreadRecipient[]
+  currentParticipantsDisplayValue?: string
+  /** @format date-time */
+  dateCreated?: string
+  /** @format date-time */
+  dateUpdated?: string
+  entityId?: string
+  entityLabel?: string
+  entityType?: string
+  id?: string
+  messages?: ThreadMessage[]
+  selectableParticipants?: ThreadRecipient[]
+  topic?: ThreadTopic
+}
+
+/** ThreadList */
 export interface ThreadList {
-  threads?: Thread[]
+  consignmentCode?: string
   nextPageToken?: string
   previousPageToken?: string
-  consignmentCode?: string
+  threads?: Thread[]
 }
 
+/** ThreadMessage */
+export interface ThreadMessage {
+  attachments?: ThreadMessageAttachment[]
+  body?: string
+  /** @format date-time */
+  dateCreated?: string
+  isFromCustomer?: boolean
+  senderDisplayName?: string
+  senderType?: string
+  to?: ThreadRecipient[]
+}
+
+/** ThreadMessageAttachment */
 export interface ThreadMessageAttachment {
   id?: string
   name?: string
@@ -2324,70 +2519,46 @@ export interface ThreadMessageAttachment {
   size?: number
 }
 
-export interface ThreadMessage {
-  senderType?: string
-  senderDisplayName?: string
-  body?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
-  dateCreated?: string
-  attachments?: ThreadMessageAttachment[]
-  to?: ThreadRecipient[]
-  isFromCustomer?: boolean
-}
-
+/** ThreadRecipient */
 export interface ThreadRecipient {
+  displayName?: string
   id?: string
   type?: string
-  displayName?: string
 }
 
+/** ThreadTopic */
 export interface ThreadTopic {
   code?: string
   displayValue?: string
 }
 
-export interface Thread {
-  id?: string
-  topic?: ThreadTopic
-  authorizedParticipants?: ThreadRecipient[]
-  selectableParticipants?: ThreadRecipient[]
-  currentParticipants?: ThreadRecipient[]
-  currentParticipantsDisplayValue?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
-  dateCreated?: string
-  /**
-   * @format date-time
-   * @example "2023-10-19T11:10:13Z"
-   */
-  dateUpdated?: string
-  entityType?: string
-  entityLabel?: string
-  entityId?: string
-}
-
-/** Representation of a Time */
+/**
+ * Time
+ * Representation of a Time
+ */
 export interface Time {
-  /**
-   * Hour part of the time data
-   * @format byte
-   */
-  hour?: string
-  /**
-   * Minute part of the time data
-   * @format byte
-   */
-  minute?: string
   /** Formatted hour */
   formattedHour?: string
+  /**
+   * Hour part of the time data
+   * @format int32
+   * @min -128
+   * @max 127
+   */
+  hour?: number
+  /**
+   * Minute part of the time data
+   * @format int32
+   * @min -128
+   * @max 127
+   */
+  minute?: number
 }
 
-/** Representation of a Title */
+/**
+ * Title
+ * Representation of a Title
+ */
 export interface Title {
   /** Title code */
   code?: string
@@ -2395,119 +2566,123 @@ export interface Title {
   name?: string
 }
 
-/** Representation of a Title List */
+/**
+ * TitleList
+ * Representation of a Title List
+ */
 export interface TitleList {
   /** List of titles */
   titles?: Title[]
 }
 
-/** User's object. */
+/**
+ * User
+ * Representation of an User
+ */
 export interface User {
-  /** Unique user identifier */
-  uid?: string
-  /** Name of the user */
-  name?: string
-  /** Address object */
-  defaultAddress?: Address
-  /** User title code */
-  titleCode?: string
-  /** User title */
-  title?: string
-  /** User first name */
-  firstName?: string
-  /** User last name */
-  lastName?: string
-  /** Representation of a Currency */
+  /** User preferred currency */
   currency?: Currency
-  /** Representation of a Language */
-  language?: Language
-  /** User identifier */
-  displayUid?: string
   /** Customer identifier */
   customerId?: string
   /**
    * Deactivation date
    * @format date-time
-   * @example "2023-10-19T11:10:11Z"
    */
   deactivationDate?: string
-  /**
-   * Name of the default pick up location
-   * @example "Misato"
-   */
-  defaultPointOfServiceName?: string
-  /** Indicates preferences */
-  preferences?: CustomerPreferences
-  /** Indicates identification status */
-  identificationStatus?: string
-  /** Indicates balance status */
-  balanceStatus?: 'NOT_ENTITLED' | 'NOT_YET_ENTITLED' | 'ENTITLED'
-  /** Indicates balance values */
-  balance?: CustomerBalance
-}
-
-/** User group object with id and name. */
-export interface UserGroup {
-  /** Unique user identifier */
-  uid?: string
+  /** User address */
+  defaultAddress?: Address
+  /** User identifier */
+  displayUid?: string
+  /** User first name */
+  firstName?: string
+  /** User preferred language */
+  language?: Language
+  /** User last name */
+  lastName?: string
   /** Name of the user */
   name?: string
+  /** User title */
+  title?: string
+  /** User title code */
+  titleCode?: string
+  /** Unique user identifier */
+  uid?: string
+}
+
+/**
+ * UserGroup
+ * Representation of an User Group
+ */
+export interface UserGroup {
   /** List of members */
   members?: Principal[]
-  /** List of subgroups */
-  subGroups?: UserGroup[]
   /**
    * Number of members
    * @format int32
    */
   membersCount?: number
+  /** Name of the user */
+  name?: string
+  /** List of subgroups */
+  subGroups?: UserGroup[]
+  /** Unique user identifier */
+  uid?: string
 }
 
-/** Representation of a User Group List */
+/**
+ * UserGroupList
+ * Representation of an User Group List
+ */
 export interface UserGroupList {
-  /** List of user groups */
-  userGroups?: UserGroup[]
   /**
-   * Total number
+   * Current page
    * @format int32
    */
-  totalNumber?: number
-  /**
-   * Page size
-   * @format int32
-   */
-  pageSize?: number
+  currentPage?: number
   /**
    * Number of pages
    * @format int32
    */
   numberOfPages?: number
   /**
-   * Current page
+   * Page size
    * @format int32
    */
-  currentPage?: number
+  pageSize?: number
+  /**
+   * Total number
+   * @format int32
+   */
+  totalNumber?: number
+  /** List of user groups */
+  userGroups?: UserGroup[]
 }
 
-/** User's object. */
+/**
+ * UserSignUp
+ * Representation of an UserSignUp. Consists of fields required to register new customer
+ */
 export interface UserSignUp {
-  /** user id, unique string required to create new user. It can be email */
-  uid: string
   /** first name of the user */
   firstName: string
   /** last name of the user */
   lastName: string
-  titleCode?: string
   /** user password */
   password: string
+  titleCode?: string
+  /** user id, unique string required to create new user. It can be email */
+  uid: string
 }
 
-/** Representation of a Variant Category */
+/**
+ * VariantCategory
+ * Representation of a Variant Category
+ */
 export interface VariantCategory {
-  /** Variant category name */
-  name?: string
   /** Flag if varian category has image assigned */
   hasImage?: boolean
+  /** Variant category name */
+  name?: string
   /**
    * Priority number of variant category
    * @format int32
@@ -2515,46 +2690,58 @@ export interface VariantCategory {
   priority?: number
 }
 
-/** Representation of a Variant Matrix Element */
+/**
+ * VariantMatrixElement
+ * Representation of a Variant Matrix Element
+ */
 export interface VariantMatrixElement {
-  /** Representation of a Variant Value Category */
-  variantValueCategory?: VariantValueCategory
-  /** Representation of a Variant Category */
-  parentVariantCategory?: VariantCategory
-  /** Representation of a Variant Option */
-  variantOption?: VariantOption
   /** List of elements with the type of variant matrix element */
   elements?: VariantMatrixElement[]
   isLeaf?: boolean
+  /** Parent variant category for variant matrix element */
+  parentVariantCategory?: VariantCategory
+  /** Variant option for variant matrix element */
+  variantOption?: VariantOption
+  /** Variant value category for variant matrix element */
+  variantValueCategory?: VariantValueCategory
 }
 
-/** Representation of a Variant Option */
+/**
+ * VariantOption
+ * Representation of a Variant Option
+ */
 export interface VariantOption {
   /** Code of the variant option */
   code?: string
-  /** Representation of a Stock */
+  /** Price data information of the variant option */
+  priceData?: Price
+  /** Stock value of the variant option */
   stock?: Stock
   /** Url address of the variant option */
   url?: string
-  /** Representation of a Price */
-  priceData?: Price
   /** List of variant option qualifiers */
   variantOptionQualifiers?: VariantOptionQualifier[]
 }
 
-/** Representation of a Variant Option Qualifier */
+/**
+ * VariantOptionQualifier
+ * Representation of a Variant Option Qualifier
+ */
 export interface VariantOptionQualifier {
-  /** Qualifier */
-  qualifier?: string
+  /** Image associated with variant option qualifier */
+  image?: Image
   /** Name of variant option qualifier */
   name?: string
+  /** Qualifier */
+  qualifier?: string
   /** Value of variant option qualifier */
   value?: string
-  /** Representation of an Image */
-  image?: Image
 }
 
-/** Representation of a Variant Value Category */
+/**
+ * VariantValueCategory
+ * Representation of a Variant Value Category
+ */
 export interface VariantValueCategory {
   /** Name of the variant value category */
   name?: string
@@ -2567,16 +2754,23 @@ export interface VariantValueCategory {
   superCategories?: VariantCategory[]
 }
 
-/** Representation of a Voucher */
+/**
+ * Voucher
+ * Representation of a Voucher
+ */
 export interface Voucher {
+  /** Applied value when using this voucher */
+  appliedValue?: Price
   /** The identifier of the Voucher. This is the first part of voucher code which holds first 3 letters, like: 123 */
   code?: string
-  /** Voucher code, is the holder for keeping specific occasional voucher related to business usage. It can be generated and looks like: 123-H8BC-Y3D5-34AL */
-  voucherCode?: string
-  /** Name of the voucher */
-  name?: string
+  /** Currency of the voucher */
+  currency?: Currency
   /** Description of the voucher */
   description?: string
+  /** Specifies if the order this voucher is applied to is shipped for free (true) or not (false). Defaults to false. */
+  freeShipping?: boolean
+  /** Name of the voucher */
+  name?: string
   /**
    * Value of the voucher. Example of such value is: 15.0d
    * @format double
@@ -2586,44 +2780,49 @@ export interface Voucher {
   valueFormatted?: string
   /** The value of the voucher to display. Example: 15.0% */
   valueString?: string
-  /** Specifies if the order this voucher is applied to is shipped for free (true) or not (false). Defaults to false. */
-  freeShipping?: boolean
-  /** Representation of a Currency */
-  currency?: Currency
-  /** Representation of a Price */
-  appliedValue?: Price
+  /** Voucher code, is the holder for keeping specific occasional voucher related to business usage. It can be generated and looks like: 123-H8BC-Y3D5-34AL */
+  voucherCode?: string
 }
 
-/** Representation of a Voucher List */
+/**
+ * VoucherList
+ * Representation of a Voucher List
+ */
 export interface VoucherList {
   /** List of vouchers */
   vouchers?: Voucher[]
 }
 
-/** Representation of a Weekday Opening Day */
+/**
+ * WeekdayOpeningDay
+ * Representation of a Weekday Opening Day
+ */
 export interface WeekdayOpeningDay {
-  /** Representation of a Time */
-  openingTime?: Time
-  /** Representation of a Time */
-  closingTime?: Time
-  /** Text representation of week day opening day */
-  weekDay?: string
   /** Flag stating if weekday opening day is closed */
   closed?: boolean
+  /** Closing time of opening day */
+  closingTime?: Time
+  /** Starting time of opening day */
+  openingTime?: Time
+  /** Text representation of week day opening day */
+  weekDay?: string
 }
 
-/** Representation of a search results pagination */
+/**
+ * deprecatedPagination
+ * Representation of a search results pagination
+ */
 export interface DeprecatedPagination {
-  /**
-   * The number of results per page. A page may have less results if there are less than a full page of results, only on the last page in the results
-   * @format int32
-   */
-  pageSize?: number
   /**
    * The current page number. The first page is number zero (0), the second page is number one (1), and so on
    * @format int32
    */
   currentPage?: number
+  /**
+   * The number of results per page. A page may have less results if there are less than a full page of results, only on the last page in the results
+   * @format int32
+   */
+  pageSize?: number
   /** The selected sort code */
   sort?: string
   /**
@@ -2638,65 +2837,77 @@ export interface DeprecatedPagination {
   totalResults?: number
 }
 
-/** Error message */
+/**
+ * error
+ * Error message
+ */
 export interface Error {
-  /** Type of the error e.g. 'LowStockError'. */
-  type?: string
-  /** Additional classification specific for each error type e.g. 'noStock'. */
-  reason?: string
-  /** Descriptive, human readable error message. */
-  message?: string
-  /** Type of the object related to the error e.g. 'entry'. */
-  subjectType?: string
-  /** Identifier of the related object e.g. '1'. */
-  subject?: string
   /** Error code */
   errorCode?: string
+  exceptionMessage?: string
   /** @example "English" */
   language?: string
+  /** Descriptive, human readable error message. */
+  message?: string
   /**
    * @format int32
    * @example 1
    */
   position?: number
-  exceptionMessage?: string
+  /** Additional classification specific for each error type e.g. 'noStock'. */
+  reason?: string
+  /** Identifier of the related object e.g. '1'. */
+  subject?: string
+  /** Type of the object related to the error e.g. 'entry'. */
+  subjectType?: string
+  /** Type of the error e.g. 'LowStockError'. */
+  type?: string
 }
 
-/** List of errors */
+/**
+ * errorList
+ * List of errors
+ */
 export interface ErrorList {
   errors?: Error[]
 }
 
-/** Pagination info */
+/**
+ * pagination
+ * Pagination info
+ */
 export interface Pagination {
   /**
    * Number of elements on this page
    * @format int32
    */
   count?: number
-  /**
-   * Total number of elements
-   * @format int64
-   */
-  totalCount?: number
+  /** Indicates if there is next page */
+  hasNext?: boolean
+  /** Indicates if there is previous page */
+  hasPrevious?: boolean
   /**
    * Current page number
    * @format int32
    */
   page?: number
   /**
+   * Total number of elements
+   * @format int64
+   */
+  totalCount?: number
+  /**
    * Total number of pages
    * @format int32
    */
   totalPages?: number
-  /** Indicates if there is next page */
-  hasNext?: boolean
-  /** Indicates if there is previous page */
-  hasPrevious?: boolean
 }
 
-/** Sort option */
+/**
+ * sort
+ * Sort option
+ */
 export interface Sort {
-  code?: string
   asc?: boolean
+  code?: string
 }

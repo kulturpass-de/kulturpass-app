@@ -18,7 +18,7 @@ const hasInvalidTokenError = (response: QueryResponse): boolean => {
     return false
   }
 
-  const isTokenInvalid = (response.error as HttpStatusUnauthorizedError).errors?.find(
+  const isTokenInvalid = (response.error as HttpStatusUnauthorizedError).errors.find(
     errorItem => errorItem.type === 'InvalidTokenError',
   )
   return Boolean(isTokenInvalid)

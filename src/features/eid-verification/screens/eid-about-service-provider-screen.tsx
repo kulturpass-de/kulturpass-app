@@ -3,15 +3,15 @@ import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
+import { Icon } from '../../../components/icon/icon'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
-import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { colors } from '../../../theme/colors'
 import { HITSLOP } from '../../../theme/constants'
-import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 
@@ -31,7 +31,6 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
   onClose,
 }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const renderItem = useCallback(
@@ -39,8 +38,6 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
       const type = item.toLowerCase() as Lowercase<AccessRight>
       const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${type}` as const
       const accessRightText = t(accessRightI18NKey, '')
-      const accessibilityLabel =
-        item === 'GivenNames' ? t('eid_aboutServiceProvider_accessRights_givennames_label') : undefined
 
       if (!accessRightText) {
         return null
@@ -50,12 +47,11 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
         <Text
           key={item}
           accessible
-          accessibilityLabel={accessibilityLabel}
           testID={buildTestId(accessRightI18NKey)}
-          style={[textStyles.BodyRegular, { color: colors.labelColor }]}>{`\u2022 ${accessRightText}`}</Text>
+          style={[textStyles.BodyRegular, styles.text]}>{`\u2022 ${accessRightText}`}</Text>
       )
     },
-    [t, buildTestId, colors.labelColor],
+    [t, buildTestId],
   )
 
   const subjectName = certificate.description.subjectName
@@ -74,36 +70,36 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
           i18nKey="eid_aboutServiceProvider_subtitle"
           testID={buildTestId('eid_aboutServiceProvider_subtitle')}
           textStyle="BodyRegular"
-          textStyleOverrides={{ color: colors.labelColor }}
+          textStyleOverrides={styles.text}
         />
         <Pressable
           accessible
           accessibilityRole="button"
           hitSlop={HITSLOP}
           testID={buildTestId('eid_aboutServiceProvider_details_button')}
-          style={[styles.providerButton, { backgroundColor: colors.secondaryBackground }]}
+          style={styles.providerButton}
           onPress={onProviderDetails}>
-          <SvgImage type="government" width={36} height={36} />
+          <Icon source="Government" width={36} height={36} />
           <Text
             numberOfLines={3}
             accessible
             testID={buildTestId('eid_aboutServiceProvider_details_button_text')}
-            style={[textStyles.BodyBold, styles.providerButtonText, { color: colors.labelColor }]}>
+            style={[textStyles.BodyBold, styles.providerButtonText]}>
             {subjectName}
           </Text>
-          <SvgImage type="chevron" width={24} height={24} />
+          <Icon source="Chevron" width={24} height={24} />
         </Pressable>
         <TranslatedText
           i18nKey="eid_aboutServiceProvider_accessRights_title"
           testID={buildTestId('eid_aboutServiceProvider_accessRights_title')}
           textStyle="SubtitleSemibold"
-          textStyleOverrides={{ color: colors.labelColor }}
+          textStyleOverrides={styles.text}
         />
         <TranslatedText
           i18nKey="eid_aboutServiceProvider_accessRights_subtitle"
           testID={buildTestId('eid_aboutServiceProvider_accessRights_subtitle')}
           textStyle="BodyRegular"
-          textStyleOverrides={[styles.accessRightsSubtitle, { color: colors.labelColor }]}
+          textStyleOverrides={styles.accessRightsSubtitle}
         />
         <View>{effectiveAccessRights.map(renderItem)}</View>
       </ScrollView>
@@ -130,6 +126,7 @@ export const styles = StyleSheet.create({
   },
   providerButton: {
     borderRadius: 16,
+    backgroundColor: colors.basicWhite,
     paddingHorizontal: spacing[5],
     paddingVertical: spacing[4],
     marginVertical: spacing[6],
@@ -140,11 +137,16 @@ export const styles = StyleSheet.create({
   providerButtonText: {
     paddingLeft: spacing[5],
     paddingRight: spacing[4],
+    color: colors.basicBlack,
     flex: 1,
     flexGrow: 1,
   },
   accessRightsSubtitle: {
     paddingTop: spacing[5],
     paddingBottom: spacing[6],
+    color: colors.basicBlack,
+  },
+  text: {
+    color: colors.basicBlack,
   },
 })

@@ -8,7 +8,7 @@ import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export type EidChangePinCompletionScreenProps = {
@@ -18,7 +18,6 @@ export type EidChangePinCompletionScreenProps = {
 
 export const EidChangePinCompletionScreen: React.FC<EidChangePinCompletionScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_changePinCompletion')}>
@@ -35,21 +34,15 @@ export const EidChangePinCompletionScreen: React.FC<EidChangePinCompletionScreen
         />
         <View style={styles.contentTitleContainer}>
           <TranslatedText
-            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentTitle}
             testID={buildTestId('eid_changePinCompletion_content_title')}
             i18nKey="eid_changePinCompletion_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId('eid_changePinCompletion_content_text_first')}
-            i18nKey="eid_changePinCompletion_content_text_first"
-            textStyle="BodyRegular"
-          />
-          <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId('eid_changePinCompletion_content_text_second')}
-            i18nKey="eid_changePinCompletion_content_text_second"
+            textStyleOverrides={styles.contentText}
+            testID={buildTestId('eid_changePinCompletion_content_text')}
+            i18nKey="eid_changePinCompletion_content_text"
             textStyle="BodyRegular"
           />
         </View>
@@ -84,10 +77,12 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     flexWrap: 'wrap',
     textAlign: 'center',
+    color: colors.basicBlack,
   },
   contentText: {
     paddingTop: spacing[6],
     flexWrap: 'wrap',
     textAlign: 'center',
+    color: colors.moonDarkest,
   },
 })

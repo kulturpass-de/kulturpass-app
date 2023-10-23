@@ -2,87 +2,76 @@ import { z } from 'zod'
 import { ErrorWithCode } from './errors'
 
 export class CdcError extends ErrorWithCode {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_ERROR') {
+  constructor(errorCode: string = 'CDC_ERROR') {
     super(errorCode)
     this.detailCode = 'Cdc network request failed.'
-
-    const parsed = CdcResponseErrorSchema.safeParse(errorBody)
-    if (parsed.success) {
-      this.errorDetails = parsed.data.errorDetails
-    }
   }
 }
 
 export class CdcServerError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_SERVER_ERROR') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_SERVER_ERROR') {
+    super(errorCode)
   }
 }
 
 export class CdcClientError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_CLIENT_ERROR') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_CLIENT_ERROR') {
+    super(errorCode)
   }
 }
 
 export class CdcStatusNotFoundError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_STATUS_NOT_FOUND') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_STATUS_NOT_FOUND') {
+    super(errorCode)
   }
 }
 
 export class CdcStatusForbiddenError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_STATUS_FORBIDDEN') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_STATUS_FORBIDDEN') {
+    super(errorCode)
   }
 }
 
 export class CdcStatusUnauthorizedError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_STATUS_UNAUTHORIZED') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_STATUS_UNAUTHORIZED') {
+    super(errorCode)
   }
 }
 
 export class CdcStatusBadRequestError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_STATUS_BAD_REQUEST') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_STATUS_BAD_REQUEST') {
+    super(errorCode)
   }
 }
 
 export class CdcInvalidLoginIdError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_INVALID_LOGINID') {
-    super(errorBody, errorCode)
-  }
-}
-
-export class CdcInvalidLoginIdDeleteError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_INVALID_LOGINID_DELETE') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_INVALID_LOGINID') {
+    super(errorCode)
   }
 }
 
 export class CdcLoginIdNotExistingError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_LOGINID_NOT_EXISTING') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_LOGINID_NOT_EXISTING') {
+    super(errorCode)
   }
 }
 
 export class CdcAccountDisabledError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_ACCOUNT_DISABLED') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_ACCOUNT_DISABLED') {
+    super(errorCode)
   }
 }
 
 export class CdcAccountDeletionRequestedError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_ACCOUNT_DELETION_REQUESTED') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_ACCOUNT_DELETION_REQUESTED') {
+    super(errorCode)
     this.detailCode = 'Cdc account deletion requested.'
   }
 }
 
 export class CdcEmailNotVerifiedError extends CdcError {
-  constructor(errorBody?: CdcApiErrorResponseBody, errorCode: string = 'CDC_EMAIL_NOT_VERIFIED') {
-    super(errorBody, errorCode)
+  constructor(errorCode: string = 'CDC_EMAIL_NOT_VERIFIED') {
+    super(errorCode)
   }
 }
 
@@ -90,7 +79,7 @@ export class CdcStatusValidationError extends CdcError {
   validationErrors: CdcResponseValidationError[]
 
   constructor(validationErrors: CdcResponseValidationError[], errorCode: string = 'CDC_STATUS_VALIDATION_ERROR') {
-    super(undefined, errorCode)
+    super(errorCode)
     this.validationErrors = validationErrors
   }
 }
@@ -98,8 +87,8 @@ export class CdcStatusValidationError extends CdcError {
 export class CdcStatusInvalidParameter extends CdcError {
   invalidParameter: CdcResponseInvalidParameter
 
-  constructor(invalidParameter: CdcApiErrorResponseBody, errorCode: string = 'CDC_STATUS_INVALID_PARAMETER') {
-    super(invalidParameter, errorCode)
+  constructor(invalidParameter: CdcResponseInvalidParameter, errorCode: string = 'CDC_STATUS_INVALID_PARAMETER') {
+    super(errorCode)
     this.invalidParameter = invalidParameter
   }
 }
@@ -176,35 +165,33 @@ export const createCdcErrorFromSchema = (errorBody: CdcApiErrorResponseBody) => 
       return new CdcStatusValidationError(errorBody.validationErrors ?? [])
   }
 
-  return mapCdcErrorCodeToError(appErrorCode, errorBody) ?? new CdcError(undefined)
+  return mapCdcErrorCodeToError(appErrorCode) ?? new CdcError()
 }
 
-export const mapCdcErrorCodeToError = (errorCode: string, errorBody?: CdcApiErrorResponseBody): CdcError | null => {
+export const mapCdcErrorCodeToError = (errorCode: string): CdcError | null => {
   switch (errorCode) {
     case 'CDC_STATUS_VALIDATION_ERROR':
       return new CdcStatusValidationError([])
     case 'CDC_EMAIL_NOT_VERIFIED':
-      return new CdcEmailNotVerifiedError(errorBody)
+      return new CdcEmailNotVerifiedError()
     case 'CDC_ACCOUNT_DISABLED':
-      return new CdcAccountDisabledError(errorBody)
+      return new CdcAccountDisabledError()
     case 'CDC_INVALID_LOGINID':
-      return new CdcInvalidLoginIdError(errorBody)
-    case 'CDC_INVALID_LOGINID_DELETE':
-      return new CdcInvalidLoginIdDeleteError(errorBody)
+      return new CdcInvalidLoginIdError()
     case 'CDC_LOGINID_NOT_EXISTING':
-      return new CdcLoginIdNotExistingError(errorBody)
+      return new CdcLoginIdNotExistingError()
     case 'CDC_STATUS_BAD_REQUEST':
-      return new CdcStatusBadRequestError(errorBody)
+      return new CdcStatusBadRequestError()
     case 'CDC_STATUS_UNAUTHORIZED':
-      return new CdcStatusUnauthorizedError(errorBody)
+      return new CdcStatusUnauthorizedError()
     case 'CDC_STATUS_FORBIDDEN':
-      return new CdcStatusForbiddenError(errorBody)
+      return new CdcStatusForbiddenError()
     case 'CDC_STATUS_NOT_FOUND':
-      return new CdcStatusNotFoundError(errorBody)
+      return new CdcStatusNotFoundError()
     case 'CDC_CLIENT_ERROR':
-      return new CdcClientError(errorBody)
+      return new CdcClientError()
     case 'CDC_SERVER_ERROR':
-      return new CdcServerError(errorBody)
+      return new CdcServerError()
   }
 
   return null

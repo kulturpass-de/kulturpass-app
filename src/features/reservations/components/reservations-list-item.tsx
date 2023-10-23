@@ -3,13 +3,11 @@ import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { Price } from '../../../services/api/types/commerce/api-types'
-import { DELIVERY_SCENARIO_IN_APP_VOUCHER } from '../../../services/api/types/commerce/commerce-get-reservations'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { toTransparentColor } from '../../../theme/utils'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ReservationListStatusText } from './reservation-list-status-text'
 
@@ -22,7 +20,6 @@ type ReservationsListItemProps = {
   completed: boolean
   status?: string
   deliveryScenario?: string
-  fulfillmentOption?: string
 }
 
 export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
@@ -34,89 +31,73 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
   completed,
   status,
   deliveryScenario,
-  fulfillmentOption,
 }) => {
   const { buildTestId } = useTestIdBuilder()
-  const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
 
   return (
     <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>
-      {/* Do NOT remove this wrapper and it's testID,
-          otherwise the views contained testIDs will not be found on iOS (bug) */}
-      <View testID={buildTestId('reservations_listItem_inner')}>
-        <View style={[styles.shadow, { backgroundColor: toTransparentColor(colors.boxShadow, 0.7, completed) }]} />
-        <View style={[styles.container, { backgroundColor: colors.secondaryBackground }]}>
-          <FastImage
-            testID={buildTestId('reservations_listItem_image')}
-            accessibilityLabel={t('reservations_listItem_image')}
-            resizeMode={FastImage.resizeMode.cover}
-            style={[styles.image, { backgroundColor: colors.secondaryBackground }]}
-            source={{ uri: imageUrl }}
-          />
-          <View style={styles.contentContainer}>
-            <View style={styles.topContainer}>
+      <View style={[styles.shadow, completed && styles.shadowColorSharpGrey]} />
+      <View style={styles.container}>
+        <FastImage
+          testID={buildTestId('reservations_listItem_image')}
+          accessibilityLabel={t('reservations_listItem_image')}
+          resizeMode={FastImage.resizeMode.cover}
+          style={styles.image}
+          source={{ uri: imageUrl }}
+          defaultSource={require('./dummy-placeholder.png')}
+        />
+        <View style={styles.contentContainer}>
+          <View style={styles.topContainer}>
+            <Text
+              testID={buildTestId('reservations_listItem_productName')}
+              numberOfLines={2}
+              accessible
+              ellipsizeMode="tail"
+              style={[textStyles.BodySmallBold, styles.text]}>
+              {productName ?? ''}
+            </Text>
+          </View>
+          <View style={styles.middleContainer}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              accessible
+              testID={buildTestId('reservations_listItem_shopName')}
+              style={[textStyles.CaptionSemibold, styles.text]}>
+              {shopName ?? ''}
+            </Text>
+          </View>
+          <View style={styles.bottomContainer}>
+            {status ? <ReservationListStatusText status={status} deliveryScenario={deliveryScenario} /> : <View />}
+            {formattedPrice ? (
               <Text
-                testID={buildTestId('reservations_listItem_productName')}
-                numberOfLines={2}
-                accessible
-                ellipsizeMode="tail"
-                style={[textStyles.BodySmallBold, styles.text, { color: colors.labelColor }]}>
-                {productName ?? ''}
-              </Text>
-            </View>
-            <View style={styles.middleContainer}>
-              <Text
+                testID={buildTestId('reservations_listItem_price')}
                 numberOfLines={1}
-                ellipsizeMode="tail"
                 accessible
-                testID={buildTestId('reservations_listItem_shopName')}
-                style={[textStyles.CaptionSemibold, styles.text, { color: colors.labelColor }]}>
-                {shopName ?? ''}
+                style={[textStyles.BodyExtrabold, { color: colors.moonDarkest }]}>
+                {formattedPrice}
               </Text>
-            </View>
-            <View style={styles.bottomContainer}>
-              {status ? (
-                <ReservationListStatusText
-                  status={status}
-                  deliveryScenario={
-                    fulfillmentOption === 'REDEMPTION_CODE' || fulfillmentOption === 'VENDOR_CODE'
-                      ? DELIVERY_SCENARIO_IN_APP_VOUCHER
-                      : deliveryScenario
-                  }
-                />
-              ) : (
-                <View />
-              )}
-              {formattedPrice ? (
-                <Text
-                  testID={buildTestId('reservations_listItem_price')}
-                  numberOfLines={1}
-                  accessible
-                  style={[textStyles.BodyExtrabold, { color: colors.labelColor }]}>
-                  {formattedPrice}
-                </Text>
-              ) : null}
-            </View>
+            ) : null}
           </View>
         </View>
-        <SvgImage width={20} height={5} type="cutout-top" preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
-        <SvgImage
-          width={20}
-          height={8}
-          type="cutout-bottom"
-          preserveAspectRatio="xMaxYMax"
-          color={toTransparentColor(colors.boxShadow, 0.7, completed)}
-          style={[
-            styles.cutoutBottom,
-            Platform.select({
-              ios: styles.iosOffset,
-              android: styles.androidOffset,
-            }),
-          ]}
-        />
       </View>
+      <SvgImage width={20} height={5} type="cutout-top" preserveAspectRatio="xMaxYMax" style={styles.cutoutTop} />
+      <SvgImage
+        width={20}
+        height={8}
+        type="cutout-bottom"
+        preserveAspectRatio="xMaxYMax"
+        color={completed ? colors.moonDarkest70 : colors.basicBlack}
+        style={[
+          styles.cutoutBottom,
+          Platform.select({
+            ios: styles.iosOffset,
+            android: styles.androidOffset,
+          }),
+        ]}
+      />
     </Pressable>
   )
 }
@@ -143,6 +124,7 @@ const styles = StyleSheet.create({
     minHeight: 124,
     borderRadius: 16,
     flexDirection: 'row',
+    backgroundColor: colors.basicWhite,
     overflow: 'hidden',
     zIndex: 100,
   },
@@ -150,10 +132,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 3,
     left: 3,
+    backgroundColor: colors.basicBlack,
     borderRadius: 16,
     width: '100%',
     height: '100%',
     zIndex: 0,
+  },
+  shadowColorSharpGrey: {
+    backgroundColor: colors.moonDarkest70,
   },
   contentContainer: {
     flex: 1,
@@ -182,6 +168,7 @@ const styles = StyleSheet.create({
   text: {
     flexWrap: 'wrap',
     textAlignVertical: 'top',
+    color: colors.moonDarkest,
   },
   image: {
     height: '100%',

@@ -3,11 +3,16 @@ import { setupServer } from 'msw/node'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
 import * as sessionService from '../../../session/session-service'
-import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/configure-mock-store'
+import { configureMockStore } from '../../../testing/configure-mock-store'
 import { authSlice } from '../auth-slice'
 import { authCommerceLogin } from './auth-commerce-login'
 
 const server = setupServer()
+
+jest.mock('../utils', () => ({
+  ...jest.requireActual('../utils'),
+  getTokenValidUntil: () => 999,
+}))
 
 describe('authCommerceLogin', () => {
   const commerceLoginArg = {
@@ -16,7 +21,7 @@ describe('authCommerceLogin', () => {
     uid: 'my_uid',
     uidSignature: 'my_uid_signature',
   }
-  const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
+  const commerceLoginResult = { auth_something: 'token', expires_in: 25 }
 
   const persistCommerceSession = jest.spyOn(sessionService, 'persistCommerceSession')
 
@@ -50,17 +55,23 @@ describe('authCommerceLogin', () => {
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
-    expect(store.findAction(commerceApi.endpoints.postAuthToken.matchFulfilled)).toBeDefined()
+    // find postAuthToken fulfilled, and check that persistCommerceSession was called with the results
+    const postAuthTokenFulfilled = store.findAction(commerceApi.endpoints.postAuthToken.matchFulfilled)
     expect(persistCommerceSession).toHaveBeenCalledTimes(1)
+    expect(persistCommerceSession).toHaveBeenCalledWith({
+      ...postAuthTokenFulfilled?.payload,
+      token_valid_until: 999,
+    })
   })
 
-  it('should call setCommerceSession with data that were persisted', async () => {
+  it('should call setCommerceSession with data returned from postAuthToken', async () => {
     server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
-    const persistArgument = persistCommerceSession.mock.lastCall?.[0]
-    store.expectActions([{ type: authSlice.actions.setCommerceSession.type, payload: persistArgument }])
+    // find postAuthToken fulfilled, and check that setCommerceSession was called with the returned data
+    const postAuthTokenFulfilled = store.findAction(commerceApi.endpoints.postAuthToken.matchFulfilled)
+    store.expectActions([{ type: authSlice.actions.setCommerceSession.type, payload: postAuthTokenFulfilled?.payload }])
   })
 
   it('should return the response of postAuthToken', async () => {

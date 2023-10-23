@@ -3,7 +3,6 @@ import { z } from 'zod'
 export class ErrorWithCode extends Error {
   errorCode: string
   detailCode?: string
-  errorDetails?: string
   parent?: ErrorWithCode
   presentableErrorCode = true // For certain errors, you can choose to opt-out to display the error code.
 
@@ -11,14 +10,6 @@ export class ErrorWithCode extends Error {
     super(`Unknown error with error code "${errorCode}".`)
     this.errorCode = errorCode
     this.detailCode = detailCode
-  }
-}
-
-export class OfflineError extends ErrorWithCode {
-  constructor() {
-    super('OFFLINE_ERROR')
-    this.detailCode = 'You are offline.'
-    this.presentableErrorCode = false
   }
 }
 
@@ -31,26 +22,19 @@ export class NetworkError extends ErrorWithCode {
 
 export class HttpError extends ErrorWithCode {
   statusCode?: number
-  errors?: ErrorType[] = []
 
-  constructor(responseBody: unknown, statusCode: number, errorCode: string = 'HTTP_ERROR') {
+  constructor(statusCode: number, errorCode: string = 'HTTP_ERROR') {
     super(errorCode)
     this.statusCode = statusCode
     this.detailCode = 'Network request failed with unknown error.'
-
-    const parsed = ResponseBodySchema.safeParse(responseBody)
-    if (parsed.success) {
-      this.errors = parsed.data.errors
-      this.errorDetails = parsed.data.errorDetails
-    }
   }
 }
 
 export class HttpClientError extends HttpError {
   statusCode: number
 
-  constructor(responseBody: unknown, statusCode: number, errorCode: string = 'HTTP_CLIENT_ERROR') {
-    super(responseBody, statusCode, errorCode)
+  constructor(statusCode: number, errorCode: string = 'HTTP_CLIENT_ERROR') {
+    super(statusCode, errorCode)
     this.statusCode = statusCode
     this.detailCode = 'Network request with an unspecified client error (status code 400 - 499)'
   }
@@ -59,58 +43,65 @@ export class HttpClientError extends HttpError {
 export class HttpServerError extends HttpError {
   statusCode: number
 
-  constructor(responseBody: unknown, statusCode: number, errorCode: string = 'HTTP_SERVER_ERROR') {
-    super(responseBody, statusCode, errorCode)
+  constructor(statusCode: number, errorCode: string = 'HTTP_SERVER_ERROR') {
+    super(statusCode, errorCode)
     this.statusCode = statusCode
     this.detailCode = 'Network request with an unspecified server error (status code 500 - 599)'
   }
 }
 
 export class HttpStatusBadRequestError extends HttpClientError {
-  constructor(responseBody: unknown) {
-    super(responseBody, 400, 'HTTP_STATUS_BAD_REQUEST')
+  errors: ErrorType[] = []
+
+  constructor(responseBody?: unknown) {
+    super(400, 'HTTP_STATUS_BAD_REQUEST')
     this.detailCode = 'Network request failed with status code 400 (Bad Request)'
+
+    const parsed = ResponseBodySchema.safeParse(responseBody)
+    if (parsed.success) {
+      this.errors = parsed.data.errors
+    }
 
     // opt-out the error code to be presentable to the user
     this.presentableErrorCode = !this.isInsufficientBalanceError()
   }
 
   isInsufficientBalanceError(): boolean {
-    return this.errors?.find(({ type }) => type === 'InsufficientBalanceError') !== undefined
+    return this.errors.find(({ type }) => type === 'InsufficientBalanceError') !== undefined
   }
 }
 
 export class HttpStatusForbiddenError extends HttpClientError {
-  constructor(responseBody: unknown, errorCode: string = 'HTTP_STATUS_FORBIDDEN') {
-    super(responseBody, 403, errorCode)
+  constructor(errorCode: string = 'HTTP_STATUS_FORBIDDEN') {
+    super(403, errorCode)
     this.detailCode = 'Network request failed with status code 403 (Forbidden)'
   }
 }
 
 export class HttpStatusInternalServerError extends HttpServerError {
-  constructor(responseBody: unknown, errorCode: string = 'HTTP_STATUS_INTERNAL_SERVER_ERROR') {
-    super(responseBody, 500, errorCode)
+  constructor(errorCode: string = 'HTTP_STATUS_INTERNAL_SERVER_ERROR') {
+    super(500, errorCode)
     this.detailCode = 'Network request failed with status code 500 (Internal Server Error)'
   }
 }
 
 export class HttpStatusNotFoundError extends HttpClientError {
-  constructor(responseBody: unknown, errorCode: string = 'HTTP_STATUS_NOT_FOUND') {
-    super(responseBody, 404, errorCode)
+  constructor(errorCode: string = 'HTTP_STATUS_NOT_FOUND') {
+    super(404, errorCode)
     this.detailCode = 'Network request failed with status code 404 (Not Found)'
   }
 }
 
 export class HttpStatusServiceUnavailableError extends HttpServerError {
-  constructor(responseBody: unknown, errorCode: string = 'HTTP_STATUS_SERVICE_UNAVAILABLE') {
-    super(responseBody, 503, errorCode)
+  constructor(errorCode: string = 'HTTP_STATUS_SERVICE_UNAVAILABLE') {
+    super(503, errorCode)
     this.detailCode = 'Network request failed with status code 503 (Service Unavailable)'
   }
 }
 
 export class HttpStatusTooManyRequestsError extends HttpClientError {
-  constructor(responseBody: unknown, errorCode: string = 'HTTP_STATUS_TOO_MANY_REQUESTS') {
-    super(responseBody, 429, errorCode)
+  constructor(errorCode: string = 'HTTP_STATUS_TOO_MANY_REQUESTS') {
+    super(429, errorCode)
     this.detailCode = 'Network request failed with status code 429 (Too Many Requests)'
   }
 }
@@ -123,19 +114,19 @@ const ErrorTypeSchema = z.object({
 type ErrorType = z.infer<typeof ErrorTypeSchema>
 
 const ResponseBodySchema = z.object({
-  errors: z.optional(z.array(ErrorTypeSchema)),
-  errorDetails: z.undefined().or(z.string()),
+  errors: z.array(ErrorTypeSchema),
 })
 
 export class HttpStatusUnauthorizedError extends HttpClientError {
-  constructor(responseBody: unknown) {
-    super(responseBody, 401, 'HTTP_STATUS_UNAUTHORIZED')
+  errors: ErrorType[] = []
+
+  constructor(responseBody?: unknown) {
+    super(401, 'HTTP_STATUS_UNAUTHORIZED')
     this.detailCode = 'Network request failed with status code 401 (Unauthorized)'
 
     const parsed = ResponseBodySchema.safeParse(responseBody)
     if (parsed.success) {
       this.errors = parsed.data.errors
-      this.errorDetails = parsed.data.errorDetails
     }
   }
 }
@@ -154,62 +145,58 @@ export const createHttpErrorFromStatusCode = (statusCode: number, responseBody?:
     case 401:
       return new HttpStatusUnauthorizedError(responseBody)
     case 403:
-      return new HttpStatusForbiddenError(responseBody)
+      return new HttpStatusForbiddenError()
     case 404:
-      return new HttpStatusNotFoundError(responseBody)
+      return new HttpStatusNotFoundError()
     case 429:
-      return new HttpStatusTooManyRequestsError(responseBody)
+      return new HttpStatusTooManyRequestsError()
     case 500:
-      return new HttpStatusInternalServerError(responseBody)
+      return new HttpStatusInternalServerError()
     case 503:
-      return new HttpStatusServiceUnavailableError(responseBody)
+      return new HttpStatusServiceUnavailableError()
   }
 
   if (statusCode >= 400 && statusCode <= 499) {
-    return new HttpClientError(responseBody, statusCode)
+    return new HttpClientError(statusCode)
   }
 
   if (statusCode >= 500 && statusCode <= 599) {
-    return new HttpServerError(responseBody, statusCode)
+    return new HttpServerError(statusCode)
   }
 
-  return new HttpError(responseBody, statusCode)
+  return new HttpError(statusCode)
 }
 
 export const createErrorFromErrorCode = (errorCode: string, detailCode?: string): ErrorWithCode => {
   return new ErrorWithCode(errorCode, detailCode)
 }
 
-export const mapAppErrorCodeToError = (
-  errorCode: string,
-  statusCode = -1,
-  responseBody?: unknown,
-): ErrorWithCode | null => {
+export const mapAppErrorCodeToError = (errorCode: string, statusCode = -1): ErrorWithCode | null => {
   switch (errorCode) {
     case 'NETWORK_ERROR':
       return new NetworkError()
     case 'HTTP_ERROR':
-      return new HttpError(responseBody, statusCode)
+      return new HttpError(statusCode)
     case 'HTTP_CLIENT_ERROR':
-      return new HttpClientError(responseBody, statusCode)
+      return new HttpClientError(statusCode)
     case 'HTTP_SERVER_ERROR':
-      return new HttpServerError(responseBody, statusCode)
+      return new HttpServerError(statusCode)
     case 'HTTP_STATUS_BAD_REQUEST':
-      return new HttpStatusBadRequestError(responseBody)
+      return new HttpStatusBadRequestError()
     case 'HTTP_STATUS_FORBIDDEN':
-      return new HttpStatusForbiddenError(responseBody)
+      return new HttpStatusForbiddenError()
     case 'HTTP_STATUS_INTERNAL_SERVER_ERROR':
-      return new HttpStatusInternalServerError(responseBody)
+      return new HttpStatusInternalServerError()
     case 'HTTP_STATUS_NOT_FOUND':
-      return new HttpStatusNotFoundError(responseBody)
+      return new HttpStatusNotFoundError()
     case 'HTTP_STATUS_SERVICE_UNAVAILABLE':
-      return new HttpStatusServiceUnavailableError(responseBody)
+      return new HttpStatusServiceUnavailableError()
     case 'HTTP_STATUS_TOO_MANY_REQUESTS':
-      return new HttpStatusTooManyRequestsError(responseBody)
+      return new HttpStatusTooManyRequestsError()
     case 'HTTP_STATUS_UNAUTHORIZED':
-      return new HttpStatusUnauthorizedError(responseBody)
+      return new HttpStatusUnauthorizedError()
     case 'UNKNOWN':
-      return new UnknownError('Invalid ErrorCode')
+      return new UnknownError()
   }
 
   return null

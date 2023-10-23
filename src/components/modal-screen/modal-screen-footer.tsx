@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useTheme } from '../../theme/hooks/use-theme'
+import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { ModalScreenFooterPadding } from './modal-screen-footer-padding'
 
@@ -16,17 +16,11 @@ export const ModalScreenFooter: React.FC<ModalScreenFooterProps> = ({
   verticalPadding = spacing[5],
   ignorePaddingWithSafeArea = true,
 }) => {
-  const { colors } = useTheme()
   return (
     <View
       style={[
         styles.buttonFooter,
-        {
-          paddingTop: verticalPadding,
-          paddingHorizontal: horizontalPadding,
-          backgroundColor: colors.secondaryBackground,
-          borderTopColor: colors.footerBorder,
-        },
+        { paddingTop: verticalPadding, paddingHorizontal: horizontalPadding },
         !ignorePaddingWithSafeArea ? { paddingBottom: verticalPadding } : undefined,
       ]}>
       <View style={[styles.buttonWrapper]}>{children}</View>
@@ -37,7 +31,9 @@ export const ModalScreenFooter: React.FC<ModalScreenFooterProps> = ({
 
 const styles = StyleSheet.create({
   buttonFooter: {
+    backgroundColor: colors.basicWhite,
     borderTopWidth: 2,
+    borderTopColor: colors.basicBlack,
     display: 'flex',
     alignItems: 'stretch',
     justifyContent: 'flex-start',

@@ -32,14 +32,4 @@ export class Logger implements LoggerType {
       console.log('Response', ...args)
     }
   }
-  logRequestError(...args: any[]) {
-    if (env.DEV_MENU && !env.DEBUG_SKIP_REQUEST_LOGGING) {
-      console.log('Request Error', ...args)
-    }
-  }
-  logError(origin: string, error: unknown) {
-    if (env.DEV_MENU) {
-      console.warn(`${origin} Errored`, JSON.stringify(error))
-    }
-  }
 }

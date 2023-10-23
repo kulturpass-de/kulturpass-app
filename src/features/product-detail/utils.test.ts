@@ -1,4 +1,5 @@
-import { isDefinedAddress, isOfferWithId } from './utils'
+import { ProductDetail, ProductTypes } from './types/product-detail'
+import { isOfferWithId, isProductVoucherPickup } from './utils'
 
 describe('Product Detail Utils', () => {
   describe('isOfferWithId', () => {
@@ -13,18 +14,35 @@ describe('Product Detail Utils', () => {
     })
   })
 
-  describe('isDefinedAddress', () => {
-    test('should return true if one field is defined', () => {
-      expect(isDefinedAddress({ name: 'test' })).toBeTruthy()
-      expect(isDefinedAddress({ street: 'test' })).toBeTruthy()
-      expect(isDefinedAddress({ postalCode: 'test' })).toBeTruthy()
-      expect(isDefinedAddress({ city: 'test' })).toBeTruthy()
-      expect(isDefinedAddress({ city: 'test', name: 'test', postalCode: 'test', street: 'test' })).toBeTruthy()
-    })
+  describe('isProductVoucherPickup', () => {
+    it('should return true when product is a voucher for pickup', async () => {
+      expect(
+        isProductVoucherPickup({
+          productType: ProductTypes.Voucher,
+          isVoucherPickupRequired: true,
+        } as ProductDetail),
+      ).toBe(true)
 
-    test('should return false if address is empty', () => {
-      expect(isDefinedAddress({})).toBeFalsy()
-      expect(isDefinedAddress(undefined)).toBeFalsy()
+      expect(
+        isProductVoucherPickup({
+          productType: ProductTypes.Voucher,
+          isVoucherPickupRequired: false,
+        } as ProductDetail),
+      ).toBe(false)
+
+      expect(
+        isProductVoucherPickup({
+          productType: ProductTypes.Audio,
+          isVoucherPickupRequired: true,
+        } as any as ProductDetail),
+      ).toBe(false)
+
+      expect(
+        isProductVoucherPickup({
+          productType: ProductTypes.Audio,
+          isVoucherPickupRequired: false,
+        } as any as ProductDetail),
+      ).toBe(false)
     })
   })
 })

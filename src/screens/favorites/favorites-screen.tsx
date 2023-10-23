@@ -2,11 +2,11 @@ import React, { useCallback } from 'react'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
-import { FavoritesList, FavoritesListProps } from '../../features/favorites/components/favorites-list'
-import { useFavouritesOnFocus } from '../../features/favorites/hooks/use-favourites-on-focus'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { FavoritesList, FavoritesListProps } from './favorites-list'
+import { useFavouritesOnFocus } from './use-favourites-on-focus'
 
 export type FavoritesScreenProps = {
   onFavoritePressed: (productCode: string) => void
@@ -31,7 +31,9 @@ export const FavoritesScreen: React.FC<FavoritesScreenProps> = ({ onFavoritePres
       <ErrorAlert error={error} onDismiss={resetError} />
       <Screen
         testID={buildTestId('favorites')}
-        header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} />}>
+        header={
+          <ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />
+        }>
         <FavoritesList
           favourites={favourites}
           onProductPressed={onProductPressed}

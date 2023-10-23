@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>de</string>
 	<key>CFBundleDisplayName</key>
@@ -24,15 +20,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -40,9 +27,90 @@
 	<key>NFCReaderUsageDescription</key>
 	<string>KulturPass DE needs NFC to access the ID card.</string>
 	<key>NSAppTransportSecurity</key>
+	<!-- build v1.0.1 -->
 	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 		<key>NSPinnedDomains</key>
 		<dict>
+			<key>commerce.qa.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>TaUiArx6CmGD2JNQ9D0ZeWBAKpmGZnwKLJpQsPRZdaw=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>accounts.eu1.gigya.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>t5B9+w1LA5jfc/g+pOHlRDgJr1yN0vpGL0neRSQRiSw=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.dev.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>1fNn4vCSUZGIDPqwGcx8YxPrJAoeN6bPvlEwf4tYN14=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.staging.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>ODeLbphuP+i4bREDls44f9k0pomUunbcuBTmHrBJqUE=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>users.staging.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>aqds+XzPzRMpk6umA9P0wNY5h4kseGUZgrQBkobetmY=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.perf.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>wY59k9m5gu2i71HWLp1XwRYTL57bD3BvGSYHU7+9Um8=</string>
+					</dict>
+				</array>
+			</dict>
 			<key>commerce.prod.kulturpass.de</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
@@ -55,14 +123,36 @@
 					</dict>
 				</array>
 			</dict>
+			<key>users.prod.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>av/AaUDHAADOeFOOH43qMwnpD6gC33te4r8rAcrd1sM=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>kp-mockserver.cfapps.eu10-004.hana.ondemand.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>2clfDj1TmOYxzoOEnriKY6PcoXhaVUDDR8D6mK84RN8=</string>
+					</dict>
+				</array>
+			</dict>
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To suggest more suitable cultural offers to you, we want to use your location while using the app.</string>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>We are sending push notifications to inform you about changes of the status of reservations, cancellations, and refunds for your budget etc., and to  remind you to pick up products or to redeem your codes.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>nunito_black.ttf</string>
@@ -82,18 +172,14 @@
 		<string>nunito_semibold.ttf</string>
 		<string>nunito_semibolditalic.ttf</string>
 	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>processing</string>
-		<string>remote-notification</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -104,6 +190,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>

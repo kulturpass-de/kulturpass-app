@@ -4,8 +4,9 @@ import { Pressable, StyleSheet, TextInput, View, type TextInputProps, type ViewS
 import DatePicker, { type DatePickerProps } from 'react-native-date-picker'
 import { useTestIdBuilder, type TestId } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
-import { SvgImage } from '../svg-image/svg-image'
+import { Icon } from '../icon/icon'
 import { AvailableTranslations } from '../translated-text/types'
 import { dateToDotDate, dotDateToIsoDate, isoDateToDate, isoDateToDotDate } from './date-utils'
 import { TextFormField } from './text-form-field'
@@ -40,7 +41,7 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
     },
     ref,
   ) => {
-    const { t, l } = useTranslation()
+    const { t } = useTranslation()
     const { addTestIdModifier } = useTestIdBuilder()
     /**
      * The initially provided date prop is kept in the local state in the format of dotDate. The onChangeText of the
@@ -123,7 +124,7 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
               accessibilityLabel={t('registration_form_dateOfBirth_select_icon')}
               accessibilityRole="button"
               testID={addTestIdModifier(testID, 'showDatePickerButton')}>
-              <SvgImage type="calendar" width={24} height={24} />
+              <Icon source="Calendar" width={24} height={24} />
             </Pressable>
             <DatePicker
               modal
@@ -134,15 +135,11 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
               onCancel={onDatePickerCancel}
               minimumDate={new Date('1900-01-01')}
               maximumDate={new Date()}
-              locale={l}
-              title={t('datePicker_title')}
-              confirmText={t('datePicker_confirmText')}
-              cancelText={t('datePicker_cancelText')}
             />
           </>
         ) : (
           <View style={styles.inputIcon}>
-            <SvgImage type="calendar" width={24} height={24} />
+            <Icon source="Calendar" width={24} height={24} tintColor={colors.transparentBlack40} />
           </View>
         )}
       </TextFormField>

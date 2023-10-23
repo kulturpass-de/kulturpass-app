@@ -59,7 +59,6 @@ export const PreferencesCategorySelector = React.forwardRef<View, PreferencesCat
                 isSelectable={isSelected || canSelectMore}
                 category={category}
                 onSelect={onSelect}
-                variant={grid}
               />
             )
           })}

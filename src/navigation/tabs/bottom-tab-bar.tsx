@@ -2,16 +2,12 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { RouteProp } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
-import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { selectFiltersOrSortOpen } from '../../services/webviews/redux/webviews-selectors'
-import { useTheme } from '../../theme/hooks/use-theme'
+import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { textStyles } from '../../theme/typography'
-import { useIsReduceMotionActive } from '../../utils/accessibility/hooks/use-is-reduce-motion-active'
 import { TabsParamList } from './types'
 
 type BottomTabItemProps = {
@@ -19,18 +15,10 @@ type BottomTabItemProps = {
   navigation: BottomTabBarProps['navigation']
   isFocused: boolean
   accessibilityHint: AccessibilityProps['accessibilityHint']
-  isReduceMotionActive: boolean
 }
 
-const BottomTabItem: React.FC<BottomTabItemProps> = ({
-  route,
-  isFocused,
-  navigation,
-  accessibilityHint,
-  isReduceMotionActive,
-}) => {
+const BottomTabItem: React.FC<BottomTabItemProps> = ({ route, isFocused, navigation, accessibilityHint }) => {
   const { t } = useTranslation()
-  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   const onPress = useCallback(() => {
@@ -39,6 +27,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
       target: route.key,
       canPreventDefault: true,
     })
+
     if (!isFocused && !event.defaultPrevented) {
       // The `merge: true` option makes sure that the params inside the tab screen are preserved
       navigation.navigate({ name: route.name, params: {}, merge: true })
@@ -65,15 +54,11 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
       accessibilityRole="tab"
       accessibilityHint={accessibilityHint}
       accessible>
-      <TabBarIcon isReduceMotionActive={isReduceMotionActive} isFocused={isFocused} name={route.name} />
+      <TabBarIcon isFocused={isFocused} name={route.name} />
       <View style={styles.tabBarLabelContainer}>
         <Text
           testID={buildTestId(`${routeName}_bottomNavigation_label`)}
-          style={[
-            isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium,
-            styles.tabBarLabel,
-            { color: colors.labelColor },
-          ]}>
+          style={[isFocused ? textStyles.MicroExtrabold : textStyles.MicroMedium, styles.tabBarLabel]}>
           {t(`${routeName}_bottomNavigation_label`)}
         </Text>
       </View>
@@ -87,25 +72,9 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
   bottomSafeArea,
 }) => {
   const { t } = useTranslation()
-  const { colors } = useTheme()
-  const isReduceMotionActive = useIsReduceMotionActive()
-
-  const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(WebViewId.Search))
-
-  if (filtersOrSortOpen) {
-    return null
-  }
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          paddingBottom: bottomSafeArea,
-          borderTopColor: colors.tabBarDivider,
-          backgroundColor: colors.secondaryBackground,
-        },
-      ]}>
+    <View style={[styles.container, { paddingBottom: bottomSafeArea }]}>
       <View style={styles.tabBarStyle}>
         {state.routes.map((route, index) => (
           <BottomTabItem
@@ -117,7 +86,6 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
               current: index + 1,
               total: state.routes.length,
             })}
-            isReduceMotionActive={isReduceMotionActive}
           />
         ))}
       </View>
@@ -128,6 +96,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
 const styles = StyleSheet.create({
   container: {
     paddingTop: 5,
+    backgroundColor: colors.basicWhite,
+    borderTopColor: colors.basicBlack,
     borderTopWidth: 2,
   },
   tabBarStyle: {
@@ -140,6 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabBarLabel: {
+    color: colors.basicBlack,
     paddingTop: spacing[0],
     lineHeight: 12,
     flex: 1,

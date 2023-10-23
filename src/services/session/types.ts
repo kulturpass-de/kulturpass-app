@@ -5,7 +5,7 @@ export type CdcSessionData = {
   idToken: string
   sessionValidity: number
   user: {
-    firstName?: string
+    firstName: string
     email: string
   }
   uid: string

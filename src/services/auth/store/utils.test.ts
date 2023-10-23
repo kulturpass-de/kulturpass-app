@@ -1,14 +1,6 @@
-import { CDC_SESSION_EXPIRATION_INFINITE } from '../../api/cdc-constants'
 import { AccountsLoginResponse } from '../../api/types'
-import { CdcSessionData, CommerceSessionData } from '../../session/types'
-import {
-  cdcLoginResponseToSessionData,
-  isCdcSessionValid,
-  isCommerceSessionValid,
-  isNotEmptyString,
-  isUserLoggedInToCdc,
-  isUserLoggedInToCommerce,
-} from './utils'
+import { CdcSessionData } from '../../session/types'
+import { cdcLoginResponseToSessionData, isExpiresInValid, isNotEmptyString, isSessionTimestampValid } from './utils'
 
 describe('cdcLoginResponseToSessionData', () => {
   const input = {
@@ -45,20 +37,19 @@ describe('cdcLoginResponseToSessionData', () => {
   })
 })
 
-describe('isCommerceSessionValid', () => {
+describe('isExpiresInValid', () => {
   it('should return false when input is not suitable', () => {
-    expect(isCommerceSessionValid(undefined)).toBe(false)
-    expect(isCommerceSessionValid(NaN)).toBe(false)
-    expect(isCommerceSessionValid(0)).toBe(false)
-    expect(isCommerceSessionValid(-1)).toBe(false)
-    expect(isCommerceSessionValid(-123)).toBe(false)
-    expect(isCommerceSessionValid(1)).toBe(false)
+    expect(isExpiresInValid(undefined)).toBe(false)
+    expect(isExpiresInValid(NaN)).toBe(false)
+    expect(isExpiresInValid(0)).toBe(false)
+    expect(isExpiresInValid(-1)).toBe(false)
+    expect(isExpiresInValid(-123)).toBe(false)
   })
 
   it('should return true when input is suitable', () => {
-    expect(isCommerceSessionValid(1, Date.now() + 1000)).toBe(true)
-    expect(isCommerceSessionValid(10, Date.now() + 100000)).toBe(true)
-    expect(isCommerceSessionValid(123, Date.now() + 2000000)).toBe(true)
+    expect(isExpiresInValid(1)).toBe(true)
+    expect(isExpiresInValid(10)).toBe(true)
+    expect(isExpiresInValid(123)).toBe(true)
   })
 })
 
@@ -76,145 +67,21 @@ describe('isNotEmptyString', () => {
 
 describe('isSessionTimestampValid', () => {
   it('should return false when input is not suitable', () => {
-    expect(isCdcSessionValid(NaN, NaN)).toBe(false)
-    expect(isCdcSessionValid(1000, Date.now() - 100000)).toBe(false)
+    expect(isSessionTimestampValid()).toBe(false)
+    expect(isSessionTimestampValid('')).toBe(false)
+    expect(isSessionTimestampValid(NaN)).toBe(false)
+    expect(isSessionTimestampValid(1000)).toBe(false)
+    expect(isSessionTimestampValid(0)).toBe(false)
+    expect(isSessionTimestampValid(-1)).toBe(false)
+    expect(isSessionTimestampValid(-3)).toBe(false)
+    expect(isSessionTimestampValid(-1000)).toBe(false)
+    expect(isSessionTimestampValid('tomorrow')).toBe(false)
+    expect(isSessionTimestampValid(Date.now() - 1)).toBe(false)
   })
 
   it('should return true when input is suitable', () => {
-    expect(isCdcSessionValid(0, Date.now())).toBe(true)
-    expect(isCdcSessionValid(-1, Date.now())).toBe(true)
-    expect(isCdcSessionValid(CDC_SESSION_EXPIRATION_INFINITE, Date.now())).toBe(true)
-    expect(isCdcSessionValid(5000, Date.now() + 5000)).toBe(true)
-  })
-})
-
-describe('isUserLoggedInToCdc', () => {
-  const pendingUser = {
-    isVerified: false,
-    regToken: 'adsd',
-  }
-  it('should return false when cdc session is not logged in', () => {
-    expect(isUserLoggedInToCdc(null)).toBe(false)
-    expect(
-      isUserLoggedInToCdc({
-        ...pendingUser,
-        sessionValidity: 1000,
-        sessionStartTimestamp: Date.now() - 5000,
-      } as CdcSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCdc({
-        sessionToken: 'TEST',
-        sessionSecret: 'TEST',
-        sessionValidity: 1000,
-        sessionStartTimestamp: Date.now() - 5000,
-      } as CdcSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCdc({
-        sessionToken: 'TEST',
-        sessionValidity: 1000,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCdc({
-        sessionSecret: 'TEST',
-        sessionValidity: 1000,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(false)
-  })
-
-  it('should return true when cdc session is logged in', () => {
-    expect(
-      isUserLoggedInToCdc({
-        ...pendingUser,
-        sessionValidity: 3000,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-    expect(
-      isUserLoggedInToCdc({
-        ...pendingUser,
-        sessionValidity: 0,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-    expect(
-      isUserLoggedInToCdc({
-        ...pendingUser,
-        sessionValidity: CDC_SESSION_EXPIRATION_INFINITE,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-    expect(
-      isUserLoggedInToCdc({
-        sessionToken: 'TEST',
-        sessionSecret: 'TEST',
-        sessionValidity: 3000,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-    expect(
-      isUserLoggedInToCdc({
-        sessionToken: 'TEST',
-        sessionSecret: 'TEST',
-        sessionValidity: 0,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-    expect(
-      isUserLoggedInToCdc({
-        sessionToken: 'TEST',
-        sessionSecret: 'TEST',
-        sessionValidity: -2,
-        sessionStartTimestamp: Date.now(),
-      } as CdcSessionData),
-    ).toBe(true)
-  })
-})
-
-describe('isUserLoggedInToCommerce', () => {
-  it('should return false when commerce session is not logged in', () => {
-    expect(isUserLoggedInToCommerce(null)).toBe(false)
-    expect(
-      isUserLoggedInToCommerce({
-        access_token: '',
-        expires_in: 3000,
-        token_valid_until: Date.now() + 3000,
-      } as CommerceSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCommerce({
-        access_token: 'test',
-        expires_in: -1,
-        token_valid_until: Date.now() + 3000,
-      } as CommerceSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCommerce({
-        access_token: 'test',
-        expires_in: 3000,
-        token_valid_until: Date.now() - 3000,
-      } as CommerceSessionData),
-    ).toBe(false)
-    expect(
-      isUserLoggedInToCommerce({
-        access_token: 'test',
-        expires_in: 3000,
-        token_valid_until: undefined,
-      } as CommerceSessionData),
-    ).toBe(false)
-  })
-
-  it('should return true when commerce session is logged in', () => {
-    expect(
-      isUserLoggedInToCommerce({
-        access_token: 'test',
-        expires_in: 3000,
-        token_valid_until: Date.now() + 3000,
-      } as CommerceSessionData),
-    ).toBe(true)
+    expect(isSessionTimestampValid(-2)).toBe(true)
+    expect(isSessionTimestampValid(Date.now() + 5000)).toBe(true)
+    expect(isSessionTimestampValid((Date.now() + 5000).toString())).toBe(true)
   })
 })

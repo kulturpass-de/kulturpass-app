@@ -2,7 +2,7 @@ import React from 'react'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { MusicInstrumentProductDetail } from '../../types/product-detail'
 import { ProductDetailEntry } from '../product-detail-entry'
-import { ProductDetailSection } from '../product-detail-section/product-detail-section'
+import { ProductDetailSection } from '../product-detail-section'
 
 export type ProductMusicInstrumentDetailProps = {
   productDetail: MusicInstrumentProductDetail
@@ -13,21 +13,18 @@ export const ProductMusicInstrumentDetail: React.FC<ProductMusicInstrumentDetail
   productDetail,
   testID,
 }) => {
-  const { manufacturer, ean } = productDetail
+  const { manufacturer } = productDetail
   const { addTestIdModifier } = useTestIdBuilder()
   const sectionTestID = addTestIdModifier(testID, 'musicInstrument')
 
   return (
     <>
-      {manufacturer || ean ? (
+      {manufacturer ? (
         <ProductDetailSection
           testID={sectionTestID}
-          iconSource="tag"
+          iconSource="Tag"
           sectionCaptioni18nKey="productDetail_musicInstrument_caption">
-          {manufacturer ? (
-            <ProductDetailEntry i18nKey="productDetail_musicInstrument_manufacturer" value={manufacturer} />
-          ) : null}
-          {ean ? <ProductDetailEntry i18nKey="productDetail_musicInstrument_ean" value={ean} /> : null}
+          <ProductDetailEntry i18nKey="productDetail_musicInstrument_manufacturer" value={manufacturer} />
         </ProductDetailSection>
       ) : null}
     </>

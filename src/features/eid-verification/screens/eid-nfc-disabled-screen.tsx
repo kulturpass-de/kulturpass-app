@@ -3,17 +3,17 @@ import React, { useCallback } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
+import { Icon } from '../../../components/icon/icon'
 import { Illustration } from '../../../components/illustration/illustration'
 import { InfoBox } from '../../../components/info-box/info-box'
 import { LinkText } from '../../../components/link-text/link-text'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
-import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { useTheme } from '../../../theme/hooks/use-theme'
+import { colors } from '../../../theme/colors'
 import { spacing } from '../../../theme/spacing'
 
 export type EidNFCDisabledScreenProps = {
@@ -22,7 +22,6 @@ export type EidNFCDisabledScreenProps = {
 
 export const EidNFCDisabledScreen: React.FC<EidNFCDisabledScreenProps> = ({ onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-  const { colors } = useTheme()
 
   const showNFCSettings = useCallback(() => {
     if (Platform.OS === 'android') {
@@ -49,16 +48,16 @@ export const EidNFCDisabledScreen: React.FC<EidNFCDisabledScreenProps> = ({ onCl
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentTitle}
             testID={addTestIdModifier(screenTestId, 'content_title')}
             i18nKey="eid_nfcDisabled_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <InfoBox containerStyle={styles.activateNfcBox}>
             <View style={styles.activateNfcBoxContent}>
-              <SvgImage type="nfc" width={36} height={36} />
+              <Icon source="NFC" width={36} height={36} />
               <TranslatedText
-                textStyleOverrides={[styles.activateNfcBoxText, { color: colors.labelColor }]}
+                textStyleOverrides={styles.activateNfcBoxText}
                 testID={addTestIdModifier(screenTestId, 'activateNfc_android_text')}
                 i18nKey="eid_nfcDisabled_activateNfc_text"
                 textStyle="BodySmallSemibold"
@@ -69,11 +68,10 @@ export const EidNFCDisabledScreen: React.FC<EidNFCDisabledScreenProps> = ({ onCl
               modifier="small"
               onPress={showNFCSettings}
               i18nKey="eid_nfcDisabled_activateNfc_openNfcSettings_button"
-              testID={addTestIdModifier(screenTestId, 'activateNfc_openNfcSettings_button')}
             />
           </InfoBox>
           <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            textStyleOverrides={styles.contentText}
             testID={addTestIdModifier(screenTestId, 'content_text')}
             i18nKey="eid_nfcDisabled_content_text"
             textStyle="BodyRegular"
@@ -116,9 +114,11 @@ export const styles = StyleSheet.create({
     paddingTop: spacing[7],
     paddingBottom: spacing[6],
     flexWrap: 'wrap',
+    color: colors.moonDarker,
   },
   contentText: {
     paddingTop: spacing[7],
+    color: colors.moonDarkest,
   },
   linkContainer: {
     paddingTop: spacing[9],
@@ -134,6 +134,7 @@ export const styles = StyleSheet.create({
     gap: spacing[4],
   },
   activateNfcBoxText: {
+    color: colors.moonDarkest,
     flexShrink: 1,
   },
 })

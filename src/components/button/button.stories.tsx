@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react-native'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { Button } from './button'
 
 const componentMeta: ComponentMeta<typeof Button> = {
@@ -26,34 +25,7 @@ export const Secondary: ComponentStory<typeof Button> = args => <Button {...args
 
 export const Tertiary: ComponentStory<typeof Button> = args => <Button {...args} variant="tertiary" />
 export const TertiarySmall: ComponentStory<typeof Button> = args => (
-  <Button {...args} variant="tertiary" modifier="small" iconSource="arrow-right" />
-)
-export const TertiaryWidthContent: ComponentStory<typeof Button> = args => (
-  <Button {...args} variant="tertiary" widthOption="content" iconSource="arrow-right" />
-)
-export const TertiaryWidthGrowContainerWidth80Percent: ComponentStory<typeof Button> = args => (
-  <View style={styles.width80Percent}>
-    <Button
-      {...args}
-      variant="tertiary"
-      i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
-      iconSource="link-arrow"
-      iconPosition="left"
-      widthOption="grow"
-    />
-  </View>
-)
-export const TertiaryWidthGrowContainerWidth10Percent: ComponentStory<typeof Button> = args => (
-  <View style={styles.width10Percent}>
-    <Button
-      {...args}
-      variant="tertiary"
-      i18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_redeemButton"
-      iconSource="link-arrow"
-      iconPosition="left"
-      widthOption="grow"
-    />
-  </View>
+  <Button {...args} variant="tertiary" modifier="small" iconSource="ArrowForward" />
 )
 
 export const White: ComponentStory<typeof Button> = args => <Button {...args} variant="white" />
@@ -63,18 +35,10 @@ export const Transparent: ComponentStory<typeof Button> = args => <Button {...ar
 export const VariantStyleOverrides: ComponentStory<typeof Button> = args => (
   <Button
     {...args}
-    buttonColorOverrides={{
-      text: 'red',
-      containerBackground: 'green',
+    buttonVariantStyleOverrides={{
+      baseContainer: {
+        backgroundColor: 'green',
+      },
     }}
   />
 )
-
-const styles = StyleSheet.create({
-  width10Percent: {
-    width: '10%',
-  },
-  width80Percent: {
-    width: '10%',
-  },
-})

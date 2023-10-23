@@ -3,8 +3,7 @@ import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
-import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/configure-mock-store'
-import { mockedCdcLoginResponse } from '../../../testing/test-utils'
+import { configureMockStore } from '../../../testing/configure-mock-store'
 import { userSlice } from '../../../user/redux/user-slice'
 import { authCdcLogin } from './auth-cdc-login'
 import { authCommerceLogin } from './auth-commerce-login'
@@ -15,8 +14,11 @@ const server = setupServer()
 
 describe('authLogin', () => {
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
-  const cdcLoginResult = mockedCdcLoginResponse
-  const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
+  const cdcLoginResult = {
+    profile: { firstName: 'Tester' },
+    sessionInfo: { sessionToken: 'MySessionToken', sessionSecret: 'MySessionSeecret' },
+  }
+  const commerceLoginResult = { auth_something: 'token' }
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware, commerceApi.middleware] })
 
@@ -71,7 +73,6 @@ describe('authLogin', () => {
     server.use(
       rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))),
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -96,7 +97,6 @@ describe('authLogin', () => {
       rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
       rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))),
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))

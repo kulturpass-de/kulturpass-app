@@ -19,21 +19,12 @@ export const useFormattedDateTime = (dateTimeAsString?: string): FormattedDateTi
 
     const dateTime = Date.parse(dateTimeAsString)
 
-    /**
-     * In the following two DateTimeFormat, we want to display the dates in the dd.mm.yyyy format, no matter what the
-     * currently selected language is
-     */
-
-    const dateFormat = new Intl.DateTimeFormat(Language.de, {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+    const dateFormat = new Intl.DateTimeFormat(l, {
+      dateStyle: 'medium',
     })
 
-    const timeFormat = new Intl.DateTimeFormat(Language.de, {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
+    const timeFormat = new Intl.DateTimeFormat(l, {
+      timeStyle: 'short',
     })
 
     return {
