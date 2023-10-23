@@ -1,7 +1,9 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
-import WebView from 'react-native-webview'
-import { WebViewScrollEvent } from 'react-native-webview/lib/WebViewTypes'
+import WebView, { WebViewProps } from 'react-native-webview'
+import { injectionService } from '../../../services/webviews/injection-service'
+
+type WebViewScrollEvent = Parameters<NonNullable<WebViewProps['onScroll']>>['0']
 
 export const useWebViewContentOffset = (webViewRef: RefObject<WebView<{}> | null>, contentOffset?: number) => {
   /**
@@ -13,11 +15,8 @@ export const useWebViewContentOffset = (webViewRef: RefObject<WebView<{}> | null
     if (contentOffset === undefined) {
       return
     }
-    webViewRef.current?.injectJavaScript(`
-      document.body.style.paddingTop = "${contentOffset}px";
-      // Don't remove
-      true;
-    `)
+
+    webViewRef.current?.injectJavaScript(injectionService.webviewSetPadding(contentOffset))
   }, [webViewRef, contentOffset])
 
   useEffect(() => {

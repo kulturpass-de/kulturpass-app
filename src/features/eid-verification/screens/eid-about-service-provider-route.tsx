@@ -1,8 +1,9 @@
+import { useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { ModalScreenProps } from '../../../navigation/modal/types'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -18,29 +19,23 @@ export type EidAboutServiceProviderRouteParams = {
   certificate: Certificate
 }
 
-export type EidAboutServiceProviderRouteProps = ModalScreenProps<'EidAboutServiceProvider'>
+export type EidAboutServiceProviderRouteProps = EidScreenProps<'EidAboutServiceProvider'>
 
 export const EidAboutServiceProviderRoute: React.FC<EidAboutServiceProviderRouteProps> = ({ route }) => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidAboutServiceProvider'>>()
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(() => {
-    modalNavigation.navigate({
-      screen: EidInsertCardRouteName,
-      params: {
-        flow: 'Auth',
-      },
+    navigation.replace(EidInsertCardRouteName, {
+      flow: 'Auth',
     })
-  }, [modalNavigation])
+  }, [navigation])
 
   const onProviderDetails = useCallback(() => {
-    modalNavigation.navigate({
-      screen: EidServiceProviderDetailsRouteName,
-      params: {
-        certificate: route.params.certificate,
-      },
+    navigation.navigate(EidServiceProviderDetailsRouteName, {
+      certificate: route.params.certificate,
     })
-  }, [modalNavigation, route.params.certificate])
+  }, [navigation, route.params.certificate])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)

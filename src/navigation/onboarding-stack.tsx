@@ -1,20 +1,18 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { OnboardingAboutAppRouteConfig } from '../features/onboarding/screens/onboarding-about-app-route'
-import { OnboardingLocationPermissionRouteConfig } from '../features/onboarding/screens/onboarding-location-permission-route'
-import { useTheme } from '../theme/hooks/use-theme'
+import { OnboardingAboutAppRouteConfig } from '../screens/app/onboarding/onboarding-about-app-route'
+import { OnboardingLocationPermissionRouteConfig } from '../screens/app/onboarding/onboarding-location-permission-route'
+import { OnboardingNotificationPermissionRouteConfig } from '../screens/app/onboarding/onboarding-notification-permission-route'
 import { ModalStackWrapper } from './modal/modal-stack-wrapper'
 import { OnboardingParamList } from './onboarding/types'
 
 const Stack = createStackNavigator<OnboardingParamList>()
 
 export const OnboardingStack = () => {
-  const { barStyle } = useTheme()
-
   return (
     <ModalStackWrapper>
-      <StatusBar backgroundColor="#00000000" translucent barStyle={barStyle} />
+      <StatusBar backgroundColor="#00000000" translucent />
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -23,6 +21,7 @@ export const OnboardingStack = () => {
         }}>
         <Stack.Screen {...OnboardingAboutAppRouteConfig} />
         <Stack.Screen {...OnboardingLocationPermissionRouteConfig} />
+        <Stack.Screen {...OnboardingNotificationPermissionRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

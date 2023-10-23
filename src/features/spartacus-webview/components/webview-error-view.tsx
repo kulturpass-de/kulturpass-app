@@ -5,7 +5,7 @@ import { Illustration } from '../../../components/illustration/illustration'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
 export const ERR_NO_INTERNET = 'ERR_NO_INTERNET'
@@ -20,6 +20,7 @@ export type WebviewErrorViewProps = {
 
 export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, errorCode, style }) => {
   const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   const { titleI18nKey, subtitleI18nKey } = useMemo((): {
     titleI18nKey: AvailableTranslations
@@ -45,14 +46,20 @@ export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, e
   }, [errorCode])
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={[styles.content, style]}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.primaryBackground }]}
+      contentContainerStyle={[styles.content, style]}>
       <Illustration i18nKey="noNetwork_image_alt" testID={buildTestId('webView_noNetwork_image')} type="no-network" />
       <View style={styles.contentContainer}>
-        <TranslatedText i18nKey={titleI18nKey} textStyleOverrides={styles.title} textStyle="HeadlineH4Extrabold" />
+        <TranslatedText
+          i18nKey={titleI18nKey}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
+          textStyle="HeadlineH4Extrabold"
+        />
         <TranslatedText
           i18nKey={subtitleI18nKey}
           i18nParams={{ errorCode }}
-          textStyleOverrides={styles.subtitle}
+          textStyleOverrides={[styles.subtitle, { color: colors.labelColor }]}
           textStyle="BodyRegular"
         />
         <View style={styles.spacer} />
@@ -69,7 +76,6 @@ export const WebviewErrorView: React.FC<WebviewErrorViewProps> = ({ onRefresh, e
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.basicBackground,
   },
   content: {
     flexDirection: 'column',
@@ -82,12 +88,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[7],
   },
   title: {
-    color: colors.basicBlack,
     textAlign: 'center',
     paddingBottom: spacing[2],
   },
   subtitle: {
-    color: colors.basicBlack,
     textAlign: 'center',
   },
   spacer: {

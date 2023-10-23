@@ -1,21 +1,20 @@
-import { SerializedError } from '@reduxjs/toolkit'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
-import { Icon } from '../../../components/icon/icon'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import {
   getCdcDpsDocumentUrl,
@@ -27,7 +26,7 @@ import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRights, certificate: Certificate) => void
   onNFCNotSupported: () => void
-  onError: (error: ErrorWithCode | SerializedError) => void
+  onError: (error: ErrorWithCode) => void
   onClose: () => void
 }
 
@@ -38,7 +37,10 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   onClose,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
+
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
+  const eidIdentificationVideo = useFaqLink('IDENTIFICATION_VIDEO')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
   const { isLoading: initLoading } = useInitAA2Sdk(onError)
@@ -63,35 +65,35 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
         />
         <View style={styles.contentContainer}>
           <TranslatedText
-            textStyleOverrides={styles.contentTitle}
+            textStyleOverrides={[styles.contentTitle, { color: colors.labelColor }]}
             testID={addTestIdModifier(screenTestId, 'content_title')}
             i18nKey="eid_aboutVerification_content_title"
             textStyle="HeadlineH3Extrabold"
           />
           <View style={styles.idListContainer}>
             <View style={[styles.idListItem, styles.idListItemPadding, styles.idListItemWrapping]}>
-              <Icon source="ID1" width={24} height={24} />
+              <SvgImage type="id-1" width={24} height={24} />
               <TranslatedText
                 textStyle="BodyRegular"
-                textStyleOverrides={styles.idListItemText}
+                textStyleOverrides={[styles.idListItemText, { color: colors.labelColor }]}
                 i18nKey="eid_document_germandID"
                 testID={buildTestId('eid_document_germandID')}
               />
             </View>
             <View style={[styles.idListItem, styles.idListItemPadding, styles.idListItemWrapping]}>
-              <Icon source="ID2" width={24} height={24} />
+              <SvgImage type="id-2" width={24} height={24} />
               <TranslatedText
                 textStyle="BodyRegular"
-                textStyleOverrides={styles.idListItemText}
+                textStyleOverrides={[styles.idListItemText, { color: colors.labelColor }]}
                 i18nKey="eid_document_euID"
                 testID={buildTestId('eid_document_euID')}
               />
             </View>
             <View style={styles.idListItem}>
-              <Icon source="ID2" width={24} height={24} />
+              <SvgImage type="id-2" width={24} height={24} />
               <TranslatedText
                 textStyle="BodyRegular"
-                textStyleOverrides={[styles.idListItemText, styles.idListItemWrapping]}
+                textStyleOverrides={[styles.idListItemText, { color: colors.labelColor }, styles.idListItemWrapping]}
                 i18nKey="eid_document_nonEuID"
                 testID={buildTestId('eid_document_nonEuID')}
               />
@@ -100,7 +102,7 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
           <TranslatedText
             i18nKey="eid_aboutVerification_content_text"
             textStyle="BodyRegular"
-            textStyleOverrides={[styles.textPadding, { color: colors.moonDarkest }]}
+            textStyleOverrides={[styles.textPadding, { color: colors.labelColor }]}
             testID={buildTestId('eid_aboutVerification_content_text')}
           />
           <View style={styles.textPadding}>
@@ -110,10 +112,17 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
               link={eidGeneralFaqLink}
             />
           </View>
+          <View style={styles.textPadding}>
+            <LinkText
+              testID={buildTestId('eid_aboutVerification_video_link')}
+              i18nKey="eid_aboutVerification_video_link"
+              link={eidIdentificationVideo}
+            />
+          </View>
           <TranslatedText
             i18nKey="eid_aboutVerification_accept_text"
             textStyle="BodySmallRegular"
-            textStyleOverrides={[styles.textPadding, { color: colors.moonDarkest }]}
+            textStyleOverrides={[styles.acceptText, { color: colors.labelColor }]}
             testID={buildTestId('eid_aboutVerification_accept_text')}
           />
           <View style={styles.textPadding}>
@@ -154,7 +163,6 @@ export const styles = StyleSheet.create({
   contentTitle: {
     paddingTop: spacing[7],
     flexWrap: 'wrap',
-    color: colors.moonDarker,
   },
   idListItem: {
     flexDirection: 'row',
@@ -170,7 +178,6 @@ export const styles = StyleSheet.create({
     paddingLeft: spacing[5],
     flexWrap: 'wrap',
     flex: 1,
-    color: colors.moonDarkest,
   },
   idListContainer: {
     flexDirection: 'column',
@@ -178,5 +185,8 @@ export const styles = StyleSheet.create({
   },
   textPadding: {
     paddingTop: spacing[6],
+  },
+  acceptText: {
+    paddingTop: spacing[8],
   },
 })

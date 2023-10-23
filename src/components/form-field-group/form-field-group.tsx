@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 import { FormFieldWithControlProps } from '../form-fields/form-field-with-control'
 import { TranslatedText } from '../translated-text/translated-text'
@@ -23,6 +23,7 @@ export const FormFieldGroup: React.FC<FormFieldGroupProps> = ({
   containerStyle = {},
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
+  const { colors } = useTheme()
 
   return (
     <View testID={testID} style={containerStyle}>
@@ -31,7 +32,7 @@ export const FormFieldGroup: React.FC<FormFieldGroupProps> = ({
         i18nKey={i18nKey}
         i18nParams={i18nParams}
         textStyle={'SubtitleSemibold'}
-        textStyleOverrides={styles.groupCaption}
+        textStyleOverrides={[styles.groupCaption, { color: colors.labelColor }]}
       />
       {formFields}
     </View>
@@ -42,6 +43,5 @@ const styles = StyleSheet.create({
   groupCaption: {
     marginTop: spacing[2],
     marginBottom: spacing[6],
-    color: colors.moonDarkest,
   },
 })

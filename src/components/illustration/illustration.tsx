@@ -1,90 +1,150 @@
-import React from 'react'
-import { Image, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
+import LottieView from 'lottie-react-native'
+import React, { useEffect, useMemo, useRef } from 'react'
+import {
+  Animated,
+  Easing,
+  Image,
+  ImageSourcePropType,
+  InteractionManager,
+  StyleSheet,
+  View,
+  ViewProps,
+} from 'react-native'
 import { useTranslation } from '../../services/translation/translation'
+import {
+  requireIllustrationImage as requireIllustrationImageDark,
+  requireIllustrationAnimation as requireIllustrationAnimationDark,
+} from '../../theme/dark/illustrations'
+import { useTheme } from '../../theme/hooks/use-theme'
+import {
+  requireIllustrationImage as requireIllustrationImageLight,
+  requireIllustrationAnimation as requireIllustrationAnimationLight,
+} from '../../theme/light/illustrations'
+import { RequiredAnimatedIllustration } from '../../theme/types'
+import { useIsReduceMotionActive } from '../../utils/accessibility/hooks/use-is-reduce-motion-active'
+import { calculateAnimationDuration, getAnimationSize } from '../../utils/animations/utils'
 import { AvailableTranslations } from '../translated-text/types'
 
 export type IllustrationType =
-  | 'onboarding'
-  | 'localisation-consent'
+  | AnimatedIllustrationType
   | 'data-privacy'
-  | 'verify-mail'
-  | 'registration-finished'
   | 'eid'
   | 'eid-card-positioning-ios'
   | 'eid-card-positioning-android'
   | 'eid-nfc-disabled'
   | 'success'
   | 'budget-received'
-  | 'empty-state-reservations'
-  | 'empty-state-reservations-closed'
-  | 'favorites-empty-state'
   | 'stop-sign'
   | 'delete-account'
   | 'no-network'
+  | 'location-sharing'
+  | 'password'
+
+export type AnimatedIllustrationType =
+  | 'onboarding'
+  | 'empty-state-reservations'
+  | 'empty-state-reservations-closed'
+  | 'favorites-empty-state'
+  | 'registration-finished'
+  | 'verify-mail'
+  | 'release-notes'
+  | 'localisation-consent'
+  | 'notification-permission'
 
 export type IllustrationProps = {
   type: IllustrationType
   i18nKey: AvailableTranslations
   testID: string
-  style?: StyleProp<ImageStyle>
+  style?: ViewProps['style']
+  animationSpeed?: number
 }
 
-export const Illustration: React.FC<IllustrationProps> = ({
-  type,
-  i18nKey,
-  testID,
-  style = {
-    width: '100%',
-  },
-}) => {
+const AnimatedLottieView = Animated.createAnimatedComponent(LottieView)
+
+export const Illustration: React.FC<IllustrationProps> = ({ type, i18nKey, testID, style, animationSpeed }) => {
+  const { colorScheme } = useTheme()
   const { t } = useTranslation()
+  const animationProgress = useRef(new Animated.Value(0))
+
+  const animationRef = useRef<LottieView>(null)
+  const isReduceMotionActive = useIsReduceMotionActive()
+  const isFocused = useIsFocused()
+
+  const animation = useMemo(():
+    | { source: RequiredAnimatedIllustration; duration: number; size: { width: number; height: number } }
+    | undefined => {
+    if (!isReduceMotionActive) {
+      let source
+      if (colorScheme === 'dark') {
+        source = requireIllustrationAnimationDark(type)
+      } else {
+        source = requireIllustrationAnimationLight(type)
+      }
+
+      if (source === undefined) {
+        return
+      }
+
+      return { source, duration: calculateAnimationDuration(source), size: getAnimationSize(source) }
+    }
+  }, [colorScheme, isReduceMotionActive, type])
+
+  const image: ImageSourcePropType = useMemo(() => {
+    if (colorScheme === 'dark') {
+      return requireIllustrationImageDark(type)
+    } else {
+      return requireIllustrationImageLight(type)
+    }
+  }, [colorScheme, type])
+
+  useEffect(() => {
+    if (animation !== undefined) {
+      if (isFocused) {
+        // Play Animation of illustration after all screen transitions are done
+        InteractionManager.runAfterInteractions(() => {
+          animationProgress.current.setValue(0)
+          const playbackDuration = animation.duration / (animationSpeed ?? 1)
+          Animated.timing(animationProgress.current, {
+            toValue: 1,
+            duration: playbackDuration,
+            easing: Easing.linear,
+            useNativeDriver: true,
+            isInteraction: true,
+          }).start()
+        })
+      } else {
+        animationProgress.current.resetAnimation()
+      }
+    }
+  }, [animation, animationSpeed, isFocused])
 
   return (
-    <Image
+    <View
       testID={testID}
-      accessible={true}
+      accessible
+      accessibilityRole="image"
       accessibilityLabel={t(i18nKey)}
-      style={style}
-      source={requireImage(type)}
-    />
+      style={[styles.container, style]}>
+      {animation !== undefined ? (
+        <AnimatedLottieView
+          ref={animationRef}
+          source={animation.source}
+          loop={false}
+          autoPlay={false}
+          resizeMode="cover"
+          progress={animationProgress.current}
+          style={animation.size}
+        />
+      ) : (
+        <Image source={image} />
+      )}
+    </View>
   )
 }
 
-function requireImage(type: IllustrationType): ImageSourcePropType {
-  switch (type) {
-    case 'onboarding':
-      return require('./imgs/onboarding.png')
-    case 'localisation-consent':
-      return require('./imgs/localisation-consent.png')
-    case 'data-privacy':
-      return require('./imgs/data-privacy.png')
-    case 'verify-mail':
-      return require('./imgs/verify-mail.png')
-    case 'registration-finished':
-      return require('./imgs/registration-finished.png')
-    case 'eid':
-      return require('./imgs/eid.png')
-    case 'eid-card-positioning-ios':
-      return require('./imgs/eid-card-positioning-ios.png')
-    case 'eid-card-positioning-android':
-      return require('./imgs/eid-card-positioning-android.png')
-    case 'eid-nfc-disabled':
-      return require('./imgs/eid-nfc-disabled.png')
-    case 'success':
-      return require('./imgs/success.png')
-    case 'budget-received':
-      return require('./imgs/budget-received.png')
-    case 'empty-state-reservations':
-      return require('./imgs/empty-state-reservations.png')
-    case 'empty-state-reservations-closed':
-      return require('./imgs/empty-state-reservations-closed.png')
-    case 'favorites-empty-state':
-      return require('./imgs/favorites-empty-state.png')
-    case 'stop-sign':
-      return require('./imgs/stop-sign.png')
-    case 'delete-account':
-      return require('./imgs/delete-account.png')
-    case 'no-network':
-      return require('./imgs/no-network.png')
-  }
-}
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
+})

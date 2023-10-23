@@ -1,15 +1,20 @@
 import { MutableRefObject, useCallback, useRef } from 'react'
 import { Platform } from 'react-native'
 import WebView, { WebViewProps } from 'react-native-webview'
+import { useSelector } from 'react-redux'
+import { selectFiltersOrSortOpen } from '../../../../services/webviews/redux/webviews-selectors'
+import { WebViewId } from './types'
 
 export type UseWebviewAndroidPullToRefreshParams = {
   onScroll?: NonNullable<WebViewProps['onScroll']>
   webViewRef: MutableRefObject<WebView | null>
+  webViewId: WebViewId
 }
 
 export const useWebviewAndroidPullToRefresh = (params: UseWebviewAndroidPullToRefreshParams) => {
   const scrollY = useRef(0)
   const touchY = useRef(0)
+  const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(params.webViewId))
 
   const onScroll = useCallback<NonNullable<WebViewProps['onScroll']>>(
     event => {
@@ -26,7 +31,7 @@ export const useWebviewAndroidPullToRefresh = (params: UseWebviewAndroidPullToRe
 
   const onTouchEnd = useCallback<NonNullable<WebViewProps['onTouchEnd']>>(
     event => {
-      if (Platform.OS !== 'android') {
+      if (Platform.OS !== 'android' || filtersOrSortOpen) {
         return
       }
 
@@ -34,7 +39,7 @@ export const useWebviewAndroidPullToRefresh = (params: UseWebviewAndroidPullToRe
         params.webViewRef.current?.reload()
       }
     },
-    [params.webViewRef],
+    [params.webViewRef, filtersOrSortOpen],
   )
 
   return { onScroll, onTouchStart, onTouchEnd }

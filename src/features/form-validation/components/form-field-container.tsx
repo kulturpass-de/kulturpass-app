@@ -1,17 +1,18 @@
 import React, { PropsWithChildren } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { Icon } from '../../../components/icon/icon'
-import { AvailableTranslations } from '../../../components/translated-text/types'
+import { SvgImage } from '../../../components/svg-image/svg-image'
+import { AvailableTextStyles, AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 
 export type FormFieldContainerProps = PropsWithChildren<{
   testID: TestId
   labelI18nKey?: AvailableTranslations
+  labelTextStyle?: AvailableTextStyles
   error?: FieldError
   containerStyle?: ViewStyle
   isRequired?: boolean
@@ -21,6 +22,7 @@ export type FormFieldContainerProps = PropsWithChildren<{
 export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   testID,
   labelI18nKey,
+  labelTextStyle = 'BodyRegular',
   error,
   containerStyle,
   isRequired,
@@ -28,6 +30,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   children,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
 
   let errorMessage: string | undefined
@@ -42,19 +45,19 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
           testID={addTestIdModifier(testID, 'label')}
           accessibilityLabel={t(labelI18nKey)}
           accessible={!disableAccessibilityForLabel}
-          style={[textStyles.BodyRegular, styles.textColor]}>
+          style={[textStyles[labelTextStyle], { color: colors.labelColor }]}>
           {t(labelI18nKey) + (isRequired ? ' *' : '')}
         </Text>
       )}
       <View style={styles.textInputContainer}>{children}</View>
       {errorMessage ? (
         <View style={styles.errorContainer}>
-          <Icon source="InputError" width={20} height={20} />
+          <SvgImage type="input-error" width={20} height={20} />
           <Text
             testID={addTestIdModifier(testID, 'error')}
             accessibilityLabel={errorMessage}
             accessible
-            style={[textStyles.CaptionSemibold, styles.errorText]}>
+            style={[textStyles.CaptionSemibold, styles.errorText, { color: colors.labelColor }]}>
             {errorMessage}
           </Text>
         </View>
@@ -70,9 +73,6 @@ const styles = StyleSheet.create({
   textInputContainer: {
     marginTop: spacing[2],
   },
-  textColor: {
-    color: colors.moonDarkest,
-  },
   errorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     marginLeft: spacing[2],
     // This marginTop does not exist in Figma, but it makes the text properly center aligned with the icon
     marginTop: spacing[1],
-    color: colors.moonDarkest,
     flex: 1,
   },
 })

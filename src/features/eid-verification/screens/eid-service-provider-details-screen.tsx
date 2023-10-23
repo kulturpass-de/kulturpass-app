@@ -2,14 +2,47 @@ import { Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useMemo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { LinkTextInline } from '../../../components/link-text/link-text-inline'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { colors } from '../../../theme/colors'
+import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
+
+const Item = ({
+  content,
+  name,
+  link,
+}: {
+  content: string
+  link?: string
+  name: 'subject' | 'issuer' | 'termsOfUsage' | 'validity'
+}) => {
+  const { buildTestId } = useTestIdBuilder()
+  const { colors } = useTheme()
+
+  const contentTextStyle = [textStyles.BodyRegular, { color: colors.labelColor }]
+
+  return (
+    <View style={styles.item}>
+      <TranslatedText
+        accessibilityRole="header"
+        textStyle="SubtitleSemibold"
+        i18nKey={`eid_serviceProviderDetails_${name}_title`}
+        testID={buildTestId(`eid_serviceProviderDetails_${name}_title`)}
+        textStyleOverrides={[styles.itemTitle, { color: colors.labelColor }]}
+      />
+      <Text style={contentTextStyle} accessible testID={buildTestId(`eid_serviceProviderDetails_${name}_content`)}>
+        {content}
+      </Text>
+
+      {link && <LinkTextInline link={link} i18nKey={link as any} textStyleOverrides={contentTextStyle} />}
+    </View>
+  )
+}
 
 export type EidServiceProviderDetailsScreenProps = {
   certificate: Certificate
@@ -24,10 +57,6 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { l: language } = useTranslation()
-
-  const subject = `${certificate.description.subjectName}\n${certificate.description.subjectUrl}`
-
-  const issuer = `${certificate.description.issuerName}\n${certificate.description.issuerUrl}`
 
   const { termsOfUsage } = certificate.description
 
@@ -46,62 +75,10 @@ export const EidServiceProviderDetailsScreen: React.FC<EidServiceProviderDetails
         onPressBack={onBack}
       />
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
-        <View style={styles.item}>
-          <TranslatedText
-            textStyle="SubtitleSemibold"
-            i18nKey="eid_serviceProviderDetails_subject_title"
-            testID={buildTestId('eid_serviceProviderDetails_subject_title')}
-            textStyleOverrides={styles.itemTitle}
-          />
-          <Text
-            style={[textStyles.BodyRegular, styles.text]}
-            accessible
-            testID={buildTestId('eid_serviceProviderDetails_subject_content')}>
-            {subject}
-          </Text>
-        </View>
-        <View style={styles.item}>
-          <TranslatedText
-            textStyle="SubtitleSemibold"
-            i18nKey="eid_serviceProviderDetails_issuer_title"
-            testID={buildTestId('eid_serviceProviderDetails_issuer_title')}
-            textStyleOverrides={styles.itemTitle}
-          />
-          <Text
-            style={[textStyles.BodyRegular, styles.text]}
-            accessible
-            testID={buildTestId('eid_serviceProviderDetails_issuer_content')}>
-            {issuer}
-          </Text>
-        </View>
-        <View style={styles.item}>
-          <TranslatedText
-            textStyle="SubtitleSemibold"
-            i18nKey="eid_serviceProviderDetails_termsOfUsage_title"
-            testID={buildTestId('eid_serviceProviderDetails_termsOfUsage_title')}
-            textStyleOverrides={styles.itemTitle}
-          />
-          <Text
-            style={[textStyles.BodyRegular, styles.text]}
-            accessible
-            testID={buildTestId('eid_serviceProviderDetails_termsOfUsage_content')}>
-            {termsOfUsage}
-          </Text>
-        </View>
-        <View style={styles.item}>
-          <TranslatedText
-            textStyle="SubtitleSemibold"
-            i18nKey="eid_serviceProviderDetails_validity_title"
-            testID={buildTestId('eid_serviceProviderDetails_validity_title')}
-            textStyleOverrides={styles.itemTitle}
-          />
-          <Text
-            style={[textStyles.BodyRegular, styles.text]}
-            accessible
-            testID={buildTestId('eid_serviceProviderDetails_validity_content')}>
-            {validity}
-          </Text>
-        </View>
+        <Item content={certificate.description.subjectName} name="subject" link={certificate.description.subjectUrl} />
+        <Item content={certificate.description.issuerName} name="issuer" link={certificate.description.issuerUrl} />
+        <Item content={termsOfUsage} name="termsOfUsage" />
+        <Item content={validity} name="validity" />
       </ScrollView>
     </ModalScreen>
   )
@@ -122,9 +99,5 @@ export const styles = StyleSheet.create({
   },
   itemTitle: {
     paddingBottom: spacing[1],
-    color: colors.basicBlack,
-  },
-  text: {
-    color: colors.basicBlack,
   },
 })

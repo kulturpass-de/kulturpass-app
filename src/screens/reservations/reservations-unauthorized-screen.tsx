@@ -8,7 +8,7 @@ import { ScreenHeader } from '../../components/screen/screen-header'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type ReservationsUnauthorizedScreenProps = {
@@ -19,17 +19,14 @@ export const ReservationsUnauthorizedScreen: React.FC<ReservationsUnauthorizedSc
   onSignInRequested,
 }) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
 
   return (
     <Screen
       testID={buildTestId('reservations_unauthorized')}
       header={
-        <ScreenHeader
-          testID={buildTestId('reservations_unauthorized_headline')}
-          title={t('reservations_headline')}
-          borderBottom
-        />
+        <ScreenHeader testID={buildTestId('reservations_unauthorized_headline')} title={t('reservations_headline')} />
       }>
       <ScreenContent style={styles.content}>
         <Illustration
@@ -39,13 +36,13 @@ export const ReservationsUnauthorizedScreen: React.FC<ReservationsUnauthorizedSc
         />
         <TranslatedText
           textStyle="HeadlineH4Extrabold"
-          textStyleOverrides={styles.title}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
           i18nKey="reservations_unauthorized_no_reservations_title"
           testID={buildTestId('reservations_unauthorized_no_reservations_title')}
         />
         <TranslatedText
           textStyle="BodyRegular"
-          textStyleOverrides={styles.hint}
+          textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
           i18nKey="reservations_unauthorized_no_reservations_hint"
           testID={buildTestId('reservations_unauthorized_no_reservations_hint')}
         />
@@ -70,14 +67,12 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: spacing[6],
     textAlign: 'center',
-    color: colors.basicBlack,
   },
   hint: {
     marginTop: spacing[2],
     marginBottom: spacing[6],
     paddingHorizontal: spacing[5],
     textAlign: 'center',
-    color: colors.primaryDark,
   },
   buttonContainer: {
     flexGrow: 1,

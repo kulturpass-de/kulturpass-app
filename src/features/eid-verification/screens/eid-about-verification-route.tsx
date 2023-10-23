@@ -1,9 +1,10 @@
-import { SerializedError } from '@reduxjs/toolkit'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
-import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
-import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
+import { EidParamList } from '../../../navigation/eid/types'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
+import { ErrorWithCode } from '../../../services/errors/errors'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -17,39 +18,30 @@ export const EidAboutVerificationRouteName = 'EidAboutVerification'
 export type EidAboutVerificationRouteParams = undefined
 
 export const EidAboutVerificationRoute: React.FC = () => {
-  const modalNavigation = useModalNavigation()
+  const navigation = useNavigation<StackNavigationProp<EidParamList, 'EidAboutVerification'>>()
   const [visibleError, setVisibleError] = useState<ErrorWithCode | null>(null)
   const [cancelAlertVisible, setCancelAlertVisible] = useState(false)
 
   const onNext = useCallback(
     (accessRights: AccessRights, certificate: Certificate) => {
-      modalNavigation.navigate({
-        screen: EidAboutServiceProviderRouteName,
-        params: {
-          certificate,
-          accessRights,
-        },
+      navigation.replace(EidAboutServiceProviderRouteName, {
+        certificate,
+        accessRights,
       })
     },
-    [modalNavigation],
+    [navigation],
   )
 
   const onNFCNotSupported = useCallback(() => {
-    modalNavigation.navigate({
-      screen: EidNFCNotSupportedRouteName,
-    })
-  }, [modalNavigation])
+    navigation.replace(EidNFCNotSupportedRouteName)
+  }, [navigation])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)
   }, [])
 
-  const onError = useCallback((error: ErrorWithCode | SerializedError) => {
-    if (error instanceof ErrorWithCode) {
-      setVisibleError(error)
-    } else {
-      setVisibleError(new UnknownError())
-    }
+  const onError = useCallback((error: ErrorWithCode) => {
+    setVisibleError(error)
   }, [])
 
   useHandleGestures(onClose)

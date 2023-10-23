@@ -6,7 +6,7 @@ export type ThemeState = {
 }
 
 export const themeInitialState: ThemeState = {
-  darkThemePreviewEnabled: false,
+  darkThemePreviewEnabled: true,
   forcedTheme: null,
 }
 

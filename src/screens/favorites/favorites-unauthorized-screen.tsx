@@ -8,7 +8,7 @@ import { ScreenHeader } from '../../components/screen/screen-header'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { colors } from '../../theme/colors'
+import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type FavoritesUnauthorizedScreenProps = {
@@ -16,13 +16,14 @@ export type FavoritesUnauthorizedScreenProps = {
 }
 
 export const FavoritesUnauthorizedScreen: React.FC<FavoritesUnauthorizedScreenProps> = ({ onSignInRequested }) => {
+  const { colors } = useTheme()
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
 
   return (
     <Screen
       testID={buildTestId('favorites_unauthorized')}
-      header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} borderBottom />}>
+      header={<ScreenHeader testID={buildTestId('favorites_headline')} title={t('favorites_headline')} />}>
       <ScreenContent style={styles.content}>
         <Illustration
           testID={buildTestId('favorites_empty_hero_image_alt')}
@@ -31,13 +32,13 @@ export const FavoritesUnauthorizedScreen: React.FC<FavoritesUnauthorizedScreenPr
         />
         <TranslatedText
           textStyle="HeadlineH4Extrabold"
-          textStyleOverrides={styles.title}
+          textStyleOverrides={[styles.title, { color: colors.labelColor }]}
           i18nKey="favorites_unauthorized_no_favorites_title"
           testID={buildTestId('favorites_unauthorized_no_favorites_title')}
         />
         <TranslatedText
           textStyle="BodyRegular"
-          textStyleOverrides={styles.hint}
+          textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
           i18nKey="favorites_unauthorized_no_favorites_hint"
           testID={buildTestId('favorites_unauthorized_no_favorites_hint')}
         />
@@ -63,14 +64,12 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: spacing[6],
     textAlign: 'center',
-    color: colors.basicBlack,
   },
   hint: {
     marginTop: spacing[2],
     marginBottom: spacing[6],
     paddingHorizontal: spacing[5],
     textAlign: 'center',
-    color: colors.primaryDark,
   },
   buttonContainer: {
     flexGrow: 1,
