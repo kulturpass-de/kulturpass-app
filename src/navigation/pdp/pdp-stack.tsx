@@ -1,13 +1,11 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { OfferSelectionFilterRouteConfig } from '../../screens/product-details/offer-selection-filter-route'
-import { OfferSelectionRouteConfig } from '../../screens/product-details/offer-selection-route'
-import { ProductConfirmReservationRouteConfig } from '../../screens/product-details/product-confirm-reservation-route'
-import { ProductDetailRouteConfig } from '../../screens/product-details/product-detail-route'
-import { ProductReportRouteConfig } from '../../screens/product-details/product-report-route'
-import { OrderReportRouteConfig } from '../../screens/reservations/order-report-route'
-import { ReservationDetailRouteConfig } from '../../screens/reservations/reservation-detail-route'
+import { OfferSelectionFilterRouteConfig } from '../../features/product-detail/screens/offer-selection-filter-route'
+import { OfferSelectionRouteConfig } from '../../features/product-detail/screens/offer-selection-route'
+import { ProductConfirmReservationRouteConfig } from '../../features/product-detail/screens/product-confirm-reservation-route'
+import { ProductDetailRouteConfig } from '../../features/product-detail/screens/product-detail-route'
+import { ReservationDetailRouteConfig } from '../../features/reservations/screens/reservation-detail-route'
 import { ModalStackWrapper } from '../modal/modal-stack-wrapper'
 import { PdpParamList } from './types'
 
@@ -28,8 +26,6 @@ export const PdpStack = () => {
         <Stack.Screen {...OfferSelectionFilterRouteConfig} />
         <Stack.Screen {...ProductConfirmReservationRouteConfig} />
         <Stack.Screen {...ReservationDetailRouteConfig} />
-        <Stack.Screen {...ProductReportRouteConfig} />
-        <Stack.Screen {...OrderReportRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

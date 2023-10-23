@@ -18,7 +18,7 @@ export const NotYetEntitledHeader: React.FC = () => {
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('not_yet_entitled_title')}
-            i18nKey={name ? 'not_yet_entitled_title' : 'not_yet_entitled_title_withoutName'}
+            i18nKey="not_yet_entitled_title"
             i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.labelColor }}

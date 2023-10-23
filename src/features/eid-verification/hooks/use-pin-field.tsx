@@ -18,7 +18,6 @@ type UsePinFieldProps = Omit<PinInputProps, 'numRows' | 'testID'> & {
   showPin: boolean
   innerInputRef: React.MutableRefObject<TextInput>
   setFocusedIndex: React.Dispatch<React.SetStateAction<number | undefined>>
-  testID?: string
 }
 
 export const usePinField = ({
@@ -33,7 +32,6 @@ export const usePinField = ({
   setFocusedIndex,
   pinLength,
   onChange,
-  testID,
 }: UsePinFieldProps) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
@@ -73,7 +71,6 @@ export const usePinField = ({
       return (
         <Pressable
           key={index}
-          testID={testID}
           accessibilityElementsHidden={false}
           importantForAccessibility={'yes'}
           accessibilityHint={t(`eid_${variant}_form_accessibilityHint_from_to`, { current: index + 1, total: total })}
@@ -82,7 +79,7 @@ export const usePinField = ({
               ? `eid_${variant}_form_accessibilityLabel_label_ios`
               : `eid_${variant}_form_accessibilityLabel_label_android`,
           )}
-          accessibilityRole={'none'} // NOTE: leave 'none' here, if removed the screenreaders will read out "button", which we do not want
+          accessibilityRole={'none'} //TODO: find a way to replace "none" with a TextInput one
           accessibilityActions={[{ name: 'activate' }]}
           accessibilityValue={{ text: fieldValue }}
           // eslint-disable-next-line react/jsx-no-bind
@@ -126,7 +123,6 @@ export const usePinField = ({
       colors.textFieldBorder,
       innerInputRef,
       setFocusedIndex,
-      testID,
     ],
   )
 

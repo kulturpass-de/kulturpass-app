@@ -33,7 +33,6 @@ export const useFormattedDateTime = (dateTimeAsString?: string): FormattedDateTi
     const timeFormat = new Intl.DateTimeFormat(Language.de, {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
     })
 
     return {

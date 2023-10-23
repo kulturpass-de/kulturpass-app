@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
 import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/create-route-config'
+import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -24,7 +24,7 @@ export const EidTransportPinRoute: React.FC<EidTransportPinRouteProps> = ({ rout
 
   const onNext = useCallback(
     (pin: string) => {
-      navigation.replace(EidNewPinRouteName, {
+      navigation.navigate(EidNewPinRouteName, {
         pin,
       })
     },

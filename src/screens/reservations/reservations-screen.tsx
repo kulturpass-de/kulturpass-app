@@ -1,17 +1,16 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Screen } from '../../components/screen/screen'
 import { ScreenHeader } from '../../components/screen/screen-header'
+import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { ReservationsListTabContent } from '../../features/reservations/components/reservations-list-tab-content'
-import { ReservationsTabBar } from '../../features/reservations/components/reservations-tab-bar'
 import { useQueryReservations } from '../../features/reservations/hooks/use-query-reservations'
 import { Order } from '../../services/api/types/commerce/api-types'
-import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
-import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
+import { ReservationsTabBar } from './reservations-tab-bar'
 
 export type ReservationsTabsParamList = {
   PendingReservations: undefined
@@ -21,7 +20,7 @@ export type ReservationsTabsParamList = {
 const Tab = createMaterialTopTabNavigator<ReservationsTabsParamList>()
 
 export type ReservationsScreenProps = {
-  onReservationPressed: (orderCode: NonNullable<Order['code']>) => void
+  onReservationPressed: (orderCode: NonNullable<Order['code']>, completedReservation?: boolean) => void
 }
 
 export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReservationPressed }) => {
@@ -30,16 +29,17 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const screenTestId = buildTestId('reservations')
 
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
+
   const onOrderPressed = useCallback(
-    (order: Order) => {
+    (completedReservation: boolean) => (order: Order) => {
       if (!order.code) {
         // This should be replaced with a suitable error in the future
-        logger.warn('Order code missing')
-        ErrorAlertManager.current?.showError(new UnknownError('Missing Order Code'))
+        setVisibleError(new UnknownError())
         return
       }
 
-      onReservationPressed(order.code)
+      onReservationPressed(order.code, completedReservation)
     },
     [onReservationPressed],
   )
@@ -48,19 +48,19 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
 
   useEffect(() => {
     if (error === undefined) {
-      ErrorAlertManager.current?.dismiss()
+      setVisibleError(undefined)
     } else if (error instanceof ErrorWithCode) {
-      ErrorAlertManager.current?.showError(error)
+      setVisibleError(error)
     } else {
-      logger.warn('query reservations error cannot be interpreted', JSON.stringify(error))
-      ErrorAlertManager.current?.showError(new UnknownError('Query Reservations'))
+      setVisibleError(new UnknownError())
     }
-  }, [error])
+  }, [error, setVisibleError])
 
   return (
     <Screen
       testID={screenTestId}
       header={<ScreenHeader testID={addTestIdModifier(screenTestId, 'headline')} title={t('reservations_headline')} />}>
+      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <Tab.Navigator tabBar={ReservationsTabBar} sceneContainerStyle={{ backgroundColor: colors.primaryBackground }}>
         <Tab.Screen name="PendingReservations">
           {() => (
@@ -68,7 +68,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
               orderEntries={pendingReservations}
               refetch={refetch}
               isLoading={isLoading}
-              onOrderPressed={onOrderPressed}
+              onOrderPressed={onOrderPressed(false)}
               testID={addTestIdModifier(screenTestId, 'pendingreservations')}
               i18nNoItemsTitleKey="reservations_list_noItems_title"
               i18nNoItemsContentKey="reservations_list_noPendingItems_content"
@@ -84,7 +84,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
               orderEntries={completedReservations}
               refetch={refetch}
               isLoading={isLoading}
-              onOrderPressed={onOrderPressed}
+              onOrderPressed={onOrderPressed(true)}
               testID={addTestIdModifier(screenTestId, 'completedreservations')}
               i18nNoItemsTitleKey="reservations_list_noItems_title"
               i18nNoItemsContentKey="reservations_list_noCompletedItems_content"

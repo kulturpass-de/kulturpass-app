@@ -23,8 +23,7 @@ type OnboardingScreenProps = {
   illustrationType: IllustrationType
   illustrationI18nKey: AvailableTranslations
   contentTitleI18nKey: AvailableTranslations
-  contentTextI18nKeyFirst: AvailableTranslations
-  contentTextI18nKeySecond: AvailableTranslations
+  contentTextI18nKey: AvailableTranslations
   dataprivacyI18nKey?: AvailableTranslations
   acceptButtonI18nKey: AvailableTranslations
   denyButtonI18nKey?: AvailableTranslations
@@ -39,8 +38,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   illustrationType,
   illustrationI18nKey,
   contentTitleI18nKey,
-  contentTextI18nKeyFirst,
-  contentTextI18nKeySecond,
+  contentTextI18nKey,
   dataprivacyI18nKey,
   onAccept,
   onDeny,
@@ -84,14 +82,8 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId(contentTextI18nKeyFirst)}
-            i18nKey={contentTextI18nKeyFirst}
-            textStyle="BodyRegular"
-          />
-          <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId(contentTextI18nKeySecond)}
-            i18nKey={contentTextI18nKeySecond}
+            testID={buildTestId(contentTextI18nKey)}
+            i18nKey={contentTextI18nKey}
             textStyle="BodyRegular"
           />
           {additionalContent}

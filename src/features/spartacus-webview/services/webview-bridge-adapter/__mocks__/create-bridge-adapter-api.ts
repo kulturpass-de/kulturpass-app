@@ -24,9 +24,6 @@ export const mockedBridgeAdapterApi = {
   onRouterEvents: jestFn<BridgeAdapterApi['onRouterEvents']>(() => ({
     unsubscribe: () => {},
   })),
-  onSearch: jestFn<BridgeAdapterApi['onSearch']>(() => ({
-    unsubscribe: () => {},
-  })),
 }
 
 exports.createBridgeAdapterApi = () => mockedBridgeAdapterApi

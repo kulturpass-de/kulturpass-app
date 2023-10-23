@@ -15,8 +15,8 @@ export const onWebViewRouterUrlChangeEffect: ListenerEffect<
   const currentWebViewState = selectWebViewState(state, webViewId)
 
   if (
-    newWebViewState.routesToLogin === true ||
-    (currentWebViewState.routesToLogin === true && newWebViewState.isLoggedIn)
+    newWebViewState.routerUrl === '/login' ||
+    (currentWebViewState.routerUrl === '/login' && newWebViewState.isLoggedIn)
   ) {
     await mutex.runExclusive(() => {
       logger.log('onWebViewRouterUrlChangeEffect', webViewId, ' will call webViewBridgeAdapter.reload')

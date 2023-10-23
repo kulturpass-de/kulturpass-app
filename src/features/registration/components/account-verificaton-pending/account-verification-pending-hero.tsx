@@ -8,15 +8,14 @@ import { SvgImage } from '../../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { getIsUserLoggedIn, getRegistrationToken } from '../../../../services/auth/store/auth-selectors'
-import { ErrorAlertManager } from '../../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../../services/errors/errors'
-import { logger } from '../../../../services/logger'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { userSlice } from '../../../../services/user/redux/user-slice'
 import { useGetAccountInfoLazyQuery } from '../../../../services/user/use-get-account-info-lazy-query'
 import { useUserInfo } from '../../../../services/user/use-user-info'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
+import { ErrorAlert } from '../../../form-validation/components/error-alert'
 
 const RESEND_MAIL_VERIFICATION_AFTER_1MIN = 1000 * 60
 
@@ -27,6 +26,7 @@ export const AccountVerificationHero: React.FC = () => {
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
+  const [visibleError, setVisibleError] = useState<ErrorWithCode>()
   const timerRef = useRef<NodeJS.Timeout>()
   const [canResend, setCanResend] = useState(true)
   const [accountsResendVerificationCode, result] = cdcApi.endpoints.accountsResendVerificationCode.useLazyQuery()
@@ -46,9 +46,9 @@ export const AccountVerificationHero: React.FC = () => {
     }
 
     try {
-      const { isVerified } = await getAccountInfoLazyQuery(regToken)
+      const { data } = await getAccountInfoLazyQuery(regToken)
 
-      if (isVerified) {
+      if (data?.isVerified) {
         dispatch(userSlice.actions.setDisplayVerifiedAlert(true))
         return
       }
@@ -58,10 +58,9 @@ export const AccountVerificationHero: React.FC = () => {
       timerRef.current = setTimeout(() => setCanResend(true), RESEND_MAIL_VERIFICATION_AFTER_1MIN)
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        ErrorAlertManager.current?.showError(error)
+        setVisibleError(error)
       } else {
-        logger.warn('resend verification error cannot be interpreted', JSON.stringify(error))
-        ErrorAlertManager.current?.showError(new UnknownError('Resend Verification'))
+        setVisibleError(new UnknownError())
       }
     }
   }, [accountsResendVerificationCode, regToken, getAccountInfoLazyQuery, dispatch])
@@ -69,6 +68,7 @@ export const AccountVerificationHero: React.FC = () => {
   return (
     <>
       <LoadingIndicator loading={result.isLoading} />
+      <ErrorAlert error={visibleError} onDismiss={setVisibleError} />
       <InfoBox>
         <TranslatedText
           textStyle="HeadlineH4Extrabold"

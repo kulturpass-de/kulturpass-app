@@ -8,6 +8,7 @@ export const LoadingAnimation: React.FC = () => {
 
   return (
     <Lottie
+      cacheStrategy="strong"
       style={styles.spinner}
       source={
         colorScheme === 'dark'

@@ -1,16 +1,19 @@
 import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../redux/configure-store'
-import { getAccountInfo } from './redux/thunks/get-account-info'
+import { cdcApi } from '../api/cdc-api'
 
 export const useGetAccountInfoLazyQuery = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const [executeWithRegTokenUnsigned] = cdcApi.useLazyAccountsGetAccountInfoWithRegTokenUnsignedQuery()
+  const [executeSigned] = cdcApi.useLazyAccountsGetAccountInfoSignedQuery()
 
   const getAccountInfoLazyQuery = useCallback(
     (currentRegToken?: string) => {
-      return dispatch(getAccountInfo({ regToken: currentRegToken })).unwrap()
+      if (currentRegToken) {
+        return executeWithRegTokenUnsigned({ regToken: currentRegToken })
+      } else {
+        return executeSigned()
+      }
     },
-    [dispatch],
+    [executeWithRegTokenUnsigned, executeSigned],
   )
 
   return getAccountInfoLazyQuery

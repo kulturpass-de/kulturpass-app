@@ -55,7 +55,6 @@ describe('authValidateSession', () => {
   it('should authLogoutWithoutErrors if current session is not valid but cdcSessionData exists', async () => {
     server.use(
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(400))),
       rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
     )
 
@@ -69,7 +68,7 @@ describe('authValidateSession', () => {
     store.expectActions([{ type: authLogoutWithoutErrors.pending.type }])
   })
 
-  it('should authLogoutWithoutErrors if current session is not valid but commerceSessionData exists and authCommerceRefreshSession fails', async () => {
+  it('should authLogoutWithoutErrors if current session is not valid but commerceSessionData exists', async () => {
     server.use(
       rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
       rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),

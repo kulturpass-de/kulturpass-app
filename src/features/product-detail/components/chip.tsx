@@ -13,10 +13,10 @@ export type ChipProps = Omit<PressableProps, 'onPress'> & {
   onPress?: () => void
 }
 
-export const Chip = ({ testID, i18nKey, i18nParams, active, disabled, onPress, ...pressableProps }: ChipProps) => {
+export const Chip = ({ i18nKey, i18nParams, active, disabled, onPress, ...pressableProps }: ChipProps) => {
   const { colors } = useTheme()
   return (
-    <Pressable testID={testID} {...pressableProps} onPress={disabled ? undefined : onPress}>
+    <Pressable {...pressableProps} onPress={disabled ? undefined : onPress}>
       <View
         style={[
           styles.container,

@@ -16,7 +16,7 @@ export const WithoutBarcode: ComponentStory<typeof ReservationDetailHeader> = ()
   return <ReservationDetailHeader onClose={onClose} order={{ code }} />
 }
 
-export const WithBarcode: ComponentStory<typeof ReservationDetailHeader> = () => {
+export const WithBardcode: ComponentStory<typeof ReservationDetailHeader> = () => {
   const code = (Math.random() * 10).toString()
   return (
     <ReservationDetailHeader

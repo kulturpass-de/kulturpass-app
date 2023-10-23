@@ -89,8 +89,6 @@ export const shadow: ViewStyle = {
   position: 'absolute',
   top: 3,
   left: 3,
-  bottom: -3,
-  right: 0,
   zIndex: 0,
   width: '100%',
   borderRadius: spacing[6],

@@ -10,12 +10,13 @@ import {
   AA2CardDeactivated,
   createAA2ErrorFromMessage,
   extractDetailCode,
-  isCardDeactivated,
   isErrorUserCancellation,
   reasonToError,
 } from '../errors'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
 import { useCloseFlow } from './use-close-flow'
+
+//TODO: Refactor flow logic in hooks - also consider changes on the native aa2 library
 
 /**
  * Hook that handles AusweisApp2 SDK message errors.
@@ -100,7 +101,7 @@ export const useHandleErrors = (
          * Reader messages can happen as long as the SDK is started.
          * A deactivated Card was detected if we have to handle this message.
          */
-        if (isCardDeactivated(msg.card)) {
+        if (msg.card?.deactivated === true) {
           onError(new AA2CardDeactivated())
         }
       } else {

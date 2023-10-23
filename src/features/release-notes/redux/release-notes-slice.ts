@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ReleaseNotesState } from '../../../services/redux/versions/current'
+
+type ReleaseNotesState = {
+  lastDisplayedVersion: string
+}
 
 const initialState: ReleaseNotesState = {
   lastDisplayedVersion: '',

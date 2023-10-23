@@ -43,14 +43,8 @@ export const EidPukInoperativeScreen: React.FC<EidPukInoperativeScreenProps> = (
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestId, 'content_text_first')}
-            i18nKey="eid_pukInoperative_content_text_first"
-            textStyle="BodyRegular"
-          />
-          <TranslatedText
-            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={addTestIdModifier(screenTestId, 'content_text_second')}
-            i18nKey="eid_pukInoperative_content_text_second"
+            testID={addTestIdModifier(screenTestId, 'content_text')}
+            i18nKey="eid_pukInoperative_content_text"
             textStyle="BodyRegular"
           />
           <View style={styles.linkContainer}>
@@ -89,11 +83,10 @@ export const styles = StyleSheet.create({
   },
   contentTitle: {
     paddingTop: spacing[7],
-    paddingBottom: spacing[2],
     flexWrap: 'wrap',
   },
   contentText: {
-    paddingTop: spacing[6],
+    paddingTop: spacing[7],
   },
   linkContainer: {
     paddingTop: spacing[9],

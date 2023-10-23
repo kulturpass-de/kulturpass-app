@@ -97,7 +97,6 @@ export namespace SpartacusBridge {
       RouterEvents = 'router.events',
       Bridge = 'bridge',
       Auth = 'auth',
-      Search = 'search',
     }
 
     export interface Event extends Message {
@@ -114,67 +113,9 @@ export namespace SpartacusBridge {
       }
     }
 
-    export type MobileAppEvent = MobileAppEventLog | MobileAppEventWindowError | MobileAppEventAndroidError
-
-    export interface MobileAppEventLog extends Event {
+    export interface MobileAppEvent extends Event {
       source: Source.MobileApp
-      type: 'CONSOLE'
-      data: { type: string; log: Serializable | Serializable[] }
-    }
-
-    export interface MobileAppEventWindowError extends Event {
-      source: Source.MobileApp
-      type: 'WINDOW_ERROR'
-      data: {
-        message: string
-        error: string
-        sourcefile: string
-        lineno: number
-        colno: number
-      }
-    }
-
-    export interface MobileAppEventAndroidError extends Event {
-      source: Source.MobileApp
-      type: 'ANDROID_ERROR'
       data: 'ERR_UNKNOWN'
-    }
-
-    export interface AuthTokenAwaitedEvent extends Event {
-      source: Source.Auth
-      name: 'tokenAwaited'
-      data: {
-        timeout: number
-      }
-    }
-    export interface BridgeReadyEvent extends Event {
-      source: Source.Bridge
-      name: 'ready'
-    }
-
-    export interface SearchLocationOpenEvent extends Event {
-      source: Source.Search
-      name: 'locationOpen'
-    }
-
-    export interface SearchFiltersOpenEvent extends Event {
-      source: Source.Search
-      name: 'filtersOpen'
-    }
-
-    export interface SearchFiltersCloseEvent extends Event {
-      source: Source.Search
-      name: 'filtersClose'
-    }
-
-    export interface SearchSortOpenEvent extends Event {
-      source: Source.Search
-      name: 'sortOpen'
-    }
-
-    export interface SearchSortCloseEvent extends Event {
-      source: Source.Search
-      name: 'sortClose'
     }
   }
 

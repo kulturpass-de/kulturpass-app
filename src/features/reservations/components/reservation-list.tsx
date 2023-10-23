@@ -34,7 +34,6 @@ const ListItem: React.FC<ListItemProps> = ({ item, onOrderPressed, completedRese
         shopName={entry?.shopName}
         completed={completedReservations}
         imageUrl={productImage?.imageUrl}
-        fulfillmentOption={entry?.product?.fulfillmentOption}
         status={item.status}
         deliveryScenario={entry?.deliveryScenario}
       />

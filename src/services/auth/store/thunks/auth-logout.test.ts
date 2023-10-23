@@ -13,7 +13,7 @@ import { authLogout, authLogoutWithoutErrors } from './auth-logout'
 
 const server = setupServer()
 
-describe('authLogout', () => {
+describe('authLogut', () => {
   const preloadedState = {
     auth: {
       cdc: {

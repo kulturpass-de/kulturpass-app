@@ -48,7 +48,8 @@ export const BulletListItem: React.FC<React.PropsWithChildren<BulletListItemProp
           ]}
         />
       </View>
-      <View style={styles.bulletItems}>{children}</View>
+
+      {children}
     </View>
   )
 }
@@ -60,11 +61,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     minHeight: 24,
-  },
-  bulletItems: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    flex: 1,
   },
   bulletPoint: {
     aspectRatio: 1,

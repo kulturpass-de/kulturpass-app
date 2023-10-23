@@ -1,19 +1,19 @@
 import { CompositeScreenProps } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
-  DeleteAccountRouteName,
-  DeleteAccountRouteParams,
-} from '../../../screens/account/delete-account/delete-account-route'
+  ReleaseNotesRouteName,
+  ReleaseNotesRouteParams,
+} from '../../../features/release-notes/screens/release-notes-route'
 import {
-  ChangeLanguageRouteName,
-  ChangeLanguageRouteParams,
-} from '../../../screens/account/preferences/change-language-route'
-import { PreferencesRouteParams, PreferencesRouteName } from '../../../screens/account/preferences/preferences-route'
-import { UpdateProfileRouteName, UpdateProfileRouteParams } from '../../../screens/account/profile/update-profile-route'
-import { ViewProfileRouteName, ViewProfileRouteParams } from '../../../screens/account/profile/view-profile-route'
-import { AppInformationsRouteName, AppInformationsRouteParams } from '../../../screens/app/app-informations-route'
-import { ContactRouteName, ContactRouteParams } from '../../../screens/app/contact-route'
-import { ReleaseNotesRouteName, ReleaseNotesRouteParams } from '../../../screens/app/release-notes-route'
+  AppInformationsRouteName,
+  AppInformationsRouteParams,
+} from '../../../screens/profile-tab/app-informations-route'
+import { ChangeLanguageRouteName, ChangeLanguageRouteParams } from '../../../screens/profile-tab/change-language-route'
+import { ContactRouteName, ContactRouteParams } from '../../../screens/profile-tab/contact-route'
+import { DeleteAccountRouteName, DeleteAccountRouteParams } from '../../../screens/profile-tab/delete-account-route'
+import { PreferencesRouteParams, PreferencesRouteName } from '../../../screens/profile-tab/preferences-route'
+import { ViewProfileRouteName, ViewProfileRouteParams } from '../../../screens/profile-tab/view-profile-route'
+import { UpdateProfileRouteName, UpdateProfileRouteParams } from '../../../screens/update-profile/update-profile-route'
 import { RootStackParams, RootStackScreenProps } from '../../types'
 
 export type SettingsParamList = {

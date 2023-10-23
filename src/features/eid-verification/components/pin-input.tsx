@@ -12,7 +12,6 @@ import {
 } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { HITSLOP_PIN } from '../../../theme/constants'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
@@ -33,7 +32,6 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
   ({ value = '', onChange, pinLength, numRows = 1, testID, error, variant }, externalInputRef) => {
     const [innerInputRef, setFocusInnerInputRef] = useAccessibilityFocus()
     const [toggleShowPinRef, setFocusToggleShowPinRef] = useAccessibilityFocus()
-    const { addTestIdModifier } = useTestIdBuilder()
 
     useImperativeHandle(externalInputRef, () => innerInputRef.current as TextInput)
 
@@ -60,7 +58,6 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
       setFocusedIndex,
       pinLength,
       onChange,
-      testID: addTestIdModifier(testID, 'field'),
     })
 
     const handleKeyPress = useCallback(

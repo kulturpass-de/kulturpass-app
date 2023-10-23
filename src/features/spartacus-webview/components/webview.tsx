@@ -1,14 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import { Animated, BackHandler, Platform, StyleSheet } from 'react-native'
+import { Animated, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
-import { useSelector } from 'react-redux'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
-import { selectFiltersOrSortOpen } from '../../../services/webviews/redux/webviews-selectors'
-import { linkLogger, openLink } from '../../../utils/links/utils'
-import { userAgent } from '../../../utils/user-agent/utils'
+import { useTheme } from '../../../theme/hooks/use-theme'
+import { openLink } from '../../../utils/links/utils'
 import { AccountVerifiedWebViewHandler } from '../../registration/components/account-verified-alert/account-verified-webview-handler'
-import { useHandleSearchEvents } from '../hooks/use-handle-search-event'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
 import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offline-android'
@@ -17,9 +14,7 @@ import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
 import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
-import { useWebViewLog } from '../hooks/use-webview-log'
 import { useWebViewScrollToTop } from '../hooks/use-webview-scroll-to-top'
-import { useWebViewWindowError } from '../hooks/use-webview-window-error'
 import { WebViewId } from '../services/webview-bridge-adapter/types'
 import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapter/use-webview-android-pull-to-refresh'
 import { useWebViewAuthSync } from '../services/webview-bridge-adapter/use-webview-auth-sync'
@@ -50,6 +45,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   contentOffset,
   ...props
 }) => {
+  const { colors } = useTheme()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
   // If there is an initial navigation URL we start the webview with it.
   // The alternative (waiting for a bridge ready event and navigating over the bridge is) is not stable,
@@ -61,13 +57,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   const origin = useOrigin(url)
 
   const handleShouldLoadRequest: OnShouldStartLoadWithRequest = useCallback(
-    event => {
+    e => {
       let isSamePage: boolean
-      const eventUrl = new URL(event.url)
-      // Fixes PDP opened in banner subpage not working properly (home screen is white after).
-      // Use https, as links could potentially be http
-      if (webViewId === WebViewId.Home && 'https://' + eventUrl.hostname === origin) {
-        const navigatedToPDP = navigateToPDP(event)
+      // Fixes PDP opened in banner subpage not working properly (home screen is white after)
+      if (webViewId === WebViewId.Home && e.url.startsWith(origin)) {
+        const navigatedToPDP = navigateToPDP(e)
 
         if (navigatedToPDP === true) {
           return false
@@ -75,13 +69,13 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       }
       if (Platform.OS === 'ios') {
         // iOS invokes this function for each text/html request. Therefore using mainDocumentURL (iOS only)
-        isSamePage = event.mainDocumentURL?.startsWith(origin) === true
+        isSamePage = e.mainDocumentURL?.startsWith(origin) === true
       } else {
         // Android does not invoke function on single page apps https://github.com/react-native-webview/react-native-webview/issues/1869
-        isSamePage = event.url.startsWith(origin)
+        isSamePage = e.url.startsWith(origin)
       }
       if (!isSamePage) {
-        openLink(event.url).catch(linkLogger)
+        openLink(e.url)
       }
       return isSamePage
     },
@@ -100,17 +94,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 
   useOpenProductDetail(bridgeAdapterApi)
 
-  useHandleSearchEvents(webViewId, bridgeAdapterApi)
-
   useHandleWebviewNavigation(webViewId, bridgeAdapterApi)
 
   useWebViewScrollToTop(webViewRef)
 
   useWebViewLanguageSync(webViewRef, language)
-
-  useWebViewLog(webViewRef, bridgeAdapterApi)
-
-  useWebViewWindowError(webViewRef, bridgeAdapterApi)
 
   const { onLoadProgress } = useHandleWebviewOfflineAndroid(webViewRef)
 
@@ -127,10 +115,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       props.onScroll?.(event)
     },
     webViewRef,
-    webViewId,
   })
-
-  const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(webViewId))
 
   const navigation = useTabsNavigation()
 
@@ -140,8 +125,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   }
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', event => {
-      if (event.target?.startsWith(webViewId)) {
+    const unsubscribe = navigation.addListener('tabPress', e => {
+      if (e.target?.startsWith(webViewId)) {
         webViewBridgeAdapter.goToPage(webViewId, uri)
         webViewBridgeAdapter.scrollToTop(webViewId)
       }
@@ -150,15 +135,6 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
     return unsubscribe
   }, [navigation, uri, webViewBridgeAdapter, webViewId])
 
-  useEffect(() => {
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      // Ignore back button, if filter or sort is opened, as otherwise we don't know
-      // if the modal is still visible
-      return filtersOrSortOpen
-    })
-    return sub.remove
-  }, [filtersOrSortOpen, navigation])
-
   return (
     <Animated.View style={[styles.container, { marginTop: outerContainerMarginTop.current }]}>
       <Animated.View style={[styles.inner, { marginTop: innerContainerNegativeMarginTop.current }]}>
@@ -166,7 +142,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
         <WebView
           onShouldStartLoadWithRequest={handleShouldLoadRequest}
           startInLoadingState
-          pullToRefreshEnabled={!filtersOrSortOpen}
+          pullToRefreshEnabled
           onError={handleError}
           onHttpError={handleHttpError}
           renderLoading={renderLoading}
@@ -176,13 +152,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           {...props}
           onLoadProgress={onLoadProgress}
           onLoadEnd={applyWebviewDocumentBodyOffset}
-          style={[styles.transparentBackground, style]}
-          containerStyle={styles.transparentBackground}
+          style={[{ backgroundColor: colors.primaryBackground }, style]}
           onScroll={onScroll}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           autoManageStatusBarEnabled={false}
-          applicationNameForUserAgent={userAgent}
         />
         {errorCode !== undefined ? (
           <WebviewErrorView style={{ paddingTop: contentOffset }} onRefresh={reload} errorCode={errorCode} />
@@ -199,8 +173,5 @@ const styles = StyleSheet.create({
   },
   inner: {
     height: '100%',
-  },
-  transparentBackground: {
-    backgroundColor: 'transparent',
   },
 })

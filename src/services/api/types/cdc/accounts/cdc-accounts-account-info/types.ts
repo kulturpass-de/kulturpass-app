@@ -1,6 +1,6 @@
 export type AccountInfoProfile = {
   email: string
-  firstName?: string
+  firstName: string
 }
 
 export type AccountInfoDataEid = {
