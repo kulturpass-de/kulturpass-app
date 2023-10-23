@@ -43,9 +43,7 @@ test('Should render preferences', async () => {
   const submitButton = await screen.findByTestId(buildTestId('preferences_form_submit'))
 
   expect(submitButton).toBeOnTheScreen()
-  expect(submitButton).toBeDisabled()
-
-  await waitFor(() => expect(submitButton).toBeEnabled())
+  expect(submitButton).toBeEnabled()
 })
 
 test('Should render preferences, type a post code and only enable the submit button once post code is valid', async () => {
@@ -55,7 +53,7 @@ test('Should render preferences, type a post code and only enable the submit but
   let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
 
   expect(submitButton).toBeOnTheScreen()
-  expect(submitButton).toBeDisabled()
+  expect(submitButton).toBeEnabled()
 
   expect(postalCodeInput).toBeOnTheScreen()
 

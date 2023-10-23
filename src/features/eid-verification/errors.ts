@@ -1,4 +1,4 @@
-import { AA2Messages, Auth, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2Messages, Auth, Card, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
 import { ErrorWithCode } from '../../services/errors/errors'
 
 export enum AA2ErrorCode {
@@ -20,6 +20,7 @@ export enum AA2ErrorCode {
   AA2_SET_PIN_TIMEOUT = 'AA2_SET_PIN_TIMEOUT',
   AA2_CARD_REMOVED = 'AA2_CARD_REMOVED',
   AA2_CARD_VALIDATION_FAILED = 'AA2_CARD_VALIDATION_FAILED',
+  AA2_CARD_AUTHENTICITY_VALIDATION_FAILED = 'AA2_CARD_AUTHENTICITY_VALIDATION_FAILED',
 }
 
 export class AA2Error extends ErrorWithCode {
@@ -28,8 +29,6 @@ export class AA2Error extends ErrorWithCode {
     super(errorCode, detailCode)
   }
 }
-
-// TODO: Replace messages with real detail texts (TBD as of story implementation)
 
 export class AA2AuthErrorResultError extends AA2Error {
   constructor(detailCode?: string, message?: string, type?: string) {
@@ -172,6 +171,14 @@ export class AA2CardValidationFailed extends AA2Error {
   }
 }
 
+export class AA2CardAuthenticityValidationFailed extends AA2Error {
+  constructor(detailCode?: string, message?: string, type?: string) {
+    super(AA2ErrorCode.AA2_CARD_AUTHENTICITY_VALIDATION_FAILED, detailCode)
+    this.message = message ?? this.message
+    this.type = type
+  }
+}
+
 export const createAA2ErrorFromMessage = (message: AA2Messages): ErrorWithCode => {
   switch (message) {
     case AA2Messages.BadState:
@@ -219,6 +226,15 @@ export const isErrorUserCancellation = (authMsg: Auth): boolean => {
   )
 }
 
+export const isCardDeactivated = (card?: Card | null): boolean => {
+  return card?.deactivated === true
+}
+
+/**
+ * Extract error from AA2 Auth message url propertry, by checking for a errorCode query parameter.
+ * @param authMsg The Auth message to be checked
+ * @returns AA2Error if any error was found, else undefined
+ */
 export const extractAuthResultUrlQueryError = (authMsg: Auth): AA2Error | undefined => {
   if (authMsg.url !== undefined) {
     const errorCode: string | undefined = authMsg.url.match(/^.*errorCode=([^&]+).*$/)?.[1]
@@ -239,6 +255,11 @@ export const extractAuthResultUrlQueryError = (authMsg: Auth): AA2Error | undefi
   }
 }
 
+/**
+ * Convert FailureCode that is found in the reason property of Auth or Change Pin Message to ErrorWithCode
+ * @param reason reason property of Auth or Change Pin Message
+ * @returns AA2Error if matching else undefined
+ */
 export const reasonToError = (reason?: FailureCodes): AA2Error | undefined => {
   switch (reason) {
     case FailureCodes.Card_Removed:
@@ -250,5 +271,7 @@ export const reasonToError = (reason?: FailureCodes): AA2Error | undefined => {
       return new AA2InitError()
     case FailureCodes.Start_Paos_Response_Error:
       return new AA2CardValidationFailed()
+    case FailureCodes.Process_Certificates_From_Eac2_Cvc_Chain_Missing:
+      return new AA2CardAuthenticityValidationFailed()
   }
 }

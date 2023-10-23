@@ -84,6 +84,16 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
   const illustrationAltI18nKey: AvailableTranslations =
     Platform.OS === 'ios' ? 'eid_cardPositioning_ios_image_alt' : 'eid_cardPositioning_android_image_alt'
 
+  const contentText: ReactNode =
+    Platform.OS !== 'ios' ? (
+      <TranslatedText
+        textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+        testID={buildTestId('eid_insertCard_content_text_third')}
+        i18nKey="eid_insertCard_content_text_android_third"
+        textStyle="BodyRegular"
+      />
+    ) : null
+
   return (
     <ModalScreen whiteBottom testID={buildTestId('eid_insertCard')}>
       {loadingModal}
@@ -107,10 +117,27 @@ export const EidInsertCardScreen: React.FC<EidInsertCardScreenProps> = ({
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId('eid_insertCard_content_text')}
-            i18nKey={Platform.OS === 'ios' ? 'eid_insertCard_content_text_ios' : 'eid_insertCard_content_text_android'}
+            testID={buildTestId('eid_insertCard_content_text_first')}
+            i18nKey={
+              Platform.OS === 'ios'
+                ? 'eid_insertCard_content_text_ios_first'
+                : 'eid_insertCard_content_text_android_first'
+            }
             textStyle="BodyRegular"
           />
+          <TranslatedText
+            key={'eid_insertCard_content_text_second'}
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId('eid_insertCard_content_text_second')}
+            i18nKey={
+              Platform.OS === 'ios'
+                ? 'eid_insertCard_content_text_ios_second'
+                : 'eid_insertCard_content_text_android_second'
+            }
+            textStyle="BodyRegular"
+          />
+          {contentText}
+          <View style={styles.spacer} />
           <LinkText
             link={eidGeneralFaqLink}
             testID={buildTestId('eid_insertCard_faq_link')}
@@ -150,7 +177,10 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   contentText: {
-    paddingVertical: spacing[6],
+    paddingTop: spacing[6],
     flexWrap: 'wrap',
+  },
+  spacer: {
+    height: spacing[6],
   },
 })

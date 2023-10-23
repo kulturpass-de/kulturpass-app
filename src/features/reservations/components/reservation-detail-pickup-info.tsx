@@ -1,19 +1,16 @@
 import Clipboard from '@react-native-clipboard/clipboard'
 import React, { useCallback, useState } from 'react'
-import { Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
+import { StyleSheet, Text, View, ViewProps } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import { Button } from '../../../components/button/button'
-import { SvgImage } from '../../../components/svg-image/svg-image'
+import { CopyToClipboard } from '../../../components/copy-to-clipboard/copy-to-clipboard'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
-import { logger } from '../../../services/logger'
-import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
-import { HITSLOP } from '../../../theme/constants'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { openLink } from '../../../utils/links/utils'
+import { linkLogger, openLink } from '../../../utils/links/utils'
 
 export type ReservationDetailPickupInfoProps = {
   orderEntry: OrderEntry
@@ -22,8 +19,6 @@ export type ReservationDetailPickupInfoProps = {
 export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoProps> = ({ orderEntry }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
-  const { buildTestId } = useTestIdBuilder()
-
   const [state, setState] = useState<{ containerWidth?: number }>({})
 
   const onContainerLayout: NonNullable<ViewProps['onLayout']> = useCallback(event => {
@@ -44,7 +39,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
       return
     }
 
-    await openLink(orderEntry.voucherRedemptionUrl).catch(logger.logError)
+    await openLink(orderEntry.voucherRedemptionUrl).catch(linkLogger)
   }, [orderEntry.voucherRedemptionUrl])
 
   return (
@@ -56,30 +51,18 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             textStyle="CaptionSemibold"
             textStyleOverrides={[styles.voucherCodeHeadline, { color: colors.labelColor }]}
           />
-          <Pressable
-            hitSlop={HITSLOP}
-            style={styles.voucherCodeContainer}
-            onPress={onPressVoucherCodeCopy}
-            testID={buildTestId('reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode')}
-            accessibilityRole="button"
-            accessibilityLabel={orderEntry.voucherCode}>
-            {({ pressed }) => (
-              <>
-                <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>
-                  {orderEntry.voucherCode}
-                </Text>
-                <SvgImage
-                  type={pressed ? 'copy-clipboard' : 'clipboard'}
-                  width={24}
-                  height={24}
-                  style={styles.voucherCodeCopyIcon}
-                  accessibilityLabel={t(
-                    'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard',
-                  )}
-                />
-              </>
-            )}
-          </Pressable>
+          <View style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode}>
+            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
+            <CopyToClipboard
+              baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
+              accessibilityLabelI18nKey={
+                'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
+              }
+              copiedAccessibilityI18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_copiedToClipboard"
+              onPress={onPressVoucherCodeCopy}
+              style={styles.voucherCodeCopyIcon}
+            />
+          </View>
         </>
       ) : null}
       {orderEntry.voucherRedemptionUrl ? (

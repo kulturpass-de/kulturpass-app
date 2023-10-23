@@ -4,51 +4,67 @@
     "entries": {
       "DEFAULT": {
         "de": "https://service.kulturpass.de/help/de-de",
-        "en": "https://service.kulturpass.de/help/de-de"
+        "en": "https://service.kulturpass.de/help/en-gb"
       },
       "ACCOUNT_DELETE": {
         "de": "https://service.kulturpass.de/help/de-de/2/63",
-        "en": "https://service.kulturpass.de/help/de-de/2/63"
+        "en": "https://service.kulturpass.de/help/en-gb/2/63"
       },
       "EID_PIN": {
         "de": "https://service.kulturpass.de/help/de-de/2/64",
-        "en": "https://service.kulturpass.de/help/de-de/2/64"
+        "en": "https://service.kulturpass.de/help/en-gb/2/64"
       },
       "EID_CAN": {
         "de": "https://service.kulturpass.de/help/de-de/2/65",
-        "en": "https://service.kulturpass.de/help/de-de/2/65"
+        "en": "https://service.kulturpass.de/help/en-gb/2/65"
       },
       "EID_IDENTIFICATION_GENERAL": {
         "de": "https://service.kulturpass.de/help/de-de/36/66",
-        "en": "https://service.kulturpass.de/help/de-de/36/66"
+        "en": "https://service.kulturpass.de/help/en-gb/36/66"
       },
       "EID_PIN_RESET": {
         "de": "https://service.kulturpass.de/help/de-de/2/67",
-        "en": "https://service.kulturpass.de/help/de-de/2/67"
+        "en": "https://service.kulturpass.de/help/en-gb/2/67"
       },
       "IDENTIFICATION_STATUS_DUPLICATE": {
         "de": "https://service.kulturpass.de/help/de-de/2/68",
-        "en": "https://service.kulturpass.de/help/de-de/2/68"
+        "en": "https://service.kulturpass.de/help/en-gb/2/68"
       },
       "RESERVATION_ABOUT": {
         "de": "https://service.kulturpass.de/help/de-de/2/69",
-        "en": "https://service.kulturpass.de/help/de-de/2/69"
+        "en": "https://service.kulturpass.de/help/en-gb/2/69"
       },
       "EID_PUK": {
         "de": "https://service.kulturpass.de/help/de-de/36/87",
-        "en": "https://service.kulturpass.de/help/de-de/36/87"
+        "en": "https://service.kulturpass.de/help/en-gb/36/87"
       },
       "REPORT_ORDER_ABOUT_CANCELLATIONS": {
         "de": "https://service.kulturpass.de/help/de-de/47",
-        "en": "https://service.kulturpass.de/help/de-de/47"
+        "en": "https://service.kulturpass.de/help/en-gb/47"
       },
       "REPORT_ORDER_VOUCHER_REDEMPTION": {
         "de": "https://service.kulturpass.de/help/de-de/40",
-        "en": "https://service.kulturpass.de/help/de-de/40"
+        "en": "https://service.kulturpass.de/help/en-gb/40"
       },
       "REPORT_ORDER_CONTACT_SELLER": {
         "de": "https://service.kulturpass.de/help/de-de/2/152",
-        "en": "https://service.kulturpass.de/help/de-de/2/152"
+        "en": "https://service.kulturpass.de/help/en-gb/2/152"
+      },
+      "ABOUT_GEOLOCATION_IOS": {
+        "de": "https://service.kulturpass.de/help/de-de/2/163",
+        "en": "https://service.kulturpass.de/help/en-gb/2/163"
+      },
+      "ABOUT_GEOLOCATION_ANDROID": {
+        "de": "https://service.kulturpass.de/help/de-de/2/164",
+        "en": "https://service.kulturpass.de/help/en-gb/2/164"
+      },
+      "BROWSER_TRANSLATION": {
+        "de": "https://service.kulturpass.de/help/de-de/2/169",
+        "en": "https://service.kulturpass.de/help/en-gb/2/169"
+      },
+      "IDENTIFICATION_VIDEO": {
+        "de": "https://www.kulturpass.de/jugendliche/eid-video",
+        "en": "https://www.kulturpass.de/jugendliche/eid-video"
       }
     }
   }

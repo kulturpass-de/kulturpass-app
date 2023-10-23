@@ -2,6 +2,7 @@ import { RefObject, useCallback } from 'react'
 import { Platform } from 'react-native'
 import WebView from 'react-native-webview'
 import { WebViewSharedProps } from 'react-native-webview/lib/WebViewTypes'
+import { injectionService } from '../../../services/webviews/injection-service'
 
 /**
  * This is considered a HACK, since onError or onHttpError should handle that, but they don't.
@@ -24,35 +25,7 @@ export const useHandleWebviewOfflineAndroid = (webViewRef: RefObject<WebView<{}>
        * is the progress, not 'onLoadEnd' or 'onNavigationStateChange'
        */
       if (Platform.OS === 'android' && (event.nativeEvent.loading === false || event.nativeEvent.progress >= 1.0)) {
-        webViewRef.current?.injectJavaScript(`
-          try {
-            if (/^chrome-error/.test(document.URL)) { 
-              // extract all p tags, in order to find the error code
-              const pItems = document.querySelectorAll("p")
-      
-              let errorThrown = false
-      
-              pItems.forEach(item => {
-                let data = item.innerHTML.trim()
-      
-                // try to find the error code string
-                if (!errorThrown && /^net::/.test(data)) {
-                  window.ReactNativeWebView.postMessage(JSON.stringify({ source: 'MobileApp', data }))
-                  errorThrown = true
-                }
-              })
-      
-              if (!errorThrown) {
-                window.ReactNativeWebView.postMessage(JSON.stringify({ source: 'MobileApp', data: 'ERR_UNKNOWN' }))
-              }
-            }
-          } catch (error) {
-            console.log("Error on injecting JavaScript to detect page load error", error)
-          }
-
-        // don't remove
-        true;
-      `)
+        webViewRef.current?.injectJavaScript(injectionService.webviewAndroidOffline())
       }
     },
     [webViewRef],

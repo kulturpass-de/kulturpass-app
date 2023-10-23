@@ -20,7 +20,8 @@ export type ErrorAlertProps = {
 }
 
 export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
-  const { buildTestId } = useTestIdBuilder()
+  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const testID = buildTestId('error_alert')
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
 
@@ -40,17 +41,17 @@ export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
   return (
     <Alert visible={error !== undefined} onChange={onErrorAlertChange} dismissable={true}>
       <AlertContent ref={focusRef}>
-        <AlertTitle i18nKey={errorDescription.title.key} testID={buildTestId('error_alert_title')} />
+        <AlertTitle i18nKey={errorDescription.title.key} testID={addTestIdModifier(testID, 'title')} />
         <AlertMessage
           i18nKey={errorDescription.message.key}
           i18nParams={errorDescription.message.values}
-          testID={buildTestId('error_alert_message')}
+          testID={addTestIdModifier(testID, 'message')}
         />
         {errorWithCode?.presentableErrorCode ? (
           <AlertMessage
             i18nKey="error_alert_message_details"
             i18nParams={{ errorCode: errorWithCode?.errorCode, detailCode: errorWithCode?.detailCode }}
-            testID={buildTestId('error_alert_message_details')}
+            testID={addTestIdModifier(testID, 'message_details')}
           />
         ) : null}
 
@@ -58,10 +59,10 @@ export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
           <AlertMessage
             i18nKey="error_alert_message_details_extra"
             i18nParams={{ errorDetails: errorWithCode?.errorDetails }}
-            testID={buildTestId('error_alert_message_details_extra')}
+            testID={addTestIdModifier(testID, 'message_details_extra')}
           />
         ) : null}
-        <AlertButtonDismiss i18nKey="error_alert_cta" testID={buildTestId('error_alert_cta')} />
+        <AlertButtonDismiss buttonPadding={false} i18nKey="error_alert_cta" testID={addTestIdModifier(testID, 'cta')} />
       </AlertContent>
     </Alert>
   )

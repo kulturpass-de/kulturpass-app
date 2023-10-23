@@ -2,23 +2,19 @@ import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import { z } from 'zod'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { CcGetProfileError } from '../../../services/errors/cc-errors'
 import {
   CdcAccountDeletionRequestedError,
   CdcAccountDisabledError,
   CdcInvalidLoginIdError,
   CdcLoginIdNotExistingError,
   CdcResponseValidationError,
+  CdcInvalidLoginIdDeleteError,
 } from '../../../services/errors/cdc-errors'
-import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
-import {
-  ErrorWithCode,
-  HttpError,
-  HttpStatusBadRequestError,
-  NetworkError,
-  UnknownError,
-} from '../../../services/errors/errors'
+import { ErrorWithCode, HttpStatusBadRequestError, NetworkError, OfflineError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
-import { Language } from '../../../services/translation/types'
+import { formatFullDateTime } from '../../../utils/date/date-format'
+import { validatePostalCodeField } from '../../../utils/form-field/validate-postal-code-field'
 import { MailToError } from '../../../utils/links/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
@@ -59,25 +55,7 @@ export const POSTAL_CODE_SCHEMA = (
         return z.NEVER
       }
 
-      const result = await validatePostalCode({ postalCode })
-
-      if (result.isError) {
-        if (result.error instanceof HttpError && result.error.statusCode === 400) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: t('form_error_not_valid_postal_code_verified'),
-          })
-        } else {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-          })
-          if (result.error instanceof ErrorWithCode) {
-            ErrorAlertManager.current?.showError(result.error)
-          } else {
-            ErrorAlertManager.current?.showError(new UnknownError())
-          }
-        }
-      }
+      await validatePostalCodeField(ctx, t, validatePostalCode, postalCode)
     })
 }
 
@@ -134,6 +112,12 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: { key: 'cdc_invalid_loginid_message' },
         }
       }
+      case CdcInvalidLoginIdDeleteError: {
+        return {
+          title: { key: 'cdc_invalid_loginid_title' },
+          message: { key: 'cdc_invalid_loginid_delete_message' },
+        }
+      }
       case CdcLoginIdNotExistingError: {
         return {
           title: { key: 'cdc_loginid_not_existing_title' },
@@ -153,15 +137,7 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: {
             key: 'error_alert_networkError_message',
             values: {
-              dateTime: new Intl.DateTimeFormat(Language.de, {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false,
-              }).format(Date.now()),
+              dateTime: formatFullDateTime(Date.now()),
             },
           },
         }
@@ -174,6 +150,20 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           }
         }
         break
+      }
+      case OfflineError: {
+        return {
+          title: { key: 'error_alert_offline_title' },
+          message: { key: 'error_alert_offline_message' },
+        }
+      }
+      case CcGetProfileError: {
+        return {
+          title: { key: 'error_alert_title_fallback' },
+          message: {
+            key: 'cc_get_profile_bad_request_message',
+          },
+        }
       }
     }
   }

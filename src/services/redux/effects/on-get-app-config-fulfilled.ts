@@ -4,10 +4,9 @@ import { getCurrentEnvironmentConfigurationName } from '../../environment-config
 import { getEnvironmentConfig } from '../../environment-configuration/utils'
 import { ErrorWithCode } from '../../errors/errors'
 import { AppStartListening, ListenerEffect, ListenerEffectMatcherAction } from '../listener-middleware'
-import { appCoreSlice } from '../slices/app-core'
-import { AppConfigSchema } from '../utils/app-config-schema'
+import { persistedAppCoreSlice } from '../slices/persisted-app-core'
 import { verifyJwsWithJwk } from '../utils/verify-jws-with-jwk'
-import { AppConfig } from '../versions/current'
+import { AppConfig, AppConfigSchema } from '../versions/current'
 
 export const onGetAppConfigFulfilledEffect: ListenerEffect<
   ListenerEffectMatcherAction<typeof commerceApi.endpoints.getAppConfig.matchFulfilled>
@@ -45,7 +44,7 @@ export const onGetAppConfigFulfilledEffect: ListenerEffect<
 
   enforceAppConfigMinVersion(appConfig)
 
-  listenerApi.dispatch(appCoreSlice.actions.setAppConfig(appConfig))
+  listenerApi.dispatch(persistedAppCoreSlice.actions.setAppConfig(appConfig))
 }
 
 export const onGetAppConfigRejectedEffect: ListenerEffect<
@@ -62,7 +61,7 @@ export const onGetAppConfigRejectedEffect: ListenerEffect<
     )
 
     const appConfig = AppConfigSchema.parse(JSON.parse(appConfigString))
-    listenerApi.dispatch(appCoreSlice.actions.setAppConfig(appConfig))
+    listenerApi.dispatch(persistedAppCoreSlice.actions.setAppConfig(appConfig))
   } catch (_error) {
     throw new ErrorWithCode(
       'Could not parse the received AppConfig according to AppConfigSchema',

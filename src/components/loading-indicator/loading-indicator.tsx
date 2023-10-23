@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native'
 import React from 'react'
 import { Modal } from 'react-native'
 import { LoadingIndicatorOverlay } from './loading-indicator-overlay'
@@ -10,10 +11,15 @@ export type LoadingIndicatorProps = {
 }
 
 export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({ loading, debounceTime = 150 }) => {
+  const isFocused = useIsFocused()
   const debouncedLoading = useDebouncedLoading(loading, debounceTime)
 
   return (
-    <Modal animationType="none" presentationStyle="overFullScreen" transparent={true} visible={debouncedLoading}>
+    <Modal
+      animationType="none"
+      presentationStyle="overFullScreen"
+      transparent={true}
+      visible={debouncedLoading && isFocused}>
       <LoadingIndicatorOverlay />
     </Modal>
   )

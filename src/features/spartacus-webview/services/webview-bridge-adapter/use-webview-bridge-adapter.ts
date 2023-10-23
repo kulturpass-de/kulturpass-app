@@ -44,7 +44,7 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
         dispatch(
           webviewsSlice.actions.setWebViewState({
             webViewId,
-            state: { isReady: true, previousSubmittedUserLocationState: null },
+            state: { isReady: true, previousSubmittedUserLocationState: null, filtersOrSortOpen: null },
           }),
         )
       }

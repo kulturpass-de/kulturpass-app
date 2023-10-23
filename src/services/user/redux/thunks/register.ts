@@ -1,4 +1,4 @@
-import { RegistrationFormData } from '../../../../screens/registration/registration-form-screen'
+import { RegistrationFormData } from '../../../../screens/account/registration/registration-form-screen'
 import { cdcApi } from '../../../api/cdc-api'
 import { AccountsRegisterResponse } from '../../../api/types'
 import { authLogin } from '../../../auth/store/thunks/auth-login'

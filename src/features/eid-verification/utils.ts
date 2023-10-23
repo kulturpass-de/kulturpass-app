@@ -1,5 +1,8 @@
-import { Simulator } from '@sap/react-native-ausweisapp2-wrapper'
-import { simulationCards } from '../../screens/developer-settings/simulation-cards/simulation-cards'
+import { Messages, Simulator } from '@sap/react-native-ausweisapp2-wrapper'
+import { simulationCards } from '../../screens/app/developer-settings/simulation-cards/simulation-cards'
+import { UnknownError } from '../../services/errors/errors'
+import { logger } from '../../services/logger'
+import { EidFlowResponse, EidMessageError } from './types'
 
 export const generateSimulatedCard = (
   simulatedCardName: keyof typeof simulationCards,
@@ -8,7 +11,7 @@ export const generateSimulatedCard = (
 ) => {
   let simulatedCard: Simulator = {
     files:
-      require('../../screens/developer-settings/simulation-cards/simulation-cards').simulationCards[
+      require('../../screens/app/developer-settings/simulation-cards/simulation-cards').simulationCards[
         simulatedCardName
       ] ?? [],
     keys: [],
@@ -41,4 +44,16 @@ export const generateSimulatedCard = (
     })
   }
   return simulatedCard
+}
+
+export const eidMessageToErrorResponse = (error: unknown): EidMessageError => {
+  if (typeof (error as any).msg === 'string') {
+    return {
+      response: EidFlowResponse.EidMessageError,
+      msg: error as Messages,
+    }
+  } else {
+    logger.warn('Could not interpret AA2 Message Error', JSON.stringify(error))
+    throw new UnknownError('Invalid AA2 Message Error')
+  }
 }

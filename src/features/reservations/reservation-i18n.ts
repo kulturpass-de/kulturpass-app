@@ -32,10 +32,9 @@ const RESERVATION_DETAILS_I18N_KEYS_MAP: I18N_KEYS_MAP_TYPE = {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_headline',
     copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_pickupNotRequired_copytext',
   },
-  // TODO: cleanup orderState - received and completed seem to be same usecase
   RECEIVED: {
-    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_headline',
-    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_received_copytext',
+    headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_headline',
+    copytext: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_copytext',
   },
   COMPLETED: {
     headline: 'reservationDetail_header_deliveryScenario_pickup_orderStatus_completed_headline',
@@ -60,8 +59,9 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
     return { headline: undefined, copytext: undefined }
   }
 
+  const { fulfillmentOption } = productDetail
+
   if (orderStatus === 'READY_FOR_PICKUP') {
-    const { fulfillmentOption } = productDetail
     if (fulfillmentOption === 'REDEMPTION_CODE') {
       return RESERVATION_DETAILS_I18N_KEYS_MAP.READY_FOR_PICKUP_REQUIRED_VOUCHER
     } else if (fulfillmentOption === 'PICKUP_CODE') {
@@ -72,7 +72,9 @@ export const getReservationOrderTranslations = (productDetail: ProductDetail, or
   }
 
   if (
-    productDetail.productType === ProductTypes.Voucher &&
+    (productDetail.productType === ProductTypes.Voucher ||
+      fulfillmentOption === 'REDEMPTION_CODE' ||
+      fulfillmentOption === 'VENDOR_CODE') &&
     (orderStatus === 'RECEIVED' || orderStatus === 'COMPLETED')
   ) {
     return RESERVATION_DETAILS_I18N_KEYS_MAP.RECEIVED_VOUCHER

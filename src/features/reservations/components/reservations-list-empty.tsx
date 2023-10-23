@@ -13,6 +13,7 @@ export type ReservationsListEmptyProps = {
   i18nContentKey: AvailableTranslations
   i18nIllustrationAltKey: AvailableTranslations
   illustrationType: IllustrationType
+  animationSpeed?: number
 }
 
 export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
@@ -21,6 +22,7 @@ export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
   i18nContentKey,
   i18nIllustrationAltKey,
   illustrationType,
+  animationSpeed,
 }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -31,6 +33,7 @@ export const ReservationsListEmpty: React.FC<ReservationsListEmptyProps> = ({
         testID={addTestIdModifier(testID, 'image')}
         i18nKey={i18nIllustrationAltKey}
         type={illustrationType}
+        animationSpeed={animationSpeed}
       />
       <View style={styles.textContainer}>
         <TranslatedText

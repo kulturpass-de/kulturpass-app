@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
 import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -27,7 +27,7 @@ export const EidPukRoute: React.FC<EidPukRouteProps> = ({ route }) => {
 
   const onNext = useCallback(
     (puk: string) => {
-      navigation.navigate(EidInsertCardRouteName, {
+      navigation.replace(EidInsertCardRouteName, {
         flow,
         puk,
       })

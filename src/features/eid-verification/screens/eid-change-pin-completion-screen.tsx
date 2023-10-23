@@ -42,8 +42,14 @@ export const EidChangePinCompletionScreen: React.FC<EidChangePinCompletionScreen
           />
           <TranslatedText
             textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
-            testID={buildTestId('eid_changePinCompletion_content_text')}
-            i18nKey="eid_changePinCompletion_content_text"
+            testID={buildTestId('eid_changePinCompletion_content_text_first')}
+            i18nKey="eid_changePinCompletion_content_text_first"
+            textStyle="BodyRegular"
+          />
+          <TranslatedText
+            textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+            testID={buildTestId('eid_changePinCompletion_content_text_second')}
+            i18nKey="eid_changePinCompletion_content_text_second"
             textStyle="BodyRegular"
           />
         </View>

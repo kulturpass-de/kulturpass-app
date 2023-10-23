@@ -43,6 +43,10 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.Auth, callback)
   }
 
+  const onSearch = (callback: (object: WebViewEvents['search']) => void) => {
+    return webViewBridgeAdapter.onWebViewEvent(webViewId, SpartacusBridge.EventForwarding.Source.Search, callback)
+  }
+
   const onAuthIsUserLoggedIn = (callback: (object: WebViewEvents['auth.isUserLoggedIn']) => void) => {
     return webViewBridgeAdapter.onWebViewEvent(
       webViewId,
@@ -61,6 +65,7 @@ export const createBridgeAdapterApi = (webViewBridgeAdapter: WebViewBridgeAdapte
     onAuth,
     onAuthIsUserLoggedIn,
     onMobileAppEvents,
+    onSearch,
   }
 }
 

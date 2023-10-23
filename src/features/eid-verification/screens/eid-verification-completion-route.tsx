@@ -1,6 +1,6 @@
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback } from 'react'
-import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { logger } from '../../../services/logger'
 import { modalCardStyle } from '../../../theme/utils'
