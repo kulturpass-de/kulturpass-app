@@ -1,3 +1,4 @@
+import { SerializedError } from '@reduxjs/toolkit'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -26,7 +27,7 @@ import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 export type EidAboutVerificationScreenProps = {
   onNext: (accessRights: AccessRights, certificate: Certificate) => void
   onNFCNotSupported: () => void
-  onError: (error: ErrorWithCode) => void
+  onError: (error: ErrorWithCode | SerializedError) => void
   onClose: () => void
 }
 
@@ -40,7 +41,6 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   const { colors } = useTheme()
 
   const eidGeneralFaqLink = useFaqLink('EID_IDENTIFICATION_GENERAL')
-  const eidIdentificationVideo = useFaqLink('IDENTIFICATION_VIDEO')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
   const { isLoading: initLoading } = useInitAA2Sdk(onError)
@@ -112,17 +112,10 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
               link={eidGeneralFaqLink}
             />
           </View>
-          <View style={styles.textPadding}>
-            <LinkText
-              testID={buildTestId('eid_aboutVerification_video_link')}
-              i18nKey="eid_aboutVerification_video_link"
-              link={eidIdentificationVideo}
-            />
-          </View>
           <TranslatedText
             i18nKey="eid_aboutVerification_accept_text"
             textStyle="BodySmallRegular"
-            textStyleOverrides={[styles.acceptText, { color: colors.labelColor }]}
+            textStyleOverrides={[styles.textPadding, { color: colors.labelColor }]}
             testID={buildTestId('eid_aboutVerification_accept_text')}
           />
           <View style={styles.textPadding}>
@@ -185,8 +178,5 @@ export const styles = StyleSheet.create({
   },
   textPadding: {
     paddingTop: spacing[6],
-  },
-  acceptText: {
-    paddingTop: spacing[8],
   },
 })

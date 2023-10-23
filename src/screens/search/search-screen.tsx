@@ -6,11 +6,9 @@ import { useEnvironmentConfigurationCommerce } from '../../services/environment-
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 
-export type SearchScreenProps = {
-  initialNavigationUrl?: string
-}
+export type SearchScreenProps = {}
 
-export const SearchScreen: React.FC<SearchScreenProps> = ({ initialNavigationUrl }) => {
+export const SearchScreen: React.FC<SearchScreenProps> = () => {
   const { buildTestId } = useTestIdBuilder()
 
   const searchUrl = useEnvironmentConfigurationCommerce().searchUrl
@@ -23,7 +21,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ initialNavigationUrl
         url={searchUrl}
         testID={buildTestId('screens_search_webview')}
         language={language}
-        initialNavigationUrl={initialNavigationUrl}
       />
     </Screen>
   )

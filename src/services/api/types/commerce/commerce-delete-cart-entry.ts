@@ -1,3 +1,4 @@
 export type DeleteCartEntryParams = {
-  productCode: string
+  cartId: string
+  entryNumber: number
 }

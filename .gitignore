@@ -87,5 +87,3 @@ gav.json
 android/app/src/main/assets/index.android.bundle
 android/app/src/main/res/**/src_*
 android/app/src/main/res/**/node_modules_*
-
-.vscode

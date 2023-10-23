@@ -29,7 +29,7 @@ export type ReservationListStatusTextProps = {
 export const ReservationListStatusText: React.FC<ReservationListStatusTextProps> = ({ status, deliveryScenario }) => {
   const { t } = useTranslation()
   const { colorScheme } = useTheme()
-  const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const { buildTestId } = useTestIdBuilder()
 
   const colors: ReservationListStatusTextColors = useMemo(() => {
     if (colorScheme === 'dark') {
@@ -83,12 +83,9 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   }
 
   return (
-    <View style={styles.container} testID={buildTestId(i18nKey)}>
-      <SvgImage testID={addTestIdModifier(i18nKey, 'icon')} type={icon} width={16} height={16} />
-      <Text
-        testID={addTestIdModifier(i18nKey, 'text')}
-        accessible
-        style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
+    <View style={styles.container}>
+      <SvgImage type={icon} width={16} height={16} />
+      <Text testID={buildTestId(i18nKey)} accessible style={[textStyles.CaptionExtrabold, styles.text, colorStyle]}>
         {t(i18nKey)}
       </Text>
     </View>

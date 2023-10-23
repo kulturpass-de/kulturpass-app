@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
+/* eslint-disable react/jsx-no-bind */
+import React from 'react'
 import type { PropsWithChildren } from 'react'
 import { Modal, type ModalProps } from 'react-native'
 import { AlertBackdrop } from './alert-backdrop'
@@ -12,27 +13,19 @@ export type AlertProps = ModalProps &
     dismissable?: boolean
   }>
 
-export const Alert = ({ visible, onChange, children, dismissable, ...modalProps }: AlertProps) => {
-  const onShow = useCallback(() => onChange?.(true), [onChange])
-  const onHide = useCallback(() => onChange?.(false), [onChange])
-  const providerValue = useMemo(() => ({ dismiss: onHide }), [onHide])
-
+export const Alert = ({ visible, onChange = () => {}, children, dismissable, ...modalProps }: AlertProps) => {
   return (
-    <AlertContextImpl.Provider value={providerValue}>
+    <AlertContextImpl.Provider value={{ dismiss: () => onChange(false) }}>
       <Modal
-        // DO NOT USE `animationType`
-        // this leads to a ui issue
-        // in which the refresh control is not hiding anymore when opening a modal in parallel
-        // the workaround is to animate the modal on our own
-        // see `AlertContainer`
+        animationType="fade"
         presentationStyle="overFullScreen"
         transparent={true}
         visible={visible}
-        onRequestClose={onHide}
-        onShow={onShow}
-        onDismiss={onHide}
+        onRequestClose={() => onChange(false)}
+        onShow={() => onChange(true)}
+        onDismiss={() => onChange(false)}
         {...modalProps}>
-        <AlertContainer visible={visible}>
+        <AlertContainer>
           <AlertBackdrop dismissable={dismissable} />
           {children}
         </AlertContainer>

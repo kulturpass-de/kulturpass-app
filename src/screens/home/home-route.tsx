@@ -1,5 +1,5 @@
 import React from 'react'
-import { createRouteConfig } from '../../navigation/utils/create-route-config'
+import { createRouteConfig } from '../../navigation/utils/createRouteConfig'
 import { HomeScreen } from './home-screen'
 
 export const HomeRouteName = 'Home'

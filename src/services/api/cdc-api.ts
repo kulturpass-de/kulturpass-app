@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { CDC_SESSION_EXPIRATION_INFINITE } from './cdc-constants'
 import { callCdcWithApiKey } from './cdc/call-cdc-with-api-key'
 import { callCdcWithCustomSessionInfoSigned } from './cdc/call-cdc-with-custom-session-info-signed'
 import { callCdcWithSessionInfoSigned } from './cdc/call-cdc-with-session-info-signed'
@@ -20,14 +19,13 @@ import {
   AccountsSetAccountInfoWithRegTokenUnsignedRequestParams,
 } from './types'
 import {
-  AccountsFinalizeRegistrationRequestParams,
-  AccountsFinalizeRegistrationResponse,
-} from './types/cdc/accounts/cdc-accounts-finalize-registration'
-import {
   AccountsResetPasswordRequestParams,
   AccountsResetPasswordResponse,
 } from './types/cdc/accounts/cdc-accounts-reset-password'
 import { CdcApiBaseSuccessResponse } from './types/cdc/cdc-api-base-success-response'
+
+// TODO: extract cdc constant
+export const CDC_SESSION_EXPIRATION_INIFINITE = -2
 
 const dontRemoveOtherwiseJestTestsWillNotClose = process.env.NODE_ENV === 'test' ? { keepUnusedDataFor: 0 } : {}
 
@@ -44,7 +42,7 @@ export const cdcApi = createApi({
           loginID: params.loginID,
           password: params.password,
           include: 'profile,data,id_token',
-          sessionExpiration: CDC_SESSION_EXPIRATION_INFINITE,
+          sessionExpiration: CDC_SESSION_EXPIRATION_INIFINITE,
         },
       })),
     }),
@@ -64,24 +62,12 @@ export const cdcApi = createApi({
         bodyPayload: {
           ...params,
           include: 'profile,data,id_token',
-          sessionExpiration: CDC_SESSION_EXPIRATION_INFINITE,
+          sessionExpiration: CDC_SESSION_EXPIRATION_INIFINITE,
           finalizeRegistration: true,
           preferences: {
             terms: { 'eula-v1': { isConsentGranted: true } },
             privacy: { 'dps-v1': { isConsentGranted: true } },
           },
-        },
-      })),
-    }),
-    accountsFinalizeRegistration: builder.mutation<
-      AccountsFinalizeRegistrationResponse,
-      AccountsFinalizeRegistrationRequestParams
-    >({
-      queryFn: callCdcWithApiKey(params => ({
-        path: 'accounts.finalizeRegistration',
-        bodyPayload: {
-          include: 'profile,data,id_token',
-          regToken: params.regToken,
         },
       })),
     }),

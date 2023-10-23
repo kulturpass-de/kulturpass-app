@@ -1,8 +1,8 @@
 import { gt } from 'semver'
 import pkg from '../../../../package.json'
 import { rootNavigationRef } from '../../../navigation/navigation-container'
-import { ForceUpdateRouteName } from '../../../screens/app/force-update-route'
-import { AppConfig } from '../../../services/redux/versions/current'
+import { AppConfig } from '../../../services/redux/slices/app-core'
+import { ForceUpdateRouteName } from '../screens/force-update-route'
 
 export const enforceAppConfigMinVersion = (appConfig: AppConfig) => {
   if (gt(appConfig.appVersions.min, pkg.version)) {

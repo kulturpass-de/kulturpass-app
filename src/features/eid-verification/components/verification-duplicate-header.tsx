@@ -22,7 +22,7 @@ export const VerificationDuplicateHeader: React.FC = () => {
         <View style={styles.shrink}>
           <TranslatedText
             testID={buildTestId('verification_duplicate_title')}
-            i18nKey={name ? 'verification_duplicate_title' : 'verification_duplicate_title_withoutName'}
+            i18nKey="verification_duplicate_title"
             i18nParams={{ name }}
             textStyle="HeadlineH4Extrabold"
             textStyleOverrides={{ color: colors.labelColor }}

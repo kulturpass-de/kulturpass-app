@@ -16,7 +16,7 @@ We appreciate your courtesy of avoiding political questions here. Issues which a
 
 * Before you start contributing a fix or even a feature, please always create an issue first and wait for the reaction of the project maintainers. As the project is mainly driven by the requirements of our project partners it might be the case that we can't accept all [pull requests](#pull-request-checklist), especially if they include new features.
 
-* The project team decided to focus on the publication of our project milestones instead of every single commit at the moment. In other words, the actual development is currently done on an internal platform. We will take care that accepted [pull requests](#pull-request-checklist) will be merged with the internal codebase.
+* Especially in the early stages of the project the code is still undergoing considerable changes. In order to ensure a timely release of the solution and to be able to concentrate on the initial requirements, the project team decided to focus on the publication of our project milestones instead of every single commit at the moment. In other words, the actual development is currently done on an internal platform. We will switch to the usual public development model as soon as the codebase and architecture is consolidated. Until then, we will take care that accepted [pull requests](#pull-request-checklist) will be merged with the internal codebase.
 
 * Feel free to reach out to us and send an [email](support@kulturpass.de) if you plan to implement something larger or if you have a topic that can't be discussed in GitHub issues.
 

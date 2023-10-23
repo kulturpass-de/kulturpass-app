@@ -92,7 +92,7 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       testID,
       accessible,
       accessibilityRole: 'image',
-      accessibilityLabel: accessible ? t(i18nKey) : undefined,
+      accessibilityLabel: accessible ? t(i18nKey!) : undefined,
       color,
       style,
     }

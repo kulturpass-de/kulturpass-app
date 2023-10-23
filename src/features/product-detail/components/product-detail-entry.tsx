@@ -5,7 +5,6 @@ import { AvailableTranslations } from '../../../components/translated-text/types
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { textStyles } from '../../../theme/typography'
-import { isDeviceTextScaled } from '../../../theme/utils'
 
 type ProductDetailEntryProps = {
   i18nKey: AvailableTranslations
@@ -18,14 +17,14 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
   const testID = buildTestId(i18nKey)
 
   return (
-    <View style={isDeviceTextScaled() ? styles.col : styles.row}>
+    <View style={styles.container}>
       <TranslatedText
         i18nKey={i18nKey}
         testID={testID}
         textStyle="BodyExtrabold"
         textStyleOverrides={[styles.entryTitle, { color: colors.labelColor }]}
       />
-      {isDeviceTextScaled() ? null : <Text style={textStyles.BodyRegular}> </Text>}
+      <Text style={textStyles.BodyRegular}> </Text>
       <Text style={[styles.entryContent, { color: colors.labelColor }]} testID={addTestIdModifier(testID, 'value')}>
         {value}
       </Text>
@@ -34,10 +33,7 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
 }
 
 const styles = StyleSheet.create({
-  col: {
-    flexDirection: 'column',
-  },
-  row: {
+  container: {
     flexDirection: 'row',
   },
   entryTitle: {

@@ -1,16 +1,18 @@
 import Clipboard from '@react-native-clipboard/clipboard'
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, View, ViewProps } from 'react-native'
+import { Pressable, StyleSheet, Text, View, ViewProps } from 'react-native'
 import QRCode from 'react-native-qrcode-svg'
 import { Button } from '../../../components/button/button'
-import { CopyToClipboard } from '../../../components/copy-to-clipboard/copy-to-clipboard'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
+import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { HITSLOP } from '../../../theme/constants'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
-import { linkLogger, openLink } from '../../../utils/links/utils'
+import { openLink } from '../../../utils/links/utils'
 
 export type ReservationDetailPickupInfoProps = {
   orderEntry: OrderEntry
@@ -19,6 +21,8 @@ export type ReservationDetailPickupInfoProps = {
 export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoProps> = ({ orderEntry }) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
+  const { buildTestId } = useTestIdBuilder()
+
   const [state, setState] = useState<{ containerWidth?: number }>({})
 
   const onContainerLayout: NonNullable<ViewProps['onLayout']> = useCallback(event => {
@@ -39,7 +43,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
       return
     }
 
-    await openLink(orderEntry.voucherRedemptionUrl).catch(linkLogger)
+    await openLink(orderEntry.voucherRedemptionUrl)
   }, [orderEntry.voucherRedemptionUrl])
 
   return (
@@ -51,18 +55,28 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
             textStyle="CaptionSemibold"
             textStyleOverrides={[styles.voucherCodeHeadline, { color: colors.labelColor }]}
           />
-          <View style={styles.voucherCodeContainer} accessibilityLabel={orderEntry.voucherCode}>
-            <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>{orderEntry.voucherCode}</Text>
-            <CopyToClipboard
-              baseTestId={'reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode'}
-              accessibilityLabelI18nKey={
-                'reservationDetail_header_voucherScenario_pickup_voucherSection_copyToClipboard'
-              }
-              copiedAccessibilityI18nKey="reservationDetail_header_voucherScenario_pickup_voucherSection_copiedToClipboard"
-              onPress={onPressVoucherCodeCopy}
-              style={styles.voucherCodeCopyIcon}
-            />
-          </View>
+          <Pressable
+            hitSlop={HITSLOP}
+            style={styles.voucherCodeContainer}
+            onPress={onPressVoucherCodeCopy}
+            testID={buildTestId('reservationDetail_header_voucherScenario_pickup_voucherSection_voucherCode')}
+            accessibilityRole="button"
+            accessibilityLabel={orderEntry.voucherCode}>
+            {({ pressed }) => (
+              <>
+                <Text style={[textStyles.HeadlineH4Extrabold, { color: colors.labelColor }]}>
+                  {orderEntry.voucherCode}
+                </Text>
+                <SvgImage
+                  type={pressed ? 'copy-clipboard' : 'clipboard'}
+                  width={24}
+                  height={24}
+                  style={styles.voucherCodeCopyIcon}
+                  accessibilityLabel={t('productDetail_offer_copyToClipboard')}
+                />
+              </>
+            )}
+          </Pressable>
         </>
       ) : null}
       {orderEntry.voucherRedemptionUrl ? (
@@ -78,14 +92,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
         />
       ) : null}
       {orderEntry.barcodeDisplayType === 'QR_CODE' && orderEntry.barcodeData ? (
-        <View
-          accessible
-          accessibilityRole="image"
-          accessibilityLabel={t('reservationDetail_qrCode_dataDescription')}
-          accessibilityHint={t('reservationDetail_qrCode_hint')}
-          style={styles.qrFrame}>
-          <QRCode value={orderEntry.barcodeData} size={state.containerWidth} />
-        </View>
+        <QRCode value={orderEntry.barcodeData} size={state.containerWidth} />
       ) : null}
     </View>
   )
@@ -110,10 +117,5 @@ const styles = StyleSheet.create({
   },
   voucherRedemptionUrlButton: {
     marginBottom: spacing[7],
-  },
-  qrFrame: {
-    padding: spacing[4],
-    backgroundColor: 'white',
-    borderRadius: 8,
   },
 })

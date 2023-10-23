@@ -1,14 +1,17 @@
 import React, { Suspense } from 'react'
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
+import 'react-native-get-random-values'
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { webViewBridgeAdapter } from './features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { WebViewBridgeAdapterContext } from './features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter-provider'
 import { NavigationContainer } from './navigation/navigation-container'
-import { persistor, store } from './services/redux/store'
+import { setupStore } from './services/redux/configure-store'
 import { Theme } from './theme/components/theme'
 
-export const App = () => {
+export const { store, persistor } = setupStore({})
+
+const AppWithProviders = () => {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <Provider store={store}>
@@ -25,3 +28,5 @@ export const App = () => {
     </SafeAreaProvider>
   )
 }
+
+export default AppWithProviders

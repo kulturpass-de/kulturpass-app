@@ -41,14 +41,14 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
           {category?.name ? (
             <Text
               style={[textStyles.MicroMediumCaps, styles.categoryText, { color: colors.labelColor }]}
-              accessibilityHint={t('productDetail_confirmReservation_productCategory')}
+              accessibilityLabel={t('productDetail_confirmReservation_productCategory')}
               testID={buildTestId('productDetail_confirmReservation_productCategory')}>
               {category.name}
             </Text>
           ) : null}
           <Text
             style={[textStyles.BodyRegular, { color: colors.labelColor }]}
-            accessibilityHint={t('productDetail_confirmReservation_productName')}
+            accessibilityLabel={t('productDetail_confirmReservation_productName')}
             numberOfLines={2}
             testID={buildTestId('productDetail_confirmReservation_productName')}>
             {productDetail.name}
@@ -77,7 +77,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
         </View>
         <Text
           style={[textStyles.HeadlineH3Extrabold, styles.productPrice, { color: colors.labelColor }]}
-          accessibilityHint={t('productDetail_confirmReservation_productPrice')}
+          accessibilityLabel={t('productDetail_confirmReservation_productPrice')}
           testID={buildTestId('productDetail_confirmReservation_productPrice')}>
           {formattedPrice}
         </Text>

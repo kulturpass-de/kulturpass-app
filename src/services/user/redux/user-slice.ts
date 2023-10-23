@@ -1,21 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AccountInfo } from '../../api/types'
-import { CdcSessionData } from '../../session/types'
 
 export type UserState = {
-  profile: Pick<CdcSessionData['user'], 'firstName'> | null
+  profile: Pick<NonNullable<AccountInfo['profile']>, 'firstName'> | null
   data: AccountInfo['data'] | null
   userDeniedLocationServices: boolean
-  displayVerifiedAlert: boolean
-  registrationFinalizationInProgess: boolean
 }
 
 const initialState: UserState = {
   profile: null,
   data: null,
   userDeniedLocationServices: false,
-  displayVerifiedAlert: false,
-  registrationFinalizationInProgess: false,
 }
 
 export const userSlice = createSlice({
@@ -30,12 +25,6 @@ export const userSlice = createSlice({
     },
     setUserDeniedLocationServices: (state, action: PayloadAction<boolean>) => {
       state.userDeniedLocationServices = action.payload
-    },
-    setDisplayVerifiedAlert: (state, action: PayloadAction<boolean>) => {
-      state.displayVerifiedAlert = action.payload
-    },
-    setRegistrationFinalizationInProgess: (state, action: PayloadAction<boolean>) => {
-      state.registrationFinalizationInProgess = action.payload
     },
     clearUser: state => {
       state.profile = null

@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { SerializedError } from '@reduxjs/toolkit'
 import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback, useState } from 'react'
 import { EidParamList } from '../../../navigation/eid/types'
-import { createRouteConfig } from '../../../navigation/utils/create-route-config'
-import { ErrorWithCode } from '../../../services/errors/errors'
+import { createRouteConfig } from '../../../navigation/utils/createRouteConfig'
+import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
@@ -24,7 +25,7 @@ export const EidAboutVerificationRoute: React.FC = () => {
 
   const onNext = useCallback(
     (accessRights: AccessRights, certificate: Certificate) => {
-      navigation.replace(EidAboutServiceProviderRouteName, {
+      navigation.navigate(EidAboutServiceProviderRouteName, {
         certificate,
         accessRights,
       })
@@ -33,15 +34,19 @@ export const EidAboutVerificationRoute: React.FC = () => {
   )
 
   const onNFCNotSupported = useCallback(() => {
-    navigation.replace(EidNFCNotSupportedRouteName)
+    navigation.navigate(EidNFCNotSupportedRouteName)
   }, [navigation])
 
   const onClose = useCallback(() => {
     setCancelAlertVisible(true)
   }, [])
 
-  const onError = useCallback((error: ErrorWithCode) => {
-    setVisibleError(error)
+  const onError = useCallback((error: ErrorWithCode | SerializedError) => {
+    if (error instanceof ErrorWithCode) {
+      setVisibleError(error)
+    } else {
+      setVisibleError(new UnknownError())
+    }
   }, [])
 
   useHandleGestures(onClose)

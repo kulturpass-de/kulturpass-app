@@ -1,29 +1,15 @@
 #import "AppDelegate.h"
 
-#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
-#import <React/RCTLinkingManager.h>
-#import <React/RCTLog.h>
-#import "RNFBMessagingModule.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [FIRApp configure];
   self.moduleName = @"cultureapp";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
-  self.initialProps = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
-
-#ifdef JS_LOGGING
-  // Show console.log logging in macOS Console App.
-  // Needed for Release builds, that should have active logging.
-  RCTSetLogThreshold((RCTLogLevel)(RCTLogLevelInfo - 1));
-  RCTSetLogFunction(^(RCTLogLevel level, RCTLogSource source, NSString *fileName, NSNumber *lineNumber, NSString *message) {
-    NSLog(@"%@", RCTFormatLog(nil, level, nil, nil, message));
-  });
-#endif
+  self.initialProps = @{};
 
 
   return [super application:application
@@ -40,21 +26,16 @@
 #endif
 }
 
-/// Adds Deeplinking support
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
-}
-
-/// Adds Deeplinking support
-- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
- restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
-{
- return [RCTLinkingManager application:application
-                  continueUserActivity:userActivity
-                    restorationHandler:restorationHandler];
+/// This method controls whether the `concurrentRoot`feature of React18 is
+/// turned on or off.
+///
+/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
+/// @note: This requires to be rendering on Fabric (i.e. on the New
+/// Architecture).
+/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it
+/// returns `false`.
+- (BOOL)concurrentRootEnabled {
+  return true;
 }
 
 @end

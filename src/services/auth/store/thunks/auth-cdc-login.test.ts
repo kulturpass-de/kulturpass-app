@@ -4,7 +4,6 @@ import { cdcApi } from '../../../api/cdc-api'
 import { ErrorWithCode } from '../../../errors/errors'
 import * as sessionService from '../../../session/session-service'
 import { configureMockStore } from '../../../testing/configure-mock-store'
-import { mockedCdcLoginResponse } from '../../../testing/test-utils'
 import { authSlice } from '../auth-slice'
 import { cdcLoginResponseToSessionData } from '../utils'
 import { authCdcLogin } from './auth-cdc-login'
@@ -13,7 +12,7 @@ const server = setupServer()
 
 describe('authCdcLogin', () => {
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
-  const cdcLoginResult = mockedCdcLoginResponse
+  const cdcLoginResult = { profile: { firstName: 'Tester' }, sessionInfo: {}, id_token: 'my_token' }
 
   const store = configureMockStore({ middlewares: [cdcApi.middleware] })
 

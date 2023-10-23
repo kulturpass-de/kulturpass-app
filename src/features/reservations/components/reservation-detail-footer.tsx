@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import { Badge } from '../../../components/badge/badge'
 import { Button } from '../../../components/button/button'
 import { ModalScreenFooterPadding } from '../../../components/modal-screen/modal-screen-footer-padding'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
@@ -12,9 +11,6 @@ import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
-import { ProductDetail } from '../../product-detail/types/product-detail'
-import { isVoucher } from '../../product-detail/utils'
-import { ReservationDetailRefundsText } from './reservation-detail-refunds-text'
 
 export type ReservationDetailFooterProps = {
   cancellable?: boolean
@@ -24,7 +20,6 @@ export type ReservationDetailFooterProps = {
   completedReservation?: boolean
   orderStatus?: string
   isCancelTriggered?: boolean
-  fulfillmentOption: ProductDetail['fulfillmentOption']
 }
 
 export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = ({
@@ -35,19 +30,17 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
   completedReservation,
   orderStatus,
   isCancelTriggered,
-  fulfillmentOption,
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
 
   const formattedPrice = useFormattedPrice(price)
-
+  const formattedRefundAmount = useFormattedPrice(refunds?.refundAmount)
+  const formattedTotalWithoutRefunds = useFormattedPrice(refunds?.totalWithoutRefunds)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const hasRefunds = (refunds?.refundAmount?.value ?? 0) > 0
 
   const noop = useCallback(() => {}, [])
-
-  const productIsVoucher = useMemo(() => isVoucher(fulfillmentOption), [fulfillmentOption])
 
   return (
     <View
@@ -56,25 +49,33 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
       {formattedPrice ? (
         <View style={styles.rowPrice}>
           {hasRefunds ? (
-            <ReservationDetailRefundsText refunds={refunds} productIsVoucher={productIsVoucher} />
+            <TranslatedText
+              testID={buildTestId('reservationDetail_footer_refunds')}
+              i18nKey="reservationDetail_footer_refunds"
+              i18nParams={{
+                totalWithoutRefunds: formattedTotalWithoutRefunds,
+                refundAmount: formattedRefundAmount,
+              }}
+              textStyle="CaptionSemibold"
+              textStyleOverrides={[styles.priceTitle, { color: colors.labelColor }]}
+              customComponents={{
+                em: (
+                  <Text
+                    style={[
+                      textStyles.CaptionSemibold,
+                      { color: colors.emphasizedPriceColor, backgroundColor: colors.emphasizedPriceBackground },
+                    ]}
+                  />
+                ),
+              }}
+            />
           ) : (
-            <View style={styles.leftRow}>
-              {productIsVoucher ? (
-                <View style={styles.badge}>
-                  <Badge i18nKey="voucher_badge" testID={buildTestId('reservationDetail_footer_voucher_badge')} />
-                </View>
-              ) : null}
-              <TranslatedText
-                i18nKey={
-                  productIsVoucher
-                    ? 'reservationDetail_footer_voucher_priceTitle'
-                    : 'reservationDetail_footer_priceTitle'
-                }
-                testID={buildTestId('reservationDetail_footer_priceTitle')}
-                textStyle="CaptionExtrabold"
-                textStyleOverrides={[styles.priceTitle, { color: colors.labelColor }]}
-              />
-            </View>
+            <TranslatedText
+              i18nKey="reservationDetail_footer_priceTitle"
+              testID={buildTestId('reservationDetail_footer_priceTitle')}
+              textStyle="CaptionExtrabold"
+              textStyleOverrides={[styles.priceTitle, { color: colors.labelColor }]}
+            />
           )}
           <Text
             testID={buildTestId('reservationDetail_footer_price')}
@@ -118,10 +119,6 @@ const styles = StyleSheet.create({
     paddingTop: spacing[4],
     borderTopWidth: 2,
   },
-  badge: {
-    alignContent: 'center',
-    paddingRight: spacing[2],
-  },
   rowPrice: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -134,13 +131,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  leftRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing[1],
-    flex: 1,
-  },
   priceTitle: {
-    flex: 1,
+    lineHeight: 19,
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
 })

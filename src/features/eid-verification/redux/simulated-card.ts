@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { simulationCards } from '../../../screens/app/developer-settings/simulation-cards/simulation-cards'
-import { CardSimulationState } from '../../../services/redux/versions/current'
+import { simulationCards } from '../../../screens/developer-settings/simulation-cards/simulation-cards'
+
+export type CardSimulationState = {
+  simulateCard: boolean
+  simulatedCardName?: keyof typeof simulationCards
+  simulatedCardDate?: string
+  randomLastName?: boolean
+}
 
 export const cardSimulationInitialState: CardSimulationState = {
   simulateCard: false,

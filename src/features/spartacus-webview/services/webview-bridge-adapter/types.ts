@@ -44,14 +44,8 @@ export type AnyWebViewFunctionResult = ValueOf<WebViewFunctions>['result']
 export type WebViewEvents = {
   [SpartacusBridge.EventForwarding.Source.MobileApp]: SpartacusBridge.EventForwarding.MobileAppEvent
   [SpartacusBridge.EventForwarding.Source.RouterEvents]: SpartacusBridge.EventForwarding.RouterEvent
-  [SpartacusBridge.EventForwarding.Source.Bridge]: SpartacusBridge.EventForwarding.BridgeReadyEvent
-  [SpartacusBridge.EventForwarding.Source.Auth]: SpartacusBridge.EventForwarding.AuthTokenAwaitedEvent
-  [SpartacusBridge.EventForwarding.Source.Search]:
-    | SpartacusBridge.EventForwarding.SearchLocationOpenEvent
-    | SpartacusBridge.EventForwarding.SearchFiltersOpenEvent
-    | SpartacusBridge.EventForwarding.SearchFiltersCloseEvent
-    | SpartacusBridge.EventForwarding.SearchSortOpenEvent
-    | SpartacusBridge.EventForwarding.SearchSortCloseEvent
+  [SpartacusBridge.EventForwarding.Source.Bridge]: SpartacusBridge.EventForwarding.Event
+  [SpartacusBridge.EventForwarding.Source.Auth]: SpartacusBridge.EventForwarding.Event
   [SpartacusBridge.StateForwarding.Source.AuthIsUserLoggedIn]: SpartacusBridge.StateForwarding.StateChange
 }
 
