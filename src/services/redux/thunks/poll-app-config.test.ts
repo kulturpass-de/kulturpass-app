@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { commerceApi } from '../../api/commerce-api'
 import { configureMockStore } from '../../testing/configure-mock-store'
@@ -24,7 +24,7 @@ describe('poll-app-config', () => {
   })
 
   it('should call getAppConfig endpoint with pollingInterval', async () => {
-    server.use(rest.get('http://localhost/appConfig/url', (_req, res, ctx) => res(ctx.status(200), ctx.body(''))))
+    server.use(http.get('http://localhost/appConfig/url', () => HttpResponse.text('', { status: 200 })))
 
     await store.dispatch(pollAppConfig())
 

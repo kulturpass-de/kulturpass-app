@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { AccountsSetAccountInfoSignedRequestParams } from '../../../api/types'
@@ -24,7 +24,7 @@ describe('setAccountInfo', () => {
   afterAll(() => server.close())
 
   it('should call setAccountInfo signed without regToken', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 200 })))
     expect(getRegistrationToken(store.getState())).toBeUndefined()
     await store.dispatch(setAccountInfo({ params: mockedParams }))
 
@@ -34,7 +34,7 @@ describe('setAccountInfo', () => {
   })
 
   it('should call setAccountInfo unsigned with regToken', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 200 })))
     expect(getRegistrationToken(store.getState())).toBeUndefined()
     const regToken = 'TESTREGTOKEN'
     await store.dispatch(setAccountInfo({ params: mockedParams, regToken }))
@@ -47,7 +47,7 @@ describe('setAccountInfo', () => {
   })
 
   it('should call setAccountInfo unsigned with regToken of store', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 200 })))
     const regToken = 'TESTREGTOKEN'
 
     store.dispatch(authSlice.actions.setCdcSession({ regToken } as CdcSessionData))
@@ -61,7 +61,7 @@ describe('setAccountInfo', () => {
   })
 
   it('should set profile firstName if setAccountInfo was successful', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 200 })))
     await store.dispatch(setAccountInfo({ params: mockedParams }))
 
     expect(store.findAction(cdcApi.endpoints.accountsSetAccountInfoWithRegTokenUnsigned.matchPending)).toBeDefined()
@@ -71,7 +71,7 @@ describe('setAccountInfo', () => {
   })
 
   it('should not set profile firstName if setAccountInfo was unsuccessful', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(400), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 400 })))
     await store.dispatch(setAccountInfo({ params: mockedParams }))
 
     expect(store.findAction(cdcApi.endpoints.accountsSetAccountInfoWithRegTokenUnsigned.matchRejected)).toBeDefined()
@@ -79,7 +79,7 @@ describe('setAccountInfo', () => {
   })
 
   it('should not set profile firstName if firstName was not part of params', async () => {
-    server.use(rest.post('*/accounts.setAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))))
+    server.use(http.post('*/accounts.setAccountInfo', () => HttpResponse.json({}, { status: 200 })))
     const params: AccountsSetAccountInfoSignedRequestParams = {
       data: {
         deletionRequested: true,

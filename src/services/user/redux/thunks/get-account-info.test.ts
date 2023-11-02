@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { getRegistrationToken } from '../../../auth/store/auth-selectors'
@@ -22,9 +22,7 @@ describe('getAccountInfo', () => {
   afterAll(() => server.close())
 
   it('should call getAccountInfo signed without regToken', async () => {
-    server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json(mockedResponse))),
-    )
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json(mockedResponse, { status: 200 })))
     expect(getRegistrationToken(store.getState())).toBeUndefined()
 
     const response = await store.dispatch(getAccountInfo()).unwrap()
@@ -34,9 +32,7 @@ describe('getAccountInfo', () => {
   })
 
   it('should call setAccountInfo unsigned with regToken', async () => {
-    server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json(mockedResponse))),
-    )
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json(mockedResponse, { status: 200 })))
 
     expect(getRegistrationToken(store.getState())).toBeUndefined()
 
@@ -52,9 +48,7 @@ describe('getAccountInfo', () => {
   })
 
   it('should call setAccountInfo unsigned with regToken of store', async () => {
-    server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json(mockedResponse))),
-    )
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json(mockedResponse, { status: 200 })))
     const regToken = 'TESTREGTOKEN'
 
     store.dispatch(authSlice.actions.setCdcSession({ regToken } as CdcSessionData))

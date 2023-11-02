@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { CDC_SESSION_EXPIRATION_INFINITE } from '../../../api/cdc-constants'
@@ -33,8 +33,8 @@ describe('authValidateSession', () => {
 
   it('should authLogoutWithoutErrors if current session is not valid but cdcSessionData and commerceSessionData exists', async () => {
     server.use(
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('*/oauth/revoke', () => HttpResponse.json(null, { status: 200 })),
     )
 
     const store = configureMockStore({
@@ -54,9 +54,9 @@ describe('authValidateSession', () => {
 
   it('should authLogoutWithoutErrors if current session is not valid but cdcSessionData exists', async () => {
     server.use(
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(400))),
-      rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('*/accounts.getAccountInfo', () => HttpResponse.json(null, { status: 400 })),
+      http.post('*/oauth/revoke', () => HttpResponse.json({}, { status: 200 })),
     )
 
     const store = configureMockStore({
@@ -71,8 +71,8 @@ describe('authValidateSession', () => {
 
   it('should authLogoutWithoutErrors if current session is not valid but commerceSessionData exists and authCommerceRefreshSession fails', async () => {
     server.use(
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('*/oauth/revoke', () => HttpResponse.json({}, { status: 200 })),
     )
 
     const store = configureMockStore({
@@ -87,13 +87,11 @@ describe('authValidateSession', () => {
 
   it('should authCommerceRefreshSession if current commerce session is not valid but the cdc session is valid', async () => {
     server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ id_token: 'NEW_ID_TOKEN' })),
-      ),
-      rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) =>
-        res(
-          ctx.status(200),
-          ctx.json({ access_token: 'forreal', token_type: 'bearer', expires_in: 43189, scope: 'basic openid' }),
+      http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token: 'NEW_ID_TOKEN' }, { status: 200 })),
+      http.post('*/authorizationserver/oauth/token', () =>
+        HttpResponse.json(
+          { access_token: 'forreal', token_type: 'bearer', expires_in: 43189, scope: 'basic openid' },
+          { status: 200 },
         ),
       ),
     )

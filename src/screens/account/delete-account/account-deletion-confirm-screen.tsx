@@ -37,7 +37,7 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
     shouldFocusError: false,
     resolver: zodResolver(
       z.object({
-        password: z.string().trim().nonempty(),
+        password: z.string().trim().min(1),
       }),
     ),
   })

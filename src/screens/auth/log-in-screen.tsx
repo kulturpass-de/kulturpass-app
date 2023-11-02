@@ -53,7 +53,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
     resolver: zodResolver(
       z.object({
         email: EMAIL_SCHEMA(t, true),
-        password: z.string().trim().nonempty(),
+        password: z.string().trim().min(1),
       }),
     ),
   })

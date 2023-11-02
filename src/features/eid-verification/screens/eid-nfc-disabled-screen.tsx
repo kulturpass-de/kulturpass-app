@@ -12,6 +12,7 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
+import { logger } from '../../../services/logger'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -26,7 +27,7 @@ export const EidNFCDisabledScreen: React.FC<EidNFCDisabledScreenProps> = ({ onCl
 
   const showNFCSettings = useCallback(() => {
     if (Platform.OS === 'android') {
-      AA2WorkflowHelper.openNfcSettings().catch(e => console.log('Failed opening NFC settings:', e))
+      AA2WorkflowHelper.openNfcSettings().catch((error: unknown) => logger.logError('Open NFC settings', error))
     }
   }, [])
 

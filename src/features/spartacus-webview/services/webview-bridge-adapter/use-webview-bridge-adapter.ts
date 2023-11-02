@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import { useDispatch } from 'react-redux'
+import { logger } from '../../../../services/logger'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { webviewsSlice } from '../../../../services/webviews/redux/webviews-slice'
 import { createBridgeAdapterApi } from './create-bridge-adapter-api'
@@ -26,9 +27,9 @@ export const useWebViewBridgeAdapter = (webViewId: WebViewId) => {
     (event: WebViewMessageEvent) => {
       try {
         webViewBridgeAdapter.webviewMessageHandler(webViewId, event)
-      } catch (e) {
+      } catch (error: unknown) {
         // Fail silently, as the event format is not correct
-        console.warn(e)
+        logger.logError('Webview Message Handling', error)
       }
     },
     [webViewBridgeAdapter, webViewId],

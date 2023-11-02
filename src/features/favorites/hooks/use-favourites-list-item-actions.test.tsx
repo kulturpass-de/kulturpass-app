@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { act } from 'react-test-renderer'
@@ -25,17 +25,17 @@ describe('useFavouritesListItemActions', () => {
     let apiCalledCounter = 0
 
     server.use(
-      rest.get('*/cc/kulturapp/users/current/favourites', (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
+      http.get('*/cc/kulturapp/users/current/favourites', () =>
+        HttpResponse.json(
+          {
             favouritesItems: [{ product: { code: 'PRODUCT_CODE_1' }, cartId: 'D11242100021', entryNumber: 3 }],
-          }),
-        )
-      }),
-      rest.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_1', (_req, res, ctx) => {
+          },
+          { status: 200 },
+        ),
+      ),
+      http.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_1', () => {
         apiCalledCounter++
-        return res(ctx.status(200), ctx.text('OK'))
+        return HttpResponse.text('OK', { status: 200 })
       }),
     )
 
@@ -61,17 +61,17 @@ describe('useFavouritesListItemActions', () => {
     })
 
     server.use(
-      rest.get('*/cc/kulturapp/users/current/favourites', (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
+      http.get('*/cc/kulturapp/users/current/favourites', () =>
+        HttpResponse.json(
+          {
             favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }],
-          }),
-        )
-      }),
-      rest.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async (_req, res, ctx) => {
+          },
+          { status: 200 },
+        ),
+      ),
+      http.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async () => {
         await new Promise(resolve => setTimeout(resolve, 100))
-        return res(ctx.status(500), ctx.text('NOT_OK'))
+        return HttpResponse.text('NOT_OK', { status: 500 })
       }),
     )
 
@@ -91,21 +91,21 @@ describe('useFavouritesListItemActions', () => {
     })
 
     server.use(
-      rest.get('*/cc/kulturapp/users/current/favourites', (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
+      http.get('*/cc/kulturapp/users/current/favourites', () =>
+        HttpResponse.json(
+          {
             favouritesItems: [
               { cartId: 'D11242100020', entryNumber: 122 },
               { product: { code: productCode }, cartId: 'D11242100021', entryNumber: 123 },
               { cartId: 'D11242100022', entryNumber: 124 },
             ],
-          }),
-        )
-      }),
-      rest.delete(`*/cc/kulturapp/users/current/favourites/entry/${productCode}`, async (_req, res, ctx) => {
+          },
+          { status: 200 },
+        ),
+      ),
+      http.delete(`*/cc/kulturapp/users/current/favourites/entry/${productCode}`, async () => {
         await new Promise(resolve => setTimeout(resolve, 100))
-        return res(ctx.status(200), ctx.text('OK'))
+        return HttpResponse.text('OK', { status: 200 })
       }),
     )
 

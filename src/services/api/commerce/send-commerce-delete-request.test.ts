@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { type RootState } from '../../redux/configure-store'
 import { configureMockStore } from '../../testing/configure-mock-store'
@@ -41,9 +41,9 @@ test('Should send DELETE request', async () => {
   let calledApi = false
 
   server.use(
-    rest.delete('*/delete-this', (_req, res, ctx) => {
+    http.delete('*/delete-this', () => {
       calledApi = true
-      return res(ctx.status(200), ctx.body(''))
+      return HttpResponse.text('', { status: 200 })
     }),
   )
 

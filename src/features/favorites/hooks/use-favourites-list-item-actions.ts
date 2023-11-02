@@ -38,7 +38,7 @@ export const useFavouritesListItemActions = (productCode?: string, defaultIsFavo
     }
   }, [productCode, addProductToCart])
 
-  const toggleIsFavourite = useCallback(() => {
+  const toggleIsFavourite = useCallback(async () => {
     if (isFavorite) {
       return removeFromFavorites()
     } else {

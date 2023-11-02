@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import React from 'react'
 import { buildTestId } from '../../services/test-id/test-id'
 import {
@@ -53,11 +53,7 @@ const RESPONSE_HAM = {
 }
 
 const mockSuggestionsResponse = (responseData: typeof RESPONSE_HAM | typeof RESPONSE_EMPTY) => {
-  server.use(
-    rest.get('*/cc/kulturapp/location/suggestions', (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(responseData))
-    }),
-  )
+  server.use(http.get('*/cc/kulturapp/location/suggestions', () => HttpResponse.json(responseData, { status: 200 })))
 }
 
 const noOp = () => {}

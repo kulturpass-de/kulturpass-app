@@ -62,7 +62,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
   const { isFavorite, addToFavourites, removeFromFavorites, toggleIsFavourite, error, resetError } =
     useFavouritesListItemActions(product.code)
 
-  const handlePressFavourite = useCallback(() => {
+  const handlePressProduct = useCallback(() => {
     onPress?.(product)
   }, [onPress, product])
 
@@ -70,7 +70,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
     event => {
       switch (event.nativeEvent.actionName) {
         case 'view-product-details':
-          handlePressFavourite()
+          handlePressProduct()
           break
         case 'add-product-to-favourites':
           addToFavourites()
@@ -80,7 +80,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
           break
       }
     },
-    [handlePressFavourite, addToFavourites, removeFromFavorites],
+    [handlePressProduct, addToFavourites, removeFromFavorites],
   )
 
   const accessibilityActions = isFavorite
@@ -99,7 +99,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
     <>
       <ErrorAlert error={error} onDismiss={resetError} />
       <Pressable
-        onPress={handlePressFavourite}
+        onPress={handlePressProduct}
         accessibilityRole="button"
         accessibilityActions={accessibilityActions}
         onAccessibilityAction={onAccessibilityAction}>

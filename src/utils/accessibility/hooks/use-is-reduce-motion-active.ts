@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react'
-import { AccessibilityInfo } from 'react-native'
+import { useContext } from 'react'
+import { AccessibilityContext } from '../components/accessibility-provider'
 
 export const useIsReduceMotionActive = () => {
-  const [reduceMotionEnabled, setReduceMotionEnabled] = useState(false)
-  useEffect(() => {
-    const reduceMotionChangedSubscription = AccessibilityInfo.addEventListener(
-      'reduceMotionChanged',
-      setReduceMotionEnabled,
-    )
+  const context = useContext(AccessibilityContext)
 
-    AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotionEnabled)
+  if (!context) {
+    throw new Error('AccessibilityContext used outside of AccessibilityProvider.')
+  }
 
-    return reduceMotionChangedSubscription.remove
-  }, [])
-
-  return reduceMotionEnabled
+  return context.reduceMotionEnabled
 }

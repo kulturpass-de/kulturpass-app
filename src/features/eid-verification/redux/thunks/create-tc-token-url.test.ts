@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { RootState } from '../../../../services/redux/configure-store'
@@ -41,7 +41,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token }, { status: 200 })))
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],
@@ -65,7 +65,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token }, { status: 200 })))
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],
@@ -89,7 +89,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token }, { status: 200 })))
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],

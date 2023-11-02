@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { authValidateSession } from '../../auth/store/thunks/auth-validate-session'
 import { refreshLocation } from '../../location/redux/thunks/refresh-location'
@@ -29,7 +29,7 @@ describe('startup', () => {
   })
 
   it('should dispatch restoreSession, when appFirstRun is false', async () => {
-    server.use(rest.get('http://localhost/appConfig/url', (_req, res, ctx) => res(ctx.status(200), ctx.body(''))))
+    server.use(http.get('http://localhost/appConfig/url', () => HttpResponse.text('', { status: 200 })))
 
     await store.dispatch(startup({ appFirstRun: false }))
 
@@ -44,7 +44,7 @@ describe('startup', () => {
   })
 
   it('should dispatch clearSecurePersistedSession, when appFirstRun is true', async () => {
-    server.use(rest.get('http://localhost/appConfig/url', (_req, res, ctx) => res(ctx.status(200), ctx.body(''))))
+    server.use(http.get('http://localhost/appConfig/url', () => HttpResponse.text('', { status: 200 })))
 
     await store.dispatch(startup({ appFirstRun: true }))
 

@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -19,10 +19,8 @@ describe('authValidateSession', () => {
 
   it('should setCdcIdToken and authCommerceLogin with new idToken acquired by using getAccountInfo', async () => {
     server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ id_token: 'new_id_token' })),
-      ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token: 'new_id_token' }, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json({}, { status: 200 })),
     )
 
     const preloadedState = mockedLoggedInAuthState

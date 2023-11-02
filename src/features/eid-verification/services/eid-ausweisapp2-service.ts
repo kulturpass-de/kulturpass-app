@@ -45,6 +45,8 @@ import {
 } from '../types'
 import { eidMessageToErrorResponse, generateSimulatedCard } from '../utils'
 
+export type CardScanResult = EidMessageError | EidRetry | EidChangePinSuccess | EidAuthSuccess
+
 export class EidAusweisApp2Service {
   /**
    * Initializes the SDK and sets the API Level to 2
@@ -312,7 +314,7 @@ export class EidAusweisApp2Service {
     flow: Flow,
     pin?: string,
     newPin?: string,
-  ): Promise<EidRetry | EidChangePinSuccess | EidMessageError | EidAuthSuccess> {
+  ): Promise<CardScanResult> {
     try {
       const result = await AA2CommandService.setPin(simulateCard ? undefined : pin, {
         msTimeout: AA2_TIMEOUTS.SET_PIN,
@@ -421,71 +423,68 @@ export class EidAusweisApp2Service {
    * @returns EidMessageError | EidRetry | EidChangePinSuccess | EidAuthSuccess
    */
   public startScanning = createThunk<
-    EidMessageError | EidRetry | EidChangePinSuccess | EidAuthSuccess,
+    CardScanResult,
     { flow: Flow; userInput: EidUserInput; messages: WorkflowMessages }
-  >(
-    'eid/startScanning',
-    async (payload, thunkAPI): Promise<EidMessageError | EidRetry | EidChangePinSuccess | EidAuthSuccess> => {
-      const { flow, userInput } = payload
-      const state = thunkAPI.getState()
-      const simulateCard = getSimulateCard(state)
-      const simulationCardHandlerSub = this.handleCardSimulation(state)
-      try {
-        // Check the current active Workflow.
-        const status = await AA2CommandService.getStatus({
-          msTimeout: AA2_TIMEOUTS.GET_STATUS,
-        })
-        var msg = status.state
-        if (status.workflow === null) {
-          if (flow === 'ChangePin') {
-            // We did not start the ChangePin worklow yet, as this instantly shows the system UI for Card Scanning
-            return await this.handleInitialChangePinScan(simulateCard, payload.messages)
-          }
-        }
-
-        switch (msg) {
-          case AA2Messages.AccessRights:
-            return await this.handleInitialAuthScan(simulateCard)
-          case AA2Messages.EnterPin:
-            return await this.handleEnterPin(simulateCard, flow, userInput.pin, userInput.newPin)
-          case AA2Messages.EnterCan:
-            return await this.handleEnterCan(simulateCard, userInput.can)
-          case AA2Messages.EnterPuk:
-            return await this.handleEnterPuk(simulateCard, userInput.puk)
-          default:
-            throw new UnknownError(`Invalid state ${msg}`)
-        }
-      } catch (error: unknown) {
-        // Check the expected error AA2 Messages, that normally occur.
-        if (
-          [
-            AA2Messages.BadState,
-            AA2Messages.InternalError,
-            AA2Messages.Invalid,
-            AA2Messages.UnknownCommand,
-            AA2Messages.Auth,
-            AA2Messages.ChangePin,
-            AA2Messages.Reader,
-          ].includes((error as any)?.msg)
-        ) {
-          return eidMessageToErrorResponse(error)
-        } else if (isTimeoutError(error)) {
-          // As the Timeout Error is not thrown by the SDK, we need to interrupt the ios scanning dialog
-          this.interruptNFCSystemDialog(simulateCard)
-          throw new AA2Timeout()
-        } else if (error instanceof ErrorWithCode) {
-          throw error
-        } else {
-          logger.warn('eID scan error can not be interpreted', JSON.stringify(error))
-          throw new UnknownError('eID Scan')
-        }
-      } finally {
-        if (simulationCardHandlerSub !== undefined) {
-          simulationCardHandlerSub.unsubscribe()
+  >('eid/startScanning', async (payload, thunkAPI): Promise<CardScanResult> => {
+    const { flow, userInput } = payload
+    const state = thunkAPI.getState()
+    const simulateCard = getSimulateCard(state)
+    const simulationCardHandlerSub = this.handleCardSimulation(state)
+    try {
+      // Check the current active Workflow.
+      const status = await AA2CommandService.getStatus({
+        msTimeout: AA2_TIMEOUTS.GET_STATUS,
+      })
+      const msg = status.state
+      if (status.workflow === null) {
+        if (flow === 'ChangePin') {
+          // We did not start the ChangePin worklow yet, as this instantly shows the system UI for Card Scanning
+          return await this.handleInitialChangePinScan(simulateCard, payload.messages)
         }
       }
-    },
-  )
+
+      switch (msg) {
+        case AA2Messages.AccessRights:
+          return await this.handleInitialAuthScan(simulateCard)
+        case AA2Messages.EnterPin:
+          return await this.handleEnterPin(simulateCard, flow, userInput.pin, userInput.newPin)
+        case AA2Messages.EnterCan:
+          return await this.handleEnterCan(simulateCard, userInput.can)
+        case AA2Messages.EnterPuk:
+          return await this.handleEnterPuk(simulateCard, userInput.puk)
+        default:
+          throw new UnknownError(`Invalid state ${msg}`)
+      }
+    } catch (error: unknown) {
+      // Check the expected error AA2 Messages, that normally occur.
+      if (
+        [
+          AA2Messages.BadState,
+          AA2Messages.InternalError,
+          AA2Messages.Invalid,
+          AA2Messages.UnknownCommand,
+          AA2Messages.Auth,
+          AA2Messages.ChangePin,
+          AA2Messages.Reader,
+        ].includes((error as any)?.msg)
+      ) {
+        return eidMessageToErrorResponse(error)
+      } else if (isTimeoutError(error)) {
+        // As the Timeout Error is not thrown by the SDK, we need to interrupt the ios scanning dialog
+        this.interruptNFCSystemDialog(simulateCard)
+        throw new AA2Timeout()
+      } else if (error instanceof ErrorWithCode) {
+        throw error
+      } else {
+        logger.warn('eID scan error can not be interpreted', JSON.stringify(error))
+        throw new UnknownError('eID Scan')
+      }
+    } finally {
+      if (simulationCardHandlerSub !== undefined) {
+        simulationCardHandlerSub.unsubscribe()
+      }
+    }
+  })
 
   /**
    * Cancels the current AA2 flow.

@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -151,18 +151,18 @@ describe('registration-form-screen', () => {
 
   it('Should be able to submit registration form successfully with only mandatory fields', async () => {
     server.use(
-      rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/accounts.register', (_req, res, ctx) =>
-        res(
-          ctx.status(200),
-          ctx.json({
+      http.post('*/accounts.initRegistration', () => HttpResponse.json({}, { status: 200 })),
+      http.post('*/accounts.register', () =>
+        HttpResponse.json(
+          {
             regToken: 'my_reg_token',
             profile: { firstName: '', age: 18, email: 'cp@example.org', birthYear: 1993 },
-          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
+          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>,
+          { status: 200 },
         ),
       ),
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
     )
 
     const afterRegister = jest.fn()
@@ -197,18 +197,18 @@ describe('registration-form-screen', () => {
 
   it('Should be able to submit registration form successfully with all fields', async () => {
     server.use(
-      rest.post('*/accounts.initRegistration', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('*/accounts.register', (_req, res, ctx) =>
-        res(
-          ctx.status(200),
-          ctx.json({
+      http.post('*/accounts.initRegistration', () => HttpResponse.json({}, { status: 200 })),
+      http.post('*/accounts.register', () =>
+        HttpResponse.json(
+          {
             regToken: 'my_reg_token',
             profile: { firstName: 'Nice', age: 18, email: 'cp@example.org', birthYear: 1993 },
-          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>),
+          } satisfies Pick<AccountsRegisterResponse, 'regToken' | 'profile'>,
+          { status: 200 },
         ),
       ),
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
     )
 
     const afterRegister = jest.fn()

@@ -33,6 +33,10 @@ export type WebViewFunctions = {
     arguments: SpartacusBridge.FunctionCall.UserProfileRefresh.Request['arguments']
     result: SpartacusBridge.FunctionCall.UserProfileRefresh.Result
   }
+  [SpartacusBridge.FunctionCall.Target.FavouritesRefresh]: {
+    arguments: SpartacusBridge.FunctionCall.FavouritesRefresh.Request['arguments']
+    result: SpartacusBridge.FunctionCall.FavouritesRefresh.Result
+  }
 }
 
 export type AnyWebViewFunctionResult = ValueOf<WebViewFunctions>['result']
@@ -115,4 +119,9 @@ export interface IBridgeAdapter {
    * Scroll current page to the top
    */
   scrollToTop(webViewId: WebViewId): void
+}
+
+export type BridgeToAllError = {
+  webViewId: WebViewId
+  error: unknown
 }

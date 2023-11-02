@@ -13,7 +13,14 @@ import {
 import { EventEmitter, Subscription } from './event-emitter'
 import { SpartacusBridge } from './spartacus-bridge'
 import { isWebViewFunctionResult, isAnyWebViewEvent, isWebViewEvent, isAnyWebViewFunctionResult } from './type-guards'
-import { IBridgeAdapter, WebViewFunctions, WebViewEvents, WebViewId, WebViewBridgeAdapterEventsMap } from './types'
+import {
+  IBridgeAdapter,
+  WebViewFunctions,
+  WebViewEvents,
+  WebViewId,
+  WebViewBridgeAdapterEventsMap,
+  BridgeToAllError,
+} from './types'
 
 /**
  * The WebViewBridgeAdapter handles commincation between the app and the website inside some WebView.
@@ -28,9 +35,16 @@ export class WebViewBridgeAdapter implements IBridgeAdapter {
     target: WebViewFunctionName,
     args: WebViewFunctions[WebViewFunctionName]['arguments'],
   ) {
-    this.availableWebViews.forEach((_, webViewId) => {
-      this.callBridgeFunction(webViewId, target, args)
-    })
+    return Promise.allSettled(
+      Array.from(this.availableWebViews.keys(), webViewId =>
+        this.callBridgeFunction(webViewId, target, args)
+          .then(result => ({ webViewId, result }))
+          .catch((error: unknown) => {
+            const reason: BridgeToAllError = { webViewId, error }
+            throw reason
+          }),
+      ),
+    )
   }
 
   public async callBridgeFunction<WebViewFunctionName extends keyof WebViewFunctions>(

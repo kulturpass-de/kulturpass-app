@@ -19,7 +19,7 @@ export const startup = createThunk<void, { appFirstRun: boolean }>('root/startup
       await thunkApi.dispatch(restoreSession()).unwrap()
       await thunkApi.dispatch(authValidateSession()).unwrap()
     } catch (error: unknown) {
-      logger.logError('startup restoring session failed', error)
+      logger.logError('Startup restoring session', error)
     }
   }
 

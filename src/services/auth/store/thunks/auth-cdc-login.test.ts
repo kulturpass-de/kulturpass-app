@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { ErrorWithCode } from '../../../errors/errors'
@@ -28,7 +28,7 @@ describe('authCdcLogin', () => {
   afterAll(() => server.close())
 
   it('should call postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -38,7 +38,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should call persistCdcSession with sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -52,7 +52,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should call setCdcSession with sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -65,7 +65,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should return sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -78,7 +78,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should reject and not call persistCdcSession and setCdcSession, if postLogin rejects', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))))
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 400 })))
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 

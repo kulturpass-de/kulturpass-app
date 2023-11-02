@@ -14,7 +14,7 @@ export const svgForProductType: { [productType in ProductTypes]?: ThemedSvgImage
   audioProductWsDTO: 'pic-soundcarrier-2',
   sheetMusicProductWsDTO: 'pic-notes-2',
   musicInstrumentProductWsDTO: 'pic-instruments-2',
-  culturalWorkshopProductWsDTO: 'pic-workshop-confirm',
+  workshopProductWsDTO: 'pic-workshop-confirm',
 }
 
 export const svgForVoucherCategory: { [key: string]: ThemedSvgImageType | undefined } = {

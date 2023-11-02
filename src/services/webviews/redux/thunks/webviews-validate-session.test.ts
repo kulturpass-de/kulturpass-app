@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { cdcApi } from '../../../api/cdc-api'
@@ -44,10 +44,8 @@ describe('webviews-validate-session', () => {
 
   it('should dispatch authCommerceRefreshSession if selectWebViewAuthSyncAction returns `authCommerceRefreshSession`', async () => {
     server.use(
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ id_token: 'my_new_id_token' })),
-      ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token: 'my_new_id_token' }, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json({}, { status: 200 })),
     )
 
     jest.spyOn(selectors, 'selectWebViewAuthSyncAction').mockImplementation(() => {

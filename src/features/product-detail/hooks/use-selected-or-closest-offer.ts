@@ -2,6 +2,17 @@ import { useMemo } from 'react'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { ProductDetail } from '../types/product-detail'
 
+const getLowerDistanceOffer = (a: Offer, b: Offer): Offer => {
+  if (a.shopDistance === undefined) {
+    return b
+  } else if (b.shopDistance === undefined) {
+    return a
+  }
+  return a.shopDistance <= b.shopDistance ? a : b
+}
+
+const getLowerPriceOffer = (a: Offer, b: Offer): Offer => ((a.price?.value ?? 0) <= (b.price?.value ?? 0) ? a : b)
+
 /**
  * If there is a selected offer, return it. Otherwise return the closest offer by shopDistance.
  * If there is no closest offer, the offer with the lowest price should be picked.
@@ -24,16 +35,11 @@ export const useSelectedOrClosestOffer = (productDetail?: ProductDetail, selecte
 
       // Compare lowest distance first
       if (prev.shopDistance !== undefined || curr.shopDistance !== undefined) {
-        if (prev.shopDistance === undefined) {
-          return curr
-        } else if (curr.shopDistance === undefined) {
-          return prev
-        }
-        return prev.shopDistance <= curr.shopDistance ? prev : curr
+        return getLowerDistanceOffer(prev, curr)
       }
 
       // Compare lowest price second
-      return (prev.price?.value ?? 0) <= (curr.price?.value ?? 0) ? prev : curr
+      return getLowerPriceOffer(prev, curr)
     }, undefined)
 
     return closestOffer

@@ -27,7 +27,7 @@ export const authLogout = createThunk('auth/logout', async (_payload, thunkAPI) 
       await notifee.cancelDisplayedNotifications(displayedNotificationsWithOrderCodes)
     }
   } catch (error: unknown) {
-    logger.logError('logout cancelling displayed notifications', error)
+    logger.logError('Logout cancelling displayed notifications', error)
   }
 
   if (errors.length > 0) {
@@ -40,8 +40,6 @@ export const authLogoutWithoutErrors = createThunk('auth/logout/silent', async (
   try {
     await thunkAPI.dispatch(authLogout()).unwrap()
   } catch (error: unknown) {
-    if (__DEV__) {
-      console.warn('authLogout failed with error', error)
-    }
+    logger.logError('authLogout', error)
   }
 })

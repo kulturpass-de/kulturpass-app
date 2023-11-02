@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react'
-import { AccessibilityInfo } from 'react-native'
+import { useContext } from 'react'
+import { AccessibilityContext } from '../components/accessibility-provider'
 
 export const useIsScreenReaderActive = () => {
-  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false)
-  useEffect(() => {
-    const screenReaderChangedSubscription = AccessibilityInfo.addEventListener(
-      'screenReaderChanged',
-      setScreenReaderEnabled,
-    )
+  const context = useContext(AccessibilityContext)
 
-    AccessibilityInfo.isScreenReaderEnabled().then(setScreenReaderEnabled)
+  if (!context) {
+    throw new Error('AccessibilityContext used outside of AccessibilityProvider.')
+  }
 
-    return screenReaderChangedSubscription.remove
-  }, [])
-
-  return screenReaderEnabled
+  return context.screenReaderEnabled
 }

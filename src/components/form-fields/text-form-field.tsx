@@ -115,6 +115,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
           onFocus={handleFocus}
           editable={editable}
           textContentType={textContentType}
+          caretHidden={false}
           {...textInputProps}
         />
         {children}

@@ -33,7 +33,7 @@ export const notificationsRefreshTokens = createThunk<boolean, string | undefine
         await firebase.messaging().subscribeToTopic('notify_all')
         logger.log('refreshTokens subscribed to topic notify_all')
       } catch (error: unknown) {
-        logger.logError('refreshTokens subscribe to topic notify_all failed', error)
+        logger.logError('refreshTokens subscribe to topic notify_all', error)
       }
       await thunkAPI.dispatch(notificationsSyncPushToken()).unwrap()
     }

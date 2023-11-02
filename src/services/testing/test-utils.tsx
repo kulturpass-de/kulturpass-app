@@ -2,7 +2,7 @@ import { NavigationContainer, NavigationContainerProps } from '@react-navigation
 import { Action } from '@reduxjs/toolkit'
 import '@testing-library/jest-native/extend-expect'
 import { render } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer as setupMswServer } from 'msw/node'
 import React, { PropsWithChildren, useRef } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -108,21 +108,18 @@ export const NavigationProvider: React.FC<Omit<NavigationContainerProps, 'childr
 type ServerHandler = Parameters<typeof setupMswServer>[0]
 
 export const serverHandlersRequired: ServerHandler[] = [
-  rest.get('http://localhost/appConfig/url', (_req, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.body(
-        'eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJjZXJ0aWZpY2F0ZXMiOnsiY2RjIjpbeyJmaW5nZXJwcmludDI1NiI6IjUyRTdDRDZFNTNDOTAxM0NEMkU1ODdGNDEyODlGMjZERDBCNkIwQjc1RjMxQ0ZFRTAzQzQyQzEyMkRCMTYwNEEifV0sImNvbW1lcmNlIjpbeyJmaW5nZXJwcmludDI1NiI6IkNCQjk2MkVCOTYxNjAwMDI4QUE4MkRBODk5NzNCMkVGMjY3RUI1OUVBQTE0M0Q4MzY5NUM1MENGQTBDRjVGRDIifV19fQ.sqRxPvRh2TYgwmu6fGUamkSOREuoFP0Vo5ONAZeGnSemK4557jnKTsZ0J0bA3JNnrLODGcVk-8Eyu7NFRiuyIQ',
-      ),
+  http.get('http://localhost/appConfig/url', () =>
+    HttpResponse.text(
+      'eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJjZXJ0aWZpY2F0ZXMiOnsiY2RjIjpbeyJmaW5nZXJwcmludDI1NiI6IjUyRTdDRDZFNTNDOTAxM0NEMkU1ODdGNDEyODlGMjZERDBCNkIwQjc1RjMxQ0ZFRTAzQzQyQzEyMkRCMTYwNEEifV0sImNvbW1lcmNlIjpbeyJmaW5nZXJwcmludDI1NiI6IkNCQjk2MkVCOTYxNjAwMDI4QUE4MkRBODk5NzNCMkVGMjY3RUI1OUVBQTE0M0Q4MzY5NUM1MENGQTBDRjVGRDIifV19fQ.sqRxPvRh2TYgwmu6fGUamkSOREuoFP0Vo5ONAZeGnSemK4557jnKTsZ0J0bA3JNnrLODGcVk-8Eyu7NFRiuyIQ',
+      { status: 200 },
     ),
   ),
 ]
 
 export const serverHandlersLoggedIn: ServerHandler[] = [
-  rest.post('*/cdc/accounts.getAccountInfo', (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('*/cdc/accounts.getAccountInfo', () =>
+    HttpResponse.json(
+      {
         time: new Date().toISOString(),
         isActive: true,
         isVerified: true,
@@ -136,13 +133,13 @@ export const serverHandlersLoggedIn: ServerHandler[] = [
           firstName: 'Max',
           email: 'max.mustermann@example.org',
         },
-      } as AccountsGetAccountInfoResponse),
-    )
-  }),
-  rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+      } as AccountsGetAccountInfoResponse,
+      { status: 200 },
+    ),
+  ),
+  http.get('*/cc/kulturapp/users/current', () =>
+    HttpResponse.json(
+      {
         firstName: 'Max',
         name: 'Max Mustermann',
         identificationStatus: 'VERIFIED',
@@ -152,9 +149,10 @@ export const serverHandlersLoggedIn: ServerHandler[] = [
           grantedBalance: { value: 200.0, currencyIso: 'EUR' },
           reservedBalance: { value: 42.5, currencyIso: 'EUR' },
         },
-      } satisfies GetProfileResponseBody),
-    )
-  }),
+      } as GetProfileResponseBody,
+      { status: 200 },
+    ),
+  ),
 ]
 
 export const setupServer = (...customHandlers: ServerHandler[]) =>

@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useMemo } from 'react'
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
+import { useAndroidBackButtonHandler } from '../../features/preferences/hooks/use-android-back-button-handler'
 import { useQueryProductDetail } from '../../features/product-detail/hooks/use-query-product-detail'
 import { ProductDetail } from '../../features/product-detail/types/product-detail'
 import { PdpParamList, PdpScreenProps } from '../../navigation/pdp/types'
@@ -70,6 +71,13 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   const onClose = useCallback(() => {
     rootNavigation.navigate('Tabs')
   }, [rootNavigation])
+
+  const onAndroidBack = useCallback(() => {
+    onClose()
+    return true
+  }, [onClose])
+
+  useAndroidBackButtonHandler(onAndroidBack)
 
   const onPressReportButton = useCallback(() => {
     navigation.navigate(OrderReportRouteName, {

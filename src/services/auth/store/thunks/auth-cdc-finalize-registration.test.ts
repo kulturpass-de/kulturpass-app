@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { ErrorWithCode } from '../../../errors/errors'
@@ -29,8 +29,8 @@ describe('authCdcFinalizeRegistration', () => {
 
   it('should call postFinalizeRegistration', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
     )
 
@@ -43,8 +43,8 @@ describe('authCdcFinalizeRegistration', () => {
 
   it('should call persistCdcSession with sessionData generated from postFinalizeRegistration', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
     )
 
@@ -63,8 +63,8 @@ describe('authCdcFinalizeRegistration', () => {
 
   it('should call setCdcSession with sessionData generated from postFinalizeRegistration', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
     )
 
@@ -82,8 +82,8 @@ describe('authCdcFinalizeRegistration', () => {
 
   it('should return sessionData generated from postFinalizeRegistration', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
     )
 
@@ -101,8 +101,8 @@ describe('authCdcFinalizeRegistration', () => {
 
   it('should reject and not call persistCdcSession and setCdcSession, if postFinalizeRegistration rejects', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(400), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 400 }),
       ),
     )
 
