@@ -1,6 +1,6 @@
 {
   "name": "cultureapp",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "buildNumber": "1",
   "private": true,
   "scripts": {
@@ -107,9 +107,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.11",
-    "@babel/preset-env": "^7.22.14",
-    "@babel/runtime": "^7.22.11",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/runtime": "^7.23.2",
     "@react-native-community/datetimepicker": "^7.5.0",
     "@react-native-community/slider": "^4.4.3",
     "@react-native/eslint-config": "^0.72.2",
@@ -199,6 +199,7 @@
     }
   },
   "resolutions": {
+    "@babel/traverse": "7.23.2",
     "ejs": "3.1.7",
     "yargs-parser": "21.1.1",
     "yargs": "17.7.2",
