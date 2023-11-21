@@ -37,9 +37,13 @@ export class Logger implements LoggerType {
       console.log('Request Error', ...args)
     }
   }
-  logError(origin: string, error: unknown) {
+  logError(origin: string, error: unknown, noWarn: boolean = false) {
     if (env.DEV_MENU) {
-      console.warn(`${origin} Errored`, JSON.stringify(error))
+      if (noWarn) {
+        console.log(`${origin} Errored`, JSON.stringify(error))
+      } else {
+        console.warn(`${origin} Errored`, JSON.stringify(error))
+      }
     }
   }
 }

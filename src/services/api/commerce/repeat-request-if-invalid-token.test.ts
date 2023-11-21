@@ -1,5 +1,5 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/dist/query'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { HttpStatusUnauthorizedError } from '../../errors/errors'
 import { RootState } from '../../redux/configure-store'
@@ -8,9 +8,9 @@ import { configureMockStore } from '../../testing/configure-mock-store'
 import { axiosBaseQuery } from '../common/base-query'
 import { repeatRequestIfInvalidToken } from './repeat-request-if-invalid-token'
 
-const server = setupServer()
-
 describe('repeatRequestIfInvalidToken', () => {
+  const server = setupServer()
+
   beforeAll(() => server.listen())
   afterEach(() => server.resetHandlers())
   afterAll(() => server.close())
@@ -35,26 +35,26 @@ describe('repeatRequestIfInvalidToken', () => {
     })
 
     server.use(
-      rest.get('*/current/profile', (_req, res, ctx) => {
+      http.get('*/current/profile', () => {
         if (success) {
           gotNewProfile = true
-          return res(ctx.status(200), ctx.json({ ok: true }))
+          return HttpResponse.json({ ok: true }, { status: 200 })
         }
 
         success = true
-        return res(
-          ctx.status(401),
-          ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
+        return HttpResponse.json(
+          { ok: false, errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] },
+          { status: 401 },
         )
       }),
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ id_token: 'new_id_token' }))
+      http.post('*/accounts.getAccountInfo', () => {
+        return HttpResponse.json({ id_token: 'new_id_token' }, { status: 200 })
       }),
-      rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
+      http.post('*/authorizationserver/oauth/token', () => {
         obtainedNewToken = true
-        return res(
-          ctx.status(200),
-          ctx.json({ access_token: 'forreal', token_type: 'bearer', expires_in: 43189, scope: 'basic openid' }),
+        return HttpResponse.json(
+          { access_token: 'forreal', token_type: 'bearer', expires_in: 43189, scope: 'basic openid' },
+          { status: 200 },
         )
       }),
     )
@@ -88,24 +88,24 @@ describe('repeatRequestIfInvalidToken', () => {
     })
 
     server.use(
-      rest.get('*/current/profile', (_req, res, ctx) => {
+      http.get('*/current/profile', () => {
         requestProfileCounter++
-        return res(
-          ctx.status(401),
-          ctx.json({ errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] }),
+        return HttpResponse.json(
+          { errors: [{ type: 'InvalidTokenError', message: 'Invalid access token' }] },
+          { status: 401 },
         )
       }),
-      rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ id_token: 'new_id_token' }))
+      http.post('*/accounts.getAccountInfo', () => {
+        return HttpResponse.json({ id_token: 'new_id_token' }, { status: 200 })
       }),
-      rest.post('*/authorizationserver/oauth/token', (_req, res, ctx) => {
-        return res(ctx.status(401), ctx.json({ ok: false }))
+      http.post('*/authorizationserver/oauth/token', () => {
+        return HttpResponse.json({}, { status: 401 })
       }),
-      rest.post('*/accounts.logout', (_req, res, ctx) => {
+      http.post('*/accounts.logout', () => {
         requestLogout = true
-        return res(ctx.status(200), ctx.json({ ok: true }))
+        return HttpResponse.json({}, { status: 200 })
       }),
-      rest.post('*/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      http.post('*/oauth/revoke', () => HttpResponse.json({}, { status: 200 })),
     )
 
     jest.spyOn(sessionService, 'clearCdcSession').mockImplementation(() => Promise.resolve())

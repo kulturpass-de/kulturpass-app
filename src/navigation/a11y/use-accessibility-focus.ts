@@ -14,30 +14,28 @@ export default function useAccessibilityFocus(
 ): [MutableRefObject<any>, () => void] {
   const ref = useRef(null)
 
+  const setFocusCallback = useCallback(() => {
+    setTimeout(() => {
+      if (!ref.current) {
+        return
+      }
+      const focusPoint = findNodeHandle(ref.current)
+
+      if (focusPoint) {
+        AccessibilityInfo.setAccessibilityFocus(focusPoint)
+      }
+    }, timeout)
+  }, [timeout])
+
   const setFocus = useCallback(() => {
-    if (platform === 'both' || Platform.OS === platform) {
-      if (ref.current) {
-        const setFocusCallback = () => {
-          setTimeout(() => {
-            if (!ref.current) {
-              return
-            }
-            const focusPoint = findNodeHandle(ref.current)
-
-            if (focusPoint) {
-              AccessibilityInfo.setAccessibilityFocus(focusPoint)
-            }
-          }, timeout)
-        }
-
-        if (Platform.OS === 'android') {
-          requestAnimationFrame(setFocusCallback)
-        } else {
-          InteractionManager.runAfterInteractions(setFocusCallback)
-        }
+    if ((platform === 'both' || Platform.OS === platform) && ref.current) {
+      if (Platform.OS === 'android') {
+        requestAnimationFrame(setFocusCallback)
+      } else {
+        InteractionManager.runAfterInteractions(setFocusCallback)
       }
     }
-  }, [ref, platform, timeout])
+  }, [platform, setFocusCallback])
 
   return [ref, setFocus]
 }

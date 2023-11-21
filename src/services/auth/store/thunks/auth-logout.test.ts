@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -11,9 +11,18 @@ import { authCdcLogout } from './auth-cdc-logout'
 import { authCommerceLogout } from './auth-commerce-logout'
 import { authLogout, authLogoutWithoutErrors } from './auth-logout'
 
-const server = setupServer()
-
 describe('authLogout', () => {
+  const server = setupServer()
+
+  const mockServer = (revokeStatus = 200, logoutStatus = 200) => {
+    server.use(
+      http.post('http://localhost/authorizationserver/oauth/revoke', () =>
+        HttpResponse.json(null, { status: revokeStatus }),
+      ),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: logoutStatus })),
+    )
+  }
+
   const preloadedState = {
     auth: {
       cdc: {
@@ -36,10 +45,7 @@ describe('authLogout', () => {
   afterAll(() => server.close())
 
   it('should call authCdcLogout, authCommerceLogout and clearUser', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer()
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
@@ -54,10 +60,7 @@ describe('authLogout', () => {
   })
 
   it('should return error as payload, of a deeply nested thrown error, and break', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer()
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
@@ -80,10 +83,7 @@ describe('authLogout', () => {
   })
 
   it('should throw error if authCdcLogout api call throws', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(400), ctx.json({}))),
-    )
+    mockServer(200, 400)
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
@@ -101,10 +101,7 @@ describe('authLogout', () => {
   })
 
   it('should throw error if authCommerceLogout api call throws', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(400))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer(400, 200)
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
@@ -122,10 +119,7 @@ describe('authLogout', () => {
   })
 
   it('should throw error if authCdcLogout and authCommerceLogout api calls throw', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(400))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(400), ctx.json({}))),
-    )
+    mockServer(400, 400)
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
@@ -143,24 +137,16 @@ describe('authLogout', () => {
   })
 
   it('authLogoutWithoutErrors should not throw any API error', async () => {
-    server.use(
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(400))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(400), ctx.json({}))),
-    )
-
+    mockServer(400, 400)
     const store = configureMockStore({
       middlewares: [cdcApi.middleware, commerceApi.middleware],
       preloadedState,
     })
 
-    const warnSpy = jest.spyOn(global.console, 'warn').mockImplementationOnce(() => {})
-
     await store.dispatch(authLogoutWithoutErrors())
 
     const authLogoutRejected = store.findAction(authLogout.rejected.match)
     expect(authLogoutRejected?.payload).toBeInstanceOf(ErrorWithCode)
-
-    expect(warnSpy.mock.lastCall?.[0]).toBe('authLogout failed with error')
 
     store.expectActions([{ type: authLogoutWithoutErrors.fulfilled.type }])
     store.expectActions([{ type: authCdcLogout.fulfilled.type }])

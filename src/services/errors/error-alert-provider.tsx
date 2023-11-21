@@ -1,4 +1,5 @@
 import React, { createRef, PropsWithChildren, useCallback, useImperativeHandle, useState } from 'react'
+import { InteractionManager } from 'react-native'
 import { ErrorAlert } from '../../features/form-validation/components/error-alert'
 import { ErrorWithCode } from './errors'
 
@@ -15,7 +16,8 @@ export const ErrorAlertProvider = ({ children }: PropsWithChildren) => {
   useImperativeHandle(ErrorAlertManager, (): ErrorAlertManagerHandler => {
     return {
       showError: (newError: ErrorWithCode) => {
-        setError(newError)
+        // prevent the ui from freezing on ios
+        InteractionManager.runAfterInteractions(() => setError(newError))
       },
       dismiss: () => {
         setError(undefined)

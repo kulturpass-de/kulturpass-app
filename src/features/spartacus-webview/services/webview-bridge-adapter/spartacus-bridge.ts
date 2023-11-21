@@ -34,6 +34,7 @@ export namespace SpartacusBridge {
       GeolocationSetLocation = 'geolocation.setLocation',
       RouterNavigate = 'router.navigate',
       UserProfileRefresh = 'userProfile.refresh',
+      FavouritesRefresh = 'favourites.refresh',
     }
     export type Arguments = Serializable[]
     export type ResultValue = Serializable
@@ -87,6 +88,14 @@ export namespace SpartacusBridge {
       export type ResultValue = void
       export type Signature = (...args: Arguments) => Promise<ResultValue>
       export interface Request extends FunctionCall.Request<Target.UserProfileRefresh, Arguments> {}
+      export interface Result extends FunctionCall.Result<ResultValue> {}
+    }
+
+    export namespace FavouritesRefresh {
+      export type Arguments = []
+      export type ResultValue = void
+      export type Signature = (...args: Arguments) => Promise<ResultValue>
+      export interface Request extends FunctionCall.Request<Target.FavouritesRefresh, Arguments> {}
       export interface Result extends FunctionCall.Result<ResultValue> {}
     }
   }

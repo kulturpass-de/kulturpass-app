@@ -7,6 +7,7 @@ const componentMeta: ComponentMeta<typeof FavoriteButton> = {
   component: FavoriteButton,
   args: {
     testID: 'testID',
+    onPress: async () => Promise.resolve(),
   },
 }
 

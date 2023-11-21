@@ -58,8 +58,8 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
       z
         .object({
           email: EMAIL_SCHEMA(t, true),
-          password: z.string().trim().nonempty(),
-          confirmPassword: z.string().trim().nonempty(),
+          password: z.string().trim().min(1),
+          confirmPassword: z.string().trim().min(1),
           firstName: z.string().optional(),
           dateOfBirth: DATE_SCHEMA(t).optional(),
         })

@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -10,9 +10,19 @@ import { authCommerceLogin } from './auth-commerce-login'
 import { authFinalizeRegistration } from './auth-finalize-registration'
 import { authLogout } from './auth-logout'
 
-const server = setupServer()
-
 describe('authFinalizeRegistration', () => {
+  const server = setupServer()
+
+  const mockServer = () => {
+    server.use(
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
+      ),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
+      http.get('*/cc/kulturapp/users/current', () => HttpResponse.json({}, { status: 200 })),
+    )
+  }
+
   const finalizeRegistrationArg = {
     url: new URL('https://localhost/redirect/email-verification?regToken=TEST'),
   }
@@ -33,13 +43,7 @@ describe('authFinalizeRegistration', () => {
   afterAll(() => server.close())
 
   it('should call authFinalizeRegistration with the provided info', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
-      rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer()
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
 
@@ -47,13 +51,7 @@ describe('authFinalizeRegistration', () => {
   })
 
   it('should call authCommerceLogin with info returned by authFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
-      rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer()
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
 
@@ -66,13 +64,7 @@ describe('authFinalizeRegistration', () => {
   })
 
   it('should call userSlice.setUser with info returned by authFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
-      rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-    )
+    mockServer()
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
 
@@ -86,13 +78,13 @@ describe('authFinalizeRegistration', () => {
     let called = 0
 
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
-      rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
+      http.get('*/cc/kulturapp/users/current', () => {
         called += 1
-        return res(ctx.status(200), ctx.json({}))
+        return HttpResponse.json({}, { status: 200 })
       }),
     )
 
@@ -103,11 +95,11 @@ describe('authFinalizeRegistration', () => {
 
   it('should reject and not call authFinalizeRegistration if authCdcFinalizeRegistration rejects', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(400), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 400 }),
       ),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('http://localhost/authorizationserver/oauth/revoke', () => HttpResponse.json(null, { status: 200 })),
     )
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))
@@ -129,12 +121,12 @@ describe('authFinalizeRegistration', () => {
 
   it('should reject if authCommerceLogin rejects', async () => {
     server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
+      http.post('*/accounts.finalizeRegistration', () =>
+        HttpResponse.json(cdcFinalizeRegistrationResult, { status: 200 }),
       ),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 400 })),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('http://localhost/authorizationserver/oauth/revoke', () => HttpResponse.json(null, { status: 200 })),
     )
 
     await store.dispatch(authFinalizeRegistration(finalizeRegistrationArg))

@@ -74,9 +74,9 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
           email: EMAIL_SCHEMA(t, true),
           firstName: z.string().optional(),
           dateOfBirth: DATE_SCHEMA(t),
-          password: z.string().trim().nonempty().optional(),
-          newPassword: z.string().trim().nonempty().optional(),
-          newPasswordConfirmation: z.string().trim().nonempty().optional(),
+          password: z.string().trim().min(1).optional(),
+          newPassword: z.string().trim().min(1).optional(),
+          newPasswordConfirmation: z.string().trim().min(1).optional(),
         })
         .refine(data => (!!data.password && data.newPassword === data.newPasswordConfirmation) || !data.password, {
           path: ['newPasswordConfirmation'],

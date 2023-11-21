@@ -21,7 +21,7 @@ export const POSTAL_CODE_OR_CITY_SCHEMA = (
   let schema = z.string().trim()
 
   if (isRequired) {
-    schema = schema.nonempty()
+    schema = schema.min(1)
   }
 
   return schema.superRefine(async (cityOrPostalCode, ctx) => {

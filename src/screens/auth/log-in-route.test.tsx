@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { ErrorAlertProvider } from '../../services/errors/error-alert-provider'
@@ -41,10 +41,9 @@ test('Should display error about invalid user/password', async () => {
   renderScreen()
 
   server.use(
-    rest.post('http://localhost/cdc/accounts.login', (_req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
+    http.post('http://localhost/cdc/accounts.login', () =>
+      HttpResponse.json(
+        {
           callId: '56e915319f4846df9b74683a489cd720',
           errorCode: 403042,
           errorDetails: 'invalid loginID or password',
@@ -53,9 +52,10 @@ test('Should display error about invalid user/password', async () => {
           statusCode: 403,
           statusReason: 'Forbidden',
           time: '2023-02-21T06:16:44.915Z',
-        }),
-      )
-    }),
+        },
+        { status: 200 },
+      ),
+    ),
   )
 
   expect(await screen.findByTestId(formSubmitBtn)).toBeOnTheScreen()

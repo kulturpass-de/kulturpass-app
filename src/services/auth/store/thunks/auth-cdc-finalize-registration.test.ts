@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { ErrorWithCode } from '../../../errors/errors'
@@ -9,9 +9,15 @@ import { authSlice } from '../auth-slice'
 import { cdcLoginResponseToSessionData } from '../utils'
 import { authCdcFinalizeRegistration } from './auth-cdc-finalize-registration'
 
-const server = setupServer()
-
 describe('authCdcFinalizeRegistration', () => {
+  const server = setupServer()
+
+  const mockServer = (status = 200) => {
+    server.use(
+      http.post('*/accounts.finalizeRegistration', () => HttpResponse.json(cdcFinalizeRegistrationResult, { status })),
+    )
+  }
+
   const cdcFinalizeRegistrationArg = { regToken: 'TEST' }
   const cdcFinalizeRegistrationResult = mockedCdcLoginResponse
 
@@ -28,11 +34,7 @@ describe('authCdcFinalizeRegistration', () => {
   afterAll(() => server.close())
 
   it('should call postFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-    )
+    mockServer()
 
     await store.dispatch(authCdcFinalizeRegistration(cdcFinalizeRegistrationArg))
 
@@ -42,11 +44,7 @@ describe('authCdcFinalizeRegistration', () => {
   })
 
   it('should call persistCdcSession with sessionData generated from postFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-    )
+    mockServer()
 
     await store.dispatch(authCdcFinalizeRegistration(cdcFinalizeRegistrationArg))
 
@@ -62,11 +60,7 @@ describe('authCdcFinalizeRegistration', () => {
   })
 
   it('should call setCdcSession with sessionData generated from postFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-    )
+    mockServer()
 
     await store.dispatch(authCdcFinalizeRegistration(cdcFinalizeRegistrationArg))
 
@@ -81,11 +75,7 @@ describe('authCdcFinalizeRegistration', () => {
   })
 
   it('should return sessionData generated from postFinalizeRegistration', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-    )
+    mockServer()
 
     await store.dispatch(authCdcFinalizeRegistration(cdcFinalizeRegistrationArg))
 
@@ -100,11 +90,7 @@ describe('authCdcFinalizeRegistration', () => {
   })
 
   it('should reject and not call persistCdcSession and setCdcSession, if postFinalizeRegistration rejects', async () => {
-    server.use(
-      rest.post('*/accounts.finalizeRegistration', (_req, res, ctx) =>
-        res(ctx.status(400), ctx.json(cdcFinalizeRegistrationResult)),
-      ),
-    )
+    mockServer(400)
 
     await store.dispatch(authCdcFinalizeRegistration(cdcFinalizeRegistrationArg))
 

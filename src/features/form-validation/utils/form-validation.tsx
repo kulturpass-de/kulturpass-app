@@ -23,7 +23,7 @@ export const EMAIL_SCHEMA = (t: TranslationFunction, isRequired?: boolean) => {
   let schema = z.string().trim()
 
   if (isRequired) {
-    schema = schema.nonempty()
+    schema = schema.min(1)
   }
 
   return schema.regex(EMAIL_PATTERN, { message: t('form_error_not_valid_email') })
@@ -45,7 +45,7 @@ export const POSTAL_CODE_SCHEMA = (
   let schema = z.string().trim()
 
   if (isRequired) {
-    schema = schema.nonempty()
+    schema = schema.min(1)
   }
 
   return schema

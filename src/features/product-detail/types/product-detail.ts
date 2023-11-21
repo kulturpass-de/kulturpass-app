@@ -15,7 +15,7 @@ export enum ProductTypes {
   SheetMusic = 'sheetMusicProductWsDTO',
   StagedEvent = 'stagedEventProductWsDTO',
   Voucher = 'voucherProductWsDTO',
-  CulturalWorkshop = 'culturalWorkshopProductWsDTO',
+  CulturalWorkshop = 'workshopProductWsDTO',
 }
 
 export type ProductDetailBase<ProductType extends ProductTypes> = {

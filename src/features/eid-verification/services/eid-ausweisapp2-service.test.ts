@@ -18,7 +18,7 @@ import {
   WorkflowMessages,
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { waitFor } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { Platform } from 'react-native'
 import { env } from '../../../env'
@@ -27,8 +27,12 @@ import { ErrorWithCode } from '../../../services/errors/errors'
 import { RootState } from '../../../services/redux/configure-store'
 import { configureMockStore } from '../../../services/testing/configure-mock-store'
 import { AA2_TIMEOUTS } from '../eid-command-timeouts'
-import { AA2AcceptTimeout, AA2CardDeactivated, AA2InitError, AA2SetPinTimeout, AA2Timeout } from '../errors'
 import {
+  AA2AcceptTimeout,
+  AA2CardDeactivated,
+  AA2InitError,
+  AA2SetPinTimeout,
+  AA2Timeout,
   AA2BelowMinYearOfBirth,
   AA2BelowMinAge,
   AA2ForeignResidency,
@@ -38,8 +42,6 @@ import {
 import { EidFlowResponse } from '../types'
 import { eidAusweisApp2Service } from './eid-ausweisapp2-service'
 
-const server = setupServer()
-
 const messages: WorkflowMessages = {
   sessionStarted: 'STARTED',
   sessionInProgress: 'IN_PROGRESS',
@@ -48,6 +50,14 @@ const messages: WorkflowMessages = {
 }
 
 describe('EidAusweisApp2Service', () => {
+  const server = setupServer()
+
+  const mockServer = (status = 200) => {
+    server.use(
+      http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token: 'test-id-token' }, { status })),
+    )
+  }
+
   beforeAll(() => server.listen())
   afterEach(() => {
     jest.resetAllMocks()
@@ -105,11 +115,7 @@ describe('EidAusweisApp2Service', () => {
 
   describe('startAA2AuthFlow', () => {
     test('should start AA2 Auth flow', async () => {
-      server.use(
-        rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-          res(ctx.status(200), ctx.json({ id_token: 'test-id-token' })),
-        ),
-      )
+      mockServer()
 
       const readerIsAvailableMock = jest
         .spyOn(AA2WorkflowHelper, 'readerIsAvailable')
@@ -186,11 +192,7 @@ describe('EidAusweisApp2Service', () => {
     })
 
     test('should fail with AA2InitError if creating tcTokenUrl failed with forbidden', async () => {
-      server.use(
-        rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-          res(ctx.status(403), ctx.json({ id_token: 'test-id-token' })),
-        ),
-      )
+      mockServer(403)
 
       const readerIsAvailableMock = jest
         .spyOn(AA2WorkflowHelper, 'readerIsAvailable')
@@ -233,11 +235,7 @@ describe('EidAusweisApp2Service', () => {
     })
 
     test('should fail with AA2InitError if creating tcTokenUrl failed', async () => {
-      server.use(
-        rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-          res(ctx.status(404), ctx.json({ id_token: 'test-id-token' })),
-        ),
-      )
+      mockServer(404)
 
       const readerIsAvailableMock = jest
         .spyOn(AA2WorkflowHelper, 'readerIsAvailable')
@@ -280,11 +278,7 @@ describe('EidAusweisApp2Service', () => {
     })
 
     test('should should fail with AA2TimeoutError if timeout occured', async () => {
-      server.use(
-        rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-          res(ctx.status(200), ctx.json({ id_token: 'test-id-token' })),
-        ),
-      )
+      mockServer()
 
       const readerIsAvailableMock = jest
         .spyOn(AA2WorkflowHelper, 'readerIsAvailable')
@@ -331,11 +325,7 @@ describe('EidAusweisApp2Service', () => {
     })
 
     test('should return early without throwing if message error occured', async () => {
-      server.use(
-        rest.post('*/accounts.getAccountInfo', (_req, res, ctx) =>
-          res(ctx.status(200), ctx.json({ id_token: 'test-id-token' })),
-        ),
-      )
+      mockServer()
 
       const readerIsAvailableMock = jest
         .spyOn(AA2WorkflowHelper, 'readerIsAvailable')
@@ -1275,7 +1265,7 @@ describe('EidAusweisApp2Service', () => {
         _inputFn =>
           ({
             unsubscribe: unsubscribeMock,
-          } as any),
+          }) as any,
       )
       const mockStatus: Status = {
         msg: AA2Messages.Status,
@@ -1318,7 +1308,7 @@ describe('EidAusweisApp2Service', () => {
         _inputFn =>
           ({
             unsubscribe: unsubscribeMock,
-          } as any),
+          }) as any,
       )
       const getStatusMock = jest
         .spyOn(AA2CommandService, 'getStatus')

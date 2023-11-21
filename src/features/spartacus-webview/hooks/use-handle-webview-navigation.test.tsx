@@ -109,8 +109,8 @@ describe('useHandleWebviewNavigation', () => {
 
     expect(result.current.getState().webviews.Home.showHeader).toBe(true)
 
-    await act(() =>
-      sendRouterEvent.current?.({ data: { url: '/some-other-url?asds=432' } } as WebViewEvents['router.events']),
+    await act(
+      () => sendRouterEvent.current?.({ data: { url: '/some-other-url?asds=432' } } as WebViewEvents['router.events']),
     )
 
     expect(result.current.getState().webviews.Home.showHeader).toBe(false)

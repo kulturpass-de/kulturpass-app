@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../../services/api/cdc-api'
 import { RootState } from '../../../../services/redux/configure-store'
@@ -7,9 +7,15 @@ import { AppConfig } from '../../../../services/redux/versions/current'
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { createTcTokenUrl } from './create-tc-token-url'
 
-const server = setupServer()
-
 describe('createTcTokenUrl', () => {
+  const id_token = 'test-id-token'
+
+  const server = setupServer()
+
+  const mockServer = (status = 200) => {
+    server.use(http.post('*/accounts.getAccountInfo', () => HttpResponse.json({ id_token }, { status })))
+  }
+
   const preloadedState = {
     auth: {
       cdc: {
@@ -33,7 +39,6 @@ describe('createTcTokenUrl', () => {
 
   test('should create a valid tcTokenUrl', async () => {
     const tcTokenUrlSubdomains = ['test-subdom']
-    const id_token = 'test-id-token'
 
     const mockedAppConfig = {
       eid: {
@@ -41,7 +46,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    mockServer()
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],
@@ -57,7 +62,6 @@ describe('createTcTokenUrl', () => {
 
   test('should pick a random subdomain and create a valid tcTokenUrl', async () => {
     const tcTokenUrlSubdomains = ['test-subdom1', 'test-subdom2', 'test-subdom3']
-    const id_token = 'test-id-token'
 
     const mockedAppConfig = {
       eid: {
@@ -65,7 +69,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    mockServer()
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],
@@ -81,7 +85,6 @@ describe('createTcTokenUrl', () => {
 
   test('should use tcTokenUrlDefaultSubdomain if no valid subdomain in appconfig', async () => {
     const tcTokenUrlSubdomains = ['$§39', '§"$%§%', '()']
-    const id_token = 'test-id-token'
 
     const mockedAppConfig = {
       eid: {
@@ -89,7 +92,7 @@ describe('createTcTokenUrl', () => {
       },
     } as AppConfig
 
-    server.use(rest.post('*/accounts.getAccountInfo', (_req, res, ctx) => res(ctx.status(200), ctx.json({ id_token }))))
+    mockServer()
 
     const store = configureMockStore({
       middlewares: [cdcApi.middleware],

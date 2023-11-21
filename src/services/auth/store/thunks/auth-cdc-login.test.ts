@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { ErrorWithCode } from '../../../errors/errors'
@@ -9,9 +9,13 @@ import { authSlice } from '../auth-slice'
 import { cdcLoginResponseToSessionData } from '../utils'
 import { authCdcLogin } from './auth-cdc-login'
 
-const server = setupServer()
-
 describe('authCdcLogin', () => {
+  const server = setupServer()
+
+  const mockServer = (status = 200) => {
+    server.use(http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status })))
+  }
+
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
   const cdcLoginResult = mockedCdcLoginResponse
 
@@ -28,7 +32,7 @@ describe('authCdcLogin', () => {
   afterAll(() => server.close())
 
   it('should call postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    mockServer()
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -38,7 +42,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should call persistCdcSession with sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    mockServer()
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -52,7 +56,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should call setCdcSession with sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    mockServer()
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -65,7 +69,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should return sessionData generated from postLogin', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))))
+    mockServer()
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 
@@ -78,7 +82,7 @@ describe('authCdcLogin', () => {
   })
 
   it('should reject and not call persistCdcSession and setCdcSession, if postLogin rejects', async () => {
-    server.use(rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))))
+    mockServer(400)
 
     await store.dispatch(authCdcLogin(cdcLoginArg))
 

@@ -44,5 +44,5 @@ export const createProductLink = (baseUrl: string, productId: string): string =>
 }
 
 export const linkLogger = (error: unknown) => {
-  logger.logError('Open link failed', error)
+  logger.logError('Open link', error)
 }

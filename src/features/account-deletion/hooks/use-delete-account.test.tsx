@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import React, { PropsWithChildren } from 'react'
 import { useSelector } from 'react-redux'
@@ -22,28 +22,26 @@ describe('useDeleteAccount', () => {
   test('Should delete account as specified', async () => {
     let setAccountInfoParams: any
     server.use(
-      rest.post('http://localhost/cdc/accounts.login', (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
+      http.post('http://localhost/cdc/accounts.login', () =>
+        HttpResponse.json(
+          {
             sessionInfo: {
               sessionToken: 'newDummyToken',
               sessionSecret: 'newDummySecret',
             },
-          }),
-        )
-      }),
-      rest.post('http://localhost/cdc/accounts.setAccountInfo', async (req, res, ctx) => {
+          },
+          { status: 200 },
+        ),
+      ),
+      http.post('http://localhost/cdc/accounts.setAccountInfo', async ({ request: req }) => {
         const params = await req.text()
         // Converting search params without some library...
         const tempUrl = new URL('localhost:1000?' + params)
         setAccountInfoParams = tempUrl.searchParams
-        return res(ctx.status(200), ctx.json({}))
+        return HttpResponse.json({}, { status: 200 })
       }),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({})),
-      ),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('http://localhost/authorizationserver/oauth/revoke', () => HttpResponse.json({}, { status: 200 })),
     )
 
     const { result } = renderHook(

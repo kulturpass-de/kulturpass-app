@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -11,9 +11,8 @@ import { authCommerceLogin } from './auth-commerce-login'
 import { authLogin } from './auth-login'
 import { authLogout } from './auth-logout'
 
-const server = setupServer()
-
 describe('authLogin', () => {
+  const server = setupServer()
   const cdcLoginArg = { loginID: 'MyLoginId', password: 'MyPassword' }
   const cdcLoginResult = mockedCdcLoginResponse
   const commerceLoginResult = mockedLoggedInAuthState.auth.commerce
@@ -30,8 +29,8 @@ describe('authLogin', () => {
 
   it('should call authCdcLogin with the provided info', async () => {
     server.use(
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -42,8 +41,8 @@ describe('authLogin', () => {
 
   it('should call authCommerceLogin with info returned by authCdcLogin', async () => {
     server.use(
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -55,8 +54,8 @@ describe('authLogin', () => {
 
   it('should call userSlice.setUser  with info returned by authCdcLogin', async () => {
     server.use(
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 200 })),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -69,9 +68,9 @@ describe('authLogin', () => {
 
   it('should reject and not call authCommerceLogin if authCdcLogin rejects', async () => {
     server.use(
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(400), ctx.json(cdcLoginResult))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 400 })),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('http://localhost/authorizationserver/oauth/revoke', () => HttpResponse.json(null, { status: 200 })),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))
@@ -93,10 +92,10 @@ describe('authLogin', () => {
 
   it('should reject if authCommerceLogin rejects', async () => {
     server.use(
-      rest.post('*/accounts.login', (_req, res, ctx) => res(ctx.status(200), ctx.json(cdcLoginResult))),
-      rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))),
-      rest.post('*/accounts.logout', (_req, res, ctx) => res(ctx.status(200), ctx.json({}))),
-      rest.post('http://localhost/authorizationserver/oauth/revoke', (_req, res, ctx) => res(ctx.status(200))),
+      http.post('*/accounts.login', () => HttpResponse.json(cdcLoginResult, { status: 200 })),
+      http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status: 400 })),
+      http.post('*/accounts.logout', () => HttpResponse.json({}, { status: 200 })),
+      http.post('http://localhost/authorizationserver/oauth/revoke', () => HttpResponse.json(null, { status: 200 })),
     )
 
     await store.dispatch(authLogin(cdcLoginArg))

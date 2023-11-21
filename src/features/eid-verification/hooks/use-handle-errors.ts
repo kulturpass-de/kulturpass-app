@@ -1,18 +1,15 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { AA2Messages, FailureCodes, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2Messages, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
 import { useEffect } from 'react'
 import { EidParamList } from '../../../navigation/eid/types'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import {
-  AA2AuthError,
-  AA2AuthErrorResultError,
   AA2CardDeactivated,
   createAA2ErrorFromMessage,
-  extractDetailCode,
+  handleAuthError,
+  handleChangePinError,
   isCardDeactivated,
-  isErrorUserCancellation,
-  reasonToError,
 } from '../errors'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
 import { useCloseFlow } from './use-close-flow'
@@ -41,73 +38,38 @@ export const useHandleErrors = (
       return
     }
 
-    const sub = AA2WorkflowHelper.handleError(msg => {
-      if (msg.msg === AA2Messages.Auth) {
-        /**
-         * Auth errors can only happen in the Auth workflow.
-         * The Auth Flow failed if we have to handle this message.
-         */
-        const majorRes = msg.result?.major
-        if (majorRes?.endsWith('#error') === true) {
-          if (isErrorUserCancellation(msg)) {
-            if (handleUserCancellation && !cancelEidFlowAlertVisible) {
-              closeFlow()
-            }
-            return
+    const sub = AA2WorkflowHelper.handleError(message => {
+      const shouldCloseOnCancellation = handleUserCancellation && !cancelEidFlowAlertVisible
+      try {
+        if (message.msg === AA2Messages.Auth) {
+          /**
+           * Auth errors can only happen in the Auth workflow.
+           * The Auth Flow failed if we have to handle this message.
+           */
+          handleAuthError(message, shouldCloseOnCancellation, closeFlow, () =>
+            navigation.replace(EidPukInoperativeRouteName),
+          )
+        } else if (message.msg === AA2Messages.ChangePin) {
+          /**
+           * ChangePin errors can only happen in the ChangePin workflow.
+           * The ChangePin Flow failed if we have to handle this message.
+           */
+          handleChangePinError(message, shouldCloseOnCancellation, closeFlow)
+        } else if (message.msg === AA2Messages.Reader) {
+          /**
+           * Reader messages can happen as long as the SDK is started.
+           * A deactivated Card was detected if we have to handle this message.
+           */
+          if (isCardDeactivated(message.card)) {
+            throw new AA2CardDeactivated()
           }
-
-          const reasonError = reasonToError(msg.result?.reason)
-
-          if (reasonError !== undefined) {
-            onError(reasonError)
-            return
-          }
-
-          if (msg.result?.reason === FailureCodes.Establish_Pace_Channel_Puk_Inoperative) {
-            navigation.replace(EidPukInoperativeRouteName)
-            return
-          }
-
-          const detailCode = extractDetailCode(msg)
-          onError(new AA2AuthErrorResultError(detailCode, msg.result?.message ?? msg.result?.description))
-        } else if (msg.error !== undefined) {
-          onError(new AA2AuthError(msg.error))
+        } else {
+          /**
+           * Handles the following basic errors: BadState, Invalid, UnknownCommand and InternalError.
+           */
+          throw createAA2ErrorFromMessage(message.msg)
         }
-      } else if (msg.msg === AA2Messages.ChangePin) {
-        /**
-         * ChangePin errors can only happen in the ChangePin workflow.
-         * The ChangePin Flow failed if we have to handle this message.
-         */
-        if (msg.success === false) {
-          if (msg.reason === FailureCodes.User_Cancelled) {
-            if (handleUserCancellation && !cancelEidFlowAlertVisible) {
-              closeFlow()
-            }
-            return
-          }
-
-          const reasonError = reasonToError(msg.reason)
-
-          if (reasonError !== undefined) {
-            onError(reasonError)
-            return
-          }
-
-          onError(new AA2AuthErrorResultError(msg.reason))
-        }
-      } else if (msg.msg === AA2Messages.Reader) {
-        /**
-         * Reader messages can happen as long as the SDK is started.
-         * A deactivated Card was detected if we have to handle this message.
-         */
-        if (isCardDeactivated(msg.card)) {
-          onError(new AA2CardDeactivated())
-        }
-      } else {
-        /**
-         * Handles the following basic errors: BadState, Invalid, UnknownCommand and InternalError.
-         */
-        const error = createAA2ErrorFromMessage(msg.msg)
+      } catch (error: any) {
         onError(error)
       }
     })

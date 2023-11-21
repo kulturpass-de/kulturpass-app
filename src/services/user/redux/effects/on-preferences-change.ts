@@ -1,4 +1,5 @@
 import { SpartacusBridge } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/spartacus-bridge'
+import { BridgeToAllError } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { webViewBridgeAdapter } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
@@ -23,10 +24,19 @@ export const onPreferencesChangeEffect: ListenerEffect = async (_action, listene
     await listenerApi
       .dispatch(commerceApi.endpoints.getProfile.initiate({ forceUpdate: true }, { forceRefetch: true }))
       .unwrap()
+    const results = await webViewBridgeAdapter.callBridgeFunctionToAll(
+      SpartacusBridge.FunctionCall.Target.UserProfileRefresh,
+      [],
+    )
+    results.forEach(result => {
+      if (result.status === 'rejected') {
+        const reason: BridgeToAllError = result.reason
+        logger.logError(`${reason.webViewId} onPreferencesChangeEffect getProfile`, reason.error)
+      }
+    })
   } catch (error: unknown) {
     logger.logError('onPreferencesChangeEffect getProfile', error)
   }
-  webViewBridgeAdapter.callBridgeFunctionToAll(SpartacusBridge.FunctionCall.Target.UserProfileRefresh, [])
 }
 
 export const onPreferencesChange = (startListening: AppStartListening) =>

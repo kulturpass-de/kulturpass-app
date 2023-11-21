@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { commerceApi } from '../../../api/commerce-api'
 import { ErrorWithCode } from '../../../errors/errors'
@@ -7,9 +7,13 @@ import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/co
 import { authSlice } from '../auth-slice'
 import { authCommerceLogin } from './auth-commerce-login'
 
-const server = setupServer()
-
 describe('authCommerceLogin', () => {
+  const server = setupServer()
+
+  const mockServer = (status = 200) => {
+    server.use(http.post('*/oauth/token', () => HttpResponse.json(commerceLoginResult, { status })))
+  }
+
   const commerceLoginArg = {
     sessionStartTimestamp: 1234567890,
     idToken: 'my_super_token',
@@ -31,7 +35,7 @@ describe('authCommerceLogin', () => {
   afterAll(() => server.close())
 
   it('should call postAuthToken', async () => {
-    server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
+    mockServer()
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
@@ -46,7 +50,7 @@ describe('authCommerceLogin', () => {
   })
 
   it('should call persistCommerceSession with data returned from postAuthToken', async () => {
-    server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
+    mockServer()
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
@@ -55,7 +59,7 @@ describe('authCommerceLogin', () => {
   })
 
   it('should call setCommerceSession with data that were persisted', async () => {
-    server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
+    mockServer()
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
@@ -64,7 +68,7 @@ describe('authCommerceLogin', () => {
   })
 
   it('should return the response of postAuthToken', async () => {
-    server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(200), ctx.json(commerceLoginResult))))
+    mockServer()
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 
@@ -74,7 +78,7 @@ describe('authCommerceLogin', () => {
   })
 
   it('should reject and not call persistCommerceSession and setCommerceSession, if postAuthToken rejects', async () => {
-    server.use(rest.post('*/oauth/token', (_req, res, ctx) => res(ctx.status(400), ctx.json(commerceLoginResult))))
+    mockServer(400)
 
     await store.dispatch(authCommerceLogin(commerceLoginArg))
 

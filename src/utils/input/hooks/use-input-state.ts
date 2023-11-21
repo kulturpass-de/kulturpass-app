@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { TextInputProps } from 'react-native'
 
-type Options = undefined | (Pick<TextInputProps, 'onFocus' | 'onBlur'> & {})
+type Options = undefined | Pick<TextInputProps, 'onFocus' | 'onBlur'>
 
 export const useInputState = (options: Options = undefined) => {
   const [state, setState] = useState<{ isFocused?: boolean }>({})

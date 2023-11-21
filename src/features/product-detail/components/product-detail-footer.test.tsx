@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { GetFavoritesResponse } from '../../../services/api/types'
@@ -11,10 +11,9 @@ import { ProductDetailFooter } from './product-detail-footer'
 
 export const server = setupServer(
   ...serverHandlersRequired,
-  rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('*/cc/kulturapp/users/current', () =>
+    HttpResponse.json(
+      {
         identificationStatus: 'VERIFIED',
         balanceStatus: 'ENTITLED',
         balance: {
@@ -22,17 +21,18 @@ export const server = setupServer(
           reservedBalance: { value: 170, currencyIso: 'EUR' },
           availableBalance: { value: 30, currencyIso: 'EUR' },
         },
-      } as GetProfileResponseBody),
-    )
-  }),
-  rest.get('*/cc/kulturapp/users/current/favourites', (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+      } as GetProfileResponseBody,
+      { status: 200 },
+    ),
+  ),
+  http.get('*/cc/kulturapp/users/current/favourites', () =>
+    HttpResponse.json(
+      {
         favouritesItems: [],
-      } as GetFavoritesResponse),
-    )
-  }),
+      } as GetFavoritesResponse,
+      { status: 200 },
+    ),
+  ),
 )
 
 beforeAll(() => server.listen())
@@ -73,10 +73,9 @@ test('Should render product detail footer with non-sufficient credit', async () 
   const onReserve = jest.fn()
 
   server.use(
-    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
+    http.get('*/cc/kulturapp/users/current', () =>
+      HttpResponse.json(
+        {
           identificationStatus: 'VERIFIED',
           balanceStatus: 'ENTITLED',
           balance: {
@@ -84,9 +83,10 @@ test('Should render product detail footer with non-sufficient credit', async () 
             reservedBalance: { value: 190, currencyIso: 'EUR' },
             availableBalance: { value: 10, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
-      )
-    }),
+        } as GetProfileResponseBody,
+        { status: 200 },
+      ),
+    ),
   )
 
   renderComponent(
@@ -110,10 +110,9 @@ test('Should render product detail footer without a total price', async () => {
   const onReserve = jest.fn()
 
   server.use(
-    rest.get('*/cc/kulturapp/users/current', (_req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
+    http.get('*/cc/kulturapp/users/current', () => {
+      return HttpResponse.json(
+        {
           identificationStatus: 'VERIFIED',
           balanceStatus: 'ENTITLED',
           balance: {
@@ -121,7 +120,8 @@ test('Should render product detail footer without a total price', async () => {
             reservedBalance: { value: 200, currencyIso: 'EUR' },
             availableBalance: { value: 200, currencyIso: 'EUR' },
           },
-        } as GetProfileResponseBody),
+        } as GetProfileResponseBody,
+        { status: 200 },
       )
     }),
   )

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Keyboard } from 'react-native'
 import { z } from 'zod'
 import { Button } from '../../components/button/button'
 import { FormFieldWithControl } from '../../components/form-fields/form-field-with-control'
@@ -53,7 +53,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
     resolver: zodResolver(
       z.object({
         email: EMAIL_SCHEMA(t, true),
-        password: z.string().trim().nonempty(),
+        password: z.string().trim().min(1),
       }),
     ),
   })
@@ -66,6 +66,9 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
   const onPressLoginButton = form.handleSubmit(async data => {
     if (loading) {
       return
+    }
+    if (Keyboard.isVisible()) {
+      Keyboard.dismiss()
     }
     setLoading(true)
     try {

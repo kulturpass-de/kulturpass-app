@@ -54,7 +54,7 @@ export const parseBaseUrl64Location = (locationString: string) => {
   if (result.success) {
     return result.data
   } else {
-    logger.logError('Location Query parse failed', result.error.toString())
+    logger.logError('Location Query parse', result.error)
     return null
   }
 }

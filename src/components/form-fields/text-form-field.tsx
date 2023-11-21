@@ -115,6 +115,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
           onFocus={handleFocus}
           editable={editable}
           textContentType={textContentType}
+          caretHidden={false}
           {...textInputProps}
         />
         {children}
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   textInput: {
     minHeight: spacing[9],
     paddingLeft: spacing[4],
-    paddingRight: spacing[4],
+    paddingRight: Platform.OS === 'ios' ? spacing[9] : spacing[4],
     borderWidth: spacing[0],
     borderRadius: spacing[2],
   },

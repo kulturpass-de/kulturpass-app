@@ -1,4 +1,4 @@
-import { AA2Messages, Auth, Card, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2Messages, Auth, Card, ChangePin, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
 import { ErrorWithCode } from '../../services/errors/errors'
 
 export enum AA2ErrorCode {
@@ -273,5 +273,61 @@ export const reasonToError = (reason?: FailureCodes): AA2Error | undefined => {
       return new AA2CardValidationFailed()
     case FailureCodes.Process_Certificates_From_Eac2_Cvc_Chain_Missing:
       return new AA2CardAuthenticityValidationFailed()
+  }
+}
+
+export const handleAuthError = (
+  message: Auth,
+  shouldCloseOnCancellation: boolean,
+  handleClose: () => void,
+  handlePUKInoperative: () => void,
+) => {
+  const majorRes = message.result?.major
+  if (majorRes?.endsWith('#error') === true) {
+    if (isErrorUserCancellation(message)) {
+      if (shouldCloseOnCancellation) {
+        handleClose()
+      }
+      return
+    }
+
+    const reasonError = reasonToError(message.result?.reason)
+
+    if (reasonError !== undefined) {
+      throw reasonError
+    }
+
+    if (message.result?.reason === FailureCodes.Establish_Pace_Channel_Puk_Inoperative) {
+      handlePUKInoperative()
+      return
+    }
+
+    const detailCode = extractDetailCode(message)
+    throw new AA2AuthErrorResultError(detailCode, message.result?.message ?? message.result?.description)
+  } else if (message.error !== undefined) {
+    throw new AA2AuthError(message.error)
+  }
+}
+
+export const handleChangePinError = (
+  message: ChangePin,
+  shouldCloseOnCancellation: boolean,
+  handleClose: () => void,
+) => {
+  if (message.success === false) {
+    if (message.reason === FailureCodes.User_Cancelled) {
+      if (shouldCloseOnCancellation) {
+        handleClose()
+      }
+      return
+    }
+
+    const reasonError = reasonToError(message.reason)
+
+    if (reasonError !== undefined) {
+      throw reasonError
+    }
+
+    throw new AA2AuthErrorResultError(message.reason)
   }
 }
