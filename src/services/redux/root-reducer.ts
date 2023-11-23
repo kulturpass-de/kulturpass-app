@@ -5,6 +5,7 @@ import { themeSlice } from '../../theme/redux/theme'
 import { cdcApi } from '../api/cdc-api'
 import { commerceApi } from '../api/commerce-api'
 import { authSlice } from '../auth/store/auth-slice'
+import { locationSlice } from '../location/redux/location-slice'
 import { notificationsDebugSlice } from '../notifications/store/notifications-debug-slice'
 import { notificationsSlice } from '../notifications/store/notifications-slice'
 import { userSlice } from '../user/redux/user-slice'
@@ -26,4 +27,5 @@ export const rootReducer = combineReducers({
   [inAppReviewSliceNonPersisted.name]: inAppReviewSliceNonPersisted.reducer,
   [productDetailSlice.name]: productDetailSlice.reducer,
   [notificationsSlice.name]: notificationsSlice.reducer,
+  [locationSlice.name]: locationSlice.reducer,
 })

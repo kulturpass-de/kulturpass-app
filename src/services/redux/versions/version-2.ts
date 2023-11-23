@@ -1,5 +1,4 @@
 import { Notification } from '@notifee/react-native'
-import { GeoPosition } from 'react-native-geolocation-service'
 import { z } from 'zod'
 import { simulationCards } from '../../../screens/app/developer-settings/simulation-cards/simulation-cards'
 import { CommerceApiEndpointPayload, CommerceApiEndpointName } from '../../api/redux/types'
@@ -11,10 +10,6 @@ export type EnvironmentConfigurationState = {
 export type OnboardingState = {
   showOnboardingOnStartup: boolean
   notificationOnboardingShown?: boolean
-}
-
-export type LocationState = {
-  currentUserLocation: GeoPosition | undefined
 }
 
 export const AppConfigSchema = z.object({
@@ -70,7 +65,6 @@ export type NotificationsState = {
 export type PersistState = {
   environmentConfiguration: EnvironmentConfigurationState
   onboarding: OnboardingState
-  location: LocationState
   persistedAppCore: PersistedAppCoreState
   cardSimulation: CardSimulationState
   releaseNotes: ReleaseNotesState

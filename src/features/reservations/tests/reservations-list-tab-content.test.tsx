@@ -50,5 +50,6 @@ describe('ReservationsListTabContent', () => {
     renderReservationsList(false, [])
     expect(await screen.findByTestId(reservationsScreenTestId)).toBeOnTheScreen()
     expect(await screen.findByTestId(addTestIdModifier(componentTestID, 'tab'))).toBeOnTheScreen()
+    expect(await screen.findByTestId(addTestIdModifier(componentTestID, 'tab_empty'))).toBeOnTheScreen()
   })
 })

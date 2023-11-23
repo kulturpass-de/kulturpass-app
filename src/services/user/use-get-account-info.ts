@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { cdcApi } from '../api/cdc-api'
 import { getCdcSessionData, getIsUserLoggedIn } from '../auth/store/auth-selectors'
@@ -13,7 +13,7 @@ export const useGetAccountInfo = (regToken?: string) => {
   const cdcSessionData = useSelector(getCdcSessionData)
   regToken = regToken || cdcSessionData?.regToken
 
-  useEffect(() => {
+  const refetchAccountInfo = useCallback(() => {
     if (regToken) {
       executeWithRegTokenUnsigned({ regToken })
     } else if (isLoggedIn) {
@@ -21,7 +21,11 @@ export const useGetAccountInfo = (regToken?: string) => {
     }
   }, [executeSigned, executeWithRegTokenUnsigned, isLoggedIn, regToken])
 
-  const data = useMemo(() => {
+  useEffect(() => {
+    refetchAccountInfo()
+  }, [refetchAccountInfo])
+
+  const accountInfo = useMemo(() => {
     if (regToken) {
       return dataWithRegTokenUnsigned
     } else {
@@ -29,5 +33,5 @@ export const useGetAccountInfo = (regToken?: string) => {
     }
   }, [regToken, dataWithRegTokenUnsigned, dataSigned])
 
-  return data
+  return { accountInfo, refetchAccountInfo }
 }

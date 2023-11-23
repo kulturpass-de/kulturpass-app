@@ -1,6 +1,7 @@
 import { SpartacusBridge } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewId } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/types'
 import { webViewBridgeAdapter } from '../../../../features/spartacus-webview/services/webview-bridge-adapter/webview-bridge-adapter'
+import { getCurrentUserLocation } from '../../../location/redux/location-selectors'
 import { logger } from '../../../logger'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { GeolocationState, webviewsSlice } from '../webviews-slice'
@@ -23,10 +24,11 @@ export const webviewsLocationSync = createThunk<void, WebViewId>(
   async (webViewId, thunkAPI) => {
     logger.log('webviewsLocationSync', webViewId)
 
-    const { isReady, previousSubmittedUserLocationState } = thunkAPI.getState().webviews[webViewId]
+    const store = thunkAPI.getState()
+    const { isReady, previousSubmittedUserLocationState } = store.webviews[webViewId]
 
     if (isReady) {
-      const currentUserLocation = thunkAPI.getState().persisted.location.currentUserLocation
+      const currentUserLocation = getCurrentUserLocation(store)
       const userLocationState: GeolocationState | undefined = currentUserLocation?.coords
 
       // only call geolocationSetLocation if the location has changed

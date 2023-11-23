@@ -1,101 +1,153 @@
-import { fireEvent, screen } from '@testing-library/react-native'
+import { fireEvent, screen, userEvent, waitFor } from '@testing-library/react-native'
+import { http, HttpResponse } from 'msw'
 import React from 'react'
 import { buildTestId } from '../../../services/test-id/test-id'
-import { renderScreen } from '../../../services/testing/test-utils'
+import { renderScreen, setupServer, serverHandlersLoggedIn } from '../../../services/testing/test-utils'
 import { PreferencesScreen } from './preferences-screen'
 
 const afterSubmitTriggered = jest.fn()
 const onPressClose = jest.fn()
 
-test('Should render preferences screen', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
-  expect(screen.getByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
-})
+describe('PreferencesScreen', () => {
+  const server = setupServer(...serverHandlersLoggedIn)
 
-test('Should display the close button only if the form has been manipulated', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+  const mockServer = () => {
+    server.use(
+      http.get('*/categories/availablePreferences', () => {
+        return HttpResponse.json({ categories: [{ id: 'culturalWorkshop', name: 'Workshops' }] }, { status: 200 })
+      }),
+    )
+  }
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).not.toBeOnTheScreen()
-  expect(screen.queryByTestId(buildTestId('editPreferences_title_backButton'))).toBeOnTheScreen()
+  beforeAll(() => server.listen())
+  afterEach(() => {
+    jest.clearAllMocks()
+    server.resetHandlers()
+  })
+  afterAll(() => server.close())
 
-  let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+  test('Should render preferences screen', async () => {
+    mockServer()
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
+  })
 
-  // do change, close button should appear
+  test('Should display the close button only if the form has been manipulated', async () => {
+    mockServer()
 
-  fireEvent.changeText(postalCodeInput, '1')
+    const user = userEvent.setup()
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).toBeOnTheScreen()
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
 
-  // revert change, close button should disappear
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
 
-  fireEvent.changeText(postalCodeInput, '')
+    expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).not.toBeOnTheScreen()
+    expect(screen.queryByTestId(buildTestId('editPreferences_title_backButton'))).toBeOnTheScreen()
 
-  expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).not.toBeOnTheScreen()
-})
+    let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
 
-test('Should not show the preferences alert since no changes were made', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+    // do change, close button should appear
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
+    await user.type(postalCodeInput, '1')
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
-  expect(onPressClose).toHaveBeenCalledTimes(1)
-})
+    expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).toBeOnTheScreen()
 
-test('Should show the preferences alert since changes were made and the back button pressed. User presses dismiss to stay on the preferences screen', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+    // revert change, close button should disappear
 
-  let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+    await user.clear(postalCodeInput)
 
-  fireEvent.changeText(postalCodeInput, '1')
+    // waitForElementToBeRemoved could be an alternative here, but we use the `userEvent` api and await the input
+    expect(screen.queryByTestId(buildTestId('editPreferences_title_closeButton'))).not.toBeOnTheScreen()
+  })
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
+  test('Should not show the preferences alert since no changes were made', async () => {
+    mockServer()
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
 
-  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_dismiss')))
+    fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
-  expect(screen.getByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
-  expect(onPressClose).toHaveBeenCalledTimes(0)
-})
+    expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
 
-test('Should show the preferences alert since changes were made and the back button pressed. User presses discard to leave on the preferences screen', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+    await waitFor(() => expect(onPressClose).toHaveBeenCalledTimes(1))
 
-  let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+    expect(afterSubmitTriggered).not.toHaveBeenCalled()
+  })
 
-  fireEvent.changeText(postalCodeInput, '1')
+  test('Should show the preferences alert since changes were made and the back button pressed. User presses dismiss to stay on the preferences screen', async () => {
+    mockServer()
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
+    const user = userEvent.setup()
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
 
-  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
-  expect(onPressClose).toHaveBeenCalledTimes(1)
-})
+    let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
 
-test('Should not let the user leave the preferences screen, when the close button has been pressed, since preferences alert is displayed', async () => {
-  renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+    await user.type(postalCodeInput, '1')
 
-  let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+    fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
 
-  fireEvent.changeText(postalCodeInput, '1')
+    expect(await screen.findByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
 
-  fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_closeButton')))
+    fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_dismiss')))
 
-  // alert should not be shown, back navigation should happen
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
 
-  expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+    expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
 
-  fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
+    expect(onPressClose).toHaveBeenCalledTimes(0)
+  })
 
-  expect(screen.getByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
-  expect(onPressClose).toHaveBeenCalledTimes(1)
-})
+  test('Should show the preferences alert since changes were made and the back button pressed. User presses discard to leave on the preferences screen', async () => {
+    mockServer()
 
-afterEach(() => {
-  jest.clearAllMocks()
+    const user = userEvent.setup()
+
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
+
+    let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+
+    await user.type(postalCodeInput, '1')
+
+    fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_backButton')))
+
+    expect(await screen.findByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
+
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
+
+    expect(screen.queryByTestId(buildTestId('update_profile_alert_title'))).not.toBeOnTheScreen()
+    expect(onPressClose).toHaveBeenCalledTimes(1)
+  })
+
+  test('Should not let the user leave the preferences screen, when the close button has been pressed, since preferences alert is displayed', async () => {
+    mockServer()
+
+    const user = userEvent.setup()
+
+    renderScreen(<PreferencesScreen afterSubmitTriggered={afterSubmitTriggered} onPressClose={onPressClose} />)
+
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
+
+    let postalCodeInput = await screen.findByTestId(buildTestId('preferences_form_postal_code_input'))
+
+    await user.type(postalCodeInput, '1')
+
+    fireEvent.press(screen.getByTestId(buildTestId('editPreferences_title_closeButton')))
+
+    // alert should not be shown, back navigation should happen
+
+    expect(await screen.findByTestId(buildTestId('update_profile_alert_title'))).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByTestId(buildTestId('update_profile_alert_discard')))
+
+    expect(await screen.findByTestId(buildTestId('preferences_screen'))).toBeOnTheScreen()
+
+    expect(onPressClose).toHaveBeenCalledTimes(1)
+  })
 })

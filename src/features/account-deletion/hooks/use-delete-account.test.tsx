@@ -12,13 +12,13 @@ const Wrapper: React.FC<PropsWithChildren> = ({ children }) => {
   return <StoreProvider withLoginSession>{children}</StoreProvider>
 }
 
-export const server = setupServer()
-
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
-
 describe('useDeleteAccount', () => {
+  const server = setupServer()
+
+  beforeAll(() => server.listen())
+  afterEach(() => server.resetHandlers())
+  afterAll(() => server.close())
+
   test('Should delete account as specified', async () => {
     let setAccountInfoParams: any
     server.use(

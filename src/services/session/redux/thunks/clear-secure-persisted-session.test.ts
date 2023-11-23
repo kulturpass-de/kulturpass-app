@@ -15,10 +15,14 @@ describe('clear-secure-persisted-session', () => {
     const clearCommerceSession = jest
       .spyOn(sessionService, 'clearCommerceSession')
       .mockImplementation(() => Promise.resolve())
+    const clearUserLocation = jest
+      .spyOn(sessionService, 'clearUserLocation')
+      .mockImplementation(() => Promise.resolve())
 
     await store.dispatch(clearSecurePersistedSession())
 
     expect(clearCdcSession).toHaveBeenCalledTimes(1)
     expect(clearCommerceSession).toHaveBeenCalledTimes(1)
+    expect(clearUserLocation).toHaveBeenCalledTimes(1)
   })
 })

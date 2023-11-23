@@ -1,9 +1,16 @@
 import { authSlice } from '../../../auth/store/auth-slice'
+import { locationSlice } from '../../../location/redux/location-slice'
 import { createThunk } from '../../../redux/utils/create-thunk'
 import { userSlice } from '../../../user/redux/user-slice'
-import { getCdcSession, getCommerceSession } from '../../session-service'
+import { getCdcSession, getCommerceSession, getUserLocation } from '../../session-service'
 
 export const restoreSession = createThunk('session/restoreSession', async (payload, thunkApi) => {
+  const userLocationData = await getUserLocation()
+
+  if (userLocationData) {
+    thunkApi.dispatch(locationSlice.actions.setCurrentUserLocation(userLocationData))
+  }
+
   const cdcSessionData = await getCdcSession()
   const commerceSessionData = await getCommerceSession()
 

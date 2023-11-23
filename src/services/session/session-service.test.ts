@@ -1,5 +1,6 @@
+import { GeoPosition } from 'react-native-geolocation-service'
 import { mockedSecureStorage } from '../storage/__mocks__/secure-storage'
-import { getCdcSession, getCommerceSession } from './session-service'
+import { getCdcSession, getCommerceSession, getUserLocation } from './session-service'
 
 jest.mock('../storage/secure-storage', () => mockedSecureStorage)
 
@@ -21,6 +22,22 @@ describe('session-service', () => {
       const commerceSessionData = await getCommerceSession()
 
       expect(commerceSessionData).toEqual({ access_token: 'my_access_token' })
+    })
+  })
+
+  describe('getUserLocation', () => {
+    it('should return userLocationData key of SecureStorage', async () => {
+      mockedSecureStorage.mockItem('userLocationData', {
+        coords: { latitude: 123, longitude: 123 },
+        timestamp: Date.now(),
+      } as GeoPosition)
+
+      const userLocationData = await getUserLocation()
+
+      expect(userLocationData).toEqual({
+        coords: { latitude: 123, longitude: 123 },
+        timestamp: Date.now(),
+      })
     })
   })
 })

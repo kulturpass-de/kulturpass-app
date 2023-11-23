@@ -1,6 +1,8 @@
 import { generateSimulatedCard } from './utils'
 
 describe('generateSimulatedCard', () => {
+  const FIXED_LAST_NAME_CONTENT_LENGTH = '650c0c0a4d55535445524d414e4e'.length
+
   test('should create a card with a date and random lastname postfix', () => {
     const newDate = new Date(2005, 6, 13)
     const generatedSimulator = generateSimulatedCard('mustermannanna20050504', newDate, true)
@@ -10,6 +12,6 @@ describe('generateSimulatedCard', () => {
 
     const lastName = generatedSimulator.files.find(file => file.fileId === '0105' && file.shortFileId === '05')
     expect(lastName?.content !== '650c0c0a4d55535445524d414e4e').toBe(true)
-    expect(lastName?.content?.length === '650c0c0a4d55535445524d414e4e'.length).toBe(true)
+    expect(lastName?.content?.length).toEqual(FIXED_LAST_NAME_CONTENT_LENGTH)
   })
 })

@@ -153,7 +153,7 @@ export const PostalCodeSection = ({
             i18nKey="offerSelectionFilter_hint"
           />
           <Button
-            testID={addTestIdModifier(testID, 'submit_button')}
+            testID={addTestIdModifier(testID, 'postalCode_submit_button')}
             i18nKey="offerSelectionFilter_submit_button_label"
             onPress={submit}
             disabled={(!form.formState.isValid && isPostalCode) || (!selectedSuggestion && !isPostalCode)}
