@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import isEqual from 'lodash.isequal'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +17,7 @@ export const useUserInfo = (regToken?: string) => {
   const userProfile = useSelector(selectUserProfile)
 
   regToken = cdcSessionData?.regToken || regToken
-  const accountInfo = useGetAccountInfo(regToken)
+  const { accountInfo, refetchAccountInfo } = useGetAccountInfo(regToken)
   const setAccountInfo = useSetAccountInfo(regToken)
 
   useEffect(() => {
@@ -34,9 +35,11 @@ export const useUserInfo = (regToken?: string) => {
   }, [isLoggedIn, regToken, accountInfo, userPreferences, dispatch])
 
   const name = useMemo(
-    () => (isLoggedIn && userProfile ? userProfile?.firstName : undefined),
-    [isLoggedIn, userProfile],
+    () => (isLoggedIn && userProfile ? accountInfo?.data?.profile?.firstName ?? userProfile?.firstName : undefined),
+    [isLoggedIn, userProfile, accountInfo],
   )
 
-  return { name, userPreferences, setAccountInfo, accountInfo }
+  useFocusEffect(refetchAccountInfo)
+
+  return { name, userPreferences, setAccountInfo, accountInfo, refetchAccountInfo }
 }

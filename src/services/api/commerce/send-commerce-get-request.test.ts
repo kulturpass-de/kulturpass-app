@@ -7,7 +7,7 @@ import { sendCommerceGetRequest } from './send-commerce-get-request'
 
 describe('send-commerce-get-request', () => {
   const currentUserLocation = { coords: { latitude: 1, longitude: 2 } }
-  const preloadedState = { persisted: { location: { currentUserLocation } } } as RootState
+  const preloadedState = { location: { currentUserLocation } } as RootState
   const store = configureMockStore({ preloadedState })
 
   const arg = { text: 'some_text_param' }

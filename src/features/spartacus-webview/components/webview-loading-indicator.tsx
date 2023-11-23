@@ -17,7 +17,11 @@ export const WebviewLoadingIndicator: React.FC<WebviewLoadingIndicatorProps> = (
   return (
     <View
       testID={buildTestId('webview_loading_skeleton')}
-      style={[styles.skeleton, { backgroundColor: colors.primaryBackground, marginTop: contentOffset }]}>
+      style={[
+        StyleSheet.absoluteFill,
+        styles.skeleton,
+        { backgroundColor: colors.primaryBackground, marginTop: contentOffset },
+      ]}>
       <SvgImage type="webview-skeleton" width={width - spacing[5] * 2} height={height} />
     </View>
   )

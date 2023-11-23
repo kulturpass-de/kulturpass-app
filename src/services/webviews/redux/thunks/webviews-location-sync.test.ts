@@ -29,7 +29,7 @@ describe('webviewsLocationSync', () => {
     const store = configureMockStore({
       preloadedState: {
         webviews: { [WebViewId.Home]: { isReady: false, previousSubmittedUserLocationState: null } },
-        persisted: { location: { currentUserLocation: undefinedUserLocationState } },
+        location: { currentUserLocation: undefinedUserLocationState },
       } as RootState,
     })
 
@@ -46,7 +46,7 @@ describe('webviewsLocationSync', () => {
     const store = configureMockStore({
       preloadedState: {
         webviews: { [WebViewId.Home]: { isReady: true, previousSubmittedUserLocationState: null } },
-        persisted: { location: { currentUserLocation: undefinedUserLocationState } },
+        location: { currentUserLocation: undefinedUserLocationState },
       } as RootState,
     })
 
@@ -75,7 +75,7 @@ describe('webviewsLocationSync', () => {
     const store = configureMockStore({
       preloadedState: {
         webviews: { [WebViewId.Home]: { isReady: true, previousSubmittedUserLocationState: null } },
-        persisted: { location: { currentUserLocation: definedUserLocationState } },
+        location: { currentUserLocation: definedUserLocationState },
       } as RootState,
     })
 
@@ -95,7 +95,7 @@ describe('webviewsLocationSync', () => {
     const store = configureMockStore({
       preloadedState: {
         webviews: { [WebViewId.Home]: { isReady: true, previousSubmittedUserLocationState: null } },
-        persisted: { location: { currentUserLocation: undefinedUserLocationState } },
+        location: { currentUserLocation: undefinedUserLocationState },
       } as RootState,
     })
 
@@ -114,7 +114,7 @@ describe('webviewsLocationSync', () => {
     const store = configureMockStore({
       preloadedState: {
         webviews: { [WebViewId.Home]: { isReady: true, previousSubmittedUserLocationState: null } },
-        persisted: { location: { currentUserLocation: definedUserLocationState } },
+        location: { currentUserLocation: definedUserLocationState },
       } as RootState,
     })
 

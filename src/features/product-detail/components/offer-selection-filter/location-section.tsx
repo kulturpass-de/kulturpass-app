@@ -27,7 +27,7 @@ export const LocationSection = ({ onSubmit, testID }: LocationSectionProps) => {
       />
       <Button
         i18nKey="offerSelectionFilter_submit_button_label"
-        testID={addTestIdModifier(testID, 'submit_button')}
+        testID={addTestIdModifier(testID, 'location_submit_button')}
         onPress={onSubmit}
       />
     </View>

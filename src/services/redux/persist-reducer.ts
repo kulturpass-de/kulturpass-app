@@ -8,7 +8,6 @@ import { onboardingSlice } from '../../features/onboarding/redux/onboarding'
 import { releaseNotesSlice } from '../../features/release-notes/redux/release-notes-slice'
 import { apiOfflineCacheSlice } from '../api/redux/api-offline-cache-slice'
 import { environmentConfigurationSlice } from '../environment-configuration/redux/environment-configuration-slice'
-import { locationSlice } from '../location/redux/location-slice'
 import { persistedNotificationsSlice } from '../notifications/store/notifications-slice'
 import { currentPersistVersion, migrations } from './migrations'
 import { persistedAppCoreSlice } from './slices/persisted-app-core'
@@ -21,7 +20,6 @@ const persistedReducer = combineReducers({
   [environmentConfigurationSlice.name]: environmentConfigurationSlice.reducer,
   [releaseNotesSlice.name]: releaseNotesSlice.reducer,
   [onboardingSlice.name]: onboardingSlice.reducer,
-  [locationSlice.name]: locationSlice.reducer,
   [persistedAppCoreSlice.name]: persistedAppCoreSlice.reducer,
   [cardSimulationSlice.name]: cardSimulationSlice.reducer,
   [apiOfflineCacheSlice.name]: apiOfflineCacheSlice.reducer,

@@ -14,14 +14,9 @@ import {
 import { OfferSelectionFilterRoute } from './offer-selection-filter-route'
 import { OfferSelectionFilterScreen } from './offer-selection-filter-screen'
 
-export const server = setupServer(...serverHandlersLoggedIn)
-
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+const Stack = createStackNavigator()
 
 const renderRoute = (props: Record<string, unknown> = {}) => {
-  const Stack = createStackNavigator()
   render(
     <AppProviders>
       <StoreProvider withLoginSession>
@@ -52,157 +47,230 @@ const RESPONSE_HAM = {
   })),
 }
 
-const mockSuggestionsResponse = (responseData: typeof RESPONSE_HAM | typeof RESPONSE_EMPTY) => {
-  server.use(http.get('*/cc/kulturapp/location/suggestions', () => HttpResponse.json(responseData, { status: 200 })))
-}
-
 const noOp = () => {}
 
 const getIsValidPostalCode = () => true
 
-test('Should render offer selection filter screen for "location" and handle the user-prefers-default-location callback', async () => {
-  const onSubmitLocation = jest.fn()
+describe('OfferSelectionRoute', () => {
+  const server = setupServer(...serverHandlersLoggedIn)
 
-  renderScreen(
-    <OfferSelectionFilterScreen
-      onClose={onPressClose}
-      defaultLocationProvider={{ provider: 'location' }}
-      fetchLocationSuggestions={noOp as any}
-      getIsValidPostalCode={noOp as any}
-      onBack={noOp as any}
-      onSubmitLocation={onSubmitLocation}
-      onSubmitPostalCode={noOp as any}
-    />,
-  )
+  beforeAll(() => server.listen())
+  afterEach(() => server.resetHandlers())
+  afterAll(() => server.close())
 
-  expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen()
+  const mockSuggestionsResponse = (responseData: typeof RESPONSE_HAM | typeof RESPONSE_EMPTY) => {
+    server.use(http.get('*/cc/kulturapp/location/suggestions', () => HttpResponse.json(responseData, { status: 200 })))
+  }
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_submit_button')))
+  test('Should render offer selection filter screen for "location" and handle the user-prefers-default-location callback', async () => {
+    const onSubmitLocation = jest.fn()
 
-  expect(onSubmitLocation).toHaveBeenCalledTimes(1)
-})
+    renderScreen(
+      <OfferSelectionFilterScreen
+        onClose={onPressClose}
+        defaultLocationProvider={{ provider: 'location' }}
+        fetchLocationSuggestions={noOp as any}
+        getIsValidPostalCode={noOp as any}
+        onBack={noOp as any}
+        onSubmitLocation={onSubmitLocation}
+        onSubmitPostalCode={noOp as any}
+      />,
+    )
 
-test('Should render offer selection filter screen for "postalCode" with 65555 as default. Change to 99990 is possible', async () => {
-  const onSubmitLocation = jest.fn()
+    await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen())
 
-  renderScreen(
-    <OfferSelectionFilterScreen
-      onClose={onPressClose}
-      defaultLocationProvider={{ provider: 'postalCode', postalCode: '65555' }}
-      fetchLocationSuggestions={noOp as any}
-      getIsValidPostalCode={getIsValidPostalCode as any}
-      onBack={noOp as any}
-      onSubmitLocation={noOp as any}
-      onSubmitPostalCode={onSubmitLocation}
-    />,
-  )
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_submit_button')))
 
-  expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen()
-
-  expect(screen.getByDisplayValue('65555')).toBeOnTheScreen()
-
-  fireEvent.changeText(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input')), '99990')
-
-  expect(screen.getByDisplayValue('99990')).toBeOnTheScreen()
-})
-
-test('Should render offer selection filter route for "city=hamburg" and an empty response, with the empty list item being displayed', async () => {
-  // support focus event
-  // see https://callstack.github.io/react-native-testing-library/docs/user-event
-  const user = userEvent.setup()
-
-  mockSuggestionsResponse(RESPONSE_EMPTY)
-
-  renderRoute({
-    offersByLocation: {
-      provider: 'city',
-      location: { coordinates: [1, 5], id: 'hamburg001', name: 'Hamburg' },
-    },
+    expect(onSubmitLocation).toHaveBeenCalledTimes(1)
   })
 
-  expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen()
+  test('Should render offer selection filter screen for "postalCode" with 65555 as default. Change to 99990 is possible', async () => {
+    const onSubmitLocation = jest.fn()
 
-  const inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
-  expect(inputElement.props?.value).toEqual('Hamburg')
+    renderScreen(
+      <OfferSelectionFilterScreen
+        onClose={onPressClose}
+        defaultLocationProvider={{ provider: 'postalCode', postalCode: '65555' }}
+        fetchLocationSuggestions={noOp as any}
+        getIsValidPostalCode={getIsValidPostalCode as any}
+        onBack={noOp as any}
+        onSubmitLocation={noOp as any}
+        onSubmitPostalCode={onSubmitLocation}
+      />,
+    )
 
-  await user.clear(inputElement)
-  await user.type(inputElement, 'Search with empty result')
+    await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen())
 
-  await waitFor(() =>
-    expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_item_empty'))).toBeOnTheScreen(),
-  )
-})
+    expect(screen.getByDisplayValue('65555')).toBeOnTheScreen()
 
-test('Should render offer selection filter route for "city=hamburg" and the clear input button clears the field, even after toggling back and forth to the location view', async () => {
-  renderRoute({
-    offersByLocation: {
-      provider: 'city',
-      location: { coordinates: [1, 5], id: 'hamburg001', name: 'Hamburg' },
-    },
+    fireEvent.changeText(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input')), '99990')
+
+    expect(screen.getByDisplayValue('99990')).toBeOnTheScreen()
   })
 
-  expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen()
+  test('Should render offer selection filter route for "city=hamburg" and an empty response, with the empty list item being displayed', async () => {
+    // support focus event
+    // see https://callstack.github.io/react-native-testing-library/docs/user-event
+    const user = userEvent.setup()
 
-  let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    mockSuggestionsResponse(RESPONSE_EMPTY)
 
-  await waitFor(() => expect(inputElement.props?.value).toEqual('Hamburg'))
+    renderRoute({
+      offersByLocation: {
+        provider: 'city',
+        location: { coordinates: [1, 5], id: 'hamburg001', name: 'Hamburg' },
+      },
+    })
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_clearSearchTextButton')))
+    await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen())
 
-  await waitFor(() => expect(inputElement.props?.value).toEqual(''))
+    const inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    expect(inputElement.props?.value).toEqual('Hamburg')
 
-  // switch to location view and back, input element should still be empty
+    await user.clear(inputElement)
+    await user.type(inputElement, 'Search with empty result')
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_chip')))
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_item_empty'))).toBeOnTheScreen(),
+    )
+  })
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+  test('Should render offer selection filter route for "city=hamburg" and the clear input button clears the field, even after toggling back and forth to the location view', async () => {
+    mockSuggestionsResponse(RESPONSE_HAM)
 
-  inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    renderRoute({
+      offersByLocation: {
+        provider: 'city',
+        location: { coordinates: [1, 5], id: 'hamburg001', name: 'Hamburg' },
+      },
+    })
 
-  expect(inputElement.props?.value).toEqual('')
-})
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_screen'))).toBeOnTheScreen()
 
-test.each([
-  ['Öpfingen'],
-  ['Köln'],
-  ['Mün'],
-  ['München'],
-  ['Überlingen'],
-  ['Unter-Bach'],
-  ['Biberach an der Riß'],
-  ['Frankfurt (Oder)'],
-  ['Fürstenwalde/Spree'],
-  ['Horn-Bad Meinberg'],
-  ['Wettin-Löbejün'],
-  ['Neusäß'],
-  ['Bad Frankenhausen/Kyffhäuser'],
-  ['Tèst'],
-  ['Tést'],
-  ['Têst'],
-  ['Tëst'],
-  ['Tµst'],
-  ['     Tµst'],
-])('Should render offer selection filter route and let user type valid input "%s"', async input => {
-  const user = userEvent.setup()
+    let inputElement = await screen.findByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
 
-  mockSuggestionsResponse(RESPONSE_HAM)
+    await waitFor(() => expect(inputElement.props?.value).toEqual('Hamburg'))
 
-  renderRoute()
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_clearSearchTextButton')))
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+    expect(inputElement.props?.value).toEqual('')
 
-  let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    // switch to location view and back, input element should still be empty
 
-  await user.type(inputElement, input)
+    fireEvent.press(await screen.findByTestId(buildTestId('offerSelectionFilter_location_chip')))
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_location_submit_button'))).toBeOnTheScreen()
 
-  await waitFor(() =>
-    expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_list'))).toBeOnTheScreen(),
+    fireEvent.press(await screen.findByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))).toBeOnTheScreen()
+
+    inputElement = await screen.findByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    expect(inputElement.props?.value).toEqual(undefined)
+  })
+
+  test.each([
+    ['Öpfingen'],
+    ['Köln'],
+    ['Mün'],
+    ['München'],
+    ['Überlingen'],
+    ['Unter-Bach'],
+    ['Biberach an der Riß'],
+    ['Frankfurt (Oder)'],
+    ['Fürstenwalde/Spree'],
+    ['Horn-Bad Meinberg'],
+    ['Wettin-Löbejün'],
+    ['Neusäß'],
+    ['Bad Frankenhausen/Kyffhäuser'],
+    ['Tèst'],
+    ['Tést'],
+    ['Têst'],
+    ['Tëst'],
+    ['Tµst'],
+    ['     Tµst'],
+  ])('Should render offer selection filter route and let user type valid input "%s"', async input => {
+    const user = userEvent.setup()
+
+    mockSuggestionsResponse(RESPONSE_HAM)
+
+    renderRoute()
+
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip'))).toBeOnTheScreen(),
+    )
+
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+
+    let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+
+    await user.type(inputElement, input)
+
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_list'))).toBeOnTheScreen(),
+    )
+  })
+
+  test.each([['T'], ['  ']])(
+    'Should render offer selection filter route and recognize user input "%s" without validation error or result',
+    async input => {
+      const user = userEvent.setup()
+
+      mockSuggestionsResponse(RESPONSE_HAM)
+
+      renderRoute()
+
+      await waitFor(() =>
+        expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip'))).toBeOnTheScreen(),
+      )
+
+      fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+
+      let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+
+      await user.type(inputElement, input)
+
+      await waitFor(() =>
+        expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCode_submit_button'))).toBeDisabled(),
+      )
+    },
   )
-})
 
-test.each([['T'], ['  ']])(
-  'Should render offer selection filter route and recognize user input "%s" without validation error or result',
-  async input => {
+  test.each([
+    ['Test+'],
+    ['Test!'],
+    ['Test@'],
+    ['Test^t'],
+    ['Test<'],
+    ['City Name?'],
+    ['Test$'],
+    ['Test_a'],
+    ['Test \\ a'],
+  ])('Should render offer selection filter route and recognize invalid user input "%s"', async input => {
+    const user = userEvent.setup()
+
+    mockSuggestionsResponse(RESPONSE_HAM)
+
+    renderRoute()
+
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip'))).toBeOnTheScreen(),
+    )
+
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+
+    let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+
+    await user.type(inputElement, input)
+
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_error'))).toBeOnTheScreen(),
+    )
+
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCode_submit_button'))).toBeDisabled(),
+    )
+  })
+
+  test('Should render offer selection filter route for with non empty list', async () => {
     const user = userEvent.setup()
 
     mockSuggestionsResponse(RESPONSE_HAM)
@@ -213,106 +281,67 @@ test.each([['T'], ['  ']])(
 
     let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
 
-    await user.type(inputElement, input)
+    await user.type(inputElement, 'H')
 
-    await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_submit_button'))).toBeDisabled())
-  },
-)
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCode_submit_button'))).toBeDisabled(),
+    )
 
-test.each([
-  ['Test+'],
-  ['Test!'],
-  ['Test@'],
-  ['Test^t'],
-  ['Test<'],
-  ['City Name?'],
-  ['Test$'],
-  ['Test_a'],
-  ['Test \\ a'],
-])('Should render offer selection filter route and recognize invalid user input "%s"', async input => {
-  const user = userEvent.setup()
+    await user.type(inputElement, 'a')
 
-  mockSuggestionsResponse(RESPONSE_HAM)
+    // select third element of the list
+    const listItems = await screen.findAllByTestId(buildTestId('offerSelectionFilter_suggestions_item'))
+    expect(listItems[2]).toBeVisible()
 
-  renderRoute()
+    fireEvent.press(listItems[2])
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+    expect(inputElement.props?.value).toEqual('Hamburg 2')
 
-  let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    // switch to location view and back, input element should still be filled
 
-  await user.type(inputElement, input)
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_postalCode_submit_button'))).toBeOnTheScreen()
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_chip')))
 
-  await waitFor(() =>
-    expect(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_error'))).toBeOnTheScreen(),
-  )
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_location_submit_button'))).toBeOnTheScreen()
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
 
-  await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_submit_button'))).toBeDisabled())
-})
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))).toBeOnTheScreen()
+    inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
 
-test('Should render offer selection filter route for with non empty list', async () => {
-  const user = userEvent.setup()
+    expect(inputElement.props?.value).toEqual(undefined)
+  })
 
-  mockSuggestionsResponse(RESPONSE_HAM)
+  test('Should render offer selection filter route and close the suggestions list when toggling back and forth to the location view', async () => {
+    const user = userEvent.setup()
 
-  renderRoute()
+    mockSuggestionsResponse(RESPONSE_HAM)
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+    renderRoute()
 
-  let inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
 
-  await user.type(inputElement, 'H')
+    const inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
 
-  await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_submit_button'))).toBeDisabled())
+    // focus (and type in) the input field
 
-  await user.type(inputElement, 'a')
+    await user.type(inputElement, 'Ha')
 
-  // select third element of the list
-  const listItems = screen.getAllByTestId(buildTestId('offerSelectionFilter_suggestions_item'))
-  expect(listItems[2]).toBeVisible()
+    // make sure suggestions are visible
 
-  fireEvent.press(listItems[2])
+    await waitFor(() =>
+      expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_list'))).toBeOnTheScreen(),
+    )
 
-  expect(inputElement.props?.value).toEqual('Hamburg 2')
+    // switch to location view and back, input element should still be filled
 
-  // switch to location view and back, input element should still be filled
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_chip')))
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_chip')))
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_location_submit_button'))).toBeOnTheScreen()
 
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
+    fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
 
-  inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
+    // suggestions should not be visible, so submit button is visible
 
-  expect(inputElement.props?.value).toEqual('Hamburg 2')
-})
-
-test('Should render offer selection filter route and close the suggestions list when toggling back and forth to the location view', async () => {
-  const user = userEvent.setup()
-
-  mockSuggestionsResponse(RESPONSE_HAM)
-
-  renderRoute()
-
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
-
-  const inputElement = screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_input'))
-
-  // focus (and type in) the input field
-
-  await user.type(inputElement, 'Ha')
-
-  // make sure suggestions are visible
-
-  await waitFor(() =>
-    expect(screen.getByTestId(buildTestId('offerSelectionFilter_suggestions_list'))).toBeOnTheScreen(),
-  )
-
-  // switch to location view and back, input element should still be filled
-
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_location_chip')))
-
-  fireEvent.press(screen.getByTestId(buildTestId('offerSelectionFilter_postalCodeOrCity_chip')))
-
-  // suggestions should not be visible, so submit button is visible
-
-  await waitFor(() => expect(screen.getByTestId(buildTestId('offerSelectionFilter_submit_button'))).toBeOnTheScreen())
+    expect(await screen.findByTestId(buildTestId('offerSelectionFilter_postalCode_submit_button'))).toBeOnTheScreen()
+  })
 })

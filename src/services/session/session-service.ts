@@ -1,9 +1,11 @@
+import { GeoPosition } from 'react-native-geolocation-service'
 import { createSecureStorage } from '../storage/secure-storage'
 import { CdcSessionData, CommerceSessionData } from './types'
 
 export const sessionSecureStorage = createSecureStorage<{
   cdcSessionData: CdcSessionData | null
   commerceSessionData: CommerceSessionData | null
+  userLocationData: GeoPosition | null
 }>()
 
 export const persistCdcSession = async (cdcSessionData: CdcSessionData) => {
@@ -28,4 +30,16 @@ export const getCommerceSession = async () => {
 
 export const clearCommerceSession = async () => {
   await sessionSecureStorage.removeItem('commerceSessionData')
+}
+
+export const persistUserLocation = async (userLocation: GeoPosition) => {
+  await sessionSecureStorage.setItem('userLocationData', userLocation)
+}
+
+export const getUserLocation = async () => {
+  return await sessionSecureStorage.getItem('userLocationData')
+}
+
+export const clearUserLocation = async () => {
+  await sessionSecureStorage.removeItem('userLocationData')
 }

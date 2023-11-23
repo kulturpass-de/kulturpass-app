@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { fireEvent, screen, waitFor } from '@testing-library/react-native'
+import { fireEvent, screen } from '@testing-library/react-native'
 import React from 'react'
 import { useProductDetailHeaderHeight } from '../../features/product-detail/hooks/use-product-detail-header-height'
 import { useQueryProductDetail } from '../../features/product-detail/hooks/use-query-product-detail'
@@ -64,7 +64,7 @@ const offerSelectionNoneTokenTestId = buildTestId('offerSelection_none_token')
 
 const offerSelectionFilterScreenTestId = buildTestId('offerSelectionFilter_screen')
 const offerSelectionFilterCityOrPostalCodeInputTestId = buildTestId('offerSelectionFilter_postalCodeOrCity_input')
-const offerSelectionFilterSubmitButtonTestId = buildTestId('offerSelectionFilter_submit_button')
+const offerSelectionFilterSubmitButtonTestId = buildTestId('offerSelectionFilter_postalCode_submit_button')
 
 const reportButtonTestId = buildTestId('productDetail_report_button')
 
@@ -73,6 +73,12 @@ const reportScreenAcceptTestId = buildTestId('productDetail_report_accept_button
 const reportScreenAbortTestId = buildTestId('productDetail_report_abort_button')
 
 describe('ProductDetailRoute', () => {
+  jest.useFakeTimers()
+
+  afterAll(() => {
+    jest.resetAllMocks()
+  })
+
   const Stack = createStackNavigator<any>()
 
   const Wrapper: React.FC<ProductDetailRouteParams> = props => (
@@ -108,13 +114,13 @@ describe('ProductDetailRoute', () => {
 
     renderScreen(<Wrapper productCode={PRODUCT_1.code} randomMode={false} offerId={'firstID'} />)
 
-    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+    expect(await screen.findByTestId(allOffersButtonTestId)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByTestId(allOffersButtonTestId))
 
-    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
 
-    expect(screen.queryByTestId(offerSelectionNoneTokenTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionNoneTokenTestId)).toBeOnTheScreen()
   })
 
   test('Should open PRODUCT_1 and navigate to the offer selection screen, having location "Berlin" selected, also in the filter screen', async () => {
@@ -141,25 +147,24 @@ describe('ProductDetailRoute', () => {
       />,
     )
 
-    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+    expect(await screen.findByTestId(allOffersButtonTestId)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByTestId(allOffersButtonTestId))
 
-    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
 
-    expect(screen.queryByTestId(offerSelectionCityTokenTestId)).toBeOnTheScreen()
-    expect(screen.queryByTestId(offerSelectionCityTokenTestId)).toHaveTextContent('Berlin')
+    expect(await screen.findByTestId(offerSelectionCityTokenTestId)).toHaveTextContent('Berlin')
 
     fireEvent.press(screen.getByTestId(offerSelectionCityTokenTestId))
 
-    await waitFor(() => expect(screen.queryByTestId(offerSelectionFilterScreenTestId)).toBeOnTheScreen())
+    expect(await screen.findByTestId(offerSelectionFilterScreenTestId)).toBeOnTheScreen()
 
-    expect(screen.queryByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)).toBeOnTheScreen()
 
-    let inputElement = screen.getByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)
+    let inputElement = await screen.findByTestId(offerSelectionFilterCityOrPostalCodeInputTestId)
     expect(inputElement.props?.value).toEqual('Berlin')
 
-    expect(screen.getByTestId(offerSelectionFilterSubmitButtonTestId)).toBeEnabled()
+    expect(await screen.findByTestId(offerSelectionFilterSubmitButtonTestId)).toBeEnabled()
   })
 
   test('Should open PRODUCT_1 and navigate to the offer selection screen, having the default location selected (location enabled)', async () => {
@@ -183,13 +188,13 @@ describe('ProductDetailRoute', () => {
       />,
     )
 
-    await waitFor(() => expect(screen.queryByTestId(allOffersButtonTestId)).toBeOnTheScreen())
+    expect(await screen.findByTestId(allOffersButtonTestId)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByTestId(allOffersButtonTestId))
 
-    expect(screen.queryByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionScreenTestId)).toBeOnTheScreen()
 
-    expect(screen.queryByTestId(offerSelectionLocationTokenTestId)).toBeOnTheScreen()
+    expect(await screen.findByTestId(offerSelectionLocationTokenTestId)).toBeOnTheScreen()
   })
 
   test('Should open PRODUCT_1 and navigate to the report screen, navigate back, navigate to the report screen and send an email with the correct parameters', async () => {
@@ -254,8 +259,8 @@ describe('ProductDetailRoute', () => {
 
     // expect product 1 to be displayed
 
-    expect(screen.queryByText(PRODUCT_1.name)).toBeOnTheScreen()
-    expect(screen.queryByTestId(reportButtonTestId)).toBeOnTheScreen()
+    expect(await screen.findByText(PRODUCT_1.name)).toBeOnTheScreen()
+    expect(await screen.findByTestId(reportButtonTestId)).toBeOnTheScreen()
 
     // -----------------------------------------------------------------------
     // set hook to return product 1, but loading product 2
@@ -290,7 +295,7 @@ describe('ProductDetailRoute', () => {
 
     // expect product 2 to be displayed
 
-    expect(screen.queryByText(PRODUCT_2.name)).toBeOnTheScreen()
-    expect(screen.queryByTestId(reportButtonTestId)).toBeOnTheScreen()
+    expect(await screen.findByText(PRODUCT_2.name)).toBeOnTheScreen()
+    expect(await screen.findByTestId(reportButtonTestId)).toBeOnTheScreen()
   })
 })
