@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { ListItem } from '../../../components/list-item/list-item'
+import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { ScreenContent } from '../../../components/screen/screen-content'
@@ -27,12 +28,18 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
   const { colors } = useTheme()
 
   const dispatch = useDispatch<AppDispatch>()
+  const [loading, setLoading] = useState(false)
 
   const currentEnvironmentConfiguration = useEnvironmentConfiguration()
 
   const onPressEnvironment = useCallback(
-    (envName: string) => {
-      dispatch(changeEnvironment(envName))
+    async (envName: string) => {
+      setLoading(true)
+      try {
+        await dispatch(changeEnvironment(envName)).unwrap()
+      } finally {
+        setLoading(false)
+      }
     },
     [dispatch],
   )
@@ -45,6 +52,7 @@ export const EnvironmentConfigScreen: React.FC<EnvironmentConfigScreenProps> = (
         onPressBack={onHeaderPressBack}
         onPressClose={onHeaderPressClose}
       />
+      <LoadingIndicator loading={loading} />
       <ScreenContent>
         {environmentConfigurations.data.map(environmentConfigurationItem => {
           return (

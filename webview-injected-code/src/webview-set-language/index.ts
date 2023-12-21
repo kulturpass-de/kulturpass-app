@@ -1,6 +1,10 @@
 import { logToBridge } from '../utils'
 
 export const setWebviewLanguage = (language: string, isFirstLoad: boolean) => {
+  if (typeof language !== 'string' || typeof isFirstLoad !== 'boolean') {
+    return
+  }
+
   function setLanguage() {
     try {
       logToBridge('log', ['Setting language', language])

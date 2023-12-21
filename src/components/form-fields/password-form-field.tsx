@@ -16,6 +16,7 @@ export type PasswordFormFieldProps = {
   containerStyle?: ViewStyle
   isRequired?: boolean
   disableAccessibilityForLabel?: boolean
+  registrationScenario?: boolean
 
   onChange?: TextInputProps['onChangeText']
   onBlur?: TextInputProps['onBlur']
@@ -37,6 +38,7 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
       onBlur,
       value,
       textContentType,
+      registrationScenario,
     },
     ref,
   ) => {
@@ -65,7 +67,8 @@ export const PasswordFormField = React.forwardRef<TextInput, PasswordFormFieldPr
         autoComplete="password"
         autoCapitalize="none"
         autoCorrect={false}
-        textContentType={textContentType}>
+        textContentType={textContentType}
+        registrationScenario={registrationScenario}>
         <Pressable
           style={styles.inputIcon}
           onPress={toggleIsPasswordVisible}

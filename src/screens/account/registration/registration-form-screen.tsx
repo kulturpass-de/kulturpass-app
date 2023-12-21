@@ -125,6 +125,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           isRequired
           disableAccessibilityForLabel
           textContentType="password"
+          registrationScenario
         />
         <FormFieldWithControl
           name={'confirmPassword'}
@@ -135,6 +136,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           isRequired
           disableAccessibilityForLabel
           textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'newPassword'}
+          registrationScenario
         />
         <FormFieldWithControl
           name={'firstName'}

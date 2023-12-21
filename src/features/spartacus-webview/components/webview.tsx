@@ -20,6 +20,7 @@ import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
 import { useWebViewLog } from '../hooks/use-webview-log'
 import { useWebViewScrollToTop } from '../hooks/use-webview-scroll-to-top'
 import { useWebViewWindowError } from '../hooks/use-webview-window-error'
+import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-bridge'
 import { WebViewId } from '../services/webview-bridge-adapter/types'
 import { useWebviewAndroidPullToRefresh } from '../services/webview-bridge-adapter/use-webview-android-pull-to-refresh'
 import { useWebViewAuthSync } from '../services/webview-bridge-adapter/use-webview-auth-sync'
@@ -152,12 +153,14 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
 
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      // Ignore back button, if filter or sort is opened, as otherwise we don't know
-      // if the modal is still visible
+      if (filtersOrSortOpen) {
+        webViewBridgeAdapter.callBridgeFunctionToAll(SpartacusBridge.FunctionCall.Target.SearchCloseModal, [])
+      }
+
       return filtersOrSortOpen
     })
     return sub.remove
-  }, [filtersOrSortOpen, navigation])
+  }, [filtersOrSortOpen, navigation, webViewBridgeAdapter])
 
   return (
     <Animated.View style={[styles.container, { marginTop: outerContainerMarginTop.current }]}>

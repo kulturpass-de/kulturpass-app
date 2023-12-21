@@ -131,7 +131,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
 
   const shareButton = (
     <CircleIconButton
-      accessibilityLabelI18nKey="productDetail_header_closeButton"
+      accessibilityLabelI18nKey="productDetail_header_shareButton"
       testID={addTestIdModifier(testID, 'shareButton')}
       iconSource="share-arrow"
       onPress={onShare}

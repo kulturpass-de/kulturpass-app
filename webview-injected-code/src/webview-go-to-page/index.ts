@@ -1,6 +1,9 @@
 import { logToBridge } from '../utils'
 
 export const webviewGoToPage = (uri: string) => {
+  if (typeof uri !== 'string') {
+    return
+  }
   try {
     var injectedUri = new URL(uri)
 

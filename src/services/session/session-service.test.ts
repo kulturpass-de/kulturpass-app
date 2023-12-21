@@ -27,16 +27,17 @@ describe('session-service', () => {
 
   describe('getUserLocation', () => {
     it('should return userLocationData key of SecureStorage', async () => {
+      const currentTime = Date.now()
       mockedSecureStorage.mockItem('userLocationData', {
         coords: { latitude: 123, longitude: 123 },
-        timestamp: Date.now(),
+        timestamp: currentTime,
       } as GeoPosition)
 
       const userLocationData = await getUserLocation()
 
       expect(userLocationData).toEqual({
         coords: { latitude: 123, longitude: 123 },
-        timestamp: Date.now(),
+        timestamp: currentTime,
       })
     })
   })

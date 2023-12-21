@@ -35,6 +35,7 @@ export namespace SpartacusBridge {
       RouterNavigate = 'router.navigate',
       UserProfileRefresh = 'userProfile.refresh',
       FavouritesRefresh = 'favourites.refresh',
+      SearchCloseModal = 'search.closeModal',
     }
     export type Arguments = Serializable[]
     export type ResultValue = Serializable
@@ -96,6 +97,14 @@ export namespace SpartacusBridge {
       export type ResultValue = void
       export type Signature = (...args: Arguments) => Promise<ResultValue>
       export interface Request extends FunctionCall.Request<Target.FavouritesRefresh, Arguments> {}
+      export interface Result extends FunctionCall.Result<ResultValue> {}
+    }
+
+    export namespace SearchCloseModal {
+      export type Arguments = []
+      export type ResultValue = void
+      export type Signature = (...args: Arguments) => Promise<ResultValue>
+      export interface Request extends FunctionCall.Request<Target.SearchCloseModal, Arguments> {}
       export interface Result extends FunctionCall.Result<ResultValue> {}
     }
   }

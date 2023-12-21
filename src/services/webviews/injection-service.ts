@@ -1,3 +1,5 @@
+import { logger } from '../logger'
+
 export enum Injections {
   webviewAndroidOffline,
   webviewSetPadding,
@@ -9,7 +11,11 @@ export enum Injections {
 }
 
 /**
- * Handles resolving the scripts, that can be injected into the Webview
+ * Handles resolving the scripts, that can be injected into the Webview.
+ * As injected scripts could potentially introduce security risks, the inputs need to be sanitized.
+ * Relevant: https://xkcd.com/327/ ;)
+ * Required javascript files, that end with ".raw.js" are automatically
+ * imported as a string through the custom babel "injected-code-transformer".
  */
 class InjectionService {
   private getCodeStr(key: Injections): string {
@@ -36,6 +42,10 @@ class InjectionService {
   }
 
   public webviewSetPadding(contentOffset: number) {
+    if (typeof contentOffset !== 'number') {
+      logger.warn('webviewSetPadding: contentOffset is not a number')
+      return ''
+    }
     const code = this.getCodeStr(Injections.webviewSetPadding)
     return `${code}
     kp_webview_set_padding.setWebviewPadding(${contentOffset})
@@ -45,6 +55,10 @@ class InjectionService {
   }
 
   public webviewSetLanguage(language: string, isFirstLoad: boolean) {
+    if (typeof language !== 'string' || typeof isFirstLoad !== 'boolean') {
+      logger.warn('webviewSetLanguage: language is not a string or isFirstLoad is not a boolean')
+      return ''
+    }
     const code = this.getCodeStr(Injections.webviewSetLanguage)
     return `${code}
     kp_webview_set_language.setWebviewLanguage(${JSON.stringify(language)}, ${isFirstLoad})
@@ -66,6 +80,10 @@ class InjectionService {
   }
 
   public webviewGoToPage(uri: string) {
+    if (typeof uri !== 'string') {
+      logger.warn('webviewGoToPage: uri is not a string')
+      return ''
+    }
     const code = this.getCodeStr(Injections.webviewGoToPage)
     return `${code}
       kp_webview_go_to_page.webviewGoToPage(${JSON.stringify(uri)})

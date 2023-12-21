@@ -37,6 +37,10 @@ export type WebViewFunctions = {
     arguments: SpartacusBridge.FunctionCall.FavouritesRefresh.Request['arguments']
     result: SpartacusBridge.FunctionCall.FavouritesRefresh.Result
   }
+  [SpartacusBridge.FunctionCall.Target.SearchCloseModal]: {
+    arguments: SpartacusBridge.FunctionCall.SearchCloseModal.Request['arguments']
+    result: SpartacusBridge.FunctionCall.SearchCloseModal.Result
+  }
 }
 
 export type AnyWebViewFunctionResult = ValueOf<WebViewFunctions>['result']

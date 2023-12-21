@@ -14,7 +14,6 @@ describe('changeEnvironment', () => {
   it('should dispatch setEnvironmentConfiguration and authLogout', async () => {
     await store.dispatch(changeEnvironment('test'))
 
-    store.expectActions([{ type: setEnvironmentConfiguration.type }])
-    store.expectActions([{ type: authLogout.pending.type }])
+    store.expectActions([{ type: authLogout.pending.type }, { type: setEnvironmentConfiguration.type }])
   })
 })

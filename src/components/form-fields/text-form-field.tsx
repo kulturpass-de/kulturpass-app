@@ -23,7 +23,7 @@ export type TextFormFieldProps = React.PropsWithChildren<
     containerStyle?: FormFieldContainerProps['containerStyle']
     isRequired?: boolean
     disableAccessibilityForLabel?: boolean
-
+    registrationScenario?: boolean
     onChange?: TextInputProps['onChangeText']
   } & Pick<
     TextInputProps,
@@ -60,6 +60,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
       editable = true,
       textContentType,
       accessibilityRole,
+      registrationScenario,
       ...textInputProps
     },
     ref,
@@ -105,6 +106,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
             Platform.OS === 'ios' && {
               // fix line break issue. https://github.com/facebook/react-native/issues/28012
               lineHeight: undefined,
+              ...(registrationScenario && { color: toTransparentColor(colors.secondaryLabelColor, 0.8, !editable) }),
             },
           ]}
           testID={addTestIdModifier(testID, 'input')}

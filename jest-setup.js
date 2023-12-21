@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import mockRNCNetInfo from '@react-native-community/netinfo/jest/netinfo-mock.js';
 
 const crypto = require('crypto');
 const stream = require('stream');
@@ -17,6 +18,8 @@ jest.mock('@react-native-async-storage/async-storage', () => {
     setItem: async (...args) => mock.setItem(...args),
   };
 });
+
+jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo);
 
 jest.mock('react-native-webview', () => {
   const React = require('react');

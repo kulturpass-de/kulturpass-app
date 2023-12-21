@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 import { Button } from '../../../components/button/button'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
@@ -13,13 +14,13 @@ import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { useDeleteAccount } from '../../../features/account-deletion/hooks/use-delete-account'
 import { useFocusErrors } from '../../../features/form-validation/hooks/use-focus-errors'
-import { CdcInvalidLoginIdDeleteError, CdcInvalidLoginIdError } from '../../../services/errors/cdc-errors'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
+import { AppDispatch } from '../../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { deleteAccount } from '../../../services/user/redux/thunks/delete-account'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 
@@ -31,7 +32,8 @@ export type AccountDeletionConfirmScreenProps = {
 export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreenProps> = ({ onNext, onClose }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
-  const { deleteAccount, loading } = useDeleteAccount()
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
 
   const form = useForm<{ password: string }>({
     shouldFocusError: false,
@@ -45,22 +47,19 @@ export const AccountDeletionConfirmScreen: React.FC<AccountDeletionConfirmScreen
   useFocusErrors(form)
 
   const handlePressDelete = form.handleSubmit(async data => {
+    setLoading(true)
     try {
-      await deleteAccount(data.password)
+      await dispatch(deleteAccount({ password: data.password })).unwrap()
       onNext()
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
-        if (error instanceof CdcInvalidLoginIdError) {
-          const newError = new CdcInvalidLoginIdDeleteError()
-          newError.errorDetails = error.errorDetails
-          ErrorAlertManager.current?.showError(newError)
-        } else {
-          ErrorAlertManager.current?.showError(error)
-        }
+        ErrorAlertManager.current?.showError(error)
       } else {
         logger.warn('delete account error cannot be interpreted', JSON.stringify(error))
         ErrorAlertManager.current?.showError(new UnknownError('Delete Account'))
       }
+    } finally {
+      setLoading(false)
     }
   })
 
