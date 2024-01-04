@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.11.0",
-  "buildNumber": "2",
+  "buildNumber": "3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -205,7 +205,8 @@
     "glob-parent": "^5.1.2",
     "ansi-regex": "^5.0.1",
     "unset-value": "^2.0.1",
-    "semver": "^7.5.4"
+    "semver": "^7.5.4",
+    "follow-redirects": "^1.15.4"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
