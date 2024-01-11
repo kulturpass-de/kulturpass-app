@@ -62,6 +62,7 @@ export const TabBarIcon: React.FC<TabBarIconProps> = React.memo(({ isFocused, na
       active={internalIsFocused === true}
       speed={1.9}
       type={animationSource}
+      useNativeDriver={false}
       width={40}
       height={36}
     />

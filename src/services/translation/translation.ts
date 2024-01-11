@@ -1,11 +1,14 @@
 import { useCallback, useMemo } from 'react'
 import { useTranslation as useI18nTranslation } from 'react-i18next'
+import { AvailableTranslations } from '../../components/translated-text/types'
 import { env } from '../../env'
 import { createTranslation } from './create-translation'
 import { fallbackLng } from './setup'
 import { Language } from './types'
 
-export { type TFunction as TranslationFunction } from 'i18next'
+type TranslationFunction = (key: AvailableTranslations, value?: Record<string, unknown>) => string
+
+export { type TranslationFunction }
 export { Trans } from 'react-i18next'
 
 export const translation = createTranslation({ debug: env.DEBUG_TRANSLATION })
@@ -32,7 +35,7 @@ export const useTranslation = (...params: Parameters<typeof useI18nTranslation>)
     [i18n],
   )
 
-  const hook = useMemo(() => ({ t, l, ls, cl }), [t, l, ls, cl])
+  const hook = useMemo(() => ({ t: t as TranslationFunction, l, ls, cl }), [t, l, ls, cl])
 
   return hook
 }

@@ -4,7 +4,7 @@ import { useFormattedDateTime } from './use-formatted-date-time'
 
 describe('useFormattedDateTime', () => {
   beforeEach(() => {
-    translation.changeLanguage('de')
+    translation?.changeLanguage('de')
   })
 
   test('Should return formatted Date and Time for time: 11:00', () => {

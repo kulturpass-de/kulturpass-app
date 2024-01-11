@@ -1,4 +1,4 @@
-import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler/lib/node'
+import type { ChildNode, Element as ElementNode, Text as TextNode } from 'domhandler'
 import React, { useCallback } from 'react'
 import { StyleProp, Text, TextStyle } from 'react-native'
 import { ElementType, parseDocument } from '../../services/html-parser/html-parser'
@@ -76,7 +76,9 @@ export const HtmlText: React.FC<HtmlTextProps> = ({ html, testID, style }) => {
     }
 
     // nested text groups need a container
-    return <Text key={key}>{element.children.map((c, i: number) => renderNode(c, `child-${i}`, textStyle))}</Text>
+    return (
+      <Text key={key}>{element.children.map((c: ChildNode, i: number) => renderNode(c, `child-${i}`, textStyle))}</Text>
+    )
   }
 
   const renderNode = (node: ChildNode, index: string, textStyle?: StyleProp<TextStyle>) => {

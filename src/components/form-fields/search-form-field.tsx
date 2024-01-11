@@ -21,7 +21,7 @@ export const SearchFormField = React.forwardRef<TextInput, SearchFormField>(
           onPress={onClear}
           accessible
           accessibilityRole="button"
-          accessibilityLabel={t(accessibilityLabelI18nKey)}
+          accessibilityLabel={accessibilityLabelI18nKey && t(accessibilityLabelI18nKey)}
           testID={addTestIdModifier(textFormFieldProps.testID, 'clearSearchTextButton')}>
           <SvgImage type={'x-circle'} width={24} height={24} />
         </Pressable>

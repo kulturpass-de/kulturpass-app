@@ -35,7 +35,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
 
   let errorMessage: string | undefined
   if (error) {
-    errorMessage = error.message ?? t(`form_error_${error.type}`, t('form_error_fallback'))
+    errorMessage = error.message ?? t(`form_error_${error.type}` as any) ?? t('form_error_fallback')
   }
 
   return (

@@ -7,7 +7,7 @@ import { TranslatedText } from './translated-text'
 test('Should format date in german format', async () => {
   const reservationDate = new Date('2023-05-30T00:00:00Z')
 
-  translation.changeLanguage('de')
+  translation?.changeLanguage('de')
 
   render(
     <TranslatedText
@@ -23,7 +23,7 @@ test('Should format date in german format', async () => {
 test('Should format date in english format', async () => {
   const reservationDate = new Date('2023-05-30T00:00:00Z')
 
-  translation.changeLanguage('en')
+  translation?.changeLanguage('en')
 
   render(
     <TranslatedText

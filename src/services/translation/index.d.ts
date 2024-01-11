@@ -1,18 +1,8 @@
-import 'i18next'
-import { resources, defaultNS, fallbackLng } from './setup'
+import { defaultNS } from './setup'
 
 declare module 'i18next' {
   interface CustomTypeOptions {
-    returnNull: false
-    returnEmptyString: false
     defaultNS: typeof defaultNS
-    resources: (typeof resources)[typeof fallbackLng]
-  }
-}
-
-declare module 'react-i18next' {
-  interface CustomTypeOptions {
-    defaultNS: typeof defaultNS
-    resources: (typeof resources)[typeof fallbackLng]
+    // note: due to tsc performance reasons, we don't use the official way of typing the i18n
   }
 }

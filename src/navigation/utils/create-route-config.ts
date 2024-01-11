@@ -17,16 +17,16 @@ type RouteName =
 type ComponentProps<R extends RouteName> = R extends keyof ModalParamList
   ? ModalScreenProps<R>
   : R extends keyof TabsParamList
-  ? TabsScreenProps<R>
-  : R extends keyof SettingsParamList
-  ? SettingsScreenProps<R>
-  : R extends keyof EidParamList
-  ? EidScreenProps<R>
-  : R extends keyof OnboardingParamList
-  ? OnboardingScreenProps<R>
-  : R extends keyof PdpParamList
-  ? PdpScreenProps<R>
-  : never
+    ? TabsScreenProps<R>
+    : R extends keyof SettingsParamList
+      ? SettingsScreenProps<R>
+      : R extends keyof EidParamList
+        ? EidScreenProps<R>
+        : R extends keyof OnboardingParamList
+          ? OnboardingScreenProps<R>
+          : R extends keyof PdpParamList
+            ? PdpScreenProps<R>
+            : never
 
 export const createRouteConfig = <R extends RouteName, P extends ComponentProps<R>>(config: {
   name: R
