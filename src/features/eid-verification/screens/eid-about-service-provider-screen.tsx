@@ -38,7 +38,7 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
     (item: AccessRight) => {
       const type = item.toLowerCase() as Lowercase<AccessRight>
       const accessRightI18NKey = `eid_aboutServiceProvider_accessRights_${type}` as const
-      const accessRightText = t(accessRightI18NKey as any, '' as any)
+      const accessRightText = t(accessRightI18NKey, '')
       const accessibilityLabel =
         item === 'GivenNames' ? t('eid_aboutServiceProvider_accessRights_givennames_label') : undefined
 

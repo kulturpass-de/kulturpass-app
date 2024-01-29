@@ -30,13 +30,7 @@
       didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge 
-{
-  return [self getBundleURL];
-}
-
-- (NSURL *)getBundleURL 
-{
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
 #if DEBUG
   return
       [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];

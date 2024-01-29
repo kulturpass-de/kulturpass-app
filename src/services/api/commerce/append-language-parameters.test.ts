@@ -3,7 +3,7 @@ import { appendLanguageParameters } from './append-language-parameters'
 
 describe('append-language-parameters', () => {
   it('should append lang property based on translation.language', async () => {
-    await translation?.changeLanguage('de')
+    await translation.changeLanguage('de')
 
     const res = appendLanguageParameters({ irrelevantProperty: 'should remain as is' })
 
@@ -12,7 +12,7 @@ describe('append-language-parameters', () => {
   })
 
   it('should overwrite lang property if it already exists', async () => {
-    await translation?.changeLanguage('en')
+    await translation.changeLanguage('en')
 
     const res = appendLanguageParameters({ irrelevantProperty: 'should remain as is', lang: 'none' })
 

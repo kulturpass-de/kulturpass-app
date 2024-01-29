@@ -94,8 +94,6 @@ export const AnimatedIcon = React.forwardRef<AnimatedIconRef, AnimatedIconProps>
           // this can make the animation stay in its end state for a specific time, for example
           if (finished) {
             setTimeout(() => setAnimating(false), onAnimationFinishedResetDelayMs)
-          } else {
-            setAnimating(false)
           }
 
           // optionally notify the parent component

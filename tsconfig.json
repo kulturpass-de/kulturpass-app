@@ -1,7 +1,8 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@tsconfig/react-native/tsconfig.json" /* Recommended React Native TSConfig base */,
   "compilerOptions": {
     "types": ["react-native", "jest", "node"],
+    "jsx": "react-native"
   },
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js", "webview-injected-code"]
 }

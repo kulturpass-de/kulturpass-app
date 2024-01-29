@@ -6,12 +6,10 @@ import { ModalScreenHeader } from '../../components/modal-screen/modal-screen-he
 import { SvgImage } from '../../components/svg-image/svg-image'
 import { TranslatedText } from '../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
-import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export const ForceUpdateScreen: React.FC = () => {
-  const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
 
@@ -24,7 +22,7 @@ export const ForceUpdateScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <SvgImage
           testID={addTestIdModifier(screenTestId, 'image_alt')}
-          accessibilityLabel={t('force_update_image_alt')}
+          i18nKey="force_update_image_alt"
           type="information-circle"
           width={80}
           height={80}

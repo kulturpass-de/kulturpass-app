@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services"
 
@@ -93,8 +92,8 @@ def reactNativeArchitectures() {
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
     namespace "de.bkm.kulturpass"
 
     defaultConfig {
@@ -114,7 +113,7 @@ android {
             + versionBuild.toInteger()
         )
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        base.archivesBaseName "cultureapp-v${versionName}-rc${VERSION_BUILD}"
+        archivesBaseName "cultureapp-v${versionName}-rc${VERSION_BUILD}"
 
         packagingOptions {
             // Fixes build error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
@@ -205,8 +204,13 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
     implementation platform('com.google.firebase:firebase-bom:32.2.3')
-    implementation("com.facebook.react:flipper-integration")
 
+    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
+    }
+
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
