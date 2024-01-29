@@ -15,6 +15,7 @@
   "contact_content_report_title" : "Report Inappropriate Content",
   "contact_content_report_text" : "If you would like to report inappropriate content, please write to us at the email address below. When providing information about inappropriate content, please be as specific as possible (such as product name, provider name, product details).",
   "contact_content_report_email_recipient" : "meldung@kulturpass.de",
+  "password_recommendation_label" : "The password must be at least 8 characters long and must contain 3 of the following: an uppercase letter, a lowercase letter, a number, and a special character.",
   "contact_content_report_email_subject" : "App Support",
   "faq_title" : "FAQs",
   "accountDeletion_confirm_title" : "Delete Account?",
@@ -467,7 +468,7 @@
   "reservationDetail_footer_voucher_refunds" : "of the <bold>value code amount</bold> of <bold>{{totalWithoutRefunds}}</bold>, you have received <em> {{refundAmount}} </em> back",
   "reservationDetail_statusInfo_validUntil_label" : "Valid Until: {{validUntil, datetime}}",
   "reservationDetail_statusInfo_orderCode_label" : "Order Number: {{orderCode}}",
-  "reservationDetail_statusInfo_reservationDate_label" : "Booked by you on {{reservationDate, datetime}}",
+  "reservationDetail_statusInfo_reservationDate_label" : "Booked by you on ",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_created_headline" : "Not Yet Accepted",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_created_copytext" : "Your booking has been received, but has not yet been accepted by the provider.",
   "reservationDetail_header_deliveryScenario_pickup_orderStatus_shipping_headline" : "Booking is being processed",
@@ -734,5 +735,6 @@
   "external_link_accessibility_announcement" : "External Link",
   "external_link_short_accessibility_announcement" : "External",
   "voucher_badge" : "Value Code",
-  "error_alert_networkError_message" : "The action could not be performed. The system is currently unavailable, please try again later.\n{{dateTime}}"
+  "error_alert_networkError_message" : "The action could not be performed. The system is currently unavailable, please try again later.\n{{dateTime}}",
+  "homebudget_balance_voiceover" : "{{available}} of {{max}} euros left, {{spentPercentage}}% spent"
 }

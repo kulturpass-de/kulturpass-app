@@ -1,7 +1,7 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { RouteProp } from '@react-navigation/native'
 import React, { useCallback } from 'react'
-import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-native'
+import { AccessibilityProps, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { TabBarIcon } from '../../components/tab-bar-icon/tab-bar-icon'
 import { WebViewId } from '../../features/spartacus-webview/services/webview-bridge-adapter/types'
@@ -62,7 +62,9 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
       onLongPress={onLongPress}
       accessibilityLabel={t(`${routeName}_bottomNavigation_label`)}
       accessibilityState={isFocused ? { selected: true } : {}}
-      accessibilityRole="tab"
+      // FIXME: accessibilityRole: 'tab' doesn't seem to work as expected on iOS
+      // see https://github.com/react-navigation/react-navigation/commit/3ac22e143509c9de1fdb941b1d833dd348da236c
+      accessibilityRole={Platform.select({ ios: 'button', default: 'tab' })}
       accessibilityHint={accessibilityHint}
       accessible>
       <TabBarIcon isReduceMotionActive={isReduceMotionActive} isFocused={isFocused} name={route.name} />
@@ -98,6 +100,7 @@ export const BottomTabBar: React.FC<BottomTabBarProps & { bottomSafeArea: number
 
   return (
     <View
+      accessibilityRole="tablist"
       style={[
         styles.container,
         {

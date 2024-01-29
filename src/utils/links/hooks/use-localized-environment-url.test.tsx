@@ -27,7 +27,7 @@ jest.mock('../../../services/environment-configuration/utils', () => {
 
 describe('useLocalizedEnvironmentUrl', () => {
   test('Should return the DE url', async () => {
-    translation?.changeLanguage('de')
+    translation.changeLanguage('de')
     const { result } = renderHook(() => useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl), {
       wrapper: Wrapper,
     })
@@ -36,7 +36,7 @@ describe('useLocalizedEnvironmentUrl', () => {
   })
 
   test('Should return the EN url', async () => {
-    translation?.changeLanguage('de')
+    translation.changeLanguage('de')
     const { result } = renderHook(
       () => {
         const url = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)

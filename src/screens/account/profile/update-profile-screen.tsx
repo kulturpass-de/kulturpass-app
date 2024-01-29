@@ -56,6 +56,7 @@ export type UpdateProfileScreenProps = {
   accountInfoData: AccountInfoData
   onHeaderPressClose: () => void
   afterUpdate: () => void
+  updateProfileScenario: boolean
 }
 
 export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
@@ -264,6 +265,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
               isRequired
               disableAccessibilityForLabel
               textContentType="newPassword"
+              updateProfileScenario
             />
             <FormFieldWithControl
               name={'newPasswordConfirmation'}

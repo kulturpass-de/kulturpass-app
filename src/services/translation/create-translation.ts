@@ -22,8 +22,6 @@ export const createTranslation = (params?: { debug?: boolean }) => {
       defaultNS,
       fallbackLng,
 
-      // the official docs states that this is not required for react:
-      // https://react.i18next.com/misc/using-with-icu-format
       interpolation: { escapeValue: false },
     })
 
@@ -33,9 +31,8 @@ export const createTranslation = (params?: { debug?: boolean }) => {
 }
 
 export const setupErrorMap = (i18next: i18nType) => {
-  // See https://github.com/colinhacks/zod/blob/master/ERROR_HANDLING.md
   z.setErrorMap(issue => {
-    const message: string = i18next.t(`form_error_${issue.code}`, '')
+    const message = i18next.t(`form_error_${issue.code}`, '')
     return { message: message ?? i18next.t('form_error_fallback') }
   })
 }

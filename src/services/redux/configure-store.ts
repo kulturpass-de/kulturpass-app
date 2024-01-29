@@ -17,6 +17,10 @@ export type SetupStoreProps = {
 
 export const setupStore = (props?: SetupStoreProps) => {
   const middlewares: Middleware<any>[] = []
+  if (__DEV__ && !process.env.JEST_WORKER_ID) {
+    const createReduxDebugger = require('redux-flipper').default
+    middlewares.push(createReduxDebugger())
+  }
   middlewares.push(cdcApi.middleware, commerceApi.middleware, listenerMiddleware.middleware)
 
   const store = configureStore({

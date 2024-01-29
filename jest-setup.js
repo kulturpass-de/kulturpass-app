@@ -168,3 +168,5 @@ let mockedAppConfig = {
 jest.mock('./src/services/redux/utils/verify-jws-with-jwk', () => ({
   verifyJwsWithJwk: () => Promise.resolve(JSON.stringify(mockedAppConfig)),
 }));
+
+jest.mock('@react-native-clipboard/clipboard', () => require('@react-native-clipboard/clipboard/jest/clipboard-mock.js'));

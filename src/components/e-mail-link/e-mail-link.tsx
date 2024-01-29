@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, Text } from 'react-native'
+import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { textStyles } from '../../theme/typography'
 import { sendMail } from '../../utils/links/utils'
@@ -14,9 +15,15 @@ export type EMailLinkProps = {
 export const EMailLink: React.FC<EMailLinkProps> = ({ testID, recipient, subject, content }) => {
   const { colors } = useTheme()
   const onPress = useCallback(async () => sendMail(recipient, subject, content), [content, recipient, subject])
+  const { t } = useTranslation()
 
   return (
-    <Pressable testID={testID} onPress={onPress}>
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      accessibilityRole="link"
+      accessibilityHint={t('external_link_short_accessibility_announcement')}
+      accessible>
       <Text style={[textStyles.BodyExtrabold, styles.linkText, { color: colors.labelColor }]}>{recipient}</Text>
     </Pressable>
   )

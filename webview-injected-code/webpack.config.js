@@ -44,6 +44,10 @@ var modules = [
     name: 'webview-go-to-page',
     moduleName: 'kp_webview_go_to_page',
   },
+  {
+    name: 'webview-set-text-zoom',
+    moduleName: 'kp_webview_set_text_zoom',
+  },
 ];
 
 module.exports = modules.map(module => {

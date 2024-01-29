@@ -5,7 +5,7 @@ import { useFormattedPrice } from './use-formatted-price'
 
 describe('useFormattedPrice', () => {
   beforeEach(() => {
-    translation?.changeLanguage('de')
+    translation.changeLanguage('de')
   })
 
   test('Should return formatted EUR price', () => {

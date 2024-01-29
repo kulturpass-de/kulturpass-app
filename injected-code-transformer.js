@@ -1,4 +1,4 @@
-const babelTransformer = require('@react-native/metro-babel-transformer');
+const babelTransformer = require('metro-react-native-babel-transformer');
 const svgTransformer = require('react-native-svg-transformer');
 
 /**

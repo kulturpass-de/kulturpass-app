@@ -27,6 +27,7 @@ test('Should render update screen', async () => {
       afterUpdate={afterUpdate}
       accountInfoData={ACCOUNT_INFO_DATA}
       onHeaderPressClose={onHeaderPressClose}
+      updateProfileScenario={false}
     />,
   )
   expect(screen.getByTestId(buildTestId('updateProfile_screen'))).toBeOnTheScreen()
@@ -38,6 +39,7 @@ test('Should display the UpdateProfileAlert when pressing cancel, since changes 
       afterUpdate={afterUpdate}
       accountInfoData={ACCOUNT_INFO_DATA}
       onHeaderPressClose={onHeaderPressClose}
+      updateProfileScenario={false}
     />,
   )
 
@@ -81,6 +83,7 @@ test('Should display the UpdateProfileAlert when navigating back, since changes 
       afterUpdate={afterUpdate}
       accountInfoData={ACCOUNT_INFO_DATA}
       onHeaderPressClose={onHeaderPressClose}
+      updateProfileScenario={false}
     />,
   )
 
@@ -110,6 +113,7 @@ test('Should navigate back since no changes to the profile were made', async () 
       afterUpdate={afterUpdate}
       accountInfoData={ACCOUNT_INFO_DATA}
       onHeaderPressClose={onHeaderPressClose}
+      updateProfileScenario={false}
     />,
   )
 

@@ -44,6 +44,7 @@ export const UpdateProfileRoute: React.FC<UpdateProfileRouteProps> = () => {
           accountInfoData={{ data: accountInfo.data.data, profile: accountInfo.data.profile }}
           onHeaderPressClose={closeUpdateProfileScreen}
           afterUpdate={closeUpdateProfileScreen}
+          updateProfileScenario={false}
         />
       ) : null}
     </>

@@ -27,7 +27,7 @@ export const startup = createThunk<void, { appFirstRun: boolean }>('root/startup
 
   const lastUsedTranslationLanguage = selectLastUsedTranslationLanguage(state)
   if (lastUsedTranslationLanguage) {
-    await translation?.changeLanguage(lastUsedTranslationLanguage)
+    await translation.changeLanguage(lastUsedTranslationLanguage)
   }
 
   await thunkApi.dispatch(refreshLocation())

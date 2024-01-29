@@ -6,5 +6,5 @@ export const appendLanguageParameters = <InputData>(inputData: InputData) => {
    *  - if the app language is German, set to de
    *  - otherwise, set to en
    */
-  return { ...inputData, lang: translation?.language === 'de' ? 'de' : 'en' }
+  return { ...inputData, lang: translation.language === 'de' ? 'de' : 'en' }
 }

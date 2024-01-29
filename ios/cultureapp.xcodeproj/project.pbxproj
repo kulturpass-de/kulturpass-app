@@ -14,9 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3C5E0867E841463B9ACD3567 /* nunito_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 917595BD0BFA419091823D6E /* nunito_bolditalic.ttf */; };
 		45589818FFCA457D80C08EE7 /* nunito_extralight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A55C8ACBFC8548A79CD0908B /* nunito_extralight.ttf */; };
+		620D85ADDEFCDA2AF96B9576 /* Pods_cultureapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8F42E1B30D2AA1740DBB01F /* Pods_cultureapp.framework */; };
+		65EA17F25026F9B596556161 /* Pods_cultureapp_cultureappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06A2CFC1D1D7E2ADBBD7041D /* Pods_cultureapp_cultureappTests.framework */; };
 		663D385320614BAC97CC69DF /* nunito_blackitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FB499456DB34ED28AB8F09D /* nunito_blackitalic.ttf */; };
 		6B93CE250B284ACAA66AF81D /* nunito_light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93EFEFA04FFE48C69632DAF1 /* nunito_light.ttf */; };
-		751627EDF6FB9D62A65CEF2E /* libPods-cultureapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C8F7C9878009C808F4D03A /* libPods-cultureapp.a */; };
 		76F22BE3F90B44608C981D13 /* nunito_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFD602E95FE44CFA0B3BD82 /* nunito_bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		87A68A910EE442EB8E491B8C /* nunito_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEDD594D5E8D4786B2B839C3 /* nunito_black.ttf */; };
@@ -27,7 +28,6 @@
 		C16D1AFC2AB47B5700553C14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C16D1AFB2AB47B5700553C14 /* GoogleService-Info.plist */; };
 		C2616689832342B897BF9F14 /* nunito_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44A266EF58404B2698536FDA /* nunito_medium.ttf */; };
 		C34BC9F0250543AAA814459B /* nunito_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 326D099DA0FF4936B00F6D95 /* nunito_italic.ttf */; };
-		C9A0DB10AA211866A065F325 /* libPods-cultureapp-cultureappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EAD3CC7F0DD438F67D48FCD /* libPods-cultureapp-cultureappTests.a */; };
 		D61DB36A71EA4AF2BC5EF553 /* nunito_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FE7AC9506F419DAA825B0E /* nunito_regular.ttf */; };
 		DC250E7D1A2F439CBF6EE095 /* nunito_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCF0B0DF9A2448CD90892B94 /* nunito_lightitalic.ttf */; };
 		E3CA1670186B4968BD432F5B /* nunito_extrabolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8C25932F2324D8895B1790B /* nunito_extrabolditalic.ttf */; };
@@ -48,6 +48,7 @@
 		00E356EE1AD99517003FC87E /* cultureappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cultureappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* cultureappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cultureappTests.m; sourceTree = "<group>"; };
+		06A2CFC1D1D7E2ADBBD7041D /* Pods_cultureapp_cultureappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cultureapp_cultureappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08AA7D8BD6A441A4A02AF373 /* nunito_mediumitalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_mediumitalic.ttf; path = ../src/assets/fonts/Nunito/nunito_mediumitalic.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* cultureapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cultureapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = cultureapp/AppDelegate.h; sourceTree = "<group>"; };
@@ -69,7 +70,6 @@
 		70FE7AC9506F419DAA825B0E /* nunito_regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_regular.ttf; path = ../src/assets/fonts/Nunito/nunito_regular.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = cultureapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-cultureapp-cultureappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp-cultureappTests.release.xcconfig"; path = "Target Support Files/Pods-cultureapp-cultureappTests/Pods-cultureapp-cultureappTests.release.xcconfig"; sourceTree = "<group>"; };
-		8EAD3CC7F0DD438F67D48FCD /* libPods-cultureapp-cultureappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cultureapp-cultureappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		917595BD0BFA419091823D6E /* nunito_bolditalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_bolditalic.ttf; path = ../src/assets/fonts/Nunito/nunito_bolditalic.ttf; sourceTree = "<group>"; };
 		93EFEFA04FFE48C69632DAF1 /* nunito_light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_light.ttf; path = ../src/assets/fonts/Nunito/nunito_light.ttf; sourceTree = "<group>"; };
 		9E486B8A29BB5C1D0008C20A /* cultureapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = cultureapp.entitlements; path = cultureapp/cultureapp.entitlements; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 		C18830E5299A9CE80004C431 /* Company.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Company.xcconfig; path = Configuration/Company.xcconfig; sourceTree = "<group>"; };
 		C18830E6299A9CE80004C431 /* Enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Enterprise.xcconfig; path = Configuration/Enterprise.xcconfig; sourceTree = "<group>"; };
 		C18830E7299A9CE80004C431 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = Configuration/Development.xcconfig; sourceTree = "<group>"; };
-		D2C8F7C9878009C808F4D03A /* libPods-cultureapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cultureapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8F42E1B30D2AA1740DBB01F /* Pods_cultureapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cultureapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D46D7346FB6043E2B3B825F2 /* nunito_semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_semibold.ttf; path = ../src/assets/fonts/Nunito/nunito_semibold.ttf; sourceTree = "<group>"; };
 		E8C25932F2324D8895B1790B /* nunito_extrabolditalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_extrabolditalic.ttf; path = ../src/assets/fonts/Nunito/nunito_extrabolditalic.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -94,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9A0DB10AA211866A065F325 /* libPods-cultureapp-cultureappTests.a in Frameworks */,
+				65EA17F25026F9B596556161 /* Pods_cultureapp_cultureappTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				751627EDF6FB9D62A65CEF2E /* libPods-cultureapp.a in Frameworks */,
+				620D85ADDEFCDA2AF96B9576 /* Pods_cultureapp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,8 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D2C8F7C9878009C808F4D03A /* libPods-cultureapp.a */,
-				8EAD3CC7F0DD438F67D48FCD /* libPods-cultureapp-cultureappTests.a */,
+				C8F42E1B30D2AA1740DBB01F /* Pods_cultureapp.framework */,
+				06A2CFC1D1D7E2ADBBD7041D /* Pods_cultureapp_cultureappTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -260,6 +260,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "cultureapp" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -493,6 +494,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-cultureapp-cultureappTests/Pods-cultureapp-cultureappTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FD10A7F022414F080027D42C /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -655,7 +675,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -720,7 +740,6 @@
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -729,7 +748,6 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = AdHoc;
@@ -794,7 +812,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -864,7 +882,6 @@
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -873,7 +890,6 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -883,7 +899,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -948,7 +964,6 @@
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -957,7 +972,6 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

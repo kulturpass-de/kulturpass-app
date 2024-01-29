@@ -2,7 +2,9 @@ import { camelCase, startCase } from 'lodash'
 import React, { useMemo } from 'react'
 import { Dimensions } from 'react-native'
 import { SvgProps } from 'react-native-svg'
+import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
+import { AvailableTranslations } from '../translated-text/types'
 import * as SVGs from './svgs'
 import * as DarkSVGs from './svgs/dark'
 import * as LightSVGs from './svgs/light'
@@ -57,7 +59,7 @@ export type SvgImageProps = SvgProps & {
    */
   screenWidthRelativeSize?: number
 
-  accessibilityLabel?: string
+  i18nKey?: AvailableTranslations
   testID?: string
 }
 
@@ -66,16 +68,17 @@ export const SvgImage: React.FC<SvgImageProps> = ({
   width,
   height,
   screenWidthRelativeSize = 0.5,
-  accessibilityLabel,
+  i18nKey,
   testID,
   color,
   style,
 }) => {
+  const { t } = useTranslation()
   const { colorScheme } = useTheme()
 
   const svgProps: SvgProps = useMemo(() => {
     const screenWidth = Dimensions.get('screen').width
-    const accessible = !!accessibilityLabel
+    const accessible = !!i18nKey
 
     let newHeight = height
 
@@ -89,11 +92,11 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       testID,
       accessible,
       accessibilityRole: 'image',
-      accessibilityLabel,
+      accessibilityLabel: accessible ? t(i18nKey) : undefined,
       color,
       style,
     }
-  }, [width, height, screenWidthRelativeSize, color, accessibilityLabel, style, testID])
+  }, [width, height, screenWidthRelativeSize, color, i18nKey, style, t, testID])
 
   const SvgComponent = useMemo(() => {
     const svgKey = startCase(camelCase(type)).replace(/ /g, '')

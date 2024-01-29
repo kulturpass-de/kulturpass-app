@@ -5,10 +5,13 @@ import { WebViewId } from '../../features/spartacus-webview/services/webview-bri
 import { useEnvironmentConfigurationCommerce } from '../../services/environment-configuration/hooks/use-environment-configuration'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { isKeyboardAvoidingViewDisabled } from '../../utils/keyboard/isKeyboardAvoidingViewDisabled'
 
 export type SearchScreenProps = {
   initialNavigationUrl?: string
 }
+
+const keyboardAvoidingViewDisabled = isKeyboardAvoidingViewDisabled()
 
 export const SearchScreen: React.FC<SearchScreenProps> = ({ initialNavigationUrl }) => {
   const { buildTestId } = useTestIdBuilder()
@@ -17,7 +20,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ initialNavigationUrl
   const { l: language } = useTranslation()
 
   return (
-    <Screen withBasicBackground testID={buildTestId('search')}>
+    <Screen
+      keyboardAvoidingViewDisabled={keyboardAvoidingViewDisabled}
+      withBasicBackground
+      testID={buildTestId('search')}>
       <SpartacusWebView
         webViewId={WebViewId.Search}
         url={searchUrl}
