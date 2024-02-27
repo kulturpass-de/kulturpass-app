@@ -8,12 +8,12 @@ export enum Injections {
   webviewScrollToTop,
   webviewWindowOnError,
   webviewGoToPage,
+  webviewSetTextZoom,
 }
 
 /**
  * Handles resolving the scripts, that can be injected into the Webview.
  * As injected scripts could potentially introduce security risks, the inputs need to be sanitized.
- * Relevant: https://xkcd.com/327/ ;)
  * Required javascript files, that end with ".raw.js" are automatically
  * imported as a string through the custom babel "injected-code-transformer".
  */
@@ -34,6 +34,8 @@ class InjectionService {
         return require('../../../webview-injected-code/build/webview-window-onerror/bundle.raw.js')
       case Injections.webviewGoToPage:
         return require('../../../webview-injected-code/build/webview-go-to-page/bundle.raw.js')
+      case Injections.webviewSetTextZoom:
+        return require('../../../webview-injected-code/build/webview-set-text-zoom/bundle.raw.js')
     }
   }
 
@@ -49,6 +51,19 @@ class InjectionService {
     const code = this.getCodeStr(Injections.webviewSetPadding)
     return `${code}
     kp_webview_set_padding.setWebviewPadding(${contentOffset})
+
+    // Don't remove
+    true;`
+  }
+
+  public webviewSetTextZoom(zoom: number) {
+    if (typeof zoom !== 'number') {
+      logger.warn('webviewSetTextZoom: zoom is not a number')
+      return ''
+    }
+    const code = this.getCodeStr(Injections.webviewSetTextZoom)
+    return `${code}
+    kp_webview_set_text_zoom.setWebviewTextZoom(${zoom})
 
     // Don't remove
     true;`

@@ -45,6 +45,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
           testID={addTestIdModifier(testID, 'label')}
           accessibilityLabel={t(labelI18nKey)}
           accessible={!disableAccessibilityForLabel}
+          importantForAccessibility={disableAccessibilityForLabel ? 'no' : undefined}
           style={[textStyles[labelTextStyle], { color: colors.labelColor }]}>
           {t(labelI18nKey) + (isRequired ? ' *' : '')}
         </Text>

@@ -38,6 +38,11 @@ export const ErrorAlert = ({ error, onDismiss }: ErrorAlertProps) => {
 
   const errorDescription = getErrorDescriptionTranslationFromErrorWithCode(errorWithCode)
 
+  // hide errors that should not be presented, like NoSuchFavouritesEntry
+  if (errorWithCode?.presentableError === false) {
+    return null
+  }
+
   return (
     <Alert visible={error !== undefined} onChange={onErrorAlertChange} dismissable={true}>
       <AlertContent ref={focusRef}>

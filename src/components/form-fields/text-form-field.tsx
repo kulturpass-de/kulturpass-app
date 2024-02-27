@@ -66,7 +66,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     ref,
   ) => {
     const { t } = useTranslation()
-    const { colors } = useTheme()
+    const { colors, colorScheme } = useTheme()
     const { addTestIdModifier } = useTestIdBuilder()
     const { state, handleBlur, handleFocus } = useInputState({ onBlur, onFocus })
     const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
@@ -99,9 +99,13 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
             textStyles.BodyRegular,
             styles.textInput,
             {
-              color: toTransparentColor(colors.labelColor, 0.4, !editable),
-              backgroundColor: toTransparentColor(colors.secondaryBackground, 0.4, !editable),
-              borderColor: toTransparentColor(borderColor, 0.5, !editable),
+              color: toTransparentColor(editable ? colors.labelColor : colors.secondaryLabelColor, 1, !editable),
+              backgroundColor: toTransparentColor(
+                colors.secondaryBackground,
+                colorScheme === 'dark' ? 1 : 0.5,
+                !editable,
+              ),
+              borderColor: toTransparentColor(borderColor, 0.4, !editable),
             },
             Platform.OS === 'ios' && {
               // fix line break issue. https://github.com/facebook/react-native/issues/28012

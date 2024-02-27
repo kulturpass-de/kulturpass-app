@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Platform, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
@@ -51,7 +51,10 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
       disabled={!isSelectable}
       accessibilityLabel={category.name}
       accessibilityRole="togglebutton"
-      accessibilityState={{ selected: isSelected }}
+      accessibilityState={Platform.select({
+        default: { checked: isSelected },
+        ios: { selected: isSelected }, // iOS will announce "checked" in english, even if language is set to german
+      })}
       accessible>
       {({ pressed }) => (
         <>

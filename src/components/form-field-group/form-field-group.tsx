@@ -28,6 +28,7 @@ export const FormFieldGroup: React.FC<FormFieldGroupProps> = ({
   return (
     <View testID={testID} style={containerStyle}>
       <TranslatedText
+        accessibilityRole="header"
         testID={addTestIdModifier(testID, 'caption')}
         i18nKey={i18nKey}
         i18nParams={i18nParams}

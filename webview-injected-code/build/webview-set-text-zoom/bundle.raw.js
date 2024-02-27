@@ -1,0 +1,1 @@
+var kp_webview_set_text_zoom;(()=>{"use strict";var e,t={};e=t,Object.defineProperty(e,"__esModule",{value:!0}),e.setWebviewTextZoom=void 0,e.setWebviewTextZoom=function(e){"number"==typeof e&&(document.body.style["-webkit-text-size-adjust"]="".concat(e,"%"))},kp_webview_set_text_zoom=t})();

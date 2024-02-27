@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useEffect, useRef } from 'react'
-import { Animated } from 'react-native'
+import { Animated, PixelRatio, Platform } from 'react-native'
 import WebView, { WebViewProps } from 'react-native-webview'
 import { injectionService } from '../../../services/webviews/injection-service'
 
@@ -12,6 +12,11 @@ export const useWebViewContentOffset = (webViewRef: RefObject<WebView<{}> | null
    * the pages manually
    */
   const applyWebviewDocumentBodyOffset = useCallback(() => {
+    // adjust text zoom on iOS
+    if (Platform.OS === 'ios') {
+      webViewRef.current?.injectJavaScript(injectionService.webviewSetTextZoom(PixelRatio.getFontScale() * 100))
+    }
+
     if (contentOffset === undefined) {
       return
     }

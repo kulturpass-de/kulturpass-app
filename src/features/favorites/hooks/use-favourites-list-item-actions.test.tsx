@@ -54,7 +54,7 @@ describe('useFavouritesListItemActions', () => {
     await waitFor(() => expect(apiCalledCounter).toBe(1), { timeout: 2000 })
   })
 
-  it('Should revert the state if api call fails', async () => {
+  it('Should revert the state if api call fails for errors other than http 400', async () => {
     const hook = renderHook(useFavouritesListItemActions, {
       wrapper,
       initialProps: 'PRODUCT_CODE_2',
@@ -80,6 +80,34 @@ describe('useFavouritesListItemActions', () => {
     })
 
     expect(hook.result.current.isFavorite).toBe(true)
+  })
+
+  it('Should update the state (optimistic update) if api call fails for errors with http 400', async () => {
+    const hook = renderHook(useFavouritesListItemActions, {
+      wrapper,
+      initialProps: 'PRODUCT_CODE_2',
+    })
+
+    server.use(
+      http.get('*/cc/kulturapp/users/current/favourites', () =>
+        HttpResponse.json(
+          {
+            favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }],
+          },
+          { status: 200 },
+        ),
+      ),
+      http.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async () => {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        return HttpResponse.text('NOT_OK', { status: 400 })
+      }),
+    )
+
+    await act(async () => {
+      await hook.result.current.removeFromFavorites()
+    })
+
+    expect(hook.result.current.isFavorite).toBe(false)
   })
 
   it('Should remove a favorite item when there is a missing product', async () => {

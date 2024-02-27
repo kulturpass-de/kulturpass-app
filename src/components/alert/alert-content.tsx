@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
   container: {
     borderRadius: spacing[5],
 
-    // https://ethercreative.github.io/react-native-shadow-generator/
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

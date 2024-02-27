@@ -1,11 +1,12 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { dateFormat } from '../../../utils/date/date-format'
+import { textStyles } from '../../../theme/typography'
+import { dateFormat, formatFullDate } from '../../../utils/date/date-format'
 
 export type ReservationDetailStatusInfoProps = {
   order: Order
@@ -44,13 +45,18 @@ export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoPr
         />
       ) : null}
       {reservationDate ? (
-        <TranslatedText
-          i18nKey="reservationDetail_statusInfo_reservationDate_label"
-          i18nParams={{ reservationDate, formatParams: { reservationDate: dateFormat } }}
+        <Text
           testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}
-          textStyle="CaptionSemibold"
-          textStyleOverrides={[styles.reservationDate, { color: colors.secondaryLabelColor }]}
-        />
+          style={[textStyles.CaptionSemibold, { color: colors.secondaryLabelColor, marginTop: spacing[2] }]}>
+          <TranslatedText
+            i18nKey="reservationDetail_statusInfo_reservationDate_label"
+            i18nParams={{ reservationDate, formatParams: { reservationDate: formatFullDate(reservationDate) } }}
+            testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}
+            textStyle="CaptionSemibold"
+            textStyleOverrides={[styles.reservationDate, { color: colors.secondaryLabelColor }]}
+          />
+          {formatFullDate(reservationDate)}
+        </Text>
       ) : null}
     </View>
   )

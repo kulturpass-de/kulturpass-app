@@ -57,6 +57,7 @@ const getStories = () => {
     "./src/components/favorite-button/favorite-button.stories.tsx": require("../src/components/favorite-button/favorite-button.stories.tsx"),
     "./src/components/form-fields/date-form-field.stories.tsx": require("../src/components/form-fields/date-form-field.stories.tsx"),
     "./src/components/form-fields/password-form-field.stories.tsx": require("../src/components/form-fields/password-form-field.stories.tsx"),
+    "./src/components/form-fields/text-form-field-group.stories.tsx": require("../src/components/form-fields/text-form-field-group.stories.tsx"),
     "./src/components/form-fields/text-form-field.stories.tsx": require("../src/components/form-fields/text-form-field.stories.tsx"),
     "./src/components/html-text/html-text.stories.tsx": require("../src/components/html-text/html-text.stories.tsx"),
     "./src/components/info-box/info-box.stories.tsx": require("../src/components/info-box/info-box.stories.tsx"),

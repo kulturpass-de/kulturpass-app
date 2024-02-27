@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { commerceApi } from '../../../services/api/commerce-api'
+import { HttpServerError } from '../../../services/errors/errors'
 
 export const useFavouritesListItemActions = (productCode?: string, defaultIsFavorite: boolean = true) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(defaultIsFavorite)
@@ -10,33 +12,54 @@ export const useFavouritesListItemActions = (productCode?: string, defaultIsFavo
     setIsFavorite(defaultIsFavorite)
   }, [defaultIsFavorite])
 
-  const removeFromFavorites = useCallback(async () => {
-    setIsFavorite(false)
+  const removeFromFavorites = useMemo(
+    () =>
+      debounce(
+        async () => {
+          setIsFavorite(false)
 
-    try {
-      if (productCode === undefined) {
-        return
-      }
+          try {
+            if (productCode === undefined) {
+              return
+            }
 
-      await removeProductFromCart({ productCode }).unwrap()
-    } catch (err) {
-      setIsFavorite(true)
-    }
-  }, [productCode, removeProductFromCart])
+            await removeProductFromCart({ productCode }).unwrap()
+          } catch (err) {
+            // we need to assume that the product is already removed, otherwise the state would never change
+            if ((err as HttpServerError)?.statusCode !== 400) {
+              setIsFavorite(true)
+            }
+          }
+        },
+        300,
+        { leading: true, trailing: false },
+      ),
+    [productCode, removeProductFromCart],
+  )
 
-  const addToFavourites = useCallback(async () => {
-    setIsFavorite(true)
+  const addToFavourites = useMemo(
+    () =>
+      debounce(
+        async () => {
+          setIsFavorite(true)
 
-    try {
-      if (productCode === undefined) {
-        return
-      }
+          try {
+            if (productCode === undefined) {
+              return
+            }
 
-      await addProductToCart({ productCode })
-    } catch (err) {
-      setIsFavorite(false)
-    }
-  }, [productCode, addProductToCart])
+            await addProductToCart({ productCode }).unwrap()
+          } catch (err) {
+            if ((err as HttpServerError)?.statusCode !== 400) {
+              setIsFavorite(false)
+            }
+          }
+        },
+        300,
+        { leading: true, trailing: false },
+      ),
+    [productCode, addProductToCart],
+  )
 
   const toggleIsFavourite = useCallback(async () => {
     if (isFavorite) {

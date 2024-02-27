@@ -292,7 +292,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (>= 6.1.7.3, < 7.1.0)
-  cocoapods (~> 1.14)
+  cocoapods (>= 1.13, < 1.15)
   fastlane (> 0)
   fastlane-plugin-json
   fastlane-plugin-properties

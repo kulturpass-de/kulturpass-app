@@ -6,6 +6,7 @@ export class ErrorWithCode extends Error {
   errorDetails?: string
   parent?: ErrorWithCode
   presentableErrorCode = true // For certain errors, you can choose to opt-out to display the error code.
+  presentableError = true // For certain errors, you can choose to opt-out to display the error.
 
   constructor(errorCode: string, detailCode?: string) {
     super(`Unknown error with error code "${errorCode}".`)
@@ -73,6 +74,16 @@ export class HttpStatusBadRequestError extends HttpClientError {
 
     // opt-out the error code to be presentable to the user
     this.presentableErrorCode = !this.isInsufficientBalanceError()
+
+    // opt-out the error to be presentable to the user
+    this.presentableError = !this.shouldHideError()
+  }
+
+  shouldHideError(): boolean {
+    return (
+      this.errors?.find(({ type }) => ['JaloObjectNoLongerValidError', 'NoSuchFavouritesEntry'].includes(type)) !==
+      undefined
+    )
   }
 
   isInsufficientBalanceError(): boolean {

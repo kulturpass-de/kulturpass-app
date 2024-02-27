@@ -19,7 +19,6 @@ export const notificationsHandleStoredBackgroundPressNotification = createThunk(
     }
     if (Platform.OS === 'android') {
       // On Android it is also recommended to check getInitialNotification. (Deprecated on iOS)
-      // https://notifee.app/react-native/docs/events#app-open-events
       const initialNotification = await notifee.getInitialNotification()
       if (initialNotification?.notification !== undefined && initialNotification.pressAction?.id === 'default') {
         logger.log(

@@ -53,19 +53,22 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
           {homeHeader}
         </HomeHeaderShrinkable>
       )}
-      <SpartacusWebView
-        contentOffset={isScreenReaderActive ? 0 : contentOffset}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}
-        webViewId={WebViewId.Home}
-        url={homeUrl}
-        testID={buildTestId('screens_home_webview')}
-        language={language}
-      />
+      <View style={styles.container}>
+        <SpartacusWebView
+          contentOffset={isScreenReaderActive ? 0 : contentOffset}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: offset } } }], { useNativeDriver: false })}
+          webViewId={WebViewId.Home}
+          url={homeUrl}
+          testID={buildTestId('screens_home_webview')}
+          language={language}
+        />
+      </View>
     </Screen>
   )
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
   screenReaderHeaderContainer: {
     paddingHorizontal: spacing[2],
     marginHorizontal: spacing[2],

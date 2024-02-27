@@ -17,10 +17,11 @@ export type ProductReportRouteParams = {
   offerId?: string
   shopName?: string
   shopId?: string
+  productCode?: string
 }
 
 export const ProductReportRoute: React.FC<PdpScreenProps<'ProductReport'>> = ({ route }) => {
-  const { offerId, shopId, shopName } = route.params
+  const { offerId, shopId, shopName, productCode } = route.params
 
   const { t } = useTranslation()
 
@@ -30,9 +31,9 @@ export const ProductReportRoute: React.FC<PdpScreenProps<'ProductReport'>> = ({ 
     sendMail(
       MAIL_RECIPIENT,
       t('productDetail_report_screen_mail_subject'),
-      t('productDetail_report_screen_mail_body', { shopId, offerId, shopName }),
+      t('productDetail_report_screen_mail_body', { shopId, offerId, shopName, productCode }),
     )
-  }, [t, offerId, shopId, shopName])
+  }, [t, offerId, shopId, shopName, productCode])
 
   const onPressReportAbort = useCallback(() => {
     navigation.goBack()

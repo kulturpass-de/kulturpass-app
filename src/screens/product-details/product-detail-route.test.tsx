@@ -238,7 +238,7 @@ describe('ProductDetailRoute', () => {
       ...[
         'meldung@kulturpass.de',
         'App - unzulässiges Angebot melden',
-        `Bitte beschreibe hier kurz das Angebot, und aus welchen Gründen du dieses Angebot meldest.\n\n\nTechnische Informationen - bitte nicht bearbeiten / ändern:\nAngebotsnummer: secondCode\nAnbieter: second shop name (second shop id)`,
+        `Bitte beschreibe hier kurz das Angebot, und aus welchen Gründen du dieses Angebot meldest.\n\n\nTechnische Informationen - bitte nicht bearbeiten / ändern:\nProdukt: 0001\nAngebotsnummer: secondCode\nAnbieter: second shop name (second shop id)`,
       ],
     )
   })

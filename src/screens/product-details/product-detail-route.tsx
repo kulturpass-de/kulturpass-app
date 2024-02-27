@@ -64,8 +64,9 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
       offerId: selectedOffer?.code,
       shopName: selectedOffer?.shopName,
       shopId: selectedOffer?.shopId,
+      productCode: productCode,
     })
-  }, [navigation, selectedOffer])
+  }, [navigation, selectedOffer?.code, selectedOffer?.shopId, selectedOffer?.shopName, productCode])
 
   const reserveProduct = useCallback(async () => {
     if (!selectedOffer || !productDetail) {

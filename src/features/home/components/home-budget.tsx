@@ -29,6 +29,11 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
 
   const shouldShowReservedBalance = validBalance !== undefined && validBalance.reservedBalance > 0
 
+  let spentPercentage = 0
+  if (validBalance !== undefined) {
+    spentPercentage = Math.round((validBalance?.reservedBalance / validBalance?.grantedBalance) * 100)
+  }
+
   return (
     <View style={styles.container}>
       {name ? (
@@ -75,6 +80,14 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
           max={validBalance.grantedBalance}
           available={validBalance.availableBalance}
           spent={validBalance.reservedBalance}
+          spentPercentage={spentPercentage}
+          i18nKey="homebudget_balance_voiceover"
+          i18nParams={{
+            available: validBalance.availableBalance,
+            max: validBalance.grantedBalance,
+            spent: validBalance.reservedBalance,
+            spentPercentage: spentPercentage,
+          }}
         />
       )}
     </View>

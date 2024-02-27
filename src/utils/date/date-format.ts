@@ -13,3 +13,11 @@ export const formatFullDateTime = (date: number | Date) => {
     hour12: false,
   }).format(date)
 }
+export const formatFullDate = (date: number | Date) => {
+  const formattedDate = new Intl.DateTimeFormat(Language.de, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date)
+  return formattedDate.replace(/\//g, '.')
+}

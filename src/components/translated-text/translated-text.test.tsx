@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react-native'
 import React from 'react'
+import { Text } from 'react-native'
+import { buildTestId } from '../../services/test-id/test-id'
 import { translation } from '../../services/translation/translation'
-import { dateFormat } from '../../utils/date/date-format'
+import { formatFullDate } from '../../utils/date/date-format'
 import { TranslatedText } from './translated-text'
 
 test('Should format date in german format', async () => {
@@ -10,11 +12,15 @@ test('Should format date in german format', async () => {
   translation?.changeLanguage('de')
 
   render(
-    <TranslatedText
-      i18nKey="reservationDetail_statusInfo_reservationDate_label"
-      i18nParams={{ reservationDate, formatParams: { reservationDate: dateFormat } }}
-      textStyle="BodyBold"
-    />,
+    <Text testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}>
+      <TranslatedText
+        i18nKey="reservationDetail_statusInfo_reservationDate_label"
+        i18nParams={{ reservationDate, formatParams: { reservationDate: formatFullDate(reservationDate) } }}
+        testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}
+        textStyle="CaptionSemibold"
+      />
+      {formatFullDate(reservationDate)}
+    </Text>,
   )
 
   expect(await screen.findByText(/30.05.2023/)).toBeOnTheScreen()
@@ -26,15 +32,16 @@ test('Should format date in english format', async () => {
   translation?.changeLanguage('en')
 
   render(
-    <TranslatedText
-      i18nKey="reservationDetail_statusInfo_reservationDate_label"
-      i18nParams={{
-        reservationDate,
-        formatParams: { reservationDate: dateFormat },
-      }}
-      textStyle="BodyBold"
-    />,
+    <Text testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}>
+      <TranslatedText
+        i18nKey="reservationDetail_statusInfo_reservationDate_label"
+        i18nParams={{ reservationDate, formatParams: { reservationDate: formatFullDate(reservationDate) } }}
+        testID={buildTestId('reservationDetail_statusInfo_reservationDate_label')}
+        textStyle="CaptionSemibold"
+      />
+      {formatFullDate(reservationDate)}
+    </Text>,
   )
 
-  expect(await screen.findByText(/05\/30\/2023/)).toBeOnTheScreen()
+  expect(await screen.findByText(/30.05.2023/)).toBeOnTheScreen()
 })

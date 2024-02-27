@@ -8,9 +8,16 @@ export type ScreenProps = PropsWithChildren<{
   testID: string
   header?: React.ReactNode
   withBasicBackground?: boolean
+  keyboardAvoidingViewDisabled?: boolean
 }>
 
-export const Screen: React.FC<ScreenProps> = ({ header, children, testID, withBasicBackground = false }) => {
+export const Screen: React.FC<ScreenProps> = ({
+  header,
+  children,
+  testID,
+  keyboardAvoidingViewDisabled,
+  withBasicBackground = false,
+}) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const edges: Edge[] = header ? ['left', 'right'] : ['top', 'left', 'right']
@@ -23,6 +30,7 @@ export const Screen: React.FC<ScreenProps> = ({ header, children, testID, withBa
       edges={edges}>
       {header}
       <KeyboardAvoidingView
+        enabled={!keyboardAvoidingViewDisabled}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboardAvoidingView}>
         {children}
