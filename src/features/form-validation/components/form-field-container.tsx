@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
-import { applyAccessibilityReplacements } from '../../../components/translated-text/accessibility-replacements'
 import { AvailableTextStyles, AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
@@ -39,11 +38,8 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
     errorMessage = error.message ?? t(`form_error_${error.type}`, t('form_error_fallback'))
   }
 
-  let accessibilityLabel = t(labelI18nKey as any, '' as any)
-  accessibilityLabel = applyAccessibilityReplacements(accessibilityLabel)
-
   return (
-    <View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle]}>
       {labelI18nKey && (
         <Text
           testID={addTestIdModifier(testID, 'label')}

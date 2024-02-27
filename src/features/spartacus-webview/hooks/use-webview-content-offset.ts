@@ -12,16 +12,16 @@ export const useWebViewContentOffset = (webViewRef: RefObject<WebView<{}> | null
    * the pages manually
    */
   const applyWebviewDocumentBodyOffset = useCallback(() => {
+    // adjust text zoom on iOS
+    if (Platform.OS === 'ios') {
+      webViewRef.current?.injectJavaScript(injectionService.webviewSetTextZoom(PixelRatio.getFontScale() * 100))
+    }
+
     if (contentOffset === undefined) {
       return
     }
 
     webViewRef.current?.injectJavaScript(injectionService.webviewSetPadding(contentOffset))
-
-    // adjust text zoom on iOS
-    if (Platform.OS === 'ios') {
-      webViewRef.current?.injectJavaScript(injectionService.webviewSetTextZoom(PixelRatio.getFontScale() * 100))
-    }
   }, [webViewRef, contentOffset])
 
   useEffect(() => {

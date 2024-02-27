@@ -25,6 +25,8 @@ type OnboardingScreenProps = {
   contentTitleI18nKey: AvailableTranslations
   contentTextI18nKeyFirst: AvailableTranslations
   contentTextI18nKeySecond: AvailableTranslations
+  contentTextI18nKeyThird?: AvailableTranslations
+  contentTextI18nKeyFourth?: AvailableTranslations
   dataprivacyI18nKey?: AvailableTranslations
   acceptButtonI18nKey: AvailableTranslations
   denyButtonI18nKey?: AvailableTranslations
@@ -41,6 +43,8 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   contentTitleI18nKey,
   contentTextI18nKeyFirst,
   contentTextI18nKeySecond,
+  contentTextI18nKeyThird,
+  contentTextI18nKeyFourth,
   dataprivacyI18nKey,
   onAccept,
   onDeny,
@@ -94,6 +98,22 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
             i18nKey={contentTextI18nKeySecond}
             textStyle="BodyRegular"
           />
+          {contentTextI18nKeyThird ? (
+            <TranslatedText
+              textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+              testID={buildTestId(contentTextI18nKeyThird)}
+              i18nKey={contentTextI18nKeyThird}
+              textStyle="BodyRegular"
+            />
+          ) : null}
+          {contentTextI18nKeyFourth ? (
+            <TranslatedText
+              textStyleOverrides={[styles.contentText, { color: colors.labelColor }]}
+              testID={buildTestId(contentTextI18nKeyFourth)}
+              i18nKey={contentTextI18nKeyFourth}
+              textStyle="BodyRegular"
+            />
+          ) : null}
           {additionalContent}
           {dataprivacyI18nKey ? (
             <View style={styles.linkContainer}>

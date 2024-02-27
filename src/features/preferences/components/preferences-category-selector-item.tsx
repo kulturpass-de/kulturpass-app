@@ -3,6 +3,7 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-n
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { textStyles } from '../../../theme/typography'
@@ -32,6 +33,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
 }) => {
   const { colors, colorScheme } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const { t } = useTranslation()
 
   const onPress = useCallback(() => {
     if (isSelectable) {
@@ -50,8 +52,12 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
       onPress={onPress}
       disabled={!isSelectable}
       accessibilityLabel={category.name}
-      accessibilityRole="togglebutton"
-      accessibilityState={{ selected: isSelected }}
+      accessibilityRole="button"
+      accessibilityHint={
+        isSelected
+          ? t('preferences_category_item_accessibility_selected')
+          : t('preferences_category_item_accessibility_not_selected')
+      }
       accessible>
       {({ pressed }) => (
         <>

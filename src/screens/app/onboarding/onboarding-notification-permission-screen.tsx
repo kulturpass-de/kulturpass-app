@@ -46,6 +46,8 @@ export const OnboardingNotificationPermissionScreen: React.FC<OnboardingNotifica
         contentTitleI18nKey="onboarding_notificationPermission_content_title"
         contentTextI18nKeyFirst="onboarding_notificationPermission_content_text_first"
         contentTextI18nKeySecond="onboarding_notificationPermission_content_text_second"
+        contentTextI18nKeyThird="onboarding_notificationPermission_content_text_third"
+        contentTextI18nKeyFourth="onboarding_notificationPermission_content_text_fourth"
         acceptButtonI18nKey="onboarding_notificationPermission_acceptButton"
         denyButtonI18nKey="onboarding_notificationPermission_denyButton"
         illustrationI18nKey="onboarding_notificationPermission_image_alt"
