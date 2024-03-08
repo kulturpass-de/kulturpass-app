@@ -8,9 +8,9 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 const Item = ({
   content,
@@ -23,6 +23,7 @@ const Item = ({
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const contentTextStyle = [textStyles.BodyRegular, { color: colors.labelColor }]
 

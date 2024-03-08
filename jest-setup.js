@@ -72,6 +72,7 @@ jest.mock('react-native-safe-area-context', () => require('react-native-safe-are
 jest.mock('./src/theme/hooks/use-theme');
 jest.mock('./src/utils/accessibility/hooks/use-is-screen-reader-active');
 jest.mock('./src/utils/accessibility/hooks/use-is-reduce-motion-active');
+jest.mock('./src/utils/accessibility/hooks/use-is-bold-text-enabled');
 jest.mock('./src/services/webviews/injection-service');
 jest.mock('./src/services/api/redux/hooks/use-offline-order-detail');
 jest.mock('./src/services/api/redux/hooks/use-offline-product-detail');
@@ -169,4 +170,6 @@ jest.mock('./src/services/redux/utils/verify-jws-with-jwk', () => ({
   verifyJwsWithJwk: () => Promise.resolve(JSON.stringify(mockedAppConfig)),
 }));
 
-jest.mock('@react-native-clipboard/clipboard', () => require('@react-native-clipboard/clipboard/jest/clipboard-mock.js'));
+jest.mock('@react-native-clipboard/clipboard', () =>
+  require('@react-native-clipboard/clipboard/jest/clipboard-mock.js'),
+);

@@ -5,9 +5,9 @@ import { GoToSearchButton } from '../../../components/go-to-search-button/go-to-
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 
 type OfferSelectionListItemProps = {
@@ -20,6 +20,7 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const formattedPrice = useFormattedPrice(offer.price)
   const onButtonPress = useCallback(() => {

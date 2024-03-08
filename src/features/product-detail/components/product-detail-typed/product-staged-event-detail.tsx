@@ -3,8 +3,8 @@ import { Text } from 'react-native'
 import { GoToSearchButton } from '../../../../components/go-to-search-button/go-to-search-button'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
-import { textStyles } from '../../../../theme/typography'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { StagedEventProductDetail } from '../../types/product-detail'
 import { isDefinedAddress } from '../../utils'
@@ -25,6 +25,7 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const sectionTestID = addTestIdModifier(testID, 'stagedEvent')
   const { venue, eventDateTime, durationInMins, venueDistance } = productDetail

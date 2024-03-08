@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { NativeSyntheticEvent, StyleSheet, Text, TextLayoutEventData, View } from 'react-native'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export type FavoritesListItemImageBadgeProps = {
   testID: string
@@ -11,6 +11,7 @@ export type FavoritesListItemImageBadgeProps = {
 
 export const FavoritesListItemImageBadge = ({ children, testID }: FavoritesListItemImageBadgeProps) => {
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const [lines, setLines] = useState<TextLayoutEventData['lines']>()
 

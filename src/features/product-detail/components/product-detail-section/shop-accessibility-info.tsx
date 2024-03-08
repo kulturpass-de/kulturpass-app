@@ -6,9 +6,9 @@ import { TranslatedText } from '../../../../components/translated-text/translate
 import { AvailableTranslations } from '../../../../components/translated-text/types'
 import { Offer } from '../../../../services/api/types/commerce/api-types'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
-import { textStyles } from '../../../../theme/typography'
 import { ProductDetailSection } from './product-detail-section'
 
 type AccessibilityFeatureCheckableProps = {
@@ -51,6 +51,7 @@ type AccessibilityFeatureTextProps = {
 const AccessibilityFeatureText: React.FC<AccessibilityFeatureTextProps> = ({ testID, label_i18nKey, text }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   return (
     <View testID={testID} style={styles.featureText}>

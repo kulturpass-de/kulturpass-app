@@ -2,9 +2,9 @@ import React, { ReactNode, useMemo } from 'react'
 import { AccessibilityState, Pressable, StyleSheet, Text } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { SvgImage } from '../svg-image/svg-image'
 
 export type ListItemProps = {
@@ -30,6 +30,7 @@ export const ListItem: React.FC<ListItemProps> = ({
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
   const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.listItemBorder }
+  const textStyles = useTextStyles()
 
   const iconElement: ReactNode = useMemo(() => {
     if (type === 'navigation') {

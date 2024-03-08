@@ -8,9 +8,9 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { Price, Refunds } from '../../../services/api/types/commerce/api-types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ProductDetail } from '../../product-detail/types/product-detail'
 import { isVoucher } from '../../product-detail/utils'
@@ -39,6 +39,7 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const formattedPrice = useFormattedPrice(price)
 

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { PixelRatio, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { AvailableTextStyles } from '../translated-text/types'
 
 type BulletListItemProps = React.PropsWithChildren<{
@@ -22,6 +22,7 @@ export const BulletListItem: React.FC<React.PropsWithChildren<BulletListItemProp
   testID,
 }) => {
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const adjustedBulletSize = useMemo(() => {
     return bulletSize * PixelRatio.getFontScale()

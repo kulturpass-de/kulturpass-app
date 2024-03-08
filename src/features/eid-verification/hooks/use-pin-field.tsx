@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { Platform, Pressable, StyleSheet, Text, TextInput, ViewStyle } from 'react-native'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { AnimatedCaret } from '../components/animated-caret'
 import { PinInputProps } from '../components/pin-input'
 
@@ -37,6 +37,7 @@ export const usePinField = ({
 }: UsePinFieldProps) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const renderPinField = useCallback(
     (index: number, total: number) => {
@@ -127,6 +128,7 @@ export const usePinField = ({
       innerInputRef,
       setFocusedIndex,
       testID,
+      textStyles,
     ],
   )
 

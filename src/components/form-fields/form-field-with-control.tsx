@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react'
 import { Control, Controller, ControllerProps, FieldPath } from 'react-hook-form'
+import { View } from 'react-native'
+import { MandatoryFieldHint } from './mandatory-field-hint'
 
 export type FormFieldWithControlProps<FieldValues extends {}> = {
   name: FieldPath<FieldValues>
   control: Control<FieldValues>
   disabled?: boolean
+  displayMandatoryFieldHint?: boolean
 }
 
 export const FormFieldWithControl = <
@@ -35,5 +38,10 @@ export const FormFieldWithControl = <
     [props],
   )
 
-  return <Controller name={props.name} render={render} rules={{ required: true }} control={props.control} />
+  return (
+    <View>
+      <Controller name={props.name} render={render} rules={{ required: true }} control={props.control} />
+      {props.displayMandatoryFieldHint ? <MandatoryFieldHint /> : null}
+    </View>
+  )
 }

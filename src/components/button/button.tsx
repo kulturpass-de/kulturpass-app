@@ -8,6 +8,7 @@ import {
   Text,
   View,
   LayoutChangeEvent,
+  TextStyle,
 } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
@@ -15,6 +16,8 @@ import { buttonColorMappings as darkButtonColorMappings } from '../../theme/dark
 import { useTheme } from '../../theme/hooks/use-theme'
 import { buttonColorMappings as lightButtonColorMappings } from '../../theme/light/color-mappings'
 import { ButtonColors } from '../../theme/types'
+import { transformToBolderFontWeight } from '../../theme/typography'
+import { useIsBoldTextEnabled } from '../../utils/accessibility/hooks/use-is-bold-text-enabled'
 import { SvgImage, SvgImageProps } from '../svg-image/svg-image'
 import { AvailableTranslations } from '../translated-text/types'
 import { buttonModifierStyle, baseButtonStyle, shadow, noShadow, buttonWidthOptionStyle } from './button-style'
@@ -55,6 +58,7 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const { colorScheme } = useTheme()
+  const isBoldTextEnabled = useIsBoldTextEnabled()
 
   const { addTestIdModifier } = useTestIdBuilder()
 
@@ -147,7 +151,7 @@ export const Button: FC<ButtonProps> = ({
 
   const buttonTextStyle = useCallback(
     (pressed: boolean) => {
-      const { text: buttonText } = buttonModifierStyle[modifier]
+      const buttonText = buttonModifierStyle[modifier].text as TextStyle
 
       let buttonTextColor = buttonColors.text
       if (disabled) {
@@ -156,11 +160,17 @@ export const Button: FC<ButtonProps> = ({
         buttonTextColor = buttonColors.pressedText ?? buttonTextColor
       }
 
-      const style: StyleProp<ViewStyle> = [buttonText, { color: buttonTextColor }]
+      const style: StyleProp<TextStyle> = [
+        {
+          ...buttonText,
+          fontWeight: isBoldTextEnabled ? transformToBolderFontWeight(buttonText.fontWeight) : buttonText.fontWeight,
+        },
+        { color: buttonTextColor },
+      ]
 
       return style
     },
-    [buttonColors, disabled, modifier],
+    [buttonColors, disabled, modifier, isBoldTextEnabled],
   )
 
   const buttonText = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)

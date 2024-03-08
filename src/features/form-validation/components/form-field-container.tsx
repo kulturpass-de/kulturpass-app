@@ -5,9 +5,9 @@ import { SvgImage } from '../../../components/svg-image/svg-image'
 import { AvailableTextStyles, AvailableTranslations } from '../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export type FormFieldContainerProps = PropsWithChildren<{
   testID: TestId
@@ -32,6 +32,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   let errorMessage: string | undefined
   if (error) {

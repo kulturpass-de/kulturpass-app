@@ -93,6 +93,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
           autoCapitalize="none"
           autoComplete="email"
           autoCorrect={false}
+          displayMandatoryFieldHint
           isRequired
           keyboardType="email-address"
         />

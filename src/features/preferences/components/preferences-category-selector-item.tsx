@@ -3,9 +3,9 @@ import { Platform, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } fro
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { PreferenceCategory } from '../../../services/api/types'
 import { TestId, useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { buttonStyleForPreferenceCategory } from './preferences-category-styles'
 
 export type PreferencesCategorySelectorItemProps = {
@@ -32,6 +32,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
 }) => {
   const { colors, colorScheme } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const onPress = useCallback(() => {
     if (isSelectable) {

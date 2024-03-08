@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
 import { AvailableTextStyles, AvailableTranslations } from '../../../../components/translated-text/types'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
-import { textStyles } from '../../../../theme/typography'
 
 type OfferSelectionTokenProps = {
   i18nKey?: AvailableTranslations
@@ -24,6 +24,7 @@ export const OfferSelectionToken = ({
   testID,
 }: OfferSelectionTokenProps) => {
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const textStyleOverrides = { color: disabled ? colors.tokenTextDisabled : colors.tokenText }
 

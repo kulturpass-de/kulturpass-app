@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
-import { textStyles } from '../../../theme/typography'
 import { isDeviceTextScaled } from '../../../theme/utils'
 
 type ProductDetailEntryProps = {
@@ -16,6 +16,7 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const testID = buildTestId(i18nKey)
+  const textStyles = useTextStyles()
 
   return (
     <View style={isDeviceTextScaled() ? styles.col : styles.row}>
@@ -26,7 +27,9 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
         textStyleOverrides={[styles.entryTitle, { color: colors.labelColor }]}
       />
       {isDeviceTextScaled() ? null : <Text style={textStyles.BodyRegular}> </Text>}
-      <Text style={[styles.entryContent, { color: colors.labelColor }]} testID={addTestIdModifier(testID, 'value')}>
+      <Text
+        style={[textStyles.BodyRegular, styles.entryContent, { color: colors.labelColor }]}
+        testID={addTestIdModifier(testID, 'value')}>
         {value}
       </Text>
     </View>
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   entryContent: {
-    ...textStyles.BodyRegular,
     flexShrink: 1,
   },
 })

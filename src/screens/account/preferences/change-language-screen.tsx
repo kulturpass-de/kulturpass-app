@@ -14,9 +14,9 @@ import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { untranslatedTexts } from '../../../services/translation/i18n'
 import { useTranslation } from '../../../services/translation/translation'
 import { Language } from '../../../services/translation/types'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { linkLogger, openLink } from '../../../utils/links/utils'
 
 export type ChangeLanguageScreenProps = {
@@ -29,6 +29,7 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const dispatch = useDispatch<AppDispatch>()
   const browserTranslationFaqLink = useFaqLink('BROWSER_TRANSLATION')
+  const textStyles = useTextStyles()
 
   const onBrowserTranslationPress = useCallback(() => {
     openLink(browserTranslationFaqLink).catch(linkLogger)

@@ -18,9 +18,9 @@ import { Offer } from '../../services/api/types/commerce/api-types'
 import { useDismissableError } from '../../services/errors/use-dismissable-error'
 import { useFaqLink } from '../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { useProductImageUrl } from '../../utils/image/hooks/use-product-image-url'
 import { useLocalizedEnvironmentUrl, getCdcDpsDocumentUrl } from '../../utils/links/hooks/use-localized-environment-url'
 import { ReservationDetailRouteParams } from '../reservations/reservation-detail-route'
@@ -43,6 +43,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
+  const textStyles = useTextStyles()
 
   const productImage = useProductImageUrl(productDetail.images, 'zoom')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)

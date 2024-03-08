@@ -2,9 +2,9 @@ import React, { forwardRef } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { ProductDetail, ProductTypes } from '../types/product-detail'
 
 type ProductDetailTitleProps = {
@@ -28,6 +28,7 @@ export const ProductDetailTitle = forwardRef<Text, ProductDetailTitleProps>(({ p
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const categoryName: string | undefined = productDetail.categories[0]?.name
   const productSubTitle = getProductSubtitle(productDetail)

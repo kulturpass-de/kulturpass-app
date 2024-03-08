@@ -11,9 +11,9 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { HITSLOP } from '../../../theme/constants'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export type EidAboutServiceProviderScreenProps = {
   accessRights: AccessRights
@@ -33,6 +33,7 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const renderItem = useCallback(
     (item: AccessRight) => {
@@ -55,7 +56,7 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
           style={[textStyles.BodyRegular, { color: colors.labelColor }]}>{`\u2022 ${accessRightText}`}</Text>
       )
     },
-    [t, buildTestId, colors.labelColor],
+    [t, buildTestId, colors.labelColor, textStyles],
   )
 
   const subjectName = certificate.description.subjectName
