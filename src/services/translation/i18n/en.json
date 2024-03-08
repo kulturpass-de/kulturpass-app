@@ -731,6 +731,7 @@
   "updateProfile_cancel_alert_text" : "Your profile changes have not been saved yet.",
   "updateProfile_cancel_dismiss_button" : "Edit Profile",
   "updateProfile_cancel_confirm_button" : "Cancel Anyway",
+  "mandatory_field_note" : "Fields marked with an asterisk are mandatory.",
   "account_verified_alert_title" : "Successfully Verified",
   "account_verified_alert_content" : "You have verified your email. Please log in again",
   "account_verified_alert_button" : "Continue to login",

@@ -7,9 +7,9 @@ import {
 } from '../../features/form-validation/components/form-field-container'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { toTransparentColor } from '../../theme/utils'
 import { useInputState } from '../../utils/input/hooks/use-input-state'
 import { AvailableTextStyles, AvailableTranslations } from '../translated-text/types'
@@ -69,6 +69,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     const { colors, colorScheme } = useTheme()
     const { addTestIdModifier } = useTestIdBuilder()
     const { state, handleBlur, handleFocus } = useInputState({ onBlur, onFocus })
+    const textStyles = useTextStyles()
     const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
 
     const borderColor: string = useMemo(() => {

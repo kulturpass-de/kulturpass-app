@@ -14,8 +14,8 @@ import { SvgImage } from '../../../components/svg-image/svg-image'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { HITSLOP_PIN } from '../../../theme/constants'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { FormFieldContainer } from '../../form-validation/components/form-field-container'
 import { usePinField } from '../hooks/use-pin-field'
 
@@ -34,6 +34,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
     const [innerInputRef, setFocusInnerInputRef] = useAccessibilityFocus()
     const [toggleShowPinRef, setFocusToggleShowPinRef] = useAccessibilityFocus()
     const { addTestIdModifier } = useTestIdBuilder()
+    const textStyles = useTextStyles()
 
     useImperativeHandle(externalInputRef, () => innerInputRef.current as TextInput)
 

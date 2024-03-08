@@ -11,9 +11,9 @@ import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useGetProfile } from '../../../services/user/use-get-profile'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ProductDetail } from '../types/product-detail'
 import { isVoucher } from '../utils'
@@ -36,6 +36,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    flexWrap: 'wrap',
     flexGrow: 1,
   },
   rowReserve: {

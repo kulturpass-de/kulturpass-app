@@ -4,8 +4,8 @@ import { GoToSearchButton } from '../../../../components/go-to-search-button/go-
 import { AvailableTranslations } from '../../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
-import { textStyles } from '../../../../theme/typography'
 import { useFormattedDateTime } from '../../../../utils/date/hooks/use-formatted-date-time'
 import { VenueDetails } from '../../types/product-detail'
 import { isDefinedAddress } from '../../utils'
@@ -49,6 +49,7 @@ export const ProductDetailVenueSection: React.FC<ProductDetailVenueSectionProps>
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const { venue, venueDistance, eventDateTime } = productDetail
   const formattedEventDateTime = useFormattedDateTime(eventDateTime)

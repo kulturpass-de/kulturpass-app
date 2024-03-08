@@ -15,11 +15,11 @@ import {
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { reservationListStatusTextColors as reservationListStatusTextColorsDark } from '../../../theme/dark/color-mappings'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { reservationListStatusTextColors as reservationListStatusTextColorsLight } from '../../../theme/light/color-mappings'
 import { spacing } from '../../../theme/spacing'
 import { ReservationListStatusTextColors } from '../../../theme/types'
-import { textStyles } from '../../../theme/typography'
 
 export type ReservationListStatusTextProps = {
   status: string
@@ -30,6 +30,7 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   const { t } = useTranslation()
   const { colorScheme } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const colors: ReservationListStatusTextColors = useMemo(() => {
     if (colorScheme === 'dark') {

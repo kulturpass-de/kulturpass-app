@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native'
 import { HtmlText } from '../../../../components/html-text/html-text'
 import { Offer } from '../../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
-import { textStyles } from '../../../../theme/typography'
 import { ProductDetailSection } from './product-detail-section'
 
 export type ShopDescriptionProps = Pick<Offer, 'shopDescription'> & {
@@ -15,6 +15,7 @@ export type ShopDescriptionProps = Pick<Offer, 'shopDescription'> & {
 export const ShopDescription: React.FC<ShopDescriptionProps> = ({ shopDescription, testID }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   if (!shopDescription) {
     return null

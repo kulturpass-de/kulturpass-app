@@ -731,6 +731,7 @@
   "updateProfile_cancel_alert_text": "Deine Profiländerungen sind noch nicht gespeichert.",
   "updateProfile_cancel_dismiss_button": "Profil bearbeiten",
   "updateProfile_cancel_confirm_button": "Trotzdem abbrechen",
+  "mandatory_field_note": "Mit Sternchen gekennzeichnete Felder sind Pflichtfelder.",
   "account_verified_alert_title": "Erfolgreich verifiziert",
   "account_verified_alert_content": "Du hast deine Mail verifiziert, bitte melde dich erneut an",
   "account_verified_alert_button": "Weiter zur Anmeldung",

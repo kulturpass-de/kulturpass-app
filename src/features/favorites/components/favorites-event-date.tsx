@@ -2,8 +2,8 @@ import React from 'react'
 import { Text } from 'react-native'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
-import { textStyles } from '../../../theme/typography'
 import { useFormattedDateTime } from '../../../utils/date/hooks/use-formatted-date-time'
 
 export type FavoritesEventDateProps = {
@@ -15,6 +15,7 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const formattedEventStartDate = useFormattedDateTime(startDate)
   const formattedEvenEndDate = useFormattedDateTime(endDate)

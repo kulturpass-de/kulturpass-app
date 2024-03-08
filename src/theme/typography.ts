@@ -1,7 +1,32 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TextStyle } from 'react-native'
 
 export const typography = {
   primary: 'Nunito',
+}
+
+export const transformToBolderFontWeight = (input: TextStyle['fontWeight']): TextStyle['fontWeight'] => {
+  switch (input) {
+    case '100':
+      return '300'
+    case '200':
+      return '400'
+    case '300':
+      return '500'
+    case '400':
+      return '600'
+    case '500':
+      return '700'
+    case '600':
+      return '800'
+    case '700':
+      return '900'
+    case '900':
+    case '800':
+      return '900'
+    case 'normal':
+    default:
+      return 'bold'
+  }
 }
 
 export const textStyles = StyleSheet.create({

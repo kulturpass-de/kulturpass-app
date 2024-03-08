@@ -153,6 +153,7 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
           testID={buildTestId('registration_form_dateOfBirth')}
           control={form.control}
           disableAccessibilityForLabel
+          displayMandatoryFieldHint
         />
       </ScreenContent>
       <ModalScreenFooter>
