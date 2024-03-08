@@ -6,9 +6,9 @@ import { Price } from '../../../services/api/types/commerce/api-types'
 import { DELIVERY_SCENARIO_IN_APP_VOUCHER } from '../../../services/api/types/commerce/commerce-get-reservations'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { toTransparentColor } from '../../../theme/utils'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ReservationListStatusText } from './reservation-list-status-text'
@@ -40,6 +40,7 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
+  const textStyles = useTextStyles()
 
   return (
     <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>

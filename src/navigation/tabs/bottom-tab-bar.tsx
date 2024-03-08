@@ -8,9 +8,9 @@ import { WebViewId } from '../../features/spartacus-webview/services/webview-bri
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { selectFiltersOrSortOpen } from '../../services/webviews/redux/webviews-selectors'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { useIsReduceMotionActive } from '../../utils/accessibility/hooks/use-is-reduce-motion-active'
 import { TabsParamList } from './types'
 
@@ -32,6 +32,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const onPress = useCallback(() => {
     const event = navigation.emit({

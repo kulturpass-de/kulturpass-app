@@ -3,9 +3,9 @@ import { StyleSheet, View, Text } from 'react-native'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { Order } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { dateFormat, formatFullDate } from '../../../utils/date/date-format'
 
 export type ReservationDetailStatusInfoProps = {
@@ -15,6 +15,7 @@ export type ReservationDetailStatusInfoProps = {
 export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoProps> = ({ order }) => {
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const validUntil = order.entries?.[0].voucherValidTo ? new Date(order.entries[0].voucherValidTo) : undefined
   const orderCode = order.consignments?.find(() => true)?.code || `${order.code}-A`

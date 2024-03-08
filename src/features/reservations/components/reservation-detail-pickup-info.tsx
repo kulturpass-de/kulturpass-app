@@ -7,9 +7,9 @@ import { CopyToClipboard } from '../../../components/copy-to-clipboard/copy-to-c
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { OrderEntry } from '../../../services/api/types/commerce/api-types'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { linkLogger, openLink } from '../../../utils/links/utils'
 
 export type ReservationDetailPickupInfoProps = {
@@ -20,6 +20,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
   const { t } = useTranslation()
   const { colors } = useTheme()
   const [state, setState] = useState<{ containerWidth?: number }>({})
+  const textStyles = useTextStyles()
 
   const onContainerLayout: NonNullable<ViewProps['onLayout']> = useCallback(event => {
     const { width } = event.nativeEvent.layout
@@ -97,7 +98,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   voucherCodeHeadline: {
-    ...textStyles.CaptionSemibold,
     marginBottom: spacing[2],
   },
   voucherCodeContainer: {

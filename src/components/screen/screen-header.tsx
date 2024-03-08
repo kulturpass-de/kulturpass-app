@@ -6,8 +6,8 @@ import useAccessibilityFocus from '../../navigation/a11y/use-accessibility-focus
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { HITSLOP } from '../../theme/constants'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
-import { textStyles } from '../../theme/typography'
 import { SvgImage } from '../svg-image/svg-image'
 
 const styles = StyleSheet.create({
@@ -47,6 +47,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
   const [focusRef, setFocus] = useAccessibilityFocus()
+  const textStyles = useTextStyles()
 
   useFocusEffect(setFocus)
 

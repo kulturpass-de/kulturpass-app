@@ -12,9 +12,9 @@ import { RootStackParams } from '../../../navigation/types'
 import { ErrorWithCode } from '../../../services/errors/errors'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import {
   AA2AcceptTimeout,
   AA2BelowMinAge,
@@ -50,6 +50,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   const testID = buildTestId('eid_error_alert')
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
 

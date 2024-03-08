@@ -7,9 +7,9 @@ import { Product } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { HITSLOP_FAVORITES_LIST_ITEM } from '../../../theme/constants'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { useProductImageUrl } from '../../../utils/image/hooks/use-product-image-url'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ErrorAlert } from '../../form-validation/components/error-alert'
@@ -30,6 +30,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
 
   const {
     name: title = '',
@@ -152,7 +153,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
                     numberOfLines={2}
                     ellipsizeMode="head"
                     testID={buildTestId('screens_favorites_favorites_list_item_price')}
-                    style={[styles.price, { color: colors.labelColor }]}>
+                    style={[textStyles.HeadlineH4Extrabold, styles.price, { color: colors.labelColor }]}>
                     {formattedPriceInformation}
                   </Text>
                 ) : null}
@@ -211,7 +212,6 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
   },
   price: {
-    ...textStyles.HeadlineH4Extrabold,
     paddingTop: spacing[0],
     marginRight: spacing[7],
   },

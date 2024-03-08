@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import { CopyToClipboard, CopyToClipboardProps } from '../../../components/copy-to-clipboard/copy-to-clipboard'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export type AddressProps = {
   name?: string
@@ -36,6 +36,8 @@ export const Address: React.FC<
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const textStyles = useTextStyles()
+
   const copyToClipboard = useCallback(() => {
     copyAddressToClipboard({
       name,

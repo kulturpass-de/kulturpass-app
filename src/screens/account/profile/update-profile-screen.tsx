@@ -275,6 +275,7 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
               control={form.control}
               isRequired
               disableAccessibilityForLabel
+              displayMandatoryFieldHint
               textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'newPassword'}
             />
           </FormFieldGroup>

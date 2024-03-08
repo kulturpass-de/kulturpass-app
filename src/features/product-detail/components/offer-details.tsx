@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Offer } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { ProductDetailSection } from './product-detail-section/product-detail-section'
 
 export type OfferDetailsProps = {
@@ -16,6 +16,7 @@ export type OfferDetailsProps = {
 export const OfferDetails: React.FC<OfferDetailsProps> = ({ description, priceAdditionalInfo, testID }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   if (!description && !priceAdditionalInfo) {
     return null

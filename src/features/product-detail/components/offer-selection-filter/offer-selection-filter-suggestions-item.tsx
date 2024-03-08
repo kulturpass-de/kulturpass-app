@@ -1,8 +1,8 @@
 import React from 'react'
 import { PixelRatio, Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
-import { textStyles } from '../../../../theme/typography'
 import { isDeviceTextScaled } from '../../../../theme/utils'
 
 const RADIUS = spacing[3]
@@ -33,6 +33,7 @@ export const OfferSelectionFilterSuggestionsItem: React.FC<OfferSelectionFilterS
   onPress,
 }) => {
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   return (
     <Pressable

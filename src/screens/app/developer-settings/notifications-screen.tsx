@@ -15,9 +15,9 @@ import {
 import { selectPersistedNotificationsState } from '../../../services/notifications/store/notifications-selectors'
 import { AppDispatch } from '../../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export type NotificationsScreenProps = {
   onHeaderPressBack: () => void
@@ -30,6 +30,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ onHead
   const { colors } = useTheme()
   const { fcmToken, apnsToken } = useSelector(selectPersistedNotificationsState)
   const notificationsDebugEvents = useSelector(selectNotificationsDebugEvents)
+  const textStyles = useTextStyles()
 
   const onCopyFcm = useCallback(() => {
     if (!fcmToken) {

@@ -5,9 +5,9 @@ import { TranslatedText } from '../../../components/translated-text/translated-t
 import { Category, Price } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { useFormattedPrice } from '../../../utils/price/hooks/use-formatted-price'
 import { ProductDetail, ProductTypes } from '../types/product-detail'
 import { svgForProductType, svgForVoucherCategory } from '../utils'
@@ -27,6 +27,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
   const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
+  const textStyles = useTextStyles()
 
   const category: Category | undefined = productDetail.categories[0]
   const svgImageType =

@@ -3,8 +3,8 @@ import { Text } from 'react-native'
 import { Product } from '../../../services/api/types/commerce/api-types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
-import { textStyles } from '../../../theme/typography'
 
 type InformationLineProps = Pick<Product, 'venueName' | 'itemType' | 'shopDistance'> & {
   shopInformation?: string
@@ -15,6 +15,7 @@ export const InformationLine: React.FC<InformationLineProps> = ({ venueName, ite
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
+  const textStyles = useTextStyles()
 
   const styles = [textStyles.BodySmallRegular, { color: colors.labelColor }]
 

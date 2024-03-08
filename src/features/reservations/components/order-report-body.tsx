@@ -7,7 +7,6 @@ import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-li
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 
 export const OrderReportBody: React.FC = () => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
@@ -102,7 +101,7 @@ export const OrderReportBody: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
-  text: { ...textStyles.BodyBold, flexShrink: 1 },
+  text: { flexShrink: 1 },
   paddingBottom: {
     paddingBottom: spacing[6],
   },

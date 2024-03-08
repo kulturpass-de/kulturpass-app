@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { StyleSheet, Text, type StyleProp, type TextStyle, AccessibilityProps } from 'react-native'
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation, Trans } from '../../services/translation/translation'
-import { textStyles } from '../../theme/typography'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { applyAccessibilityReplacements } from './accessibility-replacements'
 import { AvailableTextStyles, AvailableTranslations } from './types'
 
@@ -22,6 +22,7 @@ export const TranslatedText = forwardRef<Text, TranslatedTextProps>(
     ref: React.ForwardedRef<Text>,
   ) => {
     const { t } = useTranslation()
+    const textStyles = useTextStyles()
     let accessibilityLabel = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
     accessibilityLabel = applyAccessibilityReplacements(accessibilityLabel)
 

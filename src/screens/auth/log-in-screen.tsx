@@ -124,7 +124,7 @@ export const LogInScreen: React.FC<LogInScreenProps> = ({
           labelI18nKey="login_form_password"
           labelTextStyle="BodySmallMedium"
           control={form.control}
-          containerStyle={style.passwordFormFieldContainerStyle}
+          displayMandatoryFieldHint
           isRequired
           disableAccessibilityForLabel
           textContentType="password"
@@ -181,9 +181,6 @@ const style = StyleSheet.create({
   title: {
     paddingVertical: spacing[6],
     textAlign: 'center',
-  },
-  passwordFormFieldContainerStyle: {
-    marginBottom: spacing[2],
   },
   formLoginButton: {
     marginTop: spacing[6],

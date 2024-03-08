@@ -2,9 +2,9 @@ import React, { FC, useCallback } from 'react'
 import { Text, StyleSheet, Pressable, View } from 'react-native'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 import { SvgImage } from '../svg-image/svg-image'
 import { AvailableTextStyles, AvailableTranslations } from '../translated-text/types'
 
@@ -25,6 +25,7 @@ export const Checkbox: FC<CheckboxProps> = props => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { t } = useTranslation()
   const text = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
+  const textStyles = useTextStyles()
 
   const toggleSelected = useCallback(() => {
     onChange(!selected)

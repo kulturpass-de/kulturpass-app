@@ -28,9 +28,9 @@ import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
+import { useTextStyles } from '../../theme/hooks/use-text-styles'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
-import { textStyles } from '../../theme/typography'
 
 export type ReservationDetailScreenProps = {
   productDetail: ProductDetail
@@ -54,6 +54,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const testID = buildTestId('reservationDetail')
+  const textStyles = useTextStyles()
 
   const [loading, setLoading] = useState(false)
   const [isCancelTriggered, setIsCancelTriggered] = useState(false)

@@ -4,9 +4,9 @@ import { AccessibilityProps, Pressable, StyleSheet, Text, View } from 'react-nat
 import { ReservationsTabsParamList } from '../../../screens/reservations/reservations-screen'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useTextStyles } from '../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
-import { textStyles } from '../../../theme/typography'
 import { isDeviceTextScaled } from '../../../theme/utils'
 
 type ReservationsTabItemProps = {
@@ -27,6 +27,7 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   const onPress = useCallback(() => {
     const event = navigation.emit({

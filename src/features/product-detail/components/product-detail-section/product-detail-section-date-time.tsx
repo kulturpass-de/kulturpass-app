@@ -2,8 +2,8 @@ import React from 'react'
 import { Text } from 'react-native'
 import { AvailableTranslations } from '../../../../components/translated-text/types'
 import { TestId, useTestIdBuilder } from '../../../../services/test-id/test-id'
+import { useTextStyles } from '../../../../theme/hooks/use-text-styles'
 import { useTheme } from '../../../../theme/hooks/use-theme'
-import { textStyles } from '../../../../theme/typography'
 import { ProductDetailSection } from './product-detail-section'
 
 export type ProductDetailSectionDateTimeProps = {
@@ -21,6 +21,7 @@ export const ProductDetailSectionDateTime: React.FC<ProductDetailSectionDateTime
 }) => {
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
+  const textStyles = useTextStyles()
 
   return (
     <ProductDetailSection
