@@ -70,6 +70,7 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 
 jest.mock('./src/theme/hooks/use-theme');
+jest.mock('./src/theme/hooks/use-text-styles');
 jest.mock('./src/utils/accessibility/hooks/use-is-screen-reader-active');
 jest.mock('./src/utils/accessibility/hooks/use-is-reduce-motion-active');
 jest.mock('./src/utils/accessibility/hooks/use-is-bold-text-enabled');

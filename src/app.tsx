@@ -8,6 +8,7 @@ import { NavigationContainer } from './navigation/navigation-container'
 import { persistor, store } from './services/redux/store'
 import { ThemeProvider } from './theme/components/theme-provider'
 import { AccessibilityProvider } from './utils/accessibility/components/accessibility-provider'
+import { TextStyleProvider } from './utils/accessibility/components/text-style-provider'
 
 export const App = () => {
   return (
@@ -15,13 +16,15 @@ export const App = () => {
       <StoreProvider store={store}>
         <ThemeProvider>
           <AccessibilityProvider>
-            <PersistGate loading={null} persistor={persistor}>
-              <WebViewBridgeAdapterContext.Provider value={webViewBridgeAdapter}>
-                <Suspense fallback={null}>
-                  <NavigationContainer />
-                </Suspense>
-              </WebViewBridgeAdapterContext.Provider>
-            </PersistGate>
+            <TextStyleProvider>
+              <PersistGate loading={null} persistor={persistor}>
+                <WebViewBridgeAdapterContext.Provider value={webViewBridgeAdapter}>
+                  <Suspense fallback={null}>
+                    <NavigationContainer />
+                  </Suspense>
+                </WebViewBridgeAdapterContext.Provider>
+              </PersistGate>
+            </TextStyleProvider>
           </AccessibilityProvider>
         </ThemeProvider>
       </StoreProvider>

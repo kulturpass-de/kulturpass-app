@@ -15,6 +15,7 @@ import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offl
 import { useNavigateToPDP } from '../hooks/use-navigate-to-pdp'
 import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
+import { useWebViewChangeTitle } from '../hooks/use-webview-change-title'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
 import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
 import { useWebViewLog } from '../hooks/use-webview-log'
@@ -36,6 +37,7 @@ type SpartacusWebViewProps = {
   onScroll?: WebViewProps['onScroll']
   language: string
   contentOffset?: number
+  websiteTitle?: string
 } & Omit<WebViewProps, 'ref' | 'onLoadEnd'>
 
 /**
@@ -49,6 +51,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   language,
   style,
   contentOffset,
+  websiteTitle,
   ...props
 }) => {
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
@@ -131,6 +134,13 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
     webViewId,
   })
 
+  const changeWebViewTitle = useWebViewChangeTitle(webViewRef, websiteTitle)
+
+  const onLoadEnd = useCallback(() => {
+    applyWebviewDocumentBodyOffset()
+    changeWebViewTitle()
+  }, [applyWebviewDocumentBodyOffset, changeWebViewTitle])
+
   const filtersOrSortOpen = useSelector(selectFiltersOrSortOpen(webViewId))
 
   const navigation = useTabsNavigation()
@@ -178,7 +188,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
           onMessage={onMessage}
           {...props}
           onLoadProgress={onLoadProgress}
-          onLoadEnd={applyWebviewDocumentBodyOffset}
+          onLoadEnd={onLoadEnd}
           style={[styles.transparentBackground, style]}
           containerStyle={styles.transparentBackground}
           onScroll={onScroll}

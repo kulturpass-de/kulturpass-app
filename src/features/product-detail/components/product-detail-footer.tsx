@@ -107,7 +107,9 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
               accessibilityElementsHidden>
               {t(productIsVoucher ? 'productDetail_footer_voucher_priceTitle' : 'productDetail_footer_priceTitle')}
             </Text>
-            <View style={styles.spacer} />
+          </View>
+          <View style={styles.spacer} />
+          <View style={styles.priceAndCurrency}>
             <Text
               testID={buildTestId('productDetail_footer_price')}
               style={[textStyles.HeadlineH3Extrabold, styles.fixLineHeight, { color: colors.labelColor }]}
@@ -146,6 +148,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
           />
           <Text
             testID={buildTestId('productDetail_footer_price')}
+            adjustsFontSizeToFit={true}
             style={[textStyles.HeadlineH3Extrabold, { color: colors.labelColor }]}>
             {formattedPrice}
           </Text>
@@ -169,13 +172,13 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   priceRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-    flexWrap: 'wrap',
-    flexGrow: 1,
+  },
+  priceAndCurrency: {
+    marginLeft: 'auto',
   },
   rowReserve: {
     flexDirection: 'row',

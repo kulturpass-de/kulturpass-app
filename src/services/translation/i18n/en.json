@@ -690,6 +690,7 @@
   "home_budget_greeting_without_user" : "<extrabold>Hi!</extrabold> Your available budget",
   "home_budget_amount" : "{{amount}}",
   "home_budget_amount_reserved" : "{{amount}} Booked",
+  "home_webview_label" : "Offers and Recommendations - Web View",
   "register_now_button_title" : "Hi!",
   "register_now_button_text" : "You can log in or register here.",
   "account_verification_hero_greeting" : "Hi {{name}}!",
