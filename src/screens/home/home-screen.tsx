@@ -22,6 +22,7 @@ export type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   useDisplayReleaseNotes()
+  const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const isScreenReaderActive = useIsScreenReaderActive()
   const homeUrl = useEnvironmentConfigurationCommerce().homeUrl
@@ -61,6 +62,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
           url={homeUrl}
           testID={buildTestId('screens_home_webview')}
           language={language}
+          websiteTitle={t('home_webview_label')}
         />
       </View>
     </Screen>

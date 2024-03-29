@@ -39,7 +39,7 @@ export const ReservationDetailFooter: React.FC<ReservationDetailFooterProps> = (
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const formattedPrice = useFormattedPrice(price)
 

@@ -29,7 +29,7 @@ export const ChangeLanguageScreen: React.FC<ChangeLanguageScreenProps> = ({ onHe
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const dispatch = useDispatch<AppDispatch>()
   const browserTranslationFaqLink = useFaqLink('BROWSER_TRANSLATION')
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onBrowserTranslationPress = useCallback(() => {
     openLink(browserTranslationFaqLink).catch(linkLogger)

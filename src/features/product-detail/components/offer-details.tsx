@@ -16,7 +16,7 @@ export type OfferDetailsProps = {
 export const OfferDetails: React.FC<OfferDetailsProps> = ({ description, priceAdditionalInfo, testID }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   if (!description && !priceAdditionalInfo) {
     return null

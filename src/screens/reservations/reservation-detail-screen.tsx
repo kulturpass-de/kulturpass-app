@@ -54,7 +54,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const testID = buildTestId('reservationDetail')
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const [loading, setLoading] = useState(false)
   const [isCancelTriggered, setIsCancelTriggered] = useState(false)

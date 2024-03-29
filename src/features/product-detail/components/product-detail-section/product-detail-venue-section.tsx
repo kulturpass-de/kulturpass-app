@@ -49,7 +49,7 @@ export const ProductDetailVenueSection: React.FC<ProductDetailVenueSectionProps>
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const { venue, venueDistance, eventDateTime } = productDetail
   const formattedEventDateTime = useFormattedDateTime(eventDateTime)

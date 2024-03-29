@@ -9,6 +9,7 @@ export enum Injections {
   webviewWindowOnError,
   webviewGoToPage,
   webviewSetTextZoom,
+  webviewChangeTitle,
 }
 
 /**
@@ -36,6 +37,8 @@ class InjectionService {
         return require('../../../webview-injected-code/build/webview-go-to-page/bundle.raw.js')
       case Injections.webviewSetTextZoom:
         return require('../../../webview-injected-code/build/webview-set-text-zoom/bundle.raw.js')
+      case Injections.webviewChangeTitle:
+        return require('../../../webview-injected-code/build/webview-change-title/bundle.raw.js')
     }
   }
 
@@ -102,6 +105,20 @@ class InjectionService {
     const code = this.getCodeStr(Injections.webviewGoToPage)
     return `${code}
       kp_webview_go_to_page.webviewGoToPage(${JSON.stringify(uri)})
+
+      // Don't remove
+      true;`
+  }
+
+  public webviewChangeTitle(title: string) {
+    if (typeof title !== 'string') {
+      logger.warn('webviewChangeTitle: title is not a string')
+      return ''
+    }
+
+    const code = this.getCodeStr(Injections.webviewChangeTitle)
+    return `${code}
+      kp_webview_change_title.webviewChangeTitle("${title}")
 
       // Don't remove
       true;`

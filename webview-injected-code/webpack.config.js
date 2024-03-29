@@ -48,6 +48,10 @@ var modules = [
     name: 'webview-set-text-zoom',
     moduleName: 'kp_webview_set_text_zoom',
   },
+  {
+    name: 'webview-change-title',
+    moduleName: 'kp_webview_change_title',
+  },
 ];
 
 module.exports = modules.map(module => {

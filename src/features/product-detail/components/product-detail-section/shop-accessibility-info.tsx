@@ -51,7 +51,7 @@ type AccessibilityFeatureTextProps = {
 const AccessibilityFeatureText: React.FC<AccessibilityFeatureTextProps> = ({ testID, label_i18nKey, text }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <View testID={testID} style={styles.featureText}>

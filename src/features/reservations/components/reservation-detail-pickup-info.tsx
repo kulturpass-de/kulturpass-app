@@ -20,7 +20,7 @@ export const ReservationDetailPickupInfo: React.FC<ReservationDetailPickupInfoPr
   const { t } = useTranslation()
   const { colors } = useTheme()
   const [state, setState] = useState<{ containerWidth?: number }>({})
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onContainerLayout: NonNullable<ViewProps['onLayout']> = useCallback(event => {
     const { width } = event.nativeEvent.layout

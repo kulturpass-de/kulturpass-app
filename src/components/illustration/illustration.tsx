@@ -134,10 +134,10 @@ export const Illustration: React.FC<IllustrationProps> = ({ type, i18nKey, testI
           autoPlay={false}
           resizeMode="cover"
           progress={animationProgress.current}
-          style={animation.size}
+          style={[animation.size, styles.image]}
         />
       ) : (
-        <Image source={image} />
+        <Image source={image} resizeMode="contain" style={styles.image} />
       )}
     </View>
   )
@@ -146,5 +146,8 @@ export const Illustration: React.FC<IllustrationProps> = ({ type, i18nKey, testI
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+  },
+  image: {
+    maxWidth: '100%',
   },
 })

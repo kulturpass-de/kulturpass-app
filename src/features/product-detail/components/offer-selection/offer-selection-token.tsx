@@ -24,7 +24,7 @@ export const OfferSelectionToken = ({
   testID,
 }: OfferSelectionTokenProps) => {
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const textStyleOverrides = { color: disabled ? colors.tokenTextDisabled : colors.tokenText }
 

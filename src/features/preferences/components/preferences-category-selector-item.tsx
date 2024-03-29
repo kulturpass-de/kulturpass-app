@@ -32,7 +32,7 @@ export const PreferencesCategorySelectorItem: React.FC<PreferencesCategorySelect
 }) => {
   const { colors, colorScheme } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onPress = useCallback(() => {
     if (isSelectable) {

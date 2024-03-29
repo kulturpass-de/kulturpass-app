@@ -16,7 +16,7 @@ export const EMailLink: React.FC<EMailLinkProps> = ({ testID, recipient, subject
   const { colors } = useTheme()
   const onPress = useCallback(async () => sendMail(recipient, subject, content), [content, recipient, subject])
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <Pressable

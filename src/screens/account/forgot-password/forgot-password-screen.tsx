@@ -102,7 +102,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ onHe
             disabled={!form.formState.isValid}
             testID={buildTestId('forgotPassword_form_submitButton')}
             i18nKey="forgotPassword_form_submitButton"
-            variant="secondary"
+            variant={!form.formState.isValid ? 'secondary' : 'tertiary'}
             onPress={onSubmit}
           />
         </View>

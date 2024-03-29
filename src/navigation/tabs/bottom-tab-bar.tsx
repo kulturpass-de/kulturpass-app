@@ -32,7 +32,7 @@ const BottomTabItem: React.FC<BottomTabItemProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onPress = useCallback(() => {
     const event = navigation.emit({

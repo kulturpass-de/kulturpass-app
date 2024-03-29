@@ -11,7 +11,7 @@ export type FavoritesListItemImageBadgeProps = {
 
 export const FavoritesListItemImageBadge = ({ children, testID }: FavoritesListItemImageBadgeProps) => {
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const [lines, setLines] = useState<TextLayoutEventData['lines']>()
 

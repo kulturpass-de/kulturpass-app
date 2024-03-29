@@ -22,7 +22,7 @@ export const BulletListItem: React.FC<React.PropsWithChildren<BulletListItemProp
   testID,
 }) => {
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const adjustedBulletSize = useMemo(() => {
     return bulletSize * PixelRatio.getFontScale()

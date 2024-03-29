@@ -15,7 +15,7 @@ export type ReservationDetailStatusInfoProps = {
 export const ReservationDetailStatusInfo: React.FC<ReservationDetailStatusInfoProps> = ({ order }) => {
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const validUntil = order.entries?.[0].voucherValidTo ? new Date(order.entries[0].voucherValidTo) : undefined
   const orderCode = order.consignments?.find(() => true)?.code || `${order.code}-A`

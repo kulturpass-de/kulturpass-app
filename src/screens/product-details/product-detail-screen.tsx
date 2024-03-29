@@ -49,7 +49,7 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const scrollY = useRef(new Animated.Value(0)).current
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const productImage = useProductImageUrl(productDetail.images, 'zoom')
   const testID = buildTestId('productDetail')

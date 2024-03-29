@@ -30,7 +30,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ onHead
   const { colors } = useTheme()
   const { fcmToken, apnsToken } = useSelector(selectPersistedNotificationsState)
   const notificationsDebugEvents = useSelector(selectNotificationsDebugEvents)
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onCopyFcm = useCallback(() => {
     if (!fcmToken) {

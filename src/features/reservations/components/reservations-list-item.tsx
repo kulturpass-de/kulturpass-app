@@ -40,7 +40,7 @@ export const ReservationsListItem: React.FC<ReservationsListItemProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <Pressable testID={buildTestId('reservations_listItem_button')} accessibilityRole="button" onPress={onPress}>

@@ -15,7 +15,7 @@ export const FavoritesEventDate = ({ startDate, endDate }: FavoritesEventDatePro
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const formattedEventStartDate = useFormattedDateTime(startDate)
   const formattedEvenEndDate = useFormattedDateTime(endDate)

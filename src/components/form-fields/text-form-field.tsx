@@ -69,7 +69,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
     const { colors, colorScheme } = useTheme()
     const { addTestIdModifier } = useTestIdBuilder()
     const { state, handleBlur, handleFocus } = useInputState({ onBlur, onFocus })
-    const textStyles = useTextStyles()
+    const [textStyles] = useTextStyles()
     const accessibilityHint = error?.message || (isRequired && t('form_error_required')) || undefined
 
     const borderColor: string = useMemo(() => {

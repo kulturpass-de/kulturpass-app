@@ -30,7 +30,7 @@ export const ListItem: React.FC<ListItemProps> = ({
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
   const borderBottomStyle = noBorderBottom ? {} : { borderBottomWidth: 2, borderBottomColor: colors.listItemBorder }
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const iconElement: ReactNode = useMemo(() => {
     if (type === 'navigation') {
