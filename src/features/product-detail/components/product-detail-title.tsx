@@ -28,7 +28,7 @@ export const ProductDetailTitle = forwardRef<Text, ProductDetailTitleProps>(({ p
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const categoryName: string | undefined = productDetail.categories[0]?.name
   const productSubTitle = getProductSubtitle(productDetail)

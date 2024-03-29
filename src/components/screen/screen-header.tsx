@@ -47,7 +47,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
   const [focusRef, setFocus] = useAccessibilityFocus()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   useFocusEffect(setFocus)
 

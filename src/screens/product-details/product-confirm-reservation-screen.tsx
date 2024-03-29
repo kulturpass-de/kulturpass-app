@@ -43,7 +43,7 @@ export const ProductConfirmReservationScreen: React.FC<ProductConfirmReservation
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
   const [loading, setLoading] = useState(false)
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const productImage = useProductImageUrl(productDetail.images, 'zoom')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)

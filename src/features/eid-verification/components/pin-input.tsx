@@ -34,7 +34,7 @@ export const PinInput = React.forwardRef<TextInput, PinInputProps>(
     const [innerInputRef, setFocusInnerInputRef] = useAccessibilityFocus()
     const [toggleShowPinRef, setFocusToggleShowPinRef] = useAccessibilityFocus()
     const { addTestIdModifier } = useTestIdBuilder()
-    const textStyles = useTextStyles()
+    const [textStyles] = useTextStyles()
 
     useImperativeHandle(externalInputRef, () => innerInputRef.current as TextInput)
 

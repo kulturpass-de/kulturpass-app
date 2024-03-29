@@ -30,7 +30,7 @@ export const FavoritesListItem: React.FC<FavoritesListItemProps> = ({ product, o
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const {
     name: title = '',

@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.14.0",
-  "buildNumber": "3",
+  "buildNumber": "4",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

@@ -21,7 +21,7 @@ export const ProductDetailSectionDateTime: React.FC<ProductDetailSectionDateTime
 }) => {
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <ProductDetailSection

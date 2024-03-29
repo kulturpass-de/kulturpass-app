@@ -32,7 +32,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   let errorMessage: string | undefined
   if (error) {

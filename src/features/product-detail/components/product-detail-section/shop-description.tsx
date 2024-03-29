@@ -15,7 +15,7 @@ export type ShopDescriptionProps = Pick<Offer, 'shopDescription'> & {
 export const ShopDescription: React.FC<ShopDescriptionProps> = ({ shopDescription, testID }) => {
   const { addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   if (!shopDescription) {
     return null

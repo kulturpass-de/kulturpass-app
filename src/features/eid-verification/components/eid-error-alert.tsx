@@ -50,7 +50,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   const testID = buildTestId('eid_error_alert')
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
 

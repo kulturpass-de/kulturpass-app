@@ -33,7 +33,7 @@ export const EidAboutServiceProviderScreen: React.FC<EidAboutServiceProviderScre
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const renderItem = useCallback(
     (item: AccessRight) => {

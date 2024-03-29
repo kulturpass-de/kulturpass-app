@@ -33,7 +33,7 @@ export const OfferSelectionFilterSuggestionsItem: React.FC<OfferSelectionFilterS
   onPress,
 }) => {
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <Pressable

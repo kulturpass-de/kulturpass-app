@@ -27,7 +27,7 @@ export const ProductConfirmOverview: React.FC<ProductConfirmOverviewProps> = ({ 
   const { colors } = useTheme()
   const { t } = useTranslation()
   const formattedPrice = useFormattedPrice(price)
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const category: Category | undefined = productDetail.categories[0]
   const svgImageType =

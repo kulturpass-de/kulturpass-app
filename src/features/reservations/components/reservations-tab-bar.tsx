@@ -27,7 +27,7 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const onPress = useCallback(() => {
     const event = navigation.emit({

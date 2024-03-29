@@ -25,7 +25,7 @@ export const ProductStagedEventDetail: React.FC<ProductStagedEventDetailProps> =
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const sectionTestID = addTestIdModifier(testID, 'stagedEvent')
   const { venue, eventDateTime, durationInMins, venueDistance } = productDetail

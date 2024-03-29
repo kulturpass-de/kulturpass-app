@@ -30,7 +30,7 @@ export const ReservationListStatusText: React.FC<ReservationListStatusTextProps>
   const { t } = useTranslation()
   const { colorScheme } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const colors: ReservationListStatusTextColors = useMemo(() => {
     if (colorScheme === 'dark') {

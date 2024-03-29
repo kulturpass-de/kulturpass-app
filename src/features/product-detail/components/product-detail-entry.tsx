@@ -16,7 +16,7 @@ export const ProductDetailEntry: React.FC<ProductDetailEntryProps> = ({ i18nKey,
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
   const testID = buildTestId(i18nKey)
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   return (
     <View style={isDeviceTextScaled() ? styles.col : styles.row}>

@@ -23,7 +23,7 @@ const Item = ({
 }) => {
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const contentTextStyle = [textStyles.BodyRegular, { color: colors.labelColor }]
 

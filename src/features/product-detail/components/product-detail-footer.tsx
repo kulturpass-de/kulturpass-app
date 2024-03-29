@@ -36,7 +36,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
   const { t } = useTranslation()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const formattedPrice = useFormattedPrice(selectedOffer?.price)
   const isLoggedIn = useSelector(getIsUserLoggedIn)
@@ -112,8 +112,7 @@ export const ProductDetailFooter: React.FC<ProductDetailFooterProps> = ({
           <View style={styles.priceAndCurrency}>
             <Text
               testID={buildTestId('productDetail_footer_price')}
-              style={[textStyles.HeadlineH3Extrabold, styles.fixLineHeight, { color: colors.labelColor }]}
-              accessibilityElementsHidden>
+              style={[textStyles.HeadlineH3Extrabold, styles.fixLineHeight, { color: colors.labelColor }]}>
               {formattedPrice}
             </Text>
           </View>

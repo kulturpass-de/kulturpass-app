@@ -20,7 +20,7 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
   const { t } = useTranslation()
   const { colors } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const formattedPrice = useFormattedPrice(offer.price)
   const onButtonPress = useCallback(() => {

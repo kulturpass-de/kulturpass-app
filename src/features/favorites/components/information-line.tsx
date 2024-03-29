@@ -15,7 +15,7 @@ export const InformationLine: React.FC<InformationLineProps> = ({ venueName, ite
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const styles = [textStyles.BodySmallRegular, { color: colors.labelColor }]
 

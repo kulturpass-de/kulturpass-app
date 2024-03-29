@@ -37,7 +37,7 @@ export const usePinField = ({
 }: UsePinFieldProps) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
-  const textStyles = useTextStyles()
+  const [textStyles] = useTextStyles()
 
   const renderPinField = useCallback(
     (index: number, total: number) => {
