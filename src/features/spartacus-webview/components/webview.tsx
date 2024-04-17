@@ -17,6 +17,7 @@ import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
 import { useWebViewChangeTitle } from '../hooks/use-webview-change-title'
 import { useWebViewContentOffset } from '../hooks/use-webview-content-offset'
+import { useWebviewIsBoldFontEnabled } from '../hooks/use-webview-is-bold-font-enabled'
 import { useWebViewLanguageSync } from '../hooks/use-webview-language-sync'
 import { useWebViewLog } from '../hooks/use-webview-log'
 import { useWebViewScrollToTop } from '../hooks/use-webview-scroll-to-top'
@@ -115,6 +116,8 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   useWebViewLog(webViewRef, bridgeAdapterApi)
 
   useWebViewWindowError(webViewRef, bridgeAdapterApi)
+
+  useWebviewIsBoldFontEnabled(webViewId)
 
   const { onLoadProgress } = useHandleWebviewOfflineAndroid(webViewRef)
 

@@ -3,6 +3,8 @@ import { isPreferencesFormDirty } from './is-preferences-form-dirty'
 describe('isPreferencesFormDirty', () => {
   it('should validate not to be dirty, since nothing has changed', () => {
     expect(isPreferencesFormDirty({ categories: [], postalCode: '' }, { categories: [], postalCode: '' })).toBe(false)
+    expect(isPreferencesFormDirty({ categories: [], postalCode: '' }, { categories: [] })).toBe(false)
+    expect(isPreferencesFormDirty({ categories: [] }, { categories: [], postalCode: '' })).toBe(false)
   })
 
   it('should validate to be dirty, since a category has been removed', () => {
