@@ -41,6 +41,10 @@ export type WebViewFunctions = {
     arguments: SpartacusBridge.FunctionCall.SearchCloseModal.Request['arguments']
     result: SpartacusBridge.FunctionCall.SearchCloseModal.Result
   }
+  [SpartacusBridge.FunctionCall.Target.IsBold]: {
+    arguments: SpartacusBridge.FunctionCall.IsBold.Request['arguments']
+    result: SpartacusBridge.FunctionCall.IsBold.Result
+  }
 }
 
 export type AnyWebViewFunctionResult = ValueOf<WebViewFunctions>['result']

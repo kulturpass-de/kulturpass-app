@@ -113,62 +113,60 @@ export const Preferences: React.FC<PreferencesProps> = ({
   return (
     <>
       <LoadingIndicator loading={loading} />
-      <ScreenContent>
-        <View style={styles.content}>
+      <ScreenContent style={styles.content}>
+        <TranslatedText
+          accessibilityRole="header"
+          textStyle="HeadlineH4Bold"
+          textStyleOverrides={[styles.yourPreferencesTitle, { color: colors.labelColor }]}
+          i18nKey="preferences_your_preferences"
+          testID={buildTestId('preferences_your_preferences_title')}
+        />
+        <TranslatedText
+          textStyle="BodyRegular"
+          textStyleOverrides={[styles.yourPreferencesDescription, { color: colors.labelColor }]}
+          i18nKey="preferences_your_preferences_description"
+          testID={buildTestId('preferences_your_preferences_description')}
+        />
+        {withCategoriesLabel ? (
+          <TranslatedText
+            textStyle="CaptionSemibold"
+            textStyleOverrides={[styles.yourPreferencesSelectionTitle, { color: colors.labelColor }]}
+            i18nKey="preferences_your_preferences_selection_title"
+            testID={buildTestId('preferences_your_preferences_selection_title')}
+          />
+        ) : null}
+        <FormFieldWithControl
+          name="categories"
+          control={form.control}
+          component={PreferencesCategorySelector}
+          availableCategories={availableCategories}
+          testID={buildTestId('preferences_select_categories')}
+        />
+        <View style={styles.postalCodeContainer}>
           <TranslatedText
             accessibilityRole="header"
             textStyle="HeadlineH4Bold"
-            textStyleOverrides={[styles.yourPreferencesTitle, { color: colors.labelColor }]}
-            i18nKey="preferences_your_preferences"
-            testID={buildTestId('preferences_your_preferences_title')}
+            textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
+            i18nKey="preferences_postal_code_title"
+            testID={buildTestId('preferences_postal_code_title')}
           />
-          <TranslatedText
-            textStyle="BodyRegular"
-            textStyleOverrides={[styles.yourPreferencesDescription, { color: colors.labelColor }]}
-            i18nKey="preferences_your_preferences_description"
-            testID={buildTestId('preferences_your_preferences_description')}
-          />
-          {withCategoriesLabel ? (
-            <TranslatedText
-              textStyle="CaptionSemibold"
-              textStyleOverrides={[styles.yourPreferencesSelectionTitle, { color: colors.labelColor }]}
-              i18nKey="preferences_your_preferences_selection_title"
-              testID={buildTestId('preferences_your_preferences_selection_title')}
+          <View>
+            <FormFieldWithControl
+              name="postalCode"
+              component={TextFormField}
+              labelI18nKey="preferences_postal_code_input"
+              testID={buildTestId('preferences_form_postal_code')}
+              control={form.control}
+              maxLength={5}
+              disableAccessibilityForLabel
+              keyboardType="number-pad"
             />
-          ) : null}
-          <FormFieldWithControl
-            name="categories"
-            control={form.control}
-            component={PreferencesCategorySelector}
-            availableCategories={availableCategories}
-            testID={buildTestId('preferences_select_categories')}
-          />
-          <View style={styles.postalCodeContainer}>
             <TranslatedText
-              accessibilityRole="header"
-              textStyle="HeadlineH4Bold"
-              textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
-              i18nKey="preferences_postal_code_title"
-              testID={buildTestId('preferences_postal_code_title')}
+              textStyle="BodyRegular"
+              textStyleOverrides={[styles.description, { color: colors.labelColor }]}
+              i18nKey="preferences_location"
+              testID={buildTestId('preferences_location_text')}
             />
-            <View>
-              <FormFieldWithControl
-                name="postalCode"
-                component={TextFormField}
-                labelI18nKey="preferences_postal_code_input"
-                testID={buildTestId('preferences_form_postal_code')}
-                control={form.control}
-                maxLength={5}
-                disableAccessibilityForLabel
-                keyboardType="number-pad"
-              />
-              <TranslatedText
-                textStyle="BodyRegular"
-                textStyleOverrides={[styles.description, { color: colors.labelColor }]}
-                i18nKey="preferences_location"
-                testID={buildTestId('preferences_location_text')}
-              />
-            </View>
           </View>
         </View>
       </ScreenContent>

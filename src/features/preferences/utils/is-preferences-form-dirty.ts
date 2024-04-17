@@ -5,7 +5,9 @@ export const isPreferencesFormDirty = (
   newData: Partial<PreferencesFormData>,
 ) => {
   return (
-    oldData.postalCode !== newData.postalCode ||
+    (oldData.postalCode !== undefined &&
+      newData.postalCode !== undefined &&
+      oldData.postalCode !== newData.postalCode) ||
     newData.categories?.length !== oldData.categories?.length ||
     !oldData.categories?.every(category => newData.categories?.includes(category))
   )

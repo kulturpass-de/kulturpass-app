@@ -78,6 +78,7 @@ jest.mock('./src/services/webviews/injection-service');
 jest.mock('./src/services/api/redux/hooks/use-offline-order-detail');
 jest.mock('./src/services/api/redux/hooks/use-offline-product-detail');
 jest.mock('./src/services/api/redux/hooks/use-offline-reservations');
+jest.mock('./src/features/spartacus-webview/hooks/use-webview-is-bold-font-enabled');
 
 jest.mock('./src/env', () => {
   return {

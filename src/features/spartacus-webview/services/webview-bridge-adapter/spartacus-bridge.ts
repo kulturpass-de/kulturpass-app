@@ -36,6 +36,7 @@ export namespace SpartacusBridge {
       UserProfileRefresh = 'userProfile.refresh',
       FavouritesRefresh = 'favourites.refresh',
       SearchCloseModal = 'search.closeModal',
+      IsBold = 'app.isBold',
     }
     export type Arguments = Serializable[]
     export type ResultValue = Serializable
@@ -107,6 +108,14 @@ export namespace SpartacusBridge {
       export interface Request extends FunctionCall.Request<Target.SearchCloseModal, Arguments> {}
       export interface Result extends FunctionCall.Result<ResultValue> {}
     }
+
+    export namespace IsBold {
+      export type Arguments = [boolean]
+      export type ResultValue = void
+      export type Signature = (...args: Arguments) => Promise<ResultValue>
+      export interface Request extends FunctionCall.Request<Target.IsBold, Arguments> {}
+      export interface Result extends FunctionCall.Result<ResultValue> {}
+    }
   }
 
   export namespace EventForwarding {
@@ -116,6 +125,7 @@ export namespace SpartacusBridge {
       Bridge = 'bridge',
       Auth = 'auth',
       Search = 'search',
+      IsBold = 'IsBold',
     }
 
     export interface Event extends Message {
