@@ -44,7 +44,7 @@ export const OfferSelectionListItem: React.FC<OfferSelectionListItemProps> = ({ 
 
   return (
     <View style={styles.container}>
-      <View accessible style={styles.contentContainer}>
+      <View accessibilityRole="button" accessible style={styles.contentContainer}>
         <View style={styles.titleContainer}>
           <GoToSearchButton
             searchTerm={offer.shopName}
