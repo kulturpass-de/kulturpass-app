@@ -7,6 +7,14 @@ export type AccountInfoDataEid = {
   dateOfBirth: string // format YYYY-MM-DD
 }
 
+export type AccountSubscriptionsData = {
+  editorialInformation?: {
+    email?: {
+      isSubscribed?: boolean
+    }
+  }
+}
+
 export type AccountInfoData = {
   preferredPostalCode?: string
   preferredProductCategoryId1?: string
@@ -17,6 +25,7 @@ export type AccountInfoData = {
   idVerified?: 'true'
   dateOfBirth?: string | null // format YYYY-MM-DD
   deletionRequested?: boolean
+  subscriptions?: AccountSubscriptionsData
 }
 
 export type AccountInfo = {
@@ -29,4 +38,5 @@ export type AccountInfo = {
   signatureTimestamp?: string
   UID?: string
   UIDSignature?: string
+  subscriptions?: AccountSubscriptionsData
 }

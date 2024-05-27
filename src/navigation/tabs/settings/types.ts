@@ -1,6 +1,10 @@
 import { CompositeScreenProps } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
+  EditorialEmailConsentScreenRouteName,
+  EditorialEmailConsentScreenRouteParams,
+} from '../../../features/delta-onboarding/screens/editorial-email-consent-screen-route'
+import {
   DeleteAccountRouteName,
   DeleteAccountRouteParams,
 } from '../../../screens/account/delete-account/delete-account-route'
@@ -25,6 +29,7 @@ export type SettingsParamList = {
   [AppInformationsRouteName]: AppInformationsRouteParams
   [ReleaseNotesRouteName]: ReleaseNotesRouteParams
   [DeleteAccountRouteName]: DeleteAccountRouteParams
+  [EditorialEmailConsentScreenRouteName]: EditorialEmailConsentScreenRouteParams
 }
 
 export type SettingsScreenProps<RouteName extends keyof SettingsParamList> = CompositeScreenProps<

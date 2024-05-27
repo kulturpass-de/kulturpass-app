@@ -1,15 +1,15 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Alert } from '../../../components/alert/alert'
 import { AlertContent } from '../../../components/alert/alert-content'
 import { AlertTitle } from '../../../components/alert/alert-title'
 import { Button } from '../../../components/button/button'
+import { LinkText } from '../../../components/link-text/link-text'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import useAccessibilityFocus from '../../../navigation/a11y/use-accessibility-focus'
-import { RootStackParams } from '../../../navigation/types'
 import { ErrorWithCode } from '../../../services/errors/errors'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTextStyles } from '../../../theme/hooks/use-text-styles'
@@ -31,7 +31,6 @@ import {
 } from '../errors'
 import { useCloseFlow } from '../hooks/use-close-flow'
 import { useHandleErrors } from '../hooks/use-handle-errors'
-import { eidAusweisApp2Service } from '../services/eid-ausweisapp2-service'
 
 export type EidErrorAlertProps = {
   error: ErrorWithCode | null
@@ -51,8 +50,6 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
   const [textStyles] = useTextStyles()
-
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
 
   const [focusRef, setFocus] = useAccessibilityFocus()
   useFocusEffect(setFocus)
@@ -75,17 +72,12 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
     }
   }, [intError, onModalIsVisible])
 
-  const handleRestart = useCallback(async () => {
-    await eidAusweisApp2Service.stopSDK()
-    navigation.replace('Eid')
-    setIntError(null)
-  }, [navigation])
+  const eid_belowMinYearOfBirth_faq_link = useFaqLink('ENTITLED_USER_GROUP')
 
   const handleClose = useCallback(async () => {
     await closeFlow()
     setIntError(null)
   }, [closeFlow])
-
   const errorMessage: string | undefined = useMemo(() => {
     if (intError instanceof AA2InitError) {
       return t('eid_error_init_message')
@@ -128,12 +120,14 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
     <Alert visible={intError !== null} dismissable={false}>
       <AlertContent ref={focusRef}>
         <AlertTitle i18nKey="eid_error_title" testID={addTestIdModifier(testID, 'title')} />
-        <TranslatedText
-          textStyle="BodyRegular"
-          i18nKey="error_alert_message_fallback"
-          testID={addTestIdModifier(testID, 'message')}
-          textStyleOverrides={{ color: colors.labelColor }}
-        />
+        {!errorMessage && (
+          <TranslatedText
+            textStyle="BodyRegular"
+            i18nKey="error_alert_message_fallback"
+            testID={addTestIdModifier(testID, 'message')}
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+        )}
         <View style={styles.content}>
           {errorMessage ? (
             <Text
@@ -162,17 +156,19 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
               {intError.errorDetails}
             </Text>
           ) : null}
+          {intError instanceof AA2BelowMinYearOfBirth && (
+            <View style={styles.textPadding}>
+              <LinkText
+                testID={buildTestId('eid_belowMinYearOfBirth_faq_link')}
+                i18nKey="eid_belowMinYearOfBirth_faq_link"
+                link={eid_belowMinYearOfBirth_faq_link}
+              />
+            </View>
+          )}
         </View>
         <Button
           widthOption="stretch"
           variant="primary"
-          i18nKey="eid_error_retry_button"
-          testID={addTestIdModifier(testID, 'retry_button')}
-          onPress={handleRestart}
-        />
-        <Button
-          widthOption="stretch"
-          variant="transparent"
           i18nKey="alert_cta"
           onPress={handleClose}
           testID={addTestIdModifier(testID, 'cta')}
@@ -189,5 +185,9 @@ const styles = StyleSheet.create({
   content: {
     marginBottom: spacing[6],
     gap: spacing[4],
+  },
+  textPadding: {
+    paddingTop: spacing[6],
+    justifyContent: 'center',
   },
 })

@@ -90,7 +90,7 @@ export const cdcApi = createApi({
         path: 'accounts.getAccountInfo',
         bodyPayload: {
           regToken: params.regToken,
-          include: 'profile,data,id_token',
+          include: 'profile,data,id_token,subscriptions',
         },
       })),
       providesTags: ['AccountInfo'],
@@ -99,7 +99,7 @@ export const cdcApi = createApi({
       queryFn: callCdcWithSessionInfoSigned(() => ({
         path: 'accounts.getAccountInfo',
         bodyPayload: {
-          include: 'profile,data,id_token',
+          include: 'profile,data,id_token,subscriptions',
         },
       })),
       providesTags: ['AccountInfo'],
@@ -111,6 +111,7 @@ export const cdcApi = createApi({
       queryFn: callCdcWithApiKey(params => ({
         path: 'accounts.setAccountInfo',
         bodyPayload: {
+          subscriptions: params.subscriptions,
           profile: params.profile,
           data: params.data,
           password: params.password,
@@ -127,6 +128,7 @@ export const cdcApi = createApi({
       queryFn: callCdcWithSessionInfoSigned(params => ({
         path: 'accounts.setAccountInfo',
         bodyPayload: {
+          subscriptions: params.subscriptions,
           profile: params.profile,
           data: params.data,
           password: params.password,

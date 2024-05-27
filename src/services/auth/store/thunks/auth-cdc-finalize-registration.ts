@@ -1,3 +1,4 @@
+import { deltaOnboardingSlice } from '../../../../features/delta-onboarding/redux/delta-onboarding-slice'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { CdcAccountDeletionRequestedError } from '../../../errors/cdc-errors'
@@ -20,6 +21,8 @@ export const authCdcFinalizeRegistration = createThunk<CdcSessionData, { regToke
       throw new CdcAccountDeletionRequestedError()
     }
 
+    thunkAPI.dispatch(deltaOnboardingSlice.actions.setUserDismissedEditorialEmailModal(false))
+    thunkAPI.dispatch(deltaOnboardingSlice.actions.setDeltaPushNotificationsOnboardingShown(false))
     thunkAPI.dispatch(userSlice.actions.clearUser())
     thunkAPI.dispatch(cdcApi.util.resetApiState())
     thunkAPI.dispatch(commerceApi.util.resetApiState())

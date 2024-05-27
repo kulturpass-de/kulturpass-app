@@ -1,4 +1,5 @@
 import notifee from '@notifee/react-native'
+import { deltaOnboardingSlice } from '../../../../features/delta-onboarding/redux/delta-onboarding-slice'
 import { cdcApi } from '../../../api/cdc-api'
 import { commerceApi } from '../../../api/commerce-api'
 import { resetCommerceApiCache } from '../../../api/redux/api-offline-cache-slice'
@@ -12,6 +13,8 @@ export const authLogout = createThunk('auth/logout', async (_payload, thunkAPI) 
   let errors: Array<unknown> = []
   await thunkAPI.dispatch(authCdcLogout(errors)).unwrap()
   await thunkAPI.dispatch(authCommerceLogout(errors)).unwrap()
+  thunkAPI.dispatch(deltaOnboardingSlice.actions.setUserDismissedEditorialEmailModal(false))
+  thunkAPI.dispatch(deltaOnboardingSlice.actions.setDeltaPushNotificationsOnboardingShown(false))
   thunkAPI.dispatch(userSlice.actions.clearUser())
   thunkAPI.dispatch(cdcApi.util.resetApiState())
   thunkAPI.dispatch(commerceApi.util.resetApiState())

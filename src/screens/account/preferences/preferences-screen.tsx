@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useWatch } from 'react-hook-form'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { Screen } from '../../../components/screen/screen'
@@ -15,7 +15,7 @@ import {
   UseNavigationOnBeforeRemoveCallback,
 } from '../../../navigation/useNavigationOnBeforeRemove'
 import { commerceApi } from '../../../services/api/commerce-api'
-import { AccountInfoData } from '../../../services/api/types'
+import { AccountInfoData, AccountsSetAccountInfoSignedRequestParams } from '../../../services/api/types'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
@@ -26,17 +26,29 @@ import { useUserInfo } from '../../../services/user/use-user-info'
 export type PreferencesScreenProps = {
   afterSubmitTriggered: () => void
   onPressClose: () => void
+  onPressEmailInfo?: () => void
 }
 
-export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmitTriggered, onPressClose }) => {
+export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({
+  afterSubmitTriggered,
+  onPressClose,
+  onPressEmailInfo,
+}) => {
   const { t } = useTranslation()
   const { buildTestId } = useTestIdBuilder()
   const preferenceCategories = commerceApi.useGetPreferenceCategoriesQuery()
   const { setAccountInfo, accountInfo } = useUserInfo()
   const [getIsValidPostalCode] = commerceApi.useLazyGetIsValidPostalCodeQuery()
-
   const availableCategories = preferenceCategories.data?.categories
   const userPreferences = accountInfo.data?.data
+  const cdcValueIsSubscribed = accountInfo.data?.subscriptions?.editorialInformation?.email?.isSubscribed
+  const [userValueIsSubscribed, setUserValueIsSubscribed] = useState<undefined | boolean>()
+
+  useEffect(() => {
+    if (userValueIsSubscribed === undefined && cdcValueIsSubscribed !== undefined) {
+      setUserValueIsSubscribed(cdcValueIsSubscribed)
+    }
+  }, [userValueIsSubscribed, cdcValueIsSubscribed])
 
   const defaultValues = useMemo(() => {
     return {
@@ -99,10 +111,27 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
     setPreferencesAlertVisible(false)
   }, [])
 
+  const setToggleSwitch = useCallback((isEnabled: boolean) => {
+    setUserValueIsSubscribed(isEnabled)
+  }, [])
+
   const onSubmit = useCallback(
     async (data: AccountInfoData) => {
+      const params: AccountsSetAccountInfoSignedRequestParams = {
+        data,
+      }
+
       try {
-        await setAccountInfo({ data })
+        if (typeof userValueIsSubscribed === 'boolean' && userValueIsSubscribed !== cdcValueIsSubscribed) {
+          params.subscriptions = {
+            editorialInformation: {
+              email: {
+                isSubscribed: userValueIsSubscribed,
+              },
+            },
+          }
+        }
+        await setAccountInfo(params)
         unsubscribeOnBeforeRemoveCallback()
         afterSubmitTriggered()
       } catch (error: unknown) {
@@ -114,7 +143,13 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
         }
       }
     },
-    [setAccountInfo, afterSubmitTriggered, unsubscribeOnBeforeRemoveCallback],
+    [
+      setAccountInfo,
+      unsubscribeOnBeforeRemoveCallback,
+      afterSubmitTriggered,
+      userValueIsSubscribed,
+      cdcValueIsSubscribed,
+    ],
   )
 
   useAndroidBackButtonHandler(onClose)
@@ -149,6 +184,9 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({ afterSubmi
           availableCategories={preferenceCategories.data?.categories}
           submitButtonI18nKey="preferences_form_profile_edit_submit"
           getIsValidPostalCode={getIsValidPostalCode}
+          setToggleSwitch={setToggleSwitch}
+          isEmailSubscribed={userValueIsSubscribed}
+          onClickEditorialEmailConsent={onPressEmailInfo}
         />
       </Screen>
     </>

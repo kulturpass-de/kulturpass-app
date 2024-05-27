@@ -3,8 +3,8 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
 import { LoadingIndicator } from '../components/loading-indicator/loading-indicator'
-import { getShowOnboardingOnStartup } from '../features/onboarding/redux/onboarding-selectors'
 import { selectReservationOpenIsLoading } from '../services/notifications/store/notifications-selectors'
+import { getShowOnboardingOnStartup } from '../services/redux/selectors/onboarding-selectors'
 import { useGetProfile } from '../services/user/use-get-profile'
 import { EidStack } from './eid/eid-stack'
 import { ModalStack } from './modal/modal-stack'
@@ -12,7 +12,7 @@ import { ModalStackCardOverlay } from './modal/modal-stack-card-overlay'
 import { OnboardingStack } from './onboarding-stack'
 import { PdpStack } from './pdp/pdp-stack'
 import { Tabs } from './tabs/tabs'
-import { OnboardingStackParams, RootStackParams } from './types'
+import { NavigatorIds, OnboardingStackParams, RootStackParams } from './types'
 
 const Stack = createStackNavigator<RootStackParams & OnboardingStackParams>()
 
@@ -43,7 +43,7 @@ export const RootStackScreen: React.FC = () => {
     <>
       <StatusBar backgroundColor="#00000000" translucent />
       <LoadingIndicator loading={reservationOpenIsLoading} />
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator id={NavigatorIds.ROOT_STACK} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen
           name="Modal"

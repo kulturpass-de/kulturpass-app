@@ -1,6 +1,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
+import { EditorialEmailConsentModalRouteConfig } from '../../features/delta-onboarding/screens/editorial-email-consent-modal-route'
 import { AccountDeletionConfirmRouteConfig } from '../../screens/account/delete-account/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../screens/account/delete-account/account-deletion-successful-route'
 import { ForgotPasswordRouteConfig } from '../../screens/account/forgot-password/forgot-password-route'
@@ -71,6 +72,8 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...DarkModePreviewRouteConfig} />
 
         <Stack.Screen {...ReleaseNotesModalRouteConfig} />
+
+        <Stack.Screen {...EditorialEmailConsentModalRouteConfig} />
 
         <Stack.Screen {...LocationSharingRouteConfig} />
 
