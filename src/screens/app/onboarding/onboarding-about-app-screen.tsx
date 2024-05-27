@@ -1,5 +1,5 @@
 import React from 'react'
-import { OnboardingScreen } from '../../../features/onboarding/components/onboarding-screen'
+import { OnboardingScreen } from '../../../components/onboarding/onboarding-screen'
 
 export type OnboardingAboutAppScreenProps = {
   onNext: () => void

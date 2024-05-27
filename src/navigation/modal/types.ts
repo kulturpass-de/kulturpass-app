@@ -1,6 +1,10 @@
 import { CompositeScreenProps } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
+  EditorialEmailConsentModalRouteName,
+  EditorialEmailConsentModalRouteParams,
+} from '../../features/delta-onboarding/screens/editorial-email-consent-modal-route'
+import {
   AccountDeletionConfirmRouteName,
   AccountDeletionConfirmRouteParams,
 } from '../../screens/account/delete-account/account-deletion-confirm-route'
@@ -102,6 +106,8 @@ export type ModalParamList = {
   [LocationSharingRouteName]: LocationSharingRouteParams
 
   [OnboardingNotificationPermissionRouteName]: OnboardingNotificationPermissionRouteParams
+
+  [EditorialEmailConsentModalRouteName]: EditorialEmailConsentModalRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

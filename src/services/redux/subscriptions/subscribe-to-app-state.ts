@@ -1,9 +1,29 @@
+import { useEffect, useState } from 'react'
 import { AppState, AppStateStatus } from 'react-native'
 import { logger } from '../../logger'
 import { AppStore } from '../configure-store'
 import { appCoreSlice } from '../slices/app-core'
 
-const isInForeground = (appStateStatus: AppStateStatus) => {
+export const useAppState = () => {
+  const currentState = AppState.currentState
+  const [appState, setAppState] = useState(currentState)
+
+  useEffect(() => {
+    function onChange(newState: AppStateStatus) {
+      setAppState(newState)
+    }
+
+    const subscription = AppState.addEventListener('change', onChange)
+
+    return () => {
+      subscription.remove()
+    }
+  }, [])
+
+  return appState
+}
+
+export const isInForeground = (appStateStatus: AppStateStatus) => {
   return appStateStatus === 'active'
 }
 

@@ -11,18 +11,26 @@ import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import {
+  getDeltaPushNotificationsOnboardingShown,
+  getShowEditorialEmailModalOnStartup,
+} from '../../../features/delta-onboarding/redux/delta-onboarding-selectors'
+import {
+  setDeltaPushNotificationsOnboardingShown,
+  setShowEditorialEmailModalOnStartup,
+} from '../../../features/delta-onboarding/redux/delta-onboarding-slice'
 import { setShowInAppReview, setLastShownTimestamp } from '../../../features/in-app-review/redux/in-app-review'
 import {
   getShowInAppReview,
   getLastShownTimestamp,
 } from '../../../features/in-app-review/redux/in-app-review-selectors'
-import { setShowOnboardingOnStartup } from '../../../features/onboarding/redux/onboarding'
-import { getShowOnboardingOnStartup } from '../../../features/onboarding/redux/onboarding-selectors'
 import { useReleaseNotesConfig } from '../../../features/release-notes/hooks/use-release-notes-config'
 import { RootStackParams } from '../../../navigation/types'
 import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { logger } from '../../../services/logger'
 import { AppDispatch } from '../../../services/redux/configure-store'
+import { getShowOnboardingOnStartup } from '../../../services/redux/selectors/onboarding-selectors'
+import { setShowOnboardingOnStartup } from '../../../services/redux/slices/onboarding'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -48,6 +56,27 @@ const useOnboardingConfig = () => {
   }, [dispatch, showOnboardingOnAppStart])
 
   return { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart }
+}
+
+const useEditorialEmailConfig = () => {
+  const showEditorialEmailModalOnStartup = useSelector(getShowEditorialEmailModalOnStartup)
+  const deltaPushNotificationsOnboardingShown = useSelector(getDeltaPushNotificationsOnboardingShown)
+  const dispatch = useDispatch()
+
+  const toggleShowEditorialEmailConsentModalOnAppStart = useCallback(() => {
+    dispatch(setShowEditorialEmailModalOnStartup(!showEditorialEmailModalOnStartup))
+  }, [dispatch, showEditorialEmailModalOnStartup])
+
+  const toggleDeltaPushNotificationsOnboardingShown = useCallback(() => {
+    dispatch(setDeltaPushNotificationsOnboardingShown(!deltaPushNotificationsOnboardingShown))
+  }, [dispatch, deltaPushNotificationsOnboardingShown])
+
+  return {
+    showEditorialEmailModalOnStartup,
+    toggleShowEditorialEmailConsentModalOnAppStart,
+    deltaPushNotificationsOnboardingShown,
+    toggleDeltaPushNotificationsOnboardingShown,
+  }
 }
 
 const CogIcon = () => <SvgImage type="cog" width={29} height={24} />
@@ -110,6 +139,12 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   }, [dispatch, showInAppReview])
 
   const { showOnboardingOnAppStart, toggleShowOnboardingOnAppStart } = useOnboardingConfig()
+  const {
+    showEditorialEmailModalOnStartup,
+    toggleShowEditorialEmailConsentModalOnAppStart,
+    deltaPushNotificationsOnboardingShown,
+    toggleDeltaPushNotificationsOnboardingShown,
+  } = useEditorialEmailConfig()
   const { showReleaseNotesOnAppStart, toggleShowReleaseNotesOnAppStart } = useReleaseNotesConfig()
 
   return (
@@ -164,6 +199,42 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
             accessibilityLabel={t('developerMenu_showOnboarding_label')}
             value={showOnboardingOnAppStart}
             onValueChange={toggleShowOnboardingOnAppStart}
+          />
+        </View>
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <TranslatedText
+            i18nKey="developerMenu_showDeltaNotifications_onboarding_label"
+            testID={buildTestId('developerMenu_showDeltaNotifications_onboarding_label')}
+            textStyle="BodyRegular"
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+          <Switch
+            testID={buildTestId('developerMenu_showDeltaNotifications_onboarding_switch')}
+            accessibilityLabel={t('developerMenu_showDeltaNotifications_onboarding_label')}
+            value={!deltaPushNotificationsOnboardingShown}
+            onValueChange={toggleDeltaPushNotificationsOnboardingShown}
+          />
+        </View>
+        <View
+          style={[
+            styles.toggleListItem,
+            { borderBottomColor: colors.listItemBorder, backgroundColor: colors.secondaryBackground },
+          ]}>
+          <TranslatedText
+            i18nKey="developerMenu_showEditorialEmailConsent_label"
+            testID={buildTestId('developerMenu_showEditorialEmailConsent_label')}
+            textStyle="BodyRegular"
+            textStyleOverrides={{ color: colors.labelColor }}
+          />
+          <Switch
+            testID={buildTestId('developerMenu_showEditorialEmailConsent_switch')}
+            accessibilityLabel={t('developerMenu_showEditorialEmailConsent_label')}
+            value={showEditorialEmailModalOnStartup}
+            onValueChange={toggleShowEditorialEmailConsentModalOnAppStart}
           />
         </View>
         <View

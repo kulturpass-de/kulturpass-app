@@ -22,6 +22,10 @@
         "de": "https://service.kulturpass.de/help/de-de/36/66",
         "en": "https://service.kulturpass.de/help/en-gb/36/66"
       },
+      "ENTITLED_USER_GROUP": {
+        "de": "https://service.kulturpass.de/help/de-de/2-jugendliche/1-wer-kann-den-kulturpass-nutzen",
+        "en": "https://service.kulturpass.de/help/en-gb/2-jugendliche/1-wer-kann-den-kulturpass-nutzen"
+      },
       "EID_PIN_RESET": {
         "de": "https://service.kulturpass.de/help/de-de/2/67",
         "en": "https://service.kulturpass.de/help/en-gb/2/67"

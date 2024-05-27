@@ -1,12 +1,13 @@
 import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Pressable, StyleSheet, Switch, View } from 'react-native'
 import { Button } from '../../../components/button/button'
 import { FormFieldWithControl } from '../../../components/form-fields/form-field-with-control'
 import { TextFormField } from '../../../components/form-fields/text-form-field'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ScreenContent } from '../../../components/screen/screen-content'
+import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
@@ -38,6 +39,9 @@ export type PreferencesProps = {
   submitButtonI18nKey: AvailableTranslations
   getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
   form: UsePreferencesReturnType
+  setToggleSwitch?: (value: boolean) => void
+  isEmailSubscribed?: boolean
+  onClickEditorialEmailConsent?: () => void
 }
 
 export const Preferences: React.FC<PreferencesProps> = ({
@@ -48,6 +52,9 @@ export const Preferences: React.FC<PreferencesProps> = ({
   onPressSubmit,
   submitButtonI18nKey,
   form,
+  setToggleSwitch,
+  isEmailSubscribed,
+  onClickEditorialEmailConsent,
 }) => {
   const { colors } = useTheme()
   const { buildTestId } = useTestIdBuilder()
@@ -110,6 +117,15 @@ export const Preferences: React.FC<PreferencesProps> = ({
     }
   })
 
+  const toggleSwitch = useCallback(
+    (isEnabled: boolean) => {
+      if (setToggleSwitch) {
+        setToggleSwitch(isEnabled)
+      }
+    },
+    [setToggleSwitch],
+  )
+
   return (
     <>
       <LoadingIndicator loading={loading} />
@@ -169,6 +185,50 @@ export const Preferences: React.FC<PreferencesProps> = ({
             />
           </View>
         </View>
+
+        {setToggleSwitch !== undefined ? (
+          <View>
+            <TranslatedText
+              accessibilityRole="header"
+              textStyle="HeadlineH4Bold"
+              textStyleOverrides={[styles.postalCodeTitle, { color: colors.labelColor }]}
+              i18nKey="onboarding_notificationPermission_headline_title"
+              testID={buildTestId('onboarding_notificationPermission_headline_title')}
+            />
+
+            <View style={styles.toggleSwitchContainer}>
+              <TranslatedText
+                textStyle="BodyRegular"
+                textStyleOverrides={[styles.description, { color: colors.labelColor }]}
+                i18nKey="editorial_email_consent_notification"
+                testID={buildTestId('editorial_email_consent_notification')}
+              />
+              <Switch
+                trackColor={{
+                  false: colors.secondaryBackground,
+                  true: colors.labelColor,
+                }}
+                thumbColor={isEmailSubscribed ? colors.secondaryBackground : colors.labelColor}
+                ios_backgroundColor={colors.secondaryBackground}
+                onValueChange={toggleSwitch}
+                value={isEmailSubscribed}
+                style={styles.switchContainer}
+              />
+            </View>
+
+            <Pressable
+              style={[styles.notificationPanel, { backgroundColor: colors.secondaryBackground }]}
+              onPress={onClickEditorialEmailConsent}>
+              <SvgImage type="mailbox-notification" width={32} height={42} style={styles.notificationPanelIcon} />
+              <TranslatedText
+                i18nKey={'email_consent_accept'}
+                textStyle={'BodyBold'}
+                textStyleOverrides={[styles.notificationPanelText, { color: colors.labelColor }]}
+              />
+              <SvgImage type="right-arrow" width={36} height={46} style={styles.notificationPanelIcon} />
+            </Pressable>
+          </View>
+        ) : null}
       </ScreenContent>
       <ModalScreenFooter ignorePaddingWithSafeArea={inModal}>
         <Button
@@ -183,6 +243,9 @@ export const Preferences: React.FC<PreferencesProps> = ({
 }
 
 const styles = StyleSheet.create({
+  switchContainer: {
+    borderWidth: 1,
+  },
   content: {
     paddingHorizontal: spacing[5],
     paddingVertical: spacing[7],
@@ -207,5 +270,22 @@ const styles = StyleSheet.create({
   },
   postalCodeTitle: {
     marginBottom: spacing[5],
+  },
+  toggleSwitchContainer: {
+    flexDirection: 'row',
+  },
+  notificationPanel: {
+    borderRadius: spacing[5],
+    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  notificationPanelText: {
+    flex: 1,
+    marginHorizontal: spacing[2],
+  },
+  notificationPanelIcon: {
+    marginHorizontal: spacing[2],
   },
 })

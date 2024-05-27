@@ -18,3 +18,7 @@ export type OnboardingStackParams = {
 }
 
 export type RootStackScreenProps<RouteName extends keyof RootStackParams> = StackScreenProps<RootStackParams, RouteName>
+
+export enum NavigatorIds {
+  ROOT_STACK = 'root',
+}

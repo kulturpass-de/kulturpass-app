@@ -4,7 +4,14 @@ import { isUserLoggedInToCdc, isUserLoggedInToCommerce } from '../utils'
 import { authCommerceRefreshSession } from './auth-commerce-refresh-session'
 import { authLogoutWithoutErrors } from './auth-logout'
 
-export const authValidateSession = createThunk('auth/validateSession', async (payload, thunkAPI) => {
+export const authValidateSession = createThunk<
+  | {
+      isCdcSessionValid: boolean
+      isCommerceSessionValid: boolean
+    }
+  | undefined,
+  void
+>('auth/validateSession', async (payload, thunkAPI) => {
   const state = thunkAPI.getState()
   if (state.user.registrationFinalizationInProgess) {
     return
@@ -27,4 +34,6 @@ export const authValidateSession = createThunk('auth/validateSession', async (pa
       await thunkAPI.dispatch(authLogoutWithoutErrors()).unwrap()
     }
   }
+
+  return { isCdcSessionValid, isCommerceSessionValid }
 })
