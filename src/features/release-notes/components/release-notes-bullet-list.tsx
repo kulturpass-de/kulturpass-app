@@ -16,8 +16,8 @@ import { getDisplayVersion } from '../utils/get-display-version'
 import { ReleaseNotesProps } from './release-notes-view'
 
 const BULLET_SIZE = 6
-const RELEASE_FEATURES_VERSION = '1.9'
-const RELEASE_FEATURE_COUNT = 1
+const RELEASE_FEATURES_VERSION = '1.16'
+const RELEASE_FEATURE_COUNT = 2
 
 type ReleaseNotesBulletListProps = Pick<ReleaseNotesProps, 'bodyTextListBaseI18nKey'>
 
@@ -66,7 +66,7 @@ export const ReleaseNotesBulletList: React.FC<ReleaseNotesBulletListProps> = ({ 
           </BulletListItem>
         </View>
       ))}
-      {displayVersion === '1.9' ? (
+      {displayVersion === '1.16' ? (
         <LinkText
           style={styles.dpsLink}
           link={dpsDocumentUrl}
