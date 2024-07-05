@@ -44,3 +44,8 @@ export const selectIdentificationDisabled = createSelector(
   selectPersistedAppCoreState,
   persistedAppCoreState => persistedAppCoreState.appConfig?.disableIdentification === true,
 )
+
+export const selectBudgetVoucherEnabled = createSelector(
+  selectPersistedAppCoreState,
+  persistedAppCoreState => persistedAppCoreState.appConfig?.enableBudgetVoucher === true,
+)

@@ -32,7 +32,7 @@ export const EditorialEmailConsentScreen: React.FC<EditorialEmailConsentScreenPr
       }>
       <ScreenContent>
         <View style={styles.container}>
-          <EditorialEmailConsentView />
+          <EditorialEmailConsentView description1I18nKey="editorial_email_consent_description_1_screen" />
         </View>
       </ScreenContent>
     </Screen>

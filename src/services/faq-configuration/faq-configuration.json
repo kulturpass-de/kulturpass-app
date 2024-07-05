@@ -69,6 +69,10 @@
       "IDENTIFICATION_VIDEO": {
         "de": "https://www.kulturpass.de/jugendliche/eid-video",
         "en": "https://www.kulturpass.de/jugendliche/eid-video"
+      },
+      "ABOUT_BUDGET_VOUCHERS": {
+        "de": "https://service.kulturpass.de/help/de-de/2/239",
+        "en": "https://service.kulturpass.de/help/de-de/2/239"
       }
     }
   }

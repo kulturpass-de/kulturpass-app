@@ -1,4 +1,9 @@
 import { createApi as createRtkApi, defaultSerializeQueryArgs } from '@reduxjs/toolkit/query/react'
+import {
+  PostBudgetVoucherRedemptionBody,
+  PostBudgetVoucherRedemptionParams,
+  PostBudgetVoucherRedemptionResponse,
+} from '../../features/budget-voucher/types/budget-voucher-types'
 import { getEnvironmentConfig } from '../environment-configuration/utils'
 import { RootState } from '../redux/configure-store'
 import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
@@ -212,6 +217,17 @@ export const commerceApi = createRtkApi({
       queryFn: sendCommercePutRequest(params => ({
         path: 'users/current/pushtoken',
         bodyPayload: params,
+      })),
+    }),
+    postBudgetVoucherRedemption: builder.mutation<
+      PostBudgetVoucherRedemptionResponse,
+      PostBudgetVoucherRedemptionParams
+    >({
+      queryFn: sendCommercePostRequest(params => ({
+        path: 'users/current/budgetVoucher/redemption',
+        bodyPayload: {
+          voucherCode: params.voucherCode,
+        } as PostBudgetVoucherRedemptionBody,
       })),
     }),
   }),

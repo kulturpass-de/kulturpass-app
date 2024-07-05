@@ -49,6 +49,12 @@ export const ViewProfileRoute: React.FC = () => {
     })
   }, [modalnavigation])
 
+  const onPressBudgetBooster = useCallback(() => {
+    modalnavigation.navigate({
+      screen: 'BudgetVoucher',
+    })
+  }, [modalnavigation])
+
   return (
     <ViewProfileScreen
       onPressChangeLanguage={onPressChangeLanguage}
@@ -59,6 +65,7 @@ export const ViewProfileRoute: React.FC = () => {
       onPressDeleteAccount={onPressDeleteAccount}
       onPressDeveloperMenu={env.DEV_MENU ? onPressDeveloperMenu : undefined}
       onPressLogin={onPressLogin}
+      onPressBudgetBooster={onPressBudgetBooster}
     />
   )
 }

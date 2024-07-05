@@ -1,9 +1,11 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { StyleSheet } from 'react-native'
 import { LinkText } from '../../../components/link-text/link-text'
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
+import { AvailableTranslations } from '../../../components/translated-text/types'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
@@ -12,12 +14,16 @@ import {
   useLocalizedEnvironmentUrl,
 } from '../../../utils/links/hooks/use-localized-environment-url'
 
-export type EditorialEmailContentViewProps = {}
+export type EditorialEmailContentViewProps = {
+  description1I18nKey?: AvailableTranslations
+}
 
-export const EditorialEmailConsentView: React.FC<EditorialEmailContentViewProps> = () => {
+export const EditorialEmailConsentView: React.FC<EditorialEmailContentViewProps> = ({
+  description1I18nKey = 'editorial_email_consent_description_1',
+}) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const testID = buildTestId('editorial_email_consent_view')
-
+  const { t } = useTranslation()
   const { colors } = useTheme()
   const color = colors.labelColor
 
@@ -26,6 +32,7 @@ export const EditorialEmailConsentView: React.FC<EditorialEmailContentViewProps>
   return (
     <ScreenContent style={styles.container}>
       <SvgImage
+        accessibilityLabel={t('editorial_email_consent_modal_image_alt')}
         style={styles.image}
         width={390}
         height={260}
@@ -41,7 +48,7 @@ export const EditorialEmailConsentView: React.FC<EditorialEmailContentViewProps>
       />
 
       <TranslatedText
-        i18nKey="editorial_email_consent_description_1"
+        i18nKey={description1I18nKey}
         textStyle="BodyRegular"
         textStyleOverrides={[styles.text, { color }]}
         testID={addTestIdModifier(testID, 'description_1')}

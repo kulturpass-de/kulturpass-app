@@ -70,6 +70,8 @@ const getStories = () => {
     "./src/components/tab-bar-icon/tab-bar-icon.stories.tsx": require("../src/components/tab-bar-icon/tab-bar-icon.stories.tsx"),
     "./src/components/text-with-icon/text-with-icon.stories.tsx": require("../src/components/text-with-icon/text-with-icon.stories.tsx"),
     "./src/components/try-again-button/try-again-button.stories.tsx": require("../src/components/try-again-button/try-again-button.stories.tsx"),
+    "./src/features/budget-voucher/screens/budget-voucher-screen.stories.tsx": require("../src/features/budget-voucher/screens/budget-voucher-screen.stories.tsx"),
+    "./src/features/budget-voucher/screens/budget-voucher-success-screen.stories.tsx": require("../src/features/budget-voucher/screens/budget-voucher-success-screen.stories.tsx"),
     "./src/features/delta-onboarding/screens/editorial-email-consent-modal-screen.stories.tsx": require("../src/features/delta-onboarding/screens/editorial-email-consent-modal-screen.stories.tsx"),
     "./src/features/eid-verification/components/pin-input.stories.tsx": require("../src/features/eid-verification/components/pin-input.stories.tsx"),
     "./src/features/eid-verification/screens/eid-can-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-can-screen.stories.tsx"),

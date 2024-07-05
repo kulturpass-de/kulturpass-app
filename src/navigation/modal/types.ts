@@ -1,6 +1,10 @@
 import { CompositeScreenProps } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
+  BudgetVoucherRouteName,
+  BudgetVoucherRouteParams,
+} from '../../features/budget-voucher/screens/budget-voucher-route'
+import {
   EditorialEmailConsentModalRouteName,
   EditorialEmailConsentModalRouteParams,
 } from '../../features/delta-onboarding/screens/editorial-email-consent-modal-route'
@@ -108,6 +112,8 @@ export type ModalParamList = {
   [OnboardingNotificationPermissionRouteName]: OnboardingNotificationPermissionRouteParams
 
   [EditorialEmailConsentModalRouteName]: EditorialEmailConsentModalRouteParams
+
+  [BudgetVoucherRouteName]: BudgetVoucherRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

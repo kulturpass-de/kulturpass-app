@@ -27,6 +27,7 @@ export const AppConfigSchema = z.object({
     tcTokenUrlSubdomains: z.array(z.string()),
   }),
   disableIdentification: z.boolean().optional(),
+  enableBudgetVoucher: z.boolean().optional(),
 })
 
 export type AppConfig = z.infer<typeof AppConfigSchema>

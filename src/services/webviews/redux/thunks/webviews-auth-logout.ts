@@ -10,6 +10,15 @@ export const webviewsAuthLogout = createThunk<void, { webViewId: WebViewId }>(
   async ({ webViewId }, thunkAPI) => {
     logger.log('webviewsAuthLogout', webViewId)
 
+    // reset search webview to reset filters, after a user logged out
+    if (webViewId === WebViewId.Search) {
+      logger.log('webviewsAuthLogout', webViewId, 'reset search web view')
+
+      webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.RouterNavigate, [
+        '/search',
+      ])
+    }
+
     await webViewBridgeAdapter.callBridgeFunction(webViewId, SpartacusBridge.FunctionCall.Target.AuthLogout, [])
 
     thunkAPI.dispatch(webviewsSlice.actions.setWebViewState({ webViewId, state: { lastAccessToken: null } }))
