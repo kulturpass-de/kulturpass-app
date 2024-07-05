@@ -8,13 +8,15 @@ import { Screen } from '../../../components/screen/screen'
 import { ScreenContent } from '../../../components/screen/screen-content'
 import { ScreenHeader } from '../../../components/screen/screen-header'
 import { SvgImage } from '../../../components/svg-image/svg-image'
-import { getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
+import { getAccountVerificationStatus, getIsUserLoggedIn } from '../../../services/auth/store/auth-selectors'
 import { useAuth } from '../../../services/auth/use-auth'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
+import { selectBudgetVoucherEnabled } from '../../../services/redux/slices/persisted-app-core'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
+import { useGetProfile } from '../../../services/user/use-get-profile'
 import { useUserInfo } from '../../../services/user/use-user-info'
 import { spacing } from '../../../theme/spacing'
 import { useLocalizedEnvironmentUrl, getFaqHomeUrl } from '../../../utils/links/hooks/use-localized-environment-url'
@@ -29,6 +31,7 @@ export type ViewProfileScreenProps = {
   onPressDeleteAccount: () => void
   onPressDeveloperMenu?: () => void
   onPressLogin: () => void
+  onPressBudgetBooster: () => void
 }
 
 export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
@@ -40,6 +43,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   onPressDeleteAccount,
   onPressDeveloperMenu,
   onPressLogin,
+  onPressBudgetBooster,
 }) => {
   const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
@@ -63,12 +67,18 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
     }
   }, [auth])
 
+  const isAccountVerified = useSelector(getAccountVerificationStatus) === 'completed' ? true : false
+  const { data } = useGetProfile()
+  const displayBudgetBoosterOption = isAccountVerified && data?.balanceStatus === 'ENTITLED'
+
   const onFaqLinkPress = useCallback(() => openLink(faqDocumentUrl).catch(linkLogger), [faqDocumentUrl])
 
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
 
   const SCREEN_TEST_ID = buildTestId('settings')
+
+  const isBudgetVoucherEnabled = useSelector(selectBudgetVoucherEnabled)
 
   return (
     <Screen
@@ -98,6 +108,22 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
         />
         {isLoggedIn ? (
           <>
+            {isBudgetVoucherEnabled && displayBudgetBoosterOption ? (
+              <ListItem
+                icon={
+                  <SvgImage
+                    testID={addTestIdModifier(SCREEN_TEST_ID, 'changeLanguage_icon')}
+                    type="budget-booster"
+                    width={24}
+                    height={24}
+                  />
+                }
+                title={t('budget_voucher_title')}
+                testID={buildTestId('budget_voucher_title')}
+                onPress={onPressBudgetBooster}
+                type="navigation"
+              />
+            ) : null}
             <ListItem
               icon={
                 <SvgImage

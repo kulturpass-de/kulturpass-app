@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   childrenContainer: { flex: 1, flexShrink: 1, justifyContent: 'center' },
   chevronContainer: {
+    marginRight: spacing[4],
     alignItems: 'center',
     justifyContent: 'center',
   },

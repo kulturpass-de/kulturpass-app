@@ -54,5 +54,6 @@ const styles = StyleSheet.create({
   margin: {
     marginTop: spacing[4],
     marginLeft: spacing[8],
+    marginRight: spacing[5],
   },
 })

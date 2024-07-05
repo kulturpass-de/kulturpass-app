@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
-  "version": "1.16.0",
-  "buildNumber": "5",
+  "version": "1.17.0",
+  "buildNumber": "4",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -155,7 +155,8 @@
     "react-test-renderer": "18.2.0",
     "swagger-typescript-api": "^13.0.3",
     "typed-emitter": "^2.1.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "babel-plugin-macros": "^3.1.0"
   },
   "engines": {
     "node": ">=18"
@@ -206,7 +207,9 @@
     "unset-value": "^2.0.1",
     "semver": "^7.5.4",
     "ip": "^2.0.1",
-    "undici-types": "^6.6.2"
+    "undici-types": "^6.6.2",
+    "braces": "^3.0.3",
+    "babel-plugin-macros": "3.1.0"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",

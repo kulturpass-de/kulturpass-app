@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
-import { Pressable, StyleSheet, Text, TextStyle } from 'react-native'
+import { Platform, Pressable, StyleSheet, Text, TextStyle } from 'react-native'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
-import { spacing } from '../../theme/spacing'
 import { linkLogger, openLink } from '../../utils/links/utils'
 import { SvgImage } from '../svg-image/svg-image'
 import { TranslatedText, TranslatedTextProps } from '../translated-text/translated-text'
@@ -41,9 +40,14 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
       accessibilityHint={t('external_link_short_accessibility_announcement')}
       accessibilityLabel={t(i18nKey)}
       accessible>
-      <Text style={[styles.container, style]}>
+      <Text style={style}>
         {iconSize !== undefined && (
-          <SvgImage width={iconSize} height={iconSize} type="link-arrow" style={styles.icon} />
+          <SvgImage
+            height={iconSize}
+            width={iconSize}
+            type="link-arrow"
+            style={[styles.icon, { transform: [{ translateY: Platform.select({ android: 4, default: 2 }) }] }]}
+          />
         )}
         <TranslatedText
           testID={linkTestId}
@@ -57,11 +61,9 @@ export const LinkTextInline: React.FC<LinkTextInlineProps> = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
   icon: {
-    paddingTop: spacing[2],
+    flexShrink: 1,
+    alignSelf: 'center',
   },
   text: {
     flexWrap: 'wrap',

@@ -96,12 +96,14 @@ const styles = StyleSheet.create({
     marginBottom: spacing[7],
   },
   titleContainer: {
+    flex: 1,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   formattedPrice: {
-    marginLeft: spacing[4],
-    width: 82,
+    alignSelf: 'flex-start',
+    marginLeft: spacing[6],
     textAlign: 'right',
   },
   shopName: {
@@ -113,5 +115,5 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: spacing[5],
   },
-  goToSearchButtonChildrenContainerStyle: { flex: 1 },
+  goToSearchButtonChildrenContainerStyle: { flex: 0 },
 })

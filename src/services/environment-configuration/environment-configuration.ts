@@ -60,6 +60,7 @@ export const AppConfigSchema = z.object({
   publicKey: z.string(),
   backupPublicKey: z.string(),
   url: z.string(),
+  enableBudgetVoucher: z.boolean().optional(),
 })
 
 export type AppConfig = z.infer<typeof AppConfigSchema>

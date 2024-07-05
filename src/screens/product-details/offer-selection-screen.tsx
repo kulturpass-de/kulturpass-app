@@ -53,6 +53,18 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
 
   const testID = buildTestId('offerSelection')
 
+  const accessibilityHint = useMemo(() => {
+    if (offersByLocation?.provider === 'location') {
+      return 'offerSelection_filter_location'
+    } else if (offersByLocation?.provider === 'postalCode') {
+      return t('offerSelection_filter_postalCode', { postalCode: offersByLocation.postalCode })
+    } else if (offersByLocation?.provider === 'city') {
+      return offersByLocation.location.name
+    } else {
+      return t('offerSelection_filter_none')
+    }
+  }, [offersByLocation, t])
+
   return (
     <ModalScreen testID={testID}>
       <View style={styles.scrollContainer}>
@@ -71,6 +83,7 @@ export const OfferSelectionScreen: React.FC<OfferSelectionScreenProps> = ({
                 hitSlop={HITSLOP}
                 onPress={onPressFilter}
                 accessibilityRole="button"
+                accessibilityHint={accessibilityHint}
                 accessibilityLabel={t(`offerSelection_edit_${offersByLocation?.provider ?? 'location'}`)}>
                 {({ pressed }) => (
                   <View style={styles.filterBar}>
