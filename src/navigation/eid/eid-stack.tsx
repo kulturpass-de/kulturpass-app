@@ -1,6 +1,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
+import { BankIdSelectBankRouteConfig } from '../../features/eid-verification/screens/bankid-select-bank-route'
 import { EidAboutServiceProviderRouteConfig } from '../../features/eid-verification/screens/eid-about-service-provider-route'
 import { EidAboutVerificationRouteConfig } from '../../features/eid-verification/screens/eid-about-verification-route'
 import { EidCanRouteConfig } from '../../features/eid-verification/screens/eid-can-route'
@@ -14,6 +15,7 @@ import { EidPukRouteConfig } from '../../features/eid-verification/screens/eid-p
 import { EidServiceProviderDetailsRouteConfig } from '../../features/eid-verification/screens/eid-service-provider-details-route'
 import { EidTransportPinRouteConfig } from '../../features/eid-verification/screens/eid-transport-pin-route'
 import { EidVerificationCompletionRouteConfig } from '../../features/eid-verification/screens/eid-verification-completion-route'
+import { IdentificationSelectionRouteConfig } from '../../features/eid-verification/screens/identification-selection-route'
 import { ModalStackWrapper } from '../modal/modal-stack-wrapper'
 import { EidParamList } from './types'
 
@@ -42,6 +44,8 @@ export const EidStack = () => {
           <Stack.Screen {...EidChangePinCompletionRouteConfig} />
           <Stack.Screen {...EidNFCNotSupportedRouteConfig} />
           <Stack.Screen {...EidPukInoperativeRouteConfig} />
+          <Stack.Screen {...IdentificationSelectionRouteConfig} />
+          <Stack.Screen {...BankIdSelectBankRouteConfig} />
         </Stack.Group>
         <Stack.Screen {...EidServiceProviderDetailsRouteConfig} options={{ gestureEnabled: true }} />
       </Stack.Navigator>

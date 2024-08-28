@@ -69,6 +69,7 @@ export const SvgImage: React.FC<SvgImageProps> = ({
   accessibilityLabel,
   testID,
   color,
+  fill,
   style,
 }) => {
   const { colorScheme } = useTheme()
@@ -83,7 +84,7 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       newHeight = screenWidth * screenWidthRelativeSize
     }
 
-    return {
+    const ops: SvgProps = {
       width: width && width > 0 ? width : screenWidth * screenWidthRelativeSize,
       height: newHeight,
       testID,
@@ -93,7 +94,13 @@ export const SvgImage: React.FC<SvgImageProps> = ({
       color,
       style,
     }
-  }, [width, height, screenWidthRelativeSize, color, accessibilityLabel, style, testID])
+
+    if (fill !== undefined) {
+      ops.fill = fill
+    }
+
+    return ops
+  }, [width, height, screenWidthRelativeSize, color, fill, accessibilityLabel, style, testID])
 
   const SvgComponent = useMemo(() => {
     const svgKey = startCase(camelCase(type)).replace(/ /g, '')

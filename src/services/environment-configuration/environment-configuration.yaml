@@ -45,3 +45,5 @@ data:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAu6ZpG+4Jdb3WJRYace2La2IKRt0VFlZKAhwbpmRD8krk/o4f0LTPPcvURIEZ/zu7kW1rfzAxoheWLAEUhnxsQ==
       backupPublicKey: >-
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEC8uDWPA8Z6su3gcxg1YcbQ+ew1QQzN6wTPi+eOKsEor+biKkDtRGYown7L6WwPGu5HXD3a0WtQqHJO/f6XJ4bg==
+    bankId:
+      loginUrl: https://bankid-sp.prod.kulturpass.de/login

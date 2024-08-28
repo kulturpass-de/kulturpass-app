@@ -46,6 +46,10 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/password.png')
     case 'release-notes':
       return require('./illustrations/release-notes.png')
+    case 'bank-id':
+      return require('./illustrations/bank-id.png')
+    case 'select-identification':
+      return require('./illustrations/select-identification.png')
   }
 }
 

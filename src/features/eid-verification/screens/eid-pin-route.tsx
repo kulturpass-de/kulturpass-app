@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback, useState } from 'react'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { EidParamList, EidScreenProps } from '../../../navigation/eid/types'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
@@ -55,8 +54,7 @@ export const EidPinRoute: React.FC<EidPinRouteProps> = ({ route }) => {
 
   return (
     <>
-      <EidErrorAlert error={null} />
-      <LoadingIndicator loading={isLoading} />
+      <EidErrorAlert error={null} isLoading={isLoading} />
       <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
       <EidPinScreen
         retryCounter={route.params.retryCounter}

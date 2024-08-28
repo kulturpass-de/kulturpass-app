@@ -1,6 +1,10 @@
 import { CompositeScreenProps } from '@react-navigation/core'
 import { StackScreenProps } from '@react-navigation/stack'
 import {
+  BankIdSelectBankRouteName,
+  BankIdSelectBankRouteParams,
+} from '../../features/eid-verification/screens/bankid-select-bank-route'
+import {
   EidAboutServiceProviderRouteName,
   EidAboutServiceProviderRouteParams,
 } from '../../features/eid-verification/screens/eid-about-service-provider-route'
@@ -40,6 +44,10 @@ import {
   EidVerificationCompletionRouteName,
   EidVerificationCompletionRouteParams,
 } from '../../features/eid-verification/screens/eid-verification-completion-route'
+import {
+  IdentificationSelectionRouteName,
+  IdentificationSelectionRouteParams,
+} from '../../features/eid-verification/screens/identification-selection-route'
 import { RootStackParams } from '../types'
 
 export type EidParamList = {
@@ -56,6 +64,8 @@ export type EidParamList = {
   [EidChangePinCompletionRouteName]: EidChangePinCompletionRouteParams
   [EidNFCNotSupportedRouteName]: EidNFCNotSupportedRouteParams
   [EidPukInoperativeRouteName]: EidPukInoperativeRouteParams
+  [IdentificationSelectionRouteName]: IdentificationSelectionRouteParams
+  [BankIdSelectBankRouteName]: BankIdSelectBankRouteParams
 }
 
 export type EidScreenProps<RouteName extends keyof EidParamList> = CompositeScreenProps<

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useMemo } from 'react'
 import { type FieldError } from 'react-hook-form'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SvgImage } from '../../../components/svg-image/svg-image'
@@ -14,6 +14,7 @@ export type FormFieldContainerProps = PropsWithChildren<{
   labelI18nKey?: AvailableTranslations
   labelTextStyle?: AvailableTextStyles
   error?: FieldError
+  ignoredErrorTypes?: [FieldError['type']]
   containerStyle?: ViewStyle
   isRequired?: boolean
   disableAccessibilityForLabel?: boolean
@@ -24,6 +25,7 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   labelI18nKey,
   labelTextStyle = 'BodyRegular',
   error,
+  ignoredErrorTypes,
   containerStyle,
   isRequired,
   disableAccessibilityForLabel,
@@ -34,10 +36,13 @@ export const FormFieldContainer: React.FC<FormFieldContainerProps> = ({
   const { addTestIdModifier } = useTestIdBuilder()
   const [textStyles] = useTextStyles()
 
-  let errorMessage: string | undefined
-  if (error) {
-    errorMessage = error.message ?? t(`form_error_${error.type}` as any) ?? t('form_error_fallback')
-  }
+  const errorMessage: string | undefined = useMemo(() => {
+    if (error && (ignoredErrorTypes === undefined || !ignoredErrorTypes.includes(error.type))) {
+      return error.message ?? t(`form_error_${error.type}` as any) ?? t('form_error_fallback')
+    } else {
+      return undefined
+    }
+  }, [error, ignoredErrorTypes, t])
 
   return (
     <View style={[styles.container, containerStyle]}>

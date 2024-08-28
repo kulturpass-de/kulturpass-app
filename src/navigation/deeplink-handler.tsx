@@ -23,6 +23,10 @@ export const DeeplinkHandler: React.FC = () => {
 
   const onDeepLink = useCallback(
     async (url: URL) => {
+      if (url.protocol.startsWith('kulturpass')) {
+        logger.log('Ignoring kulturpass protocol deeplink')
+        return
+      }
       setLoading(true)
       try {
         const homeUrlOrigin = new URL(homeUrl).origin

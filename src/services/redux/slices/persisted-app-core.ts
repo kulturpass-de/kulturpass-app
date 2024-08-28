@@ -49,3 +49,13 @@ export const selectBudgetVoucherEnabled = createSelector(
   selectPersistedAppCoreState,
   persistedAppCoreState => persistedAppCoreState.appConfig?.enableBudgetVoucher === true,
 )
+
+export const selectBankIdEnabled = createSelector(
+  selectPersistedAppCoreState,
+  persistedAppCoreState => persistedAppCoreState.appConfig?.enableBankId === true,
+)
+
+export const selectBankIdBetaEnabled = createSelector(
+  selectPersistedAppCoreState,
+  persistedAppCoreState => persistedAppCoreState.appConfig?.bankId?.enableBeta === true,
+)

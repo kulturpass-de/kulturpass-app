@@ -8,14 +8,21 @@ import { Button } from '../../../../components/button/button'
 import { Divider } from '../../../../components/divider/divider'
 import { FormFieldWithControl } from '../../../../components/form-fields/form-field-with-control'
 import { SearchFormField } from '../../../../components/form-fields/search-form-field'
+import { SuggestionList } from '../../../../components/suggestion-list/suggestion-list'
 import { TranslatedText } from '../../../../components/translated-text/translated-text'
+import { LocationSuggestion } from '../../../../services/api/types/commerce/commerce-get-location-suggestions'
 import { AppDispatch } from '../../../../services/redux/configure-store'
 import { useTestIdBuilder } from '../../../../services/test-id/test-id'
 import { useTranslation } from '../../../../services/translation/translation'
 import { useTheme } from '../../../../theme/hooks/use-theme'
 import { spacing } from '../../../../theme/spacing'
 import { POSTAL_CODE_OR_CITY_SCHEMA } from '../../form/form-validation'
-import { getDefaultSelection, getSelectedSuggestion, getSuggestionsVisible } from '../../redux/product-detail-selector'
+import {
+  getDefaultSelection,
+  getLocationSuggestions,
+  getSelectedSuggestion,
+  getSuggestionsVisible,
+} from '../../redux/product-detail-selector'
 import { productDetailSlice } from '../../redux/product-detail-slice'
 import { isValidLocationSuggestionString, isStartingWithNumber } from '../../utils'
 import { OfferSelectionFilterProps } from './offer-selection-filter-body'
@@ -51,6 +58,17 @@ export const PostalCodeSection = ({
   const defaultSelection = useSelector(getDefaultSelection)
 
   const defaultPostalCodeOrCity = typeof defaultSelection === 'string' ? defaultSelection : defaultSelection?.name
+
+  const suggestions = useSelector(getLocationSuggestions)
+
+  const selectSuggestion = useCallback(
+    (suggestion: LocationSuggestion) => {
+      dispatch(productDetailSlice.actions.setSelectedSuggestion(suggestion))
+    },
+    [dispatch],
+  )
+
+  const keyExtractor = useCallback((item: LocationSuggestion) => `${item.id}-${item.latitude}`, [])
 
   const form = useForm<PostalCodeSectionFormData>({
     shouldFocusError: false,
@@ -127,7 +145,7 @@ export const PostalCodeSection = ({
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.formField}>
         {formInitialLoading ? null : (
           <FormFieldWithControl
             name="postalCodeOrCity"
@@ -143,23 +161,35 @@ export const PostalCodeSection = ({
             accessibilityLabelI18nKey="offerSelectionFilter_postalCode_input_accessibility_label"
           />
         )}
+
+        {suggestionsVisible ? (
+          <View style={styles.suggestionList} pointerEvents="box-none">
+            <SuggestionList
+              testID={testID}
+              suggestions={suggestionsVisible ? suggestions : []}
+              onSelectSuggestion={selectSuggestion}
+              titleKey="name"
+              subtitleKey="info"
+              suggestionItemAccessibilityHintKey="offerSelectionFilter_suggestions_item_accessibility_hint"
+              keyExtractor={keyExtractor}
+            />
+          </View>
+        ) : null}
       </View>
-      {suggestionsVisible ? null : (
-        <>
-          <Divider marginTop={spacing[2]} marginBottom={spacing[3]} />
-          <TranslatedText
-            textStyle="CaptionSemibold"
-            textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
-            i18nKey="offerSelectionFilter_hint"
-          />
-          <Button
-            testID={addTestIdModifier(testID, 'postalCode_submit_button')}
-            i18nKey="offerSelectionFilter_submit_button_label"
-            onPress={submit}
-            disabled={(!form.formState.isValid && isPostalCode) || (!selectedSuggestion && !isPostalCode)}
-          />
-        </>
-      )}
+      <>
+        <Divider marginTop={spacing[2]} marginBottom={spacing[3]} />
+        <TranslatedText
+          textStyle="CaptionSemibold"
+          textStyleOverrides={[styles.hint, { color: colors.labelColor }]}
+          i18nKey="offerSelectionFilter_hint"
+        />
+        <Button
+          testID={addTestIdModifier(testID, 'postalCode_submit_button')}
+          i18nKey="offerSelectionFilter_submit_button_label"
+          onPress={submit}
+          disabled={(!form.formState.isValid && isPostalCode) || (!selectedSuggestion && !isPostalCode)}
+        />
+      </>
     </View>
   )
 }
@@ -168,8 +198,17 @@ const styles = StyleSheet.create({
   container: {
     marginTop: spacing[5],
   },
+  formField: {
+    zIndex: 1,
+  },
   hint: {
     marginBottom: spacing[6],
   },
   formFieldContainer: { marginBottom: 0 },
+  suggestionList: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
 })

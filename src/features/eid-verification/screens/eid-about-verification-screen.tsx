@@ -1,17 +1,14 @@
-import { AccessRights, Certificate } from '@sap/react-native-ausweisapp2-wrapper'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '../../../components/button/button'
 import { Illustration } from '../../../components/illustration/illustration'
 import { LinkText } from '../../../components/link-text/link-text'
-import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
 import { ModalScreen } from '../../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../../components/modal-screen/modal-screen-footer'
 import { ModalScreenHeader } from '../../../components/modal-screen/modal-screen-header'
 import { SvgImage } from '../../../components/svg-image/svg-image'
 import { TranslatedText } from '../../../components/translated-text/translated-text'
-import { ErrorWithCode } from '../../../services/errors/errors'
 import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -20,21 +17,17 @@ import {
   getCdcDpsDocumentUrl,
   useLocalizedEnvironmentUrl,
 } from '../../../utils/links/hooks/use-localized-environment-url'
-import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
-import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 
 export type EidAboutVerificationScreenProps = {
-  onNext: (accessRights: AccessRights, certificate: Certificate) => void
-  onNFCNotSupported: () => void
-  onError: (error: ErrorWithCode) => void
   onClose: () => void
+  startAuth: () => void
+  isLoading: boolean
 }
 
 export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProps> = ({
-  onNext,
-  onNFCNotSupported,
-  onError,
   onClose,
+  isLoading,
+  startAuth,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
@@ -43,15 +36,10 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
   const eidIdentificationVideo = useFaqLink('IDENTIFICATION_VIDEO')
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
 
-  const { isLoading: initLoading } = useInitAA2Sdk(onError)
-
-  const { isLoading: startAuthLoading, startAuth } = useStartAA2Auth(onNext, onNFCNotSupported, onError)
-
   const screenTestId = buildTestId('eid_aboutVerification')
 
   return (
     <ModalScreen whiteBottom testID={screenTestId}>
-      <LoadingIndicator loading={initLoading || startAuthLoading} />
       <ModalScreenHeader
         testID={addTestIdModifier(screenTestId, 'title')}
         titleI18nKey="eid_aboutVerification_title"
@@ -138,7 +126,7 @@ export const EidAboutVerificationScreen: React.FC<EidAboutVerificationScreenProp
         <Button
           onPress={startAuth}
           variant="primary"
-          disabled={initLoading || startAuthLoading}
+          disabled={isLoading}
           testID={buildTestId('eid_aboutVerification_accept_button')}
           i18nKey="eid_aboutVerification_accept_button"
         />

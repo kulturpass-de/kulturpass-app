@@ -144,6 +144,9 @@ jest.mock('./src/env', () => {
               publicKey: 'publicKey',
               backupPublicKey: 'backupPublicKey',
             },
+            bankId: {
+              loginUrl: 'http://localhost/bankId/login',
+            },
           },
         ],
       }),
