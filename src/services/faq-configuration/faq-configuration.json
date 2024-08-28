@@ -73,6 +73,10 @@
       "ABOUT_BUDGET_VOUCHERS": {
         "de": "https://service.kulturpass.de/help/de-de/2/239",
         "en": "https://service.kulturpass.de/help/de-de/2/239"
+      },
+      "IDENTIFICATION_VIDEO_SPK": {
+        "de": "https://www.kulturpass.de/jugendliche/spk-video",
+        "en": "https://www.kulturpass.de/jugendliche/spk-video"
       }
     }
   }

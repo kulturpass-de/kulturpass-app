@@ -23,18 +23,20 @@ import { useCloseFlow } from './use-close-flow'
  * Only used on the card scanning screen, as user cancellation outside of our cancel dialog can only occur there.
  * @param cancelEidFlowAlertVisible boolean indicating if the cancellation dialog is opened.
  * User cancellation errors are ignored if this is true.
+ * @param inEidFlow boolean indication if this should do anything.
  */
 export const useHandleErrors = (
   onError: (error: ErrorWithCode) => void,
   handleUserCancellation: boolean = false,
   cancelEidFlowAlertVisible: boolean = false,
+  inEidFlow: boolean = true,
 ) => {
   const isFocused = useIsFocused()
   const navigation = useNavigation<StackNavigationProp<EidParamList>>()
-  const { closeFlow } = useCloseFlow()
+  const { closeFlow } = useCloseFlow(inEidFlow)
 
   useEffect(() => {
-    if (!isFocused) {
+    if (!isFocused || !inEidFlow) {
       return
     }
 
@@ -75,5 +77,5 @@ export const useHandleErrors = (
     })
 
     return () => sub.unsubscribe()
-  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, navigation])
+  }, [onError, isFocused, cancelEidFlowAlertVisible, closeFlow, handleUserCancellation, navigation, inEidFlow])
 }

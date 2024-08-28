@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { Pressable, StyleSheet, TextStyle, View } from 'react-native'
+import { logger } from '../../services/logger'
 import { TestId, useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
 import { useTheme } from '../../theme/hooks/use-theme'
@@ -9,17 +10,19 @@ import { TranslatedText, TranslatedTextProps } from '../translated-text/translat
 import { AvailableTranslations } from '../translated-text/types'
 
 type LinkTextProps = {
-  link: string
+  link?: string
   i18nKey: AvailableTranslations
   testID: TestId
   style?: TextStyle
   iconSize?: number
   textStyle?: TranslatedTextProps['textStyle']
   flex?: boolean
+  onPress?: () => void
 }
 
 export const LinkText: React.FC<LinkTextProps> = ({
   link,
+  onPress,
   i18nKey,
   testID,
   iconSize = 24,
@@ -31,7 +34,18 @@ export const LinkText: React.FC<LinkTextProps> = ({
   const { colors } = useTheme()
   const { t } = useTranslation()
 
-  const handlePress = useCallback(() => openLink(link).catch(linkLogger), [link])
+  const handlePress = useCallback(() => {
+    if (onPress && link) {
+      logger.warn('LinkText: Both onPress and link are provided. onPress will be ignored.')
+    }
+    if (link) {
+      openLink(link).catch(linkLogger)
+    } else if (onPress) {
+      onPress()
+    } else {
+      logger.warn('LinkText: No link or onPress provided')
+    }
+  }, [link, onPress])
 
   return (
     <View style={[styles.container, style]}>

@@ -17,7 +17,7 @@ export const colorMappings: ColorMappings = {
   boxShadow: colors.primaryDarkest,
   infoBox: colors.primaryDarkestTile,
   budgetBarBorder: colors.sunLightest,
-  budgetBarReserved: colors.secondaryDarkest,
+  budgetBarReserved: colors.secondaryBaseDarkest,
   budgetBarAvailable: colors.sunLightest,
   listItemBorder: colors.sunLightest,
   footerBorder: colors.newMoonBase,

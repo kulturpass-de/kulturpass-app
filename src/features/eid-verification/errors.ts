@@ -239,19 +239,23 @@ export const extractAuthResultUrlQueryError = (authMsg: Auth): AA2Error | undefi
   if (authMsg.url !== undefined) {
     const errorCode: string | undefined = authMsg.url.match(/^.*errorCode=([^&]+).*$/)?.[1]
     if (errorCode !== undefined) {
-      switch (errorCode) {
-        case 'BELOW_MIN_YEAR_OF_BIRTH':
-          return new AA2BelowMinYearOfBirth()
-        case 'BELOW_MIN_AGE':
-          return new AA2BelowMinAge()
-        case 'FOREIGN_RESIDENCY':
-          return new AA2ForeignResidency()
-        case 'PSEUDONYM_ALREADY_IN_USE':
-          return new AA2PseudonymAlreadyInUse()
-        default:
-          return new AA2AuthError(errorCode)
-      }
+      return errorCodeToAA2Error(errorCode)
     }
+  }
+}
+
+export const errorCodeToAA2Error = (errorCode: string): AA2Error => {
+  switch (errorCode) {
+    case 'BELOW_MIN_YEAR_OF_BIRTH':
+      return new AA2BelowMinYearOfBirth()
+    case 'BELOW_MIN_AGE':
+      return new AA2BelowMinAge()
+    case 'FOREIGN_RESIDENCY':
+      return new AA2ForeignResidency()
+    case 'PSEUDONYM_ALREADY_IN_USE':
+      return new AA2PseudonymAlreadyInUse()
+    default:
+      return new AA2AuthError(errorCode)
   }
 }
 

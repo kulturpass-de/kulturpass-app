@@ -37,7 +37,7 @@ export const EidInsertCardRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   const flow = route.params.flow
 
   const onAuthSuccess = useCallback(() => {
-    navigation.replace(EidVerificationCompletionRouteName)
+    navigation.replace(EidVerificationCompletionRouteName, { type: 'eid' })
   }, [navigation])
 
   const onChangePinSuccess = useCallback(() => {

@@ -65,6 +65,12 @@ export const AppConfigSchema = z.object({
 
 export type AppConfig = z.infer<typeof AppConfigSchema>
 
+export const BankIdSchema = z.object({
+  loginUrl: z.string(),
+})
+
+export type BankId = z.infer<typeof BankIdSchema>
+
 export const EnvironmentConfigurationSchema = z.object({
   name: z.string(),
   appInformation: AppInformationSchema,
@@ -73,6 +79,7 @@ export const EnvironmentConfigurationSchema = z.object({
   eid: EidSchema,
   faq: FaqSchema,
   appConfig: AppConfigSchema,
+  bankId: BankIdSchema,
 })
 
 export type EnvironmentConfiguration = z.infer<typeof EnvironmentConfigurationSchema>

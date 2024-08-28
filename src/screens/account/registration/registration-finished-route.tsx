@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useCallback } from 'react'
-import { EidAboutVerificationRouteName } from '../../../features/eid-verification/screens/eid-about-verification-route'
+import { useStartVerification } from '../../../features/eid-verification/hooks/use-start-verification'
 import { RootStackParams } from '../../../navigation/types'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { modalCardStyle } from '../../../theme/utils'
@@ -14,10 +14,12 @@ export type RegistrationFinishedRouteParams = undefined
 export const RegistrationFinishedRoute: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>()
 
+  const startVerification = useStartVerification()
+
   const onNext = useCallback(() => {
     navigation.navigate('Tabs')
-    navigation.navigate('Eid', { screen: EidAboutVerificationRouteName })
-  }, [navigation])
+    startVerification()
+  }, [navigation, startVerification])
 
   const onClose = useCallback(() => {
     navigation.navigate('Tabs')

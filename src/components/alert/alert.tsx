@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import type { PropsWithChildren } from 'react'
 import { Modal, type ModalProps } from 'react-native'
+import { LoadingIndicatorOverlay } from '../loading-indicator/loading-indicator-overlay'
 import { AlertBackdrop } from './alert-backdrop'
 import { AlertContainer } from './alert-container'
 import { AlertContextImpl } from './alert-context'
@@ -10,9 +11,11 @@ export type AlertProps = ModalProps &
     visible: boolean
     onChange?: (visible: boolean) => void
     dismissable?: boolean
+    // Add Loading Animation to Alert as there is a react native issue with multuple modals
+    isLoading?: boolean
   }>
 
-export const Alert = ({ visible, onChange, children, dismissable, ...modalProps }: AlertProps) => {
+export const Alert = ({ visible, onChange, children, dismissable, isLoading, ...modalProps }: AlertProps) => {
   const onShow = useCallback(() => onChange?.(true), [onChange])
   const onHide = useCallback(() => onChange?.(false), [onChange])
   const providerValue = useMemo(() => ({ dismiss: onHide }), [onHide])
@@ -27,15 +30,19 @@ export const Alert = ({ visible, onChange, children, dismissable, ...modalProps 
         // see `AlertContainer`
         presentationStyle="overFullScreen"
         transparent={true}
-        visible={visible}
+        visible={visible || isLoading === true}
         onRequestClose={onHide}
         onShow={onShow}
         onDismiss={onHide}
         {...modalProps}>
-        <AlertContainer visible={visible}>
-          <AlertBackdrop dismissable={dismissable} />
-          {children}
-        </AlertContainer>
+        {isLoading ? (
+          <LoadingIndicatorOverlay />
+        ) : (
+          <AlertContainer visible={visible}>
+            <AlertBackdrop dismissable={dismissable} />
+            {children}
+          </AlertContainer>
+        )}
       </Modal>
     </AlertContextImpl.Provider>
   )

@@ -1,5 +1,6 @@
 import { AA2CommandService } from '@sap/react-native-ausweisapp2-wrapper'
 import React, { useCallback } from 'react'
+import { EidScreenProps } from '../../../navigation/eid/types'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { logger } from '../../../services/logger'
@@ -10,14 +11,20 @@ import { EidVerificationCompletionScreen } from './eid-verification-completion-s
 
 export const EidVerificationCompletionRouteName = 'EidVerificationCompletion'
 
-export type EidVerificationCompletionRouteParams = undefined
+export type EidVerificationCompletionRouteParams = {
+  type: 'eid' | 'bankId'
+}
 
-export const EidVerificationCompletionRoute: React.FC = () => {
+export type EidVerificationCompletionRouteProps = EidScreenProps<'EidVerificationCompletion'>
+
+export const EidVerificationCompletionRoute: React.FC<EidVerificationCompletionRouteProps> = ({ route }) => {
   const [getProfile] = commerceApi.endpoints.getProfile.useLazyQuery()
 
   const onNext = useCallback(async () => {
     try {
-      await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
+      if (route.params.type === 'eid') {
+        await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
+      }
 
       // 'Eid' stack will disappear from the rendering tree
       // once the identificationStatus changes to something other than "NOT_VERIFIED"
@@ -26,7 +33,7 @@ export const EidVerificationCompletionRoute: React.FC = () => {
     } catch (error: unknown) {
       logger.log(error)
     }
-  }, [getProfile])
+  }, [getProfile, route.params.type])
 
   useHandleGestures(onNext)
 

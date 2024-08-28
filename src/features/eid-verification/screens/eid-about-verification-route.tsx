@@ -9,6 +9,8 @@ import { modalCardStyle } from '../../../theme/utils'
 import { CancelEidFlowAlert } from '../components/cancel-eid-flow-alert'
 import { EidErrorAlert } from '../components/eid-error-alert'
 import { useHandleGestures } from '../hooks/use-handle-gestures'
+import { useInitAA2Sdk } from '../hooks/use-init-aa2-sdk'
+import { useStartAA2Auth } from '../hooks/use-start-aa2-auth'
 import { EidAboutServiceProviderRouteName } from './eid-about-service-provider-route'
 import { EidAboutVerificationScreen } from './eid-about-verification-screen'
 import { EidNFCNotSupportedRouteName } from './eid-nfc-not-supported-route'
@@ -44,18 +46,17 @@ export const EidAboutVerificationRoute: React.FC = () => {
     setVisibleError(error)
   }, [])
 
+  const { isLoading: initLoading } = useInitAA2Sdk(onError)
+
+  const { isLoading: startAuthLoading, startAuth } = useStartAA2Auth(onNext, onNFCNotSupported, onError)
+
   useHandleGestures(onClose)
 
   return (
     <>
-      <EidErrorAlert error={visibleError} />
+      <EidErrorAlert error={visibleError} isLoading={initLoading || startAuthLoading} />
       <CancelEidFlowAlert visible={cancelAlertVisible} onChange={setCancelAlertVisible} />
-      <EidAboutVerificationScreen
-        onClose={onClose}
-        onError={onError}
-        onNext={onNext}
-        onNFCNotSupported={onNFCNotSupported}
-      />
+      <EidAboutVerificationScreen onClose={onClose} startAuth={startAuth} isLoading={initLoading || startAuthLoading} />
     </>
   )
 }

@@ -29,6 +29,7 @@ import { CancelReservationParams } from './types/commerce/commerce-cancel-reserv
 import { CreateReservationParams } from './types/commerce/commerce-create-reservation'
 import { DeleteCartEntryParams } from './types/commerce/commerce-delete-cart-entry'
 import { GetAppConfigRequestParams, GetAppConfigResponseBody } from './types/commerce/commerce-get-app-config'
+import { BankIdSuggestionsParams, BankIdSuggestionsResponse } from './types/commerce/commerce-get-bank-id-suggestions'
 import {
   GetLocationSuggestionsParams,
   GetLocationSuggestionsResponse,
@@ -59,6 +60,7 @@ export const commerceApi = createRtkApi({
     'language',
     'valid-postal-code',
     'location-suggestions',
+    'bank-id-suggestions',
   ],
   endpoints: builder => ({
     getIsValidPostalCode: builder.query<GetPostalCodeIsValidResponse, GetPostalCodeIsValidParams>({
@@ -74,6 +76,15 @@ export const commerceApi = createRtkApi({
       queryFn: sendCommerceGetRequest(queryParams => {
         return {
           path: 'location/suggestions',
+          queryParams,
+        }
+      }),
+    }),
+    getBankIdSuggestions: builder.query<BankIdSuggestionsResponse, BankIdSuggestionsParams>({
+      providesTags: ['bank-id-suggestions'],
+      queryFn: sendCommerceGetRequest(queryParams => {
+        return {
+          path: 'bank/suggestions',
           queryParams,
         }
       }),

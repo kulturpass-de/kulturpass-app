@@ -2,7 +2,6 @@ import { useIsFocused } from '@react-navigation/native'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
-import { OnboardingNotificationPermissionRouteName } from '../../../screens/app/onboarding/onboarding-notification-permission-route'
 import { ReleaseNotesModalRouteName } from '../../../screens/app/release-notes-modal-route'
 import { getNotificationOnboardingShown } from '../../../services/redux/selectors/onboarding-selectors'
 import { useShouldDisplayEditorialEmailConsentModal } from '../../delta-onboarding/hooks/use-should-display-editorial-email-consent-modal'
@@ -27,15 +26,6 @@ export const useDisplayReleaseNotes = () => {
   useEffect(() => {
     if (lastDisplayedVersion !== currentDisplayedVersion) {
       modalNavigation.navigate({ screen: ReleaseNotesModalRouteName })
-    } else if (isFocused && (!notificationOnboardingShown || shouldShowDeltaOnboardingPushNotification)) {
-      // Note: This is a fallback, so that even without a features screen, the Onboarding Notification could be shown
-      const timeout = setTimeout(() => {
-        modalNavigation.navigate({ screen: OnboardingNotificationPermissionRouteName })
-      }, SHOW_CONSENT_DELAY_MS)
-
-      return () => {
-        clearTimeout(timeout)
-      }
     } else if (shouldDisplayEditorialEmailConsentModal && isFocused) {
       const timeout = setTimeout(() => {
         modalNavigation.navigate({ screen: EditorialEmailConsentModalRouteName })

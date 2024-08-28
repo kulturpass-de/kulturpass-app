@@ -64,7 +64,13 @@ export const HomeBudget: React.FC<HomeBudgetProps> = ({ balance }) => {
         />
         {shouldShowReservedBalance && (
           <View style={styles.reservedContainer}>
-            <SvgImage type="coupon" style={styles.reservedIcon} width={20} height={20} />
+            <SvgImage
+              type="coupon"
+              style={styles.reservedIcon}
+              width={20}
+              height={20}
+              fill={validBalance.reservedBalance > 0 ? colors.budgetBarReserved : 'transparent'}
+            />
             <TranslatedText
               testID={buildTestId('home_budget_amount_reserved_text')}
               textStyle="CaptionExtrabold"

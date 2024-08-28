@@ -12,8 +12,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		26B5FE760E246FAEAFFC7B4F /* Pods_cultureapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DB2C70794BDEFCBB1F04408 /* Pods_cultureapp.framework */; };
-		2BE73763FF935295CD77A8D8 /* Pods_cultureapp_cultureappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A565A9E5D09C026907EC281B /* Pods_cultureapp_cultureappTests.framework */; };
 		3C5E0867E841463B9ACD3567 /* nunito_bolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 917595BD0BFA419091823D6E /* nunito_bolditalic.ttf */; };
 		45589818FFCA457D80C08EE7 /* nunito_extralight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A55C8ACBFC8548A79CD0908B /* nunito_extralight.ttf */; };
 		663D385320614BAC97CC69DF /* nunito_blackitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FB499456DB34ED28AB8F09D /* nunito_blackitalic.ttf */; };
@@ -25,12 +23,14 @@
 		96B55C44C7414F669F738D08 /* nunito_semibolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 310E41DE5798435E99F9F557 /* nunito_semibolditalic.ttf */; };
 		9BC9D47C3A80402DAF98B55A /* nunito_mediumitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08AA7D8BD6A441A4A02AF373 /* nunito_mediumitalic.ttf */; };
 		9EBA0BD029DB18BE008E1263 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9EBA0BD229DB18BE008E1263 /* InfoPlist.strings */; };
+		B4B4B00D4848C4885AACFB51 /* libPods-cultureapp-cultureappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51C1A5D729D03A217CF9CCAD /* libPods-cultureapp-cultureappTests.a */; };
 		C16D1AFC2AB47B5700553C14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C16D1AFB2AB47B5700553C14 /* GoogleService-Info.plist */; };
 		C2616689832342B897BF9F14 /* nunito_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44A266EF58404B2698536FDA /* nunito_medium.ttf */; };
 		C34BC9F0250543AAA814459B /* nunito_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 326D099DA0FF4936B00F6D95 /* nunito_italic.ttf */; };
 		D61DB36A71EA4AF2BC5EF553 /* nunito_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FE7AC9506F419DAA825B0E /* nunito_regular.ttf */; };
 		DC250E7D1A2F439CBF6EE095 /* nunito_lightitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCF0B0DF9A2448CD90892B94 /* nunito_lightitalic.ttf */; };
 		E3CA1670186B4968BD432F5B /* nunito_extrabolditalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8C25932F2324D8895B1790B /* nunito_extrabolditalic.ttf */; };
+		F63F0CACD927510231F909FA /* libPods-cultureapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD24325E0A179460E080A1A /* libPods-cultureapp.a */; };
 		FBBD7DBCD4884B09B3365E60 /* nunito_semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D46D7346FB6043E2B3B825F2 /* nunito_semibold.ttf */; };
 /* End PBXBuildFile section */
 
@@ -62,14 +62,15 @@
 		3EFD602E95FE44CFA0B3BD82 /* nunito_bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_bold.ttf; path = ../src/assets/fonts/Nunito/nunito_bold.ttf; sourceTree = "<group>"; };
 		3FB499456DB34ED28AB8F09D /* nunito_blackitalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_blackitalic.ttf; path = ../src/assets/fonts/Nunito/nunito_blackitalic.ttf; sourceTree = "<group>"; };
 		44A266EF58404B2698536FDA /* nunito_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_medium.ttf; path = ../src/assets/fonts/Nunito/nunito_medium.ttf; sourceTree = "<group>"; };
+		4BD24325E0A179460E080A1A /* libPods-cultureapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cultureapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		502A37C51788436BB63E32D6 /* nunito_extralightitalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_extralightitalic.ttf; path = ../src/assets/fonts/Nunito/nunito_extralightitalic.ttf; sourceTree = "<group>"; };
+		51C1A5D729D03A217CF9CCAD /* libPods-cultureapp-cultureappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cultureapp-cultureappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-cultureapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp.release.xcconfig"; path = "Target Support Files/Pods-cultureapp/Pods-cultureapp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-cultureapp-cultureappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp-cultureappTests.debug.xcconfig"; path = "Target Support Files/Pods-cultureapp-cultureappTests/Pods-cultureapp-cultureappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6AA52CD3BA0140A38CD7D456 /* nunito_extrabold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_extrabold.ttf; path = ../src/assets/fonts/Nunito/nunito_extrabold.ttf; sourceTree = "<group>"; };
 		70FE7AC9506F419DAA825B0E /* nunito_regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_regular.ttf; path = ../src/assets/fonts/Nunito/nunito_regular.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = cultureapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-cultureapp-cultureappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cultureapp-cultureappTests.release.xcconfig"; path = "Target Support Files/Pods-cultureapp-cultureappTests/Pods-cultureapp-cultureappTests.release.xcconfig"; sourceTree = "<group>"; };
-		8DB2C70794BDEFCBB1F04408 /* Pods_cultureapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cultureapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		900E78F42BF2335C000A308B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		917595BD0BFA419091823D6E /* nunito_bolditalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_bolditalic.ttf; path = ../src/assets/fonts/Nunito/nunito_bolditalic.ttf; sourceTree = "<group>"; };
 		93EFEFA04FFE48C69632DAF1 /* nunito_light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_light.ttf; path = ../src/assets/fonts/Nunito/nunito_light.ttf; sourceTree = "<group>"; };
@@ -78,7 +79,6 @@
 		9EBA0BD129DB18BE008E1263 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9EBA0BD329DB18D9008E1263 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A55C8ACBFC8548A79CD0908B /* nunito_extralight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_extralight.ttf; path = ../src/assets/fonts/Nunito/nunito_extralight.ttf; sourceTree = "<group>"; };
-		A565A9E5D09C026907EC281B /* Pods_cultureapp_cultureappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cultureapp_cultureappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF0B0DF9A2448CD90892B94 /* nunito_lightitalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = nunito_lightitalic.ttf; path = ../src/assets/fonts/Nunito/nunito_lightitalic.ttf; sourceTree = "<group>"; };
 		C16D1AFB2AB47B5700553C14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C18830E5299A9CE80004C431 /* Company.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Company.xcconfig; path = Configuration/Company.xcconfig; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BE73763FF935295CD77A8D8 /* Pods_cultureapp_cultureappTests.framework in Frameworks */,
+				B4B4B00D4848C4885AACFB51 /* libPods-cultureapp-cultureappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				26B5FE760E246FAEAFFC7B4F /* Pods_cultureapp.framework in Frameworks */,
+				F63F0CACD927510231F909FA /* libPods-cultureapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,8 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				8DB2C70794BDEFCBB1F04408 /* Pods_cultureapp.framework */,
-				A565A9E5D09C026907EC281B /* Pods_cultureapp_cultureappTests.framework */,
+				4BD24325E0A179460E080A1A /* libPods-cultureapp.a */,
+				51C1A5D729D03A217CF9CCAD /* libPods-cultureapp-cultureappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

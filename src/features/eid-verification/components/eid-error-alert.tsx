@@ -37,6 +37,9 @@ export type EidErrorAlertProps = {
   onModalIsVisible?: (isVisible: boolean) => void
   cancelEidFlowAlertVisible?: boolean
   handleUserCancellation?: boolean
+  inEidFlow?: boolean
+  // Add Loading Animation to Alert as there is a react native issue with multuple modals
+  isLoading?: boolean
 }
 
 export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
@@ -44,6 +47,8 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   onModalIsVisible,
   cancelEidFlowAlertVisible = false,
   handleUserCancellation = false,
+  inEidFlow = true,
+  isLoading,
 }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const testID = buildTestId('eid_error_alert')
@@ -56,9 +61,9 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
 
   const [intError, setIntError] = useState<ErrorWithCode | null>(null)
 
-  useHandleErrors(setIntError, handleUserCancellation, cancelEidFlowAlertVisible)
+  useHandleErrors(setIntError, handleUserCancellation, cancelEidFlowAlertVisible, inEidFlow)
 
-  const { closeFlow } = useCloseFlow()
+  const { closeFlow } = useCloseFlow(inEidFlow)
 
   useEffect(() => {
     if (error !== null) {
@@ -78,6 +83,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
     await closeFlow()
     setIntError(null)
   }, [closeFlow])
+
   const errorMessage: string | undefined = useMemo(() => {
     if (intError instanceof AA2InitError) {
       return t('eid_error_init_message')
@@ -117,7 +123,7 @@ export const EidErrorAlert: React.FC<EidErrorAlertProps> = ({
   }, [intError])
 
   return (
-    <Alert visible={intError !== null} dismissable={false}>
+    <Alert visible={intError !== null} isLoading={isLoading} dismissable={false}>
       <AlertContent ref={focusRef}>
         <AlertTitle i18nKey="eid_error_title" testID={addTestIdModifier(testID, 'title')} />
         {!errorMessage && (

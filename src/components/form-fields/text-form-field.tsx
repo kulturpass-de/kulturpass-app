@@ -17,9 +17,10 @@ import { AvailableTextStyles, AvailableTranslations } from '../translated-text/t
 export type TextFormFieldProps = React.PropsWithChildren<
   {
     testID: TestId
-    labelI18nKey: AvailableTranslations
+    labelI18nKey?: AvailableTranslations
     labelTextStyle?: AvailableTextStyles
     error?: FieldError
+    ignoredErrorTypes?: [FieldError['type']]
     containerStyle?: FormFieldContainerProps['containerStyle']
     isRequired?: boolean
     disableAccessibilityForLabel?: boolean
@@ -50,6 +51,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
       labelI18nKey,
       labelTextStyle,
       error,
+      ignoredErrorTypes,
       containerStyle,
       isRequired,
       disableAccessibilityForLabel,
@@ -88,6 +90,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
         labelI18nKey={labelI18nKey}
         labelTextStyle={labelTextStyle}
         error={error}
+        ignoredErrorTypes={ignoredErrorTypes}
         containerStyle={containerStyle}
         disableAccessibilityForLabel={disableAccessibilityForLabel}
         isRequired={isRequired}>
@@ -115,7 +118,7 @@ export const TextFormField = React.forwardRef<TextInput, TextFormFieldProps>(
             },
           ]}
           testID={addTestIdModifier(testID, 'input')}
-          accessibilityLabel={t(labelI18nKey)}
+          accessibilityLabel={labelI18nKey ? t(labelI18nKey) : undefined}
           accessibilityHint={accessibilityHint}
           accessible
           onBlur={handleBlur}

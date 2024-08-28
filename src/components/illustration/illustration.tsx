@@ -40,6 +40,8 @@ export type IllustrationType =
   | 'no-network'
   | 'location-sharing'
   | 'password'
+  | 'bank-id'
+  | 'select-identification'
 
 export type AnimatedIllustrationType =
   | 'onboarding'

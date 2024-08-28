@@ -28,6 +28,12 @@ export const AppConfigSchema = z.object({
   }),
   disableIdentification: z.boolean().optional(),
   enableBudgetVoucher: z.boolean().optional(),
+  enableBankId: z.boolean().optional(),
+  bankId: z
+    .object({
+      enableBeta: z.boolean().optional(),
+    })
+    .optional(),
 })
 
 export type AppConfig = z.infer<typeof AppConfigSchema>
