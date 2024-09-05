@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
-import { StyleSheet, TextInputProps, View } from 'react-native'
+import { Dimensions, StyleSheet, TextInputProps, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import { z } from 'zod'
@@ -77,8 +77,17 @@ export const BankIdSelectBankScreen: React.FC<BankIdSelectBankScreenProps> = ({ 
     ),
   })
 
+  const scrollViewRef = useRef<ScrollView>(null)
   const onFocus = useCallback<NonNullable<TextInputProps['onBlur']>>(() => {
     setShowSuggestions(true)
+    const screenHeight = Dimensions.get('window').height
+    const scrollOffset = screenHeight / 2
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({
+        y: scrollOffset,
+        animated: true,
+      })
+    }, 100)
   }, [])
 
   const onClearSearchField = useCallback(() => {
@@ -120,7 +129,12 @@ export const BankIdSelectBankScreen: React.FC<BankIdSelectBankScreenProps> = ({ 
         titleI18nKey="bankid_select_bank_title"
         onPressClose={onClose}
       />
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
+      <ScrollView
+        ref={scrollViewRef}
+        testID={addTestIdModifier(screenTestId, 'bankid_list')}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContainer}
+        keyboardShouldPersistTaps="always">
         <Illustration
           testID={addTestIdModifier(screenTestId, 'image_alt')}
           i18nKey="bankid_select_bank_image_alt"
