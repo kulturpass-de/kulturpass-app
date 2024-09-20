@@ -21,9 +21,9 @@ PODS:
     - GoogleUtilities/Logger (~> 7.12)
   - FirebaseCoreExtension (10.19.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseCoreInternal (10.25.0):
+  - FirebaseCoreInternal (10.29.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseInstallations (10.25.0):
+  - FirebaseInstallations (10.29.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -1063,12 +1063,12 @@ PODS:
     - React-Core
   - react-native-quick-base64 (2.0.8):
     - React-Core
-  - react-native-quick-crypto (0.6.1):
+  - react-native-quick-crypto (0.7.2):
+    - glog
     - OpenSSL-Universal
+    - RCT-Folly (= 2022.05.16.00)
     - React
-    - React-callinvoker
     - React-Core
-    - ReactCommon
   - react-native-safe-area-context (4.8.2):
     - React-Core
   - react-native-slider (4.5.0):
@@ -1594,8 +1594,8 @@ SPEC CHECKSUMS:
   Firebase: 63ce8ece0d43743dc28eacac0c6867a2d7fd5a9d
   FirebaseCore: dc5c7badf99d47613c52b2e3a57a64cd187f8554
   FirebaseCoreExtension: c08d14c7b22e07994e876d837e6f58642f340087
-  FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
-  FirebaseInstallations: 91950fe859846fff0fbd296180909dd273103b09
+  FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
+  FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
   FirebaseMessaging: d322bd030a0e97398bf134746e087b88e6ba0074
   Flipper: c7a0093234c4bdd456e363f2f19b2e4b27652d44
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
@@ -1647,7 +1647,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
   react-native-pager-view: d5f3adb58a4e6e0d200055e9a4afdcda9b9022ce
   react-native-quick-base64: 777057ea4286f806b00259ede65dc79c7c706320
-  react-native-quick-crypto: 82eedfdbd352c8fa861512f80f07d069c411c9b8
+  react-native-quick-crypto: b44a5aca73f6c60acb5489ec65fcf6246433b4b6
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
   react-native-slider: 09e5a8b7e766d3b5ae24ec15c5c4ec2679ca0f8c
   react-native-webview: ff06d1fe175ff827882ec88b696a7efcafa7e98d
