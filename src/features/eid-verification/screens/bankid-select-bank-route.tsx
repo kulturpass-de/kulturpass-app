@@ -31,8 +31,13 @@ export const BankIdSelectBankRoute: React.FC = () => {
     async (selectedSuggestion: BankIdSuggestion) => {
       setIsLoading(true)
       try {
-        await dispatch(startBankIdFlow(selectedSuggestion.code)).unwrap()
-        navigation.replace(EidVerificationCompletionRouteName, { type: 'bankId' })
+        const isSuccessful = await dispatch(startBankIdFlow(selectedSuggestion.code)).unwrap()
+        if (isSuccessful) {
+          navigation.replace(EidVerificationCompletionRouteName, { type: 'bankId' })
+        } else {
+          // BankID flow was cancelled by the user
+          return
+        }
       } catch (error: unknown) {
         if (error instanceof ErrorWithCode) {
           setVisibleError(error)

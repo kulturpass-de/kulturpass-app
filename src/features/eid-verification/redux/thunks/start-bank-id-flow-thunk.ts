@@ -8,7 +8,7 @@ import { createThunk } from '../../../../services/redux/utils/create-thunk'
 import { getAccountInfo } from '../../../../services/user/redux/thunks/get-account-info'
 import { errorCodeToAA2Error } from '../../errors'
 
-export const startBankIdFlow = createThunk<void, string>('bankId/startBankIdFlow', async (bankCode, thunkAPI) => {
+export const startBankIdFlow = createThunk<boolean, string>('bankId/startBankIdFlow', async (bankCode, thunkAPI) => {
   // 1. Fetch new id_token
   const sessionData = getCdcSessionData(thunkAPI.getState())
   if (sessionData === null) {
@@ -40,7 +40,8 @@ export const startBankIdFlow = createThunk<void, string>('bankId/startBankIdFlow
     showTitle: false,
     enableUrlBarHiding: true,
     enableDefaultShare: false,
-    showInRecents: false,
+    showInRecents: true,
+    forceCloseOnRedirection: false,
   })
 
   if (typeof result !== 'object' || typeof result.type !== 'string') {
@@ -49,7 +50,11 @@ export const startBankIdFlow = createThunk<void, string>('bankId/startBankIdFlow
 
   // 4. Parse Bank Login Result
   if (result.type !== 'success') {
-    throw new UnknownError('IAP_DISMISSED')
+    if (result.type === 'cancel') {
+      return false
+    } else {
+      throw new UnknownError('IAP_DISMISSED')
+    }
   }
 
   if (typeof result.url !== 'string') {
@@ -61,7 +66,7 @@ export const startBankIdFlow = createThunk<void, string>('bankId/startBankIdFlow
 
   const popup = searchParams.get('popup')
   if (popup === 'IDENTITY_VERIFICATION_COMPLETION') {
-    return
+    return true
   } else if (popup === 'IDENTITY_VERIFICATION_ERROR') {
     const errorCode = searchParams.get('errorCode')
     if (errorCode === null) {

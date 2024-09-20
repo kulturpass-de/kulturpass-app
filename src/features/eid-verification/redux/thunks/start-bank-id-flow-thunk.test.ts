@@ -57,7 +57,8 @@ describe('startBankIdFlow', () => {
     })
 
     Platform.OS = 'android'
-    await store.dispatch(startBankIdFlow('123456')).unwrap()
+    const result = await store.dispatch(startBankIdFlow('123456')).unwrap()
+    expect(result).toBe(true)
     const authCall = mockOpenAuth.mock.calls[0]
     expect(authCall[0]).toBe('http://localhost/bankId/login?agent=app&blz=123456&idToken=test-id-token')
     expect(authCall[1]).toBe('kulturpass://localhost')
@@ -81,7 +82,8 @@ describe('startBankIdFlow', () => {
     })
 
     Platform.OS = 'ios'
-    await store.dispatch(startBankIdFlow('123456')).unwrap()
+    const result = await store.dispatch(startBankIdFlow('123456')).unwrap()
+    expect(result).toBe(true)
     const authCall = mockOpenAuth.mock.calls[0]
     expect(authCall[0]).toBe('http://localhost/bankId/login?agent=app&blz=123456&idToken=test-id-token')
     expect(authCall[1]).toBe('kulturpass://')
@@ -127,5 +129,29 @@ describe('startBankIdFlow', () => {
 
     Platform.OS = 'ios'
     await expect(store.dispatch(startBankIdFlow('123456')).unwrap()).rejects.toBeInstanceOf(UnknownError)
+  })
+
+  test('should return false if the user cancelled the bankid flow', async () => {
+    mockServer()
+
+    const store = configureMockStore({
+      middlewares: [cdcApi.middleware],
+      preloadedState,
+    })
+
+    const mockIsAvailable = jest.spyOn(InAppBrowser.default, 'isAvailable')
+    mockIsAvailable.mockResolvedValue(true)
+
+    const mockOpenAuth = jest.spyOn(InAppBrowser.default, 'openAuth')
+    mockOpenAuth.mockResolvedValue({
+      type: 'cancel',
+    })
+
+    Platform.OS = 'android'
+    const result = await store.dispatch(startBankIdFlow('123456')).unwrap()
+    expect(result).toBe(false)
+    const authCall = mockOpenAuth.mock.calls[0]
+    expect(authCall[0]).toBe('http://localhost/bankId/login?agent=app&blz=123456&idToken=test-id-token')
+    expect(authCall[1]).toBe('kulturpass://localhost')
   })
 })
