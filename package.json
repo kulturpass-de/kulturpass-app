@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
   "version": "1.19.0",
-  "buildNumber": "1",
+  "buildNumber": "3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -211,7 +211,7 @@
     "undici-types": "^6.6.2",
     "ws": "^8.18.0",
     "fast-xml-parser": "4.4.1",
-    "serve-static": "1.16.2"
+    "serve-static": "2.1.0"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
