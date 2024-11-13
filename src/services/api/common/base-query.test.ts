@@ -57,12 +57,18 @@ describe('base-query', () => {
     const api = {} as RtkBaseQueryApi
     const extraOptions = {}
 
-    ;(axios as jest.MockedFunction<typeof axios>).mockImplementation(() => Promise.reject({ isAxiosError: true }))
+    ;(axios as jest.MockedFunction<typeof axios>).mockImplementation(() =>
+      Promise.reject({
+        isAxiosError: true,
+        request: { _response: 'Unknown error with error code "NETWORK_ERROR".' },
+      }),
+    )
 
     const result = await axiosBaseQuery()(args, api, extraOptions)
 
     expect(result).toHaveProperty('error')
     expect(result.error).toBeInstanceOf(NetworkError)
+    expect(result?.error?.message).toBe('Unknown error with error code "NETWORK_ERROR".')
   })
 
   it('should catch any error produced by Axios and return a redux compatibe UnknownError', async () => {

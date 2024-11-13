@@ -30,12 +30,14 @@ export const axiosBaseQuery = <Result>(): AxiosBaseQueryFn<Result> => {
         return { error: httpError }
       }
 
-      logger.logRequestError(args.url, JSON.stringify(error))
-
       if (isAxiosError(error)) {
-        const networkError = new NetworkError()
+        const response = error?.request?._response
+        const networkError = new NetworkError(typeof response === 'string' ? response : null)
+        logger.logRequestError(args.url, JSON.stringify(networkError))
         return { error: networkError }
       }
+
+      logger.logRequestError(args.url, JSON.stringify(error))
 
       const unknownError = new UnknownError('API Error')
       return { error: unknownError }

@@ -22,11 +22,10 @@ export class OfflineError extends ErrorWithCode {
     this.presentableErrorCode = false
   }
 }
-
 export class NetworkError extends ErrorWithCode {
-  constructor() {
+  constructor(errorResponse: string | null = null) {
     super('NETWORK_ERROR')
-    this.detailCode = 'Network request failed.'
+    this.detailCode = errorResponse ?? 'Unknown Network request failed.'
   }
 }
 
