@@ -717,7 +717,7 @@
   "error_alert_title_fallback" : "Oops!",
   "error_alert_message_fallback" : "Something went wrong here.",
   "error_alert_cta" : "OK",
-  "error_alert_message_details" : "Error Code:{{errorCode}}, Detail Code:{{detailCode}} ",
+  "error_alert_message_details" : "Error Code: {{errorCode}}, Detail Code: {{detailCode}}",
   "error_alert_message_details_extra" : "Details: {{errorDetails}}",
   "error_alert_mailto_message" : "Maybe you don't have a mail app installed or you are not logged in. Sign up at {{mail}}",
   "error_alert_offline_title" : "You are currently offline",
