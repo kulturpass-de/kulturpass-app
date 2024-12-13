@@ -29,7 +29,7 @@ export const EMAIL_SCHEMA = (t: TranslationFunction, isRequired?: boolean) => {
   return schema.regex(EMAIL_PATTERN, { message: t('form_error_not_valid_email') })
 }
 
-export const DATE_PATTERN = /\d\d\d\d-\d\d-\d\d/
+export const DATE_PATTERN = /^(19|20)\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
 
 export const DATE_SCHEMA = (t: TranslationFunction) => {
   return z.undefined().or(z.string().regex(DATE_PATTERN, { message: t('form_error_date') }))

@@ -48,7 +48,15 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
      * edit manually the text in the field, un-focus and then we will check if the text in the field is usable as a date
      */
     const [isDatePickerShown, setDatePickerShown] = useState<boolean>(false)
-    const [dotDate, setDotDate] = useState<TextInputProps['value']>(isoDateToDotDate(isoDate))
+    const [dotDate, setDotDate] = useState<TextInputProps['value']>(isoDateToDotDate(isoDate) ?? undefined)
+
+    const isNotFutureDate = (dateString: string) => {
+      const [day, month, year] = dateString.split(/[-.]/).map(Number)
+      const date = new Date(year, month - 1, day)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return date <= today
+    }
 
     useEffect(() => {
       const value = isoDateToDotDate(isoDate)
@@ -71,11 +79,10 @@ export const DateFormField = React.forwardRef<TextInput, DateFormFieldProps>(
 
       // If dotDate is a valid date
       const updatedIsoDate = dotDateToIsoDate(dotDate)
-      if (updatedIsoDate !== '') {
+      if (updatedIsoDate !== '' && dotDate !== undefined && isNotFutureDate(dotDate)) {
         onChange?.(updatedIsoDate)
         return
       }
-
       // If dotDate is not a valid date just emit the current value
       onChange?.(dotDate ?? undefined)
     }, [dotDate, onChange])
