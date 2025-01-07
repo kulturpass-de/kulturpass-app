@@ -1,7 +1,7 @@
 {
   "name": "cultureapp",
-  "version": "1.21.0",
-  "buildNumber": "1",
+  "version": "1.22.0",
+  "buildNumber": "2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -58,7 +58,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@sap/react-native-ausweisapp2-wrapper": "1.1.9",
     "async-mutex": "^0.4.0",
-    "axios": "^1.7.5",
+    "axios": "^1.7.9",
     "htmlparser2": "^9.0.0",
     "i18next": "^23.7.15",
     "i18next-react-native-async-storage": "^1.0.4",
@@ -211,7 +211,8 @@
     "undici-types": "^6.6.2",
     "ws": "^8.18.0",
     "fast-xml-parser": "4.4.1",
-    "serve-static": "2.1.0"
+    "serve-static": "2.1.0",
+    "cross-spawn": "7.0.6"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
