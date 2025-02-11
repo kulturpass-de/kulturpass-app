@@ -3,6 +3,9 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { BudgetVoucherRouteConfig } from '../../features/budget-voucher/screens/budget-voucher-route'
 import { EditorialEmailConsentModalRouteConfig } from '../../features/delta-onboarding/screens/editorial-email-consent-modal-route'
+import { MobilityOffersErrorPageRouteConfig } from '../../features/mobility-offers/screens/mobility-offers-error-page-route'
+import { MobilityOffersProductDetailsRouteConfig } from '../../features/mobility-offers/screens/mobility-offers-product-details-route'
+import { MobilityOffersRouteConfig } from '../../features/mobility-offers/screens/mobility-offers-route'
 import { AccountDeletionConfirmRouteConfig } from '../../screens/account/delete-account/account-deletion-confirm-route'
 import { AccountDeletionSuccessfulRouteConfig } from '../../screens/account/delete-account/account-deletion-successful-route'
 import { ForgotPasswordRouteConfig } from '../../screens/account/forgot-password/forgot-password-route'
@@ -81,6 +84,10 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...OnboardingNotificationPermissionRouteConfig} />
 
         <Stack.Screen {...BudgetVoucherRouteConfig} />
+
+        <Stack.Screen {...MobilityOffersProductDetailsRouteConfig} />
+        <Stack.Screen {...MobilityOffersRouteConfig} />
+        <Stack.Screen {...MobilityOffersErrorPageRouteConfig} />
       </Stack.Navigator>
     </ModalStackWrapper>
   )

@@ -7,15 +7,23 @@ import {
   CdcAccountDeletionRequestedError,
   CdcAccountDisabledError,
   CdcInvalidLoginIdError,
-  CdcLoginIdNotExistingError,
   CdcResponseValidationError,
   CdcInvalidLoginIdDeleteError,
+  CdcLoginIdNotExistingError,
 } from '../../../services/errors/cdc-errors'
 import { ErrorWithCode, HttpStatusBadRequestError, NetworkError, OfflineError } from '../../../services/errors/errors'
 import { TranslationFunction } from '../../../services/translation/translation'
 import { formatFullDateTime } from '../../../utils/date/date-format'
 import { validatePostalCodeField } from '../../../utils/form-field/validate-postal-code-field'
 import { MailToError } from '../../../utils/links/errors'
+import {
+  CampaignAccessExpiredError,
+  CampaignNotFoundError,
+  CampaignNotStartedError,
+  CampaignNoVouchersLeftError,
+  UnsupportedCampaign,
+  UserNotLoggedIn,
+} from '../../mobility-offers/errors/errors'
 
 export const EMAIL_PATTERN = /^[^@]+@[^@]+\..+$/
 
@@ -163,6 +171,42 @@ export const getErrorDescriptionTranslationFromErrorWithCode = (
           message: {
             key: 'cc_get_profile_bad_request_message',
           },
+        }
+      }
+      case CampaignNotFoundError: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'campaign_not_found_error' },
+        }
+      }
+      case CampaignNoVouchersLeftError: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'campaign_no_vouchers_left_error' },
+        }
+      }
+      case CampaignNotStartedError: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'campaign_not_started_error' },
+        }
+      }
+      case CampaignAccessExpiredError: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'campaign_access_expired_error' },
+        }
+      }
+      case UserNotLoggedIn: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'mobility_user_not_logged_in' },
+        }
+      }
+      case UnsupportedCampaign: {
+        return {
+          title: { key: 'mobility-offers-error-alert-title' },
+          message: { key: 'mobility_offers_bad_template' },
         }
       }
     }

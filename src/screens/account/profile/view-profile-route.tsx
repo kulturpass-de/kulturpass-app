@@ -37,6 +37,10 @@ export const ViewProfileRoute: React.FC = () => {
     tabsNavigation.navigate('Settings', { screen: 'DeleteAccount' })
   }, [tabsNavigation])
 
+  const onPressMobilityOffers = useCallback(() => {
+    tabsNavigation.navigate('Settings', { screen: 'MobilityOffers' })
+  }, [tabsNavigation])
+
   const onPressDeveloperMenu = useCallback(() => {
     if (env.DEV_MENU) {
       modalnavigation.navigate({ screen: 'DeveloperMenu' })
@@ -66,6 +70,7 @@ export const ViewProfileRoute: React.FC = () => {
       onPressDeveloperMenu={env.DEV_MENU ? onPressDeveloperMenu : undefined}
       onPressLogin={onPressLogin}
       onPressBudgetBooster={onPressBudgetBooster}
+      onPressMobilityOffers={onPressMobilityOffers}
     />
   )
 }

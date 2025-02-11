@@ -9,6 +9,18 @@ import {
   EditorialEmailConsentModalRouteParams,
 } from '../../features/delta-onboarding/screens/editorial-email-consent-modal-route'
 import {
+  MobilityOffersErrorPageRouteName,
+  MobilityOffersErrorPageRouteParams,
+} from '../../features/mobility-offers/screens/mobility-offers-error-page-route'
+import {
+  MobilityOffersProductDetailsRouteName,
+  MobilityOffersProductDetailsRouteParams,
+} from '../../features/mobility-offers/screens/mobility-offers-product-details-route'
+import {
+  MobilityOffersRouteName,
+  MobilityOffersRouteParams,
+} from '../../features/mobility-offers/screens/mobility-offers-route'
+import {
   AccountDeletionConfirmRouteName,
   AccountDeletionConfirmRouteParams,
 } from '../../screens/account/delete-account/account-deletion-confirm-route'
@@ -114,6 +126,10 @@ export type ModalParamList = {
   [EditorialEmailConsentModalRouteName]: EditorialEmailConsentModalRouteParams
 
   [BudgetVoucherRouteName]: BudgetVoucherRouteParams
+
+  [MobilityOffersProductDetailsRouteName]: MobilityOffersProductDetailsRouteParams
+  [MobilityOffersRouteName]: MobilityOffersRouteParams
+  [MobilityOffersErrorPageRouteName]: MobilityOffersErrorPageRouteParams
 }
 
 export type ModalScreenProps<RouteName extends keyof ModalParamList> = CompositeScreenProps<

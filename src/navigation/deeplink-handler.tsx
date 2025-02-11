@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Linking } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { LoadingIndicator } from '../components/loading-indicator/loading-indicator'
+import { useNavigateToMobility } from '../features/spartacus-webview/hooks/use-navigate-to-mobility'
 import { useNavigateToPDP } from '../features/spartacus-webview/hooks/use-navigate-to-pdp'
 import { rootNavigationRef } from '../navigation/navigation-container'
 import { RegistrationFinishedRouteName } from '../screens/account/registration/registration-finished-route'
@@ -16,6 +17,7 @@ import { useOnDeepLink } from '../utils/links/hooks/use-on-deep-link'
 export const DeeplinkHandler: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const navigateToPDP = useNavigateToPDP()
+  const navigateToMobility = useNavigateToMobility()
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -40,6 +42,8 @@ export const DeeplinkHandler: React.FC = () => {
         } else if (url.pathname.startsWith('/redirect/email-verification')) {
           await dispatch(authFinalizeRegistration({ url })).unwrap()
           rootNavigationRef.navigate('Modal', { screen: RegistrationFinishedRouteName })
+        } else if (url.pathname.startsWith('/campaign-voucher/claim/')) {
+          navigateToMobility({ url: url.href })
         } else {
           await Linking.openURL(url.href)
         }
@@ -54,7 +58,7 @@ export const DeeplinkHandler: React.FC = () => {
         setLoading(false)
       }
     },
-    [dispatch, homeUrl, navigateToPDP],
+    [dispatch, homeUrl, navigateToPDP, navigateToMobility],
   )
 
   useOnDeepLink(onDeepLink)

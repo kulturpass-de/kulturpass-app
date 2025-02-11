@@ -34,6 +34,11 @@ export const AppConfigSchema = z.object({
       enableBeta: z.boolean().optional(),
     })
     .optional(),
+  voucherCampaigns: z
+    .object({
+      enableProfileEntry: z.boolean().optional(),
+    })
+    .optional(),
 })
 
 export type AppConfig = z.infer<typeof AppConfigSchema>

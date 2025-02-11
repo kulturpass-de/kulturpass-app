@@ -77,6 +77,10 @@
       "IDENTIFICATION_VIDEO_SPK": {
         "de": "https://www.kulturpass.de/jugendliche/spk-video",
         "en": "https://www.kulturpass.de/jugendliche/spk-video"
+      },
+      "VOUCHER_CAMPAIGN_FLIXTRAIN": {
+        "de": "https://service.kulturpass.de/help/de-de/2/259",
+        "en": "https://service.kulturpass.de/help/en-gb/2/259"
       }
     }
   }

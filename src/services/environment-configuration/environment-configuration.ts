@@ -61,6 +61,11 @@ export const AppConfigSchema = z.object({
   backupPublicKey: z.string(),
   url: z.string(),
   enableBudgetVoucher: z.boolean().optional(),
+  voucherCampaigns: z
+    .object({
+      enableProfileEntry: z.boolean().optional(),
+    })
+    .optional(),
 })
 
 export type AppConfig = z.infer<typeof AppConfigSchema>

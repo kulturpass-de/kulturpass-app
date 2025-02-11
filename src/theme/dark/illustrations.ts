@@ -50,6 +50,14 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/bank-id.png')
     case 'select-identification':
       return require('./illustrations/select-identification.png')
+    case 'mobility-offers-ft-image':
+      return require('./illustrations/mobility-offers-ft-image.png')
+    case 'ft-train-image':
+      return require('./illustrations/ft-train-image.png')
+    case 'mobility-offers-error-image':
+      return require('./illustrations/mobility-offers-error-image.png')
+    case 'empty-voucher-list-image':
+      return require('./illustrations/empty-voucher-list-image.png')
   }
 }
 
