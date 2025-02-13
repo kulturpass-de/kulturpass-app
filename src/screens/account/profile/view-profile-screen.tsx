@@ -13,7 +13,10 @@ import { useAuth } from '../../../services/auth/use-auth'
 import { ErrorAlertManager } from '../../../services/errors/error-alert-provider'
 import { ErrorWithCode, UnknownError } from '../../../services/errors/errors'
 import { logger } from '../../../services/logger'
-import { selectBudgetVoucherEnabled } from '../../../services/redux/slices/persisted-app-core'
+import {
+  selectBudgetVoucherEnabled,
+  selectMobilityVoucherEnabled,
+} from '../../../services/redux/slices/persisted-app-core'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useGetProfile } from '../../../services/user/use-get-profile'
@@ -32,6 +35,7 @@ export type ViewProfileScreenProps = {
   onPressDeveloperMenu?: () => void
   onPressLogin: () => void
   onPressBudgetBooster: () => void
+  onPressMobilityOffers: () => void
 }
 
 export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
@@ -44,6 +48,7 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   onPressDeveloperMenu,
   onPressLogin,
   onPressBudgetBooster,
+  onPressMobilityOffers,
 }) => {
   const { t } = useTranslation()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
@@ -79,6 +84,8 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
   const SCREEN_TEST_ID = buildTestId('settings')
 
   const isBudgetVoucherEnabled = useSelector(selectBudgetVoucherEnabled)
+  const isMobilityVoucherEnabled = useSelector(selectMobilityVoucherEnabled)
+  const displayMobilityVoucherOption = isAccountVerified && data?.balanceStatus === 'ENTITLED'
 
   return (
     <Screen
@@ -106,6 +113,22 @@ export const ViewProfileScreen: React.FC<ViewProfileScreenProps> = ({
           onPress={onPressChangeLanguage}
           type="navigation"
         />
+        {isMobilityVoucherEnabled && displayMobilityVoucherOption ? (
+          <ListItem
+            icon={
+              <SvgImage
+                testID={addTestIdModifier(SCREEN_TEST_ID, 'mobility_offers_icon')}
+                type="mobility-offers-side"
+                width={24}
+                height={24}
+              />
+            }
+            title={t('mobility_offers_title')}
+            testID={buildTestId('mobility_offers_title')}
+            onPress={onPressMobilityOffers}
+            type="navigation"
+          />
+        ) : null}
         {isLoggedIn ? (
           <>
             {isBudgetVoucherEnabled && displayBudgetBoosterOption ? (

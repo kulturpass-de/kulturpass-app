@@ -5,6 +5,10 @@ import {
   EditorialEmailConsentScreenRouteParams,
 } from '../../../features/delta-onboarding/screens/editorial-email-consent-screen-route'
 import {
+  MobilityOffersRouteName,
+  MobilityOffersRouteParams,
+} from '../../../features/mobility-offers/screens/mobility-offers-route'
+import {
   DeleteAccountRouteName,
   DeleteAccountRouteParams,
 } from '../../../screens/account/delete-account/delete-account-route'
@@ -30,6 +34,7 @@ export type SettingsParamList = {
   [ReleaseNotesRouteName]: ReleaseNotesRouteParams
   [DeleteAccountRouteName]: DeleteAccountRouteParams
   [EditorialEmailConsentScreenRouteName]: EditorialEmailConsentScreenRouteParams
+  [MobilityOffersRouteName]: MobilityOffersRouteParams
 }
 
 export type SettingsScreenProps<RouteName extends keyof SettingsParamList> = CompositeScreenProps<

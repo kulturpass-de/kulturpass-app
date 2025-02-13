@@ -36,6 +36,7 @@ test('Should render menu item in settings page', async () => {
       onPressEditPreferences={() => {}}
       onPressUpdateProfile={() => {}}
       onPressBudgetBooster={() => {}}
+      onPressMobilityOffers={() => {}}
     />,
   )
   expect(await screen.findByTestId(buildTestId('settings_screen'))).toBeOnTheScreen()

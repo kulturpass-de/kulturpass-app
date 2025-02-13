@@ -42,6 +42,10 @@ export type IllustrationType =
   | 'password'
   | 'bank-id'
   | 'select-identification'
+  | 'mobility-offers-ft-image'
+  | 'ft-train-image'
+  | 'mobility-offers-error-image'
+  | 'empty-voucher-list-image'
 
 export type AnimatedIllustrationType =
   | 'onboarding'
@@ -150,6 +154,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   image: {
+    alignSelf: 'center',
     maxWidth: '100%',
   },
 })

@@ -4,14 +4,16 @@ export class ErrorWithCode extends Error {
   errorCode: string
   detailCode?: string
   errorDetails?: string
+  subject?: string //This was added as part of the new feature for FlixTrain Error Handling.
   parent?: ErrorWithCode
   presentableErrorCode = true // For certain errors, you can choose to opt-out to display the error code.
   presentableError = true // For certain errors, you can choose to opt-out to display the error.
 
-  constructor(errorCode: string, detailCode?: string) {
+  constructor(errorCode: string, detailCode?: string, subject?: string) {
     super(`Unknown error with error code "${errorCode}".`)
     this.errorCode = errorCode
     this.detailCode = detailCode
+    this.subject = subject
   }
 }
 
@@ -128,6 +130,7 @@ export class HttpStatusTooManyRequestsError extends HttpClientError {
 const ErrorTypeSchema = z.object({
   type: z.string(),
   message: z.string(),
+  subject: z.string().optional(),
 })
 
 type ErrorType = z.infer<typeof ErrorTypeSchema>

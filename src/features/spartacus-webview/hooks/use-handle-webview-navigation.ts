@@ -11,6 +11,7 @@ import { SpartacusBridge } from '../services/webview-bridge-adapter/spartacus-br
 import { WebViewId } from '../services/webview-bridge-adapter/types'
 import { useWebViewBridgeAdapterContext } from '../services/webview-bridge-adapter/webview-bridge-adapter-provider'
 import { isHeaderShown, isRoutedToLogin } from '../utils'
+import { useNavigateToMobility } from './use-navigate-to-mobility'
 
 const ROUTER_EFFECT_THROTTLE_TIME_MS = 1000
 /**
@@ -25,6 +26,7 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
   const { isReady: searchIsReady } = useSelector(state => selectWebViewState(state, WebViewId.Search))
   const webViewBridgeAdapter = useWebViewBridgeAdapterContext()
   const tabNavigation = useTabsNavigation()
+  const navigateToMobility = useNavigateToMobility()
 
   const searchBridgeAdapterApi = useMemo(() => {
     return createBridgeAdapterApi(webViewBridgeAdapter, WebViewId.Search)
@@ -47,6 +49,11 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
 
       if (url.startsWith('/product')) {
         // Product routes are handled by the useNavigateToPDP hook and can be ignored
+        return
+      }
+      if (url.startsWith('/campaign-voucher/claim/')) {
+        // Campaign voucher claim routes are handled by the useNavigateToMobility hook and can be ignored
+        navigateToMobility({ url })
         return
       }
 
@@ -72,5 +79,5 @@ export const useHandleWebviewNavigation = (webViewId: WebViewId, bridgeAdapterAp
     const subscription = bridgeAdapterApi.onRouterEvents(event => navigationHandler(event.data))
 
     return () => subscription.unsubscribe()
-  }, [dispatch, webViewId, bridgeAdapterApi, tabNavigation, searchBridgeAdapterApi, searchIsReady])
+  }, [dispatch, webViewId, bridgeAdapterApi, tabNavigation, searchBridgeAdapterApi, searchIsReady, navigateToMobility])
 }

@@ -4,6 +4,15 @@ import {
   PostBudgetVoucherRedemptionParams,
   PostBudgetVoucherRedemptionResponse,
 } from '../../features/budget-voucher/types/budget-voucher-types'
+import {
+  MobilityOffersVoucherCampaignsParams,
+  MobilityOffersVoucherCampaignsResponse,
+} from '../../features/mobility-offers/types/mobility-offers-types'
+import {
+  ClaimVoucherCampaignResponse,
+  ClaimVoucherCampaignParams,
+  NewVoucherCampaignResponse,
+} from '../../features/mobility-offers/types/mobility-voucher-campaign-types'
 import { getEnvironmentConfig } from '../environment-configuration/utils'
 import { RootState } from '../redux/configure-store'
 import { repeatRequestIfInvalidToken } from './commerce/repeat-request-if-invalid-token'
@@ -61,6 +70,8 @@ export const commerceApi = createRtkApi({
     'valid-postal-code',
     'location-suggestions',
     'bank-id-suggestions',
+    'mobility-offers-voucher-campaigns',
+    'voucher-claim',
   ],
   endpoints: builder => ({
     getIsValidPostalCode: builder.query<GetPostalCodeIsValidResponse, GetPostalCodeIsValidParams>({
@@ -86,6 +97,23 @@ export const commerceApi = createRtkApi({
         return {
           path: 'bank/suggestions',
           queryParams,
+        }
+      }),
+    }),
+    getMobilityOffersVoucherCampaigns: builder.query<
+      MobilityOffersVoucherCampaignsResponse,
+      MobilityOffersVoucherCampaignsParams
+    >({
+      queryFn: sendCommerceGetRequest(() => {
+        return {
+          path: 'users/current/voucherCampaigns',
+        }
+      }),
+    }),
+    claimVoucherCampaign: builder.query<ClaimVoucherCampaignResponse, ClaimVoucherCampaignParams>({
+      queryFn: sendCommerceGetRequest(campaignCode => {
+        return {
+          path: `users/current/voucherCampaigns/${campaignCode?.campaignCode}/claim`,
         }
       }),
     }),
@@ -239,6 +267,12 @@ export const commerceApi = createRtkApi({
         bodyPayload: {
           voucherCode: params.voucherCode,
         } as PostBudgetVoucherRedemptionBody,
+      })),
+    }),
+    postNewVoucherCampaign: builder.mutation<NewVoucherCampaignResponse, ClaimVoucherCampaignParams>({
+      invalidatesTags: ['voucher-claim', 'mobility-offers-voucher-campaigns'],
+      queryFn: sendCommercePostRequest(params => ({
+        path: `users/current/voucherCampaigns/${params?.campaignCode}/claim`,
       })),
     }),
   }),

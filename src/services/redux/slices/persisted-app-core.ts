@@ -59,3 +59,7 @@ export const selectBankIdBetaEnabled = createSelector(
   selectPersistedAppCoreState,
   persistedAppCoreState => persistedAppCoreState.appConfig?.bankId?.enableBeta === true,
 )
+export const selectMobilityVoucherEnabled = createSelector(
+  selectPersistedAppCoreState,
+  persistedAppCoreState => persistedAppCoreState.appConfig?.voucherCampaigns?.enableProfileEntry === true,
+)

@@ -1,6 +1,7 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import React from 'react'
 import { EditorialEmailConsentScreenRouteConfig } from '../../../features/delta-onboarding/screens/editorial-email-consent-screen-route'
+import { MobilityOffersRouteConfig } from '../../../features/mobility-offers/screens/mobility-offers-route'
 import { DeleteAccountRouteConfig } from '../../../screens/account/delete-account/delete-account-route'
 import { ChangeLanguageRouteConfig } from '../../../screens/account/preferences/change-language-route'
 import { PreferencesRouteConfig } from '../../../screens/account/preferences/preferences-route'
@@ -30,6 +31,7 @@ export const SettingsStack: React.FC = () => {
       <Stack.Screen {...AppInformationsRouteConfig} />
       <Stack.Screen {...DeleteAccountRouteConfig} />
       <Stack.Screen {...EditorialEmailConsentScreenRouteConfig} />
+      <Stack.Screen {...MobilityOffersRouteConfig} />
     </Stack.Navigator>
   )
 }

@@ -12,6 +12,7 @@ import { useHandleSearchEvents } from '../hooks/use-handle-search-event'
 import { useHandleWebviewErrors } from '../hooks/use-handle-webview-errors'
 import { useHandleWebviewNavigation } from '../hooks/use-handle-webview-navigation'
 import { useHandleWebviewOfflineAndroid } from '../hooks/use-handle-webview-offline-android'
+import { useNavigateToMobility } from '../hooks/use-navigate-to-mobility'
 import { useNavigateToPDP } from '../hooks/use-navigate-to-pdp'
 import { useOpenProductDetail } from '../hooks/use-open-product-detail'
 import { useOrigin } from '../hooks/use-origin'
@@ -62,6 +63,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   // This is only important for the first website load.
   const initialUrl = useRef(initialNavigationUrl)
   const navigateToPDP = useNavigateToPDP()
+  const navigatetoMobility = useNavigateToMobility()
 
   const origin = useOrigin(url)
 
@@ -73,8 +75,11 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       // Use https, as links could potentially be http
       if (webViewId === WebViewId.Home && 'https://' + eventUrl.hostname === origin) {
         const navigatedToPDP = navigateToPDP(event)
-
         if (navigatedToPDP === true) {
+          return false
+        }
+        const navigatedToMobility = navigatetoMobility(event)
+        if (navigatedToMobility === true) {
           return false
         }
       }
@@ -90,7 +95,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
       }
       return isSamePage
     },
-    [origin, webViewId, navigateToPDP],
+    [origin, webViewId, navigateToPDP, navigatetoMobility],
   )
   const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 

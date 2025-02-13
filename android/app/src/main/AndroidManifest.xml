@@ -23,6 +23,7 @@
         <data android:scheme="https"/>
         <data android:pathPattern="/redirect/.*"/>
         <data android:pathPattern="/product/.*"/>
+        <data android:pathPattern="/campaign-voucher/claim/.*"/>
         <data android:host="storefront.prod.kulturpass.de"/>
         <data android:host="storefront.perf.kulturpass.de"/>
         <data android:host="storefront.staging.kulturpass.de"/>

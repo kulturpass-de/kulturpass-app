@@ -84,6 +84,8 @@ const getStories = () => {
     "./src/features/eid-verification/screens/eid-puk-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-puk-screen.stories.tsx"),
     "./src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx": require("../src/features/eid-verification/screens/eid-transport-pin-screen.stories.tsx"),
     "./src/features/favorites/components/favorites-list-item.stories.tsx": require("../src/features/favorites/components/favorites-list-item.stories.tsx"),
+    "./src/features/mobility-offers/stories/mobility-offers-product-detail-screen.stories.tsx": require("../src/features/mobility-offers/stories/mobility-offers-product-detail-screen.stories.tsx"),
+    "./src/features/mobility-offers/stories/mobility-offers-product.stories.tsx": require("../src/features/mobility-offers/stories/mobility-offers-product.stories.tsx"),
     "./src/features/preferences/components/preferences.stories.tsx": require("../src/features/preferences/components/preferences.stories.tsx"),
     "./src/features/product-detail/components/chip.stories.tsx": require("../src/features/product-detail/components/chip.stories.tsx"),
     "./src/features/product-detail/components/offer-details.stories.tsx": require("../src/features/product-detail/components/offer-details.stories.tsx"),

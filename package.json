@@ -1,6 +1,6 @@
 {
   "name": "cultureapp",
-  "version": "1.22.0",
+  "version": "1.22.1",
   "buildNumber": "2",
   "private": true,
   "scripts": {
@@ -155,7 +155,7 @@
     "react-dom": "^18.2.0",
     "react-native-svg-transformer": "^1.1.0",
     "react-test-renderer": "18.2.0",
-    "swagger-typescript-api": "^13.0.3",
+    "swagger-typescript-api": "^13.0.23",
     "typed-emitter": "^2.1.0",
     "typescript": "5.3.3"
   },
@@ -212,7 +212,8 @@
     "ws": "^8.18.0",
     "fast-xml-parser": "4.4.1",
     "serve-static": "2.1.0",
-    "cross-spawn": "7.0.6"
+    "cross-spawn": "7.0.6",
+    "micromatch": "4.0.8"
   },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
