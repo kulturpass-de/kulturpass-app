@@ -8,7 +8,9 @@ export const mobilityVoucherFlow = createThunk<NewVoucherCampaignResponse, Claim
   'mobilityOffers/mobilityVoucherFlow',
   async (params, thunkAPI) => {
     try {
-      return await thunkAPI.dispatch(commerceApi.endpoints.postNewVoucherCampaign.initiate(params)).unwrap()
+      const response = await thunkAPI.dispatch(commerceApi.endpoints.postNewVoucherCampaign.initiate(params)).unwrap()
+      thunkAPI.dispatch(commerceApi.util.invalidateTags(['voucher-claim', 'mobility-offers-voucher-campaigns']))
+      return response
     } catch (error: unknown) {
       if (error instanceof ErrorWithCode) {
         throw errorWithCodeToMobilityOffersError(error)

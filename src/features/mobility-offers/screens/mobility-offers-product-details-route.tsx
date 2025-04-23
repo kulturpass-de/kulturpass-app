@@ -70,15 +70,15 @@ export const MobilityOffersProductDetailsRoute: React.FC<MobilityOffersProductDe
   }, [goBack])
 
   const { params } = route
-  const modalnavigation = useModalNavigation()
+  const modalNavigation = useModalNavigation()
   const navigateToMobilityOffersErrorPage = useCallback(
     (error: MobilityCustomError) => {
-      modalnavigation.navigate({
+      modalNavigation.navigate({
         screen: MobilityOffersErrorPageRouteName,
         params: { error: error },
       })
     },
-    [modalnavigation],
+    [modalNavigation],
   )
 
   const setError = useCallback(
@@ -136,7 +136,7 @@ export const MobilityOffersProductDetailsRoute: React.FC<MobilityOffersProductDe
 
   return (
     <>
-      <LoadingIndicator loading={isLoading} />
+      <LoadingIndicator loading={isLoading} debounceTime={350} />
       {voucherData && (
         <>
           {!voucherData?.voucher?.code ? (

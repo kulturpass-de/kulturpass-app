@@ -104,7 +104,6 @@ export const commerceApi = createRtkApi({
       MobilityOffersVoucherCampaignsResponse,
       MobilityOffersVoucherCampaignsParams
     >({
-      providesTags: ['mobility-offers-voucher-campaigns'],
       queryFn: sendCommerceGetRequest(() => {
         return {
           path: 'users/current/voucherCampaigns',
@@ -112,7 +111,6 @@ export const commerceApi = createRtkApi({
       }),
     }),
     claimVoucherCampaign: builder.query<ClaimVoucherCampaignResponse, ClaimVoucherCampaignParams>({
-      providesTags: ['voucher-claim'],
       queryFn: sendCommerceGetRequest(campaignCode => {
         return {
           path: `users/current/voucherCampaigns/${campaignCode?.campaignCode}/claim`,
@@ -272,6 +270,7 @@ export const commerceApi = createRtkApi({
       })),
     }),
     postNewVoucherCampaign: builder.mutation<NewVoucherCampaignResponse, ClaimVoucherCampaignParams>({
+      invalidatesTags: ['voucher-claim', 'mobility-offers-voucher-campaigns'],
       queryFn: sendCommercePostRequest(params => ({
         path: `users/current/voucherCampaigns/${params?.campaignCode}/claim`,
       })),

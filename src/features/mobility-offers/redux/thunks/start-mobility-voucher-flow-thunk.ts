@@ -9,10 +9,14 @@ export const startMobilityVoucherFlow = createThunk<ClaimVoucherCampaignResponse
   'mobilityOffers/startMobilityVoucherFlow',
   async (params, thunkAPI) => {
     try {
-      const response = await thunkAPI.dispatch(commerceApi.endpoints.claimVoucherCampaign.initiate(params)).unwrap()
+      const response = await thunkAPI
+        .dispatch(commerceApi.endpoints.claimVoucherCampaign.initiate(params, { forceRefetch: true }))
+        .unwrap()
+
       if (!isSupportedTemplate(response.template)) {
         throw new UnsupportedCampaign()
       } else {
+        thunkAPI.dispatch(commerceApi.util.invalidateTags(['voucher-claim', 'mobility-offers-voucher-campaigns']))
         return response
       }
     } catch (error: unknown) {

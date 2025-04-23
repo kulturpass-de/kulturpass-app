@@ -1,9 +1,8 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { commerceApi } from '../../../../services/api/commerce-api'
-import { ErrorWithCode } from '../../../../services/errors/errors'
 import { configureMockStore, mockedLoggedInAuthState } from '../../../../services/testing/configure-mock-store'
-import { errorWithCodeToMobilityOffersError } from '../../errors/errors'
+import { CampaignCodeExpiredError } from '../../errors/errors'
 import {
   ClaimVoucherCampaignErrorResponse,
   ClaimVoucherCampaignParams,
@@ -66,10 +65,7 @@ describe('mobilityVoucherFlow Thunk Tests', () => {
     try {
       await store.dispatch(mobilityVoucherFlow(mockParams)).unwrap()
     } catch (error: unknown) {
-      expect(error).toBeInstanceOf(ErrorWithCode)
-      if (error instanceof ErrorWithCode) {
-        expect(errorWithCodeToMobilityOffersError(error).message).toBe('[kp-cli] With targetYearOfBirth 2007')
-      }
+      expect(error).toBeInstanceOf(CampaignCodeExpiredError)
     }
   })
 })

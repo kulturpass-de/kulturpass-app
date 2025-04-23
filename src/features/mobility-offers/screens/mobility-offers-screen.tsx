@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, StyleSheet, View } from 'react-native'
@@ -27,8 +28,14 @@ export const MobilityOffersScreen: React.FC<MobilityOffersScreenProps> = ({
   const { t } = useTranslation()
   const { colors } = useTheme()
   const keyExtractor = useCallback((item: MobilityOffersVoucherCampaigns) => item.code, [])
-  const { data: campaignsData, isLoading } = useQueryMobilityOffersVoucherCampaigns({ query: 'flix' })
+  const { data: campaignsData, isLoading, refetch } = useQueryMobilityOffersVoucherCampaigns({ query: 'flix' })
 
+  useFocusEffect(
+    useCallback(() => {
+      refetch()
+      return () => {}
+    }, [refetch]),
+  )
   const pressVoucherCode = useCallback(
     async (campaignCode: string) => {
       navigateToMobilityOffers(campaignCode)
@@ -102,6 +109,8 @@ export const MobilityOffersScreen: React.FC<MobilityOffersScreenProps> = ({
           data={campaigns}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
+          onRefresh={refetch}
+          refreshing={isLoading}
           contentContainerStyle={styles.scrollViewContainer}
           ListEmptyComponent={listEmptyComponent}
         />

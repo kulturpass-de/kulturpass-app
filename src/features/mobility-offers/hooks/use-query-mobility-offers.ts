@@ -7,7 +7,7 @@ import { MobilityOffersVoucherCampaignsParams } from '../types/mobility-offers-t
 export const useQueryMobilityOffersVoucherCampaigns = (
   params: MobilityOffersVoucherCampaignsParams = { query: 'flix' },
 ) => {
-  const { data, error, isLoading } = commerceApi.useGetMobilityOffersVoucherCampaignsQuery(params)
+  const { data, error, isLoading, refetch } = commerceApi.useGetMobilityOffersVoucherCampaignsQuery(params)
 
   useEffect(() => {
     if (error) {
@@ -16,5 +16,5 @@ export const useQueryMobilityOffersVoucherCampaigns = (
     }
   }, [error])
 
-  return { data, isLoading, error }
+  return { data, isLoading, error, refetch }
 }

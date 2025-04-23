@@ -32,7 +32,7 @@ export const MobilityOffersProduct: React.FC<MobilityOffersProductProps> = ({
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const { colors } = useTheme()
 
-  const linktoFTApp = voucherData?.redemptionUrl
+  const linkToFTApp = voucherData?.redemptionUrl
   const screenTestId = buildTestId('mobility_offers_product')
   const description = voucherData?.description
   const validityInHours = voucherData?.validityInHours
@@ -129,7 +129,7 @@ export const MobilityOffersProduct: React.FC<MobilityOffersProductProps> = ({
               <LinkText
                 testID={addTestIdModifier(screenTestId, 'app_redirection_link')}
                 i18nKey="mobility-offers-ft-link-1"
-                link={linktoFTApp}
+                link={linkToFTApp}
               />
             </View>
             <View style={styles.idListItem}>

@@ -11,15 +11,15 @@ export type MobilityOffersRouteParams = undefined
 export const MobilityOffersRoute: React.FC = () => {
   const navigation = useNavigation()
 
-  const modalnavigation = useModalNavigation()
+  const modalNavigation = useModalNavigation()
   const navigateToMobilityOffers = useCallback(
     (campaignCode: string) => {
-      modalnavigation.navigate({
+      modalNavigation.navigate({
         screen: 'MobilityOffersProductDetailsRoute',
         params: { campaignCode: campaignCode },
       })
     },
-    [modalnavigation],
+    [modalNavigation],
   )
 
   const backPress = useCallback(() => {
