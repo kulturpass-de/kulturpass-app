@@ -58,12 +58,26 @@ target 'cultureapp' do
   end
 
   post_install do |installer|
-    # Disable bitcode for all pods
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['ENABLE_BITCODE'] = 'NO'
+    bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
+
+    def strip_bitcode_from_framework(bitcode_strip_path, framework_pattern)
+      framework_paths = Dir.glob(framework_pattern)
+      if framework_paths.empty?
+        puts "⚠️ No matching frameworks found for pattern: #{framework_pattern}"
+      else
+        framework_paths.each do |framework_path|
+          command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
+          puts "🔧 Stripping bitcode: #{command}"
+          system(command)
+        end
       end
     end
+
+    # Using wildcard to find OpenSSL framework dynamically
+    framework_pattern = "Pods/OpenSSL-Universal/**/OpenSSL.framework/OpenSSL"
+    
+    strip_bitcode_from_framework(bitcode_strip_path, framework_pattern)
+    
     react_native_post_install(
       installer,
       config[:reactNativePath],

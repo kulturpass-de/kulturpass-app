@@ -1,9 +1,8 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { commerceApi } from '../../../../services/api/commerce-api'
-import { ErrorWithCode } from '../../../../services/errors/errors'
 import { configureMockStore, mockedLoggedInAuthState } from '../../../../services/testing/configure-mock-store'
-import { errorWithCodeToMobilityOffersError } from '../../errors/errors'
+import { CampaignCodeExpiredError } from '../../errors/errors'
 import {
   ClaimVoucherCampaignErrorResponse,
   ClaimVoucherCampaignParams,
@@ -70,10 +69,7 @@ describe('mobilityVoucherFlow Claim Thunk Test', () => {
     try {
       await store.dispatch(commerceApi.endpoints.claimVoucherCampaign.initiate(mockParams, { forceRefetch: true }))
     } catch (error: unknown) {
-      expect(error).toBeInstanceOf(ErrorWithCode)
-      if (error instanceof ErrorWithCode) {
-        expect(errorWithCodeToMobilityOffersError(error).message).toBe('Campaign code is expired.')
-      }
+      expect(error).toBeInstanceOf(CampaignCodeExpiredError)
     }
   })
 })
