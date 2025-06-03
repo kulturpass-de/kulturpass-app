@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native'
 
 export const useAndroidBackButtonHandler = (handler: () => boolean) => {
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handler)
-    return () => BackHandler.removeEventListener('hardwareBackPress', handler)
+    const subscription = BackHandler.addEventListener('hardwareBackPress', handler)
+    return () => subscription.remove()
   }, [handler])
 }

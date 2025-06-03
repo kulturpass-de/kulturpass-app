@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { useTabsNavigation } from '../../navigation/tabs/hooks'
 import { createRouteConfig } from '../../navigation/utils/create-route-config'
@@ -10,7 +9,7 @@ export const ReleaseNotesRouteName = 'ReleaseNotesScreen'
 export type ReleaseNotesRouteParams = undefined
 
 export type ReleaseNotesRouteStackParams = {
-  ReleaseNotes: NavigatorScreenParams<ReleaseNotesRouteParams>
+  ReleaseNotes: undefined
 }
 
 const ReleaseNotesRoute: React.FC = () => {

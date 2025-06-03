@@ -10,6 +10,9 @@ end
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
+# Use this property to enable support to the new architecture.
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
 if %r{^0$}i.match ENV['NO_FLIPPER']
   # https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1527949355
   pod 'FirebaseCore', :modular_headers => true
@@ -23,8 +26,14 @@ else
   use_frameworks! :linkage => :static
 end
 
-platform :ios, '14.0'
+platform :ios, '16.0'
 install! 'cocoapods', :deterministic_uuids => false
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
 
 target 'cultureapp' do
   # Set OpenSSL Version, to mitigate an issue with react-native-quick-crypto and OpenSSL 3
@@ -35,27 +44,15 @@ target 'cultureapp' do
 
   config = use_native_modules!
 
-  if %r{^0$}i.match ENV['NO_FLIPPER']
-    flipper_configuration = FlipperConfiguration.enabled
-  else
-    flipper_configuration = FlipperConfiguration.disabled
-  end
-
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => flipper_configuration,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  target 'cultureappTests' do
-    inherit! :complete
-    # Pods for testing
-  end
 
   post_install do |installer|
     bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
@@ -81,7 +78,8 @@ target 'cultureapp' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
     )
   end
 end

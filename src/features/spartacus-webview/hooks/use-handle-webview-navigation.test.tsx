@@ -13,6 +13,15 @@ import { webViewBridgeAdapter } from '../services/webview-bridge-adapter/webview
 import { WebViewBridgeAdapterContext } from '../services/webview-bridge-adapter/webview-bridge-adapter-provider'
 import { useHandleWebviewNavigation } from './use-handle-webview-navigation'
 
+jest.mock('react-native-safe-area-context', () => {
+  const actual = jest.requireActual('react-native-safe-area-context')
+  return {
+    ...actual,
+    SafeAreaProvider: ({ children }: any) => <actual.SafeAreaProvider>{children}</actual.SafeAreaProvider>,
+    useSafeAreaInsets: jest.fn(() => ({ top: 10, bottom: 10, left: 0, right: 0 })),
+  }
+})
+
 jest.mock('react-native/Libraries/Linking/Linking', () => ({
   getInitialURL: jest.fn(() => Promise.resolve(null)),
   addEventListener: jest.fn(() => ({ remove: () => {} })),

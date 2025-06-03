@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -8,7 +8,11 @@ import { POSTAL_CODE_SCHEMA } from '../../form-validation/utils/form-validation'
 import { PreferencesFormData } from '../components/preferences'
 
 type UsePreferencesInputType = {
-  getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
+  getIsValidPostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >
   defaultValues?: Partial<PreferencesFormData>
 }
 

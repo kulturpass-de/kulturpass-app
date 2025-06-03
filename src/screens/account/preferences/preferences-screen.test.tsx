@@ -5,6 +5,8 @@ import { buildTestId } from '../../../services/test-id/test-id'
 import { renderScreen, setupServer, serverHandlersLoggedIn } from '../../../services/testing/test-utils'
 import { PreferencesScreen } from './preferences-screen'
 
+jest.useFakeTimers()
+
 const afterSubmitTriggered = jest.fn()
 const onPressClose = jest.fn()
 

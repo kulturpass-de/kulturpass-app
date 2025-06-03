@@ -22,9 +22,7 @@ import { ReservationDetailScreen } from './reservation-detail-screen'
 
 export const ReservationDetailRouteName = 'ReservationDetail'
 
-export type ReservationDetailRouteParams = {
-  orderCode: NonNullable<Order['code']>
-}
+export type ReservationDetailRouteParams = { orderCode: NonNullable<Order['code']> }
 
 type ReservationDetailProps = PdpScreenProps<'ReservationDetail'>
 
@@ -69,7 +67,7 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   }, [order, orderEntry])
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   const onAndroidBack = useCallback(() => {
@@ -89,7 +87,7 @@ export const ReservationDetailRoute: React.FC<ReservationDetailProps> = ({ route
   }, [navigation, order?.code, orderEntry?.offerId, orderEntry?.shopId, orderEntry?.shopName])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
-    !isLoading && !orderDetailResponse.isLoading ? orderDetailResponse.error ?? error : undefined,
+    !isLoading && !orderDetailResponse.isLoading ? (orderDetailResponse.error ?? error) : undefined,
   )
 
   const handleDismissErrorAndClose = useCallback(() => {

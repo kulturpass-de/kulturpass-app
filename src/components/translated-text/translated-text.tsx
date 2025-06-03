@@ -26,6 +26,13 @@ export const TranslatedText = forwardRef<Text, TranslatedTextProps>(
     let accessibilityLabel = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
     accessibilityLabel = applyAccessibilityReplacements(accessibilityLabel)
 
+    // 👉 Merge and assign keys to each component
+    const mergedComponents = { ...translatedTextComponents, ...customComponents }
+
+    const componentsWithKeys = Object.fromEntries(
+      Object.entries(mergedComponents).map(([key, component]) => [key, React.cloneElement(component, { key })]),
+    )
+
     return (
       <Text
         ref={ref}
@@ -34,11 +41,7 @@ export const TranslatedText = forwardRef<Text, TranslatedTextProps>(
         accessible
         accessibilityRole={accessibilityRole}
         style={[translatedTextStyles.base, textStyles[textStyle], textStyleOverrides]}>
-        <Trans
-          i18nKey={i18nKey as any}
-          values={i18nParams}
-          components={{ ...translatedTextComponents, ...customComponents }}
-        />
+        <Trans i18nKey={i18nKey as any} values={i18nParams} components={componentsWithKeys} />
       </Text>
     )
   },

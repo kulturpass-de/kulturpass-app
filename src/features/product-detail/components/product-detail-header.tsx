@@ -46,17 +46,12 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
   const shareHandler = useCallback(() => {
     const productUrl = createProductLink(homeUrl, productDetail.code)
 
-    Share.share({
-      message: t('productDetail_header_shareButton_message', { link: productUrl }),
-    })
+    Share.share({ message: t('productDetail_header_shareButton_message', { link: productUrl }) })
   }, [homeUrl, productDetail.code, t])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onShare = useCallback(
-    throttle(shareHandler, ROUTER_EFFECT_THROTTLE_TIME_MS, {
-      leading: true,
-      trailing: false,
-    }),
+    throttle(shareHandler, ROUTER_EFFECT_THROTTLE_TIME_MS, { leading: true, trailing: false }),
     [shareHandler],
   )
 
@@ -77,9 +72,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
       outputRange: [0, -headerHeightDiff],
       extrapolate: 'clamp',
     })
-    return {
-      transform: [{ translateY: headerTranslate }],
-    }
+    return { transform: [{ translateY: headerTranslate }] }
   }, [scrollY, headerHeightDiff])
 
   const overlayOpacityStyle: Animated.AnimatedProps<ViewStyle> = useMemo(() => {
@@ -92,9 +85,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
       outputRange: [0.0, 0.75],
       extrapolate: 'clamp',
     })
-    return {
-      opacity: overlayOpacity,
-    }
+    return { opacity: overlayOpacity }
   }, [scrollY, headerHeightDiff])
 
   const shareButtonStyle: Animated.AnimatedProps<ViewStyle> = useMemo(() => {
@@ -110,9 +101,7 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
       outputRange: [1.0, 0.0],
       extrapolate: 'clamp',
     })
-    return {
-      opacity: shareButtonOpacity,
-    }
+    return { opacity: shareButtonOpacity }
   }, [headerHeightDiff, headerMinHeight, isScreenReaderActive, scrollY])
 
   useEffect(() => {
@@ -172,19 +161,8 @@ export const ProductDetailHeader: React.FC<ProductDetailHeaderProps> = ({
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: '100%',
-    width: '100%',
-    zIndex: 0,
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    height: '100%',
-  },
+  image: { height: '100%', width: '100%', zIndex: 0 },
+  overlay: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100, height: '100%' },
   imageContainer: {
     position: 'absolute',
     top: 0,
@@ -194,22 +172,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     overflow: 'hidden',
   },
-  headerContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 300,
-  },
-  buttonContainer: {
-    gap: 20,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    padding: spacing[2],
-  },
-  initialShareButton: {
-    position: 'absolute',
-    right: spacing[2],
-    top: 75,
-  },
+  headerContainer: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 300 },
+  buttonContainer: { gap: 20, flexDirection: 'row', justifyContent: 'flex-end', padding: spacing[2] },
+  initialShareButton: { position: 'absolute', right: spacing[2], top: 75 },
 })

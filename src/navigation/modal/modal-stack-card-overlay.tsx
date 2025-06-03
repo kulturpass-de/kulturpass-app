@@ -8,6 +8,6 @@ const styles = StyleSheet.create({
   },
 })
 
-export const ModalStackCardOverlay: React.FC = () => {
-  return <View style={styles.container} />
+export const ModalStackCardOverlay = ({ style }: { style: any }) => {
+  return <View style={[styles.container, style]} />
 }

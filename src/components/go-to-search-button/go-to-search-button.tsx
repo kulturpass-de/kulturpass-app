@@ -42,14 +42,16 @@ export const GoToSearchButton: React.FC<GoToSearchButtonProps> = ({
 
     const url = `/search/${strictUriEncode(searchTerm)}`
     if (searchIsReady) {
-      tabNavigation.navigate(SearchRouteName)
+      // FIXME: temp workaround
+      tabNavigation.navigateDeprecated(SearchRouteName)
       await webViewBridgeAdapter.callBridgeFunction(
         WebViewId.Search,
         SpartacusBridge.FunctionCall.Target.RouterNavigate,
         [url],
       )
     } else {
-      tabNavigation.navigate(SearchRouteName, { initialNavigationUrl: url })
+      // FIXME: temp workaround
+      tabNavigation.navigateDeprecated(SearchRouteName, { initialNavigationUrl: url })
     }
   }, [searchIsReady, searchTerm, tabNavigation])
 

@@ -16,10 +16,7 @@ import { ProductConfirmReservationScreen } from './product-confirm-reservation-s
 
 export const ProductConfirmReservationRouteName = 'ProductConfirmReservation'
 
-export type ProductConfirmReservationRouteParams = {
-  productDetail: ProductDetail
-  selectedOffer: Offer
-}
+export type ProductConfirmReservationRouteParams = { productDetail: ProductDetail; selectedOffer: Offer }
 
 type ProfileScreenProps = PdpScreenProps<'ProductConfirmReservation'>
 
@@ -30,7 +27,7 @@ export const ProductConfirmReservationRoute: React.FC<ProfileScreenProps> = ({ r
   const { productDetail, selectedOffer } = route.params
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   const onBack = useCallback(() => {

@@ -11,6 +11,8 @@ import { authCdcLogout } from './auth-cdc-logout'
 import { authCommerceLogout } from './auth-commerce-logout'
 import { authLogout, authLogoutWithoutErrors } from './auth-logout'
 
+jest.useFakeTimers()
+
 describe('authLogout', () => {
   const server = setupServer()
 

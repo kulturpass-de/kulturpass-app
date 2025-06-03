@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useWatch } from 'react-hook-form'
 import { LoadingIndicator } from '../../../components/loading-indicator/loading-indicator'
@@ -75,7 +75,7 @@ export const PreferencesScreen: React.FC<PreferencesScreenProps> = ({
     return isPreferencesFormDirty(defaultValues, currentValues)
   }, [defaultValues, currentValues])
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<ReactNavigation.RootParamList>>()
 
   const navigationOnBeforeRemoveCallback = useCallback<UseNavigationOnBeforeRemoveCallback>(
     e => {

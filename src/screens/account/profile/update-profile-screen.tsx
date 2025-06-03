@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigation } from '@react-navigation/native'
-import React, { useCallback, useState } from 'react'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Platform, StyleSheet } from 'react-native'
 import { z } from 'zod'
@@ -98,9 +98,14 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
     },
   })
 
+  useEffect(() => {
+    // Reset the form after it's mounted to avoid it being dirty
+    form.reset(form.getValues())
+  }, [form])
+
   const setAccountInfo = useSetAccountInfo()
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<ReactNavigation.RootParamList>>()
   const [alertVisible, setAlertVisible] = useState(false)
 
   const isDirty = form.formState.isDirty
@@ -154,13 +159,8 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
       const { email, firstName, dateOfBirth, password, newPassword } = data
 
       const update: AccountsSetAccountInfoSignedRequestParams = {
-        profile: {
-          email,
-          firstName,
-        },
-        data: {
-          dateOfBirth: dateOfBirth || null,
-        },
+        profile: { email, firstName },
+        data: { dateOfBirth: dateOfBirth || null },
       }
 
       if (password && newPassword) {
@@ -294,11 +294,6 @@ export const UpdateProfileScreen: React.FC<UpdateProfileScreenProps> = ({
 }
 
 const styles = StyleSheet.create({
-  screenContent: {
-    marginTop: spacing[6],
-    paddingHorizontal: spacing[5],
-  },
-  passwordGroup: {
-    marginTop: spacing[6],
-  },
+  screenContent: { marginTop: spacing[6], paddingHorizontal: spacing[5] },
+  passwordGroup: { marginTop: spacing[6] },
 })

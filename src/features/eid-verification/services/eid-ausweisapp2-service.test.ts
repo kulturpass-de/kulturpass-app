@@ -42,6 +42,8 @@ import {
 import { EidFlowResponse } from '../types'
 import { eidAusweisApp2Service } from './eid-ausweisapp2-service'
 
+jest.useFakeTimers()
+
 const messages: WorkflowMessages = {
   sessionStarted: 'STARTED',
   sessionInProgress: 'IN_PROGRESS',

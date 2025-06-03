@@ -7,6 +7,8 @@ import { renderScreen } from '../../services/testing/test-utils'
 import { ModalStackCardOverlay } from '../modal/modal-stack-card-overlay'
 import { Tabs } from './tabs'
 
+jest.useFakeTimers()
+
 jest.mock('../../features/release-notes/hooks/use-display-release-notes', () => ({
   useDisplayReleaseNotes: jest.fn(() => ({})),
 }))

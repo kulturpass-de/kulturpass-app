@@ -14,6 +14,8 @@ import {
 import { OfferSelectionFilterRoute } from './offer-selection-filter-route'
 import { OfferSelectionFilterScreen } from './offer-selection-filter-screen'
 
+jest.useFakeTimers()
+
 const Stack = createStackNavigator()
 
 const renderRoute = (props: Record<string, unknown> = {}) => {

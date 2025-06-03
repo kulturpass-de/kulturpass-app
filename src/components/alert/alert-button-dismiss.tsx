@@ -18,7 +18,7 @@ export const AlertButtonDismiss = ({ onPress, buttonPadding = true, ...buttonPro
     <Button
       {...buttonProps}
       // eslint-disable-next-line react/jsx-no-bind
-      onPress={alertContext?.dismiss ? () => alertContext.dismiss() : onPress ?? (() => {})}
+      onPress={alertContext?.dismiss ? () => alertContext.dismiss() : (onPress ?? (() => {}))}
       bodyStyleOverrides={buttonPadding ? styles.paddingTop : undefined}
     />
   )

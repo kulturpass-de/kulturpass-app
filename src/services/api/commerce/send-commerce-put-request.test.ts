@@ -9,10 +9,7 @@ import { sendCommercePutRequest } from './send-commerce-put-request'
 jest.mock('../../environment-configuration/utils', () => {
   return {
     getEnvironmentConfig: jest.fn(() => ({
-      commerce: {
-        baseSiteId: 'my_base_site_id',
-        baseUrl: 'http://my_base_url',
-      },
+      commerce: { baseSiteId: 'my_base_site_id', baseUrl: 'http://my_base_url' },
     })),
   }
 })
@@ -20,11 +17,7 @@ jest.mock('../../environment-configuration/utils', () => {
 describe('send-commerce-put-request', () => {
   const preloadedState = {
     auth: { commerce: { access_token: 'my_access_token' } },
-    persisted: {
-      environmentConfiguration: {
-        currentEnvironmentName: 'test',
-      },
-    },
+    persisted: { environmentConfiguration: { currentEnvironmentName: 'test' } },
   } as RootState
   const store = configureMockStore({ preloadedState })
 
@@ -34,7 +27,9 @@ describe('send-commerce-put-request', () => {
 
   it('should call given prepare with arg and api', async () => {
     const prepare = jest.fn(() => ({ path: '' }))
-    const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
+    const baseQuery = ((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    })) as AxiosBaseQueryFn<string>
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -46,7 +41,9 @@ describe('send-commerce-put-request', () => {
     const storeWithoutCommerceAuthState = configureMockStore({ preloadedState: preloadedStateWithoutCommerceAuthState })
     const apiWithoutCommerceAuthState = { getState: storeWithoutCommerceAuthState.getState } as BaseQueryApi
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     const result = await sendCommercePutRequest(prepare)(arg, apiWithoutCommerceAuthState, extraOptions, baseQuery)
 
@@ -55,13 +52,11 @@ describe('send-commerce-put-request', () => {
   })
 
   it('should call baseQuery with queryParams returned by prepare', async () => {
-    const queryParams = {
-      some: 'query_params',
-      and: ['some', 123, 'more', null],
-      evenWith: undefined,
-    }
+    const queryParams = { some: 'query_params', and: ['some', 123, 'more', null], evenWith: undefined }
     const prepare = () => ({ path: 'my_path', queryParams })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -71,13 +66,11 @@ describe('send-commerce-put-request', () => {
   })
 
   it('should call baseQuery with bodyPayload returned by prepare', async () => {
-    const bodyPayload = {
-      some: 'query_params',
-      and: ['some', 123, 'more', null],
-      evenWith: undefined,
-    }
+    const bodyPayload = { some: 'query_params', and: ['some', 123, 'more', null], evenWith: undefined }
     const prepare = () => ({ path: 'my_path', bodyPayload })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -88,7 +81,9 @@ describe('send-commerce-put-request', () => {
 
   it('should call baseQuery url build from path returned by prepare and commerce environment configuration', async () => {
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -99,7 +94,9 @@ describe('send-commerce-put-request', () => {
 
   it('should call baseQuery with Authorization header and Content-Type header set to application/json', async () => {
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -112,7 +109,9 @@ describe('send-commerce-put-request', () => {
 
   it('should call baseQuery with method PUT', async () => {
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommercePutRequest(prepare)(arg, api, extraOptions, baseQuery)
 

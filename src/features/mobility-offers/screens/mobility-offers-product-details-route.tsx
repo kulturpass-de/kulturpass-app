@@ -57,7 +57,7 @@ export const MobilityOffersProductDetailsRoute: React.FC<MobilityOffersProductDe
 
   const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const goBack = useCallback(async () => {
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
   }, [navigation])
 
   const handleCancelGetMobilityOffersVoucherAlert = useCallback(() => {

@@ -16,10 +16,7 @@ import { useTheme } from '../../../theme/hooks/use-theme'
 import { spacing } from '../../../theme/spacing'
 import { useCloseFlow } from '../hooks/use-close-flow'
 
-export type CancelBankidFlowAlertProps = {
-  visible: boolean
-  onChange: (visible: boolean) => void
-}
+export type CancelBankidFlowAlertProps = { visible: boolean; onChange: (visible: boolean) => void }
 
 export const CancelBankidFlowAlert: React.FC<CancelBankidFlowAlertProps> = ({ visible, onChange }) => {
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
@@ -38,7 +35,7 @@ export const CancelBankidFlowAlert: React.FC<CancelBankidFlowAlertProps> = ({ vi
   }, [onChange])
 
   const handleCancel = useCallback(async () => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
     onChange(false)
   }, [onChange, rootNavigation])
 
@@ -75,18 +72,8 @@ export const CancelBankidFlowAlert: React.FC<CancelBankidFlowAlertProps> = ({ vi
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    alignContent: 'center',
-  },
-  text: {
-    flexWrap: 'wrap',
-    textAlign: 'center',
-  },
-  spacer: {
-    height: spacing[6],
-  },
-  cancelButton: {
-    paddingTop: spacing[2],
-  },
+  container: { flexDirection: 'column', alignContent: 'center' },
+  text: { flexWrap: 'wrap', textAlign: 'center' },
+  spacer: { height: spacing[6] },
+  cancelButton: { paddingTop: spacing[2] },
 })

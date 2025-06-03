@@ -10,25 +10,22 @@ test('Should not handle non-product links', () => {
     return <NavigationContainer>{children}</NavigationContainer>
   }
 
-  const { result } = renderHook(
-    () =>
-      useNavigateToPDP()({
-        url: '/',
-      }),
-    { wrapper },
-  )
+  const { result } = renderHook(() => useNavigateToPDP()({ url: '/' }), { wrapper })
 
   expect(result.current).toBeUndefined()
 })
 
 const mockedNavigateFn = jest.fn(x => x)
 
-jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
-  useNavigation: () => ({
-    navigate: mockedNavigateFn,
-  }),
-}))
+jest.mock('@react-navigation/native', () => {
+  return {
+    ...jest.requireActual('@react-navigation/native'),
+    useNavigation: () => ({
+      navigate: mockedNavigateFn,
+      addListener: jest.fn(), // Mock this to prevent the error
+    }),
+  }
+})
 
 describe('Should handle product links', () => {
   const Stack = createStackNavigator()
@@ -50,30 +47,20 @@ describe('Should handle product links', () => {
   }
 
   test('only product code', () => {
-    const { result } = renderHook(
-      () =>
-        useNavigateToPDP()({
-          url: '/product/ExhibitProduct-534459658866',
-        }),
-      { wrapper },
-    )
+    const { result } = renderHook(() => useNavigateToPDP()({ url: '/product/ExhibitProduct-534459658866' }), {
+      wrapper,
+    })
 
     expect(result.current).toBeTruthy()
     expect(mockedNavigateFn).toHaveBeenCalledWith('PDP', {
       screen: 'ProductDetail',
-      params: {
-        productCode: 'ExhibitProduct-534459658866',
-        randomMode: false,
-      },
+      params: { productCode: 'ExhibitProduct-534459658866', randomMode: false },
     })
   })
 
   test('use postalCode', () => {
     const { result } = renderHook(
-      () =>
-        useNavigateToPDP()({
-          url: '/product/ExhibitProduct-534459658866?postalCode=10117',
-        }),
+      () => useNavigateToPDP()({ url: '/product/ExhibitProduct-534459658866?postalCode=10117' }),
       { wrapper },
     )
 
@@ -83,30 +70,21 @@ describe('Should handle product links', () => {
       params: {
         productCode: 'ExhibitProduct-534459658866',
         randomMode: false,
-        offersByLocation: {
-          postalCode: '10117',
-          provider: 'postalCode',
-        },
+        offersByLocation: { postalCode: '10117', provider: 'postalCode' },
       },
     })
   })
 
   test('invalid postalCode should not be used', () => {
     const { result } = renderHook(
-      () =>
-        useNavigateToPDP()({
-          url: '/product/ExhibitProduct-534459658866?postalCode=1021324',
-        }),
+      () => useNavigateToPDP()({ url: '/product/ExhibitProduct-534459658866?postalCode=1021324' }),
       { wrapper },
     )
 
     expect(result.current).toBeTruthy()
     expect(mockedNavigateFn).toHaveBeenCalledWith('PDP', {
       screen: 'ProductDetail',
-      params: {
-        productCode: 'ExhibitProduct-534459658866',
-        randomMode: false,
-      },
+      params: { productCode: 'ExhibitProduct-534459658866', randomMode: false },
     })
   })
 })
@@ -117,12 +95,7 @@ describe('location base64url query param', () => {
     const url = new URL(urlStr)
     const locationQueryParam = url.searchParams.get('location')
     const value = parseBaseUrl64Location(locationQueryParam!)
-    expect(value).toEqual({
-      id: '2911298',
-      latitude: 53.55073,
-      longitude: 9.99302,
-      name: 'Hamburg',
-    })
+    expect(value).toEqual({ id: '2911298', latitude: 53.55073, longitude: 9.99302, name: 'Hamburg' })
   })
 
   test('should parse to "Köln"', () => {
@@ -130,11 +103,6 @@ describe('location base64url query param', () => {
     const url = new URL(urlStr)
     const locationQueryParam = url.searchParams.get('location')
     const value = parseBaseUrl64Location(locationQueryParam!)
-    expect(value).toEqual({
-      id: '2886242',
-      latitude: 50.93333,
-      longitude: 6.95,
-      name: 'Köln',
-    })
+    expect(value).toEqual({ id: '2886242', latitude: 50.93333, longitude: 6.95, name: 'Köln' })
   })
 })

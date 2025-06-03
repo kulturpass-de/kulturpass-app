@@ -10,6 +10,8 @@ import { authCommerceRefreshSession } from './auth-commerce-refresh-session'
 import { authLogoutWithoutErrors } from './auth-logout'
 import { authValidateSession } from './auth-validate-session'
 
+jest.useFakeTimers()
+
 describe('authValidateSession', () => {
   const server = setupServer()
 

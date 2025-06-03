@@ -35,7 +35,7 @@ export const useUserInfo = (regToken?: string) => {
   }, [isLoggedIn, regToken, accountInfo, userPreferences, dispatch])
 
   const name = useMemo(
-    () => (isLoggedIn && userProfile ? accountInfo?.data?.profile?.firstName ?? userProfile?.firstName : undefined),
+    () => (isLoggedIn && userProfile ? (accountInfo?.data?.profile?.firstName ?? userProfile?.firstName) : undefined),
     [isLoggedIn, userProfile, accountInfo],
   )
 

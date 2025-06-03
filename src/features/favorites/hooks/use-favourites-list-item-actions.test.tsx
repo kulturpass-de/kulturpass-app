@@ -6,6 +6,8 @@ import { act } from 'react-test-renderer'
 import { AppProviders, serverHandlersRequired, StoreProvider } from '../../../services/testing/test-utils'
 import { useFavouritesListItemActions } from './use-favourites-list-item-actions'
 
+jest.useFakeTimers()
+
 describe('useFavouritesListItemActions', () => {
   const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
@@ -27,9 +29,7 @@ describe('useFavouritesListItemActions', () => {
     server.use(
       http.get('*/cc/kulturapp/users/current/favourites', () =>
         HttpResponse.json(
-          {
-            favouritesItems: [{ product: { code: 'PRODUCT_CODE_1' }, cartId: 'D11242100021', entryNumber: 3 }],
-          },
+          { favouritesItems: [{ product: { code: 'PRODUCT_CODE_1' }, cartId: 'D11242100021', entryNumber: 3 }] },
           { status: 200 },
         ),
       ),
@@ -39,10 +39,7 @@ describe('useFavouritesListItemActions', () => {
       }),
     )
 
-    const hook = renderHook(useFavouritesListItemActions, {
-      wrapper,
-      initialProps: 'PRODUCT_CODE_1',
-    })
+    const hook = renderHook(useFavouritesListItemActions, { wrapper, initialProps: 'PRODUCT_CODE_1' })
 
     expect(hook.result.current.isFavorite).toBe(true)
 
@@ -55,22 +52,16 @@ describe('useFavouritesListItemActions', () => {
   })
 
   it('Should revert the state if api call fails for errors other than http 400', async () => {
-    const hook = renderHook(useFavouritesListItemActions, {
-      wrapper,
-      initialProps: 'PRODUCT_CODE_2',
-    })
+    const hook = renderHook(useFavouritesListItemActions, { wrapper, initialProps: 'PRODUCT_CODE_2' })
 
     server.use(
       http.get('*/cc/kulturapp/users/current/favourites', () =>
         HttpResponse.json(
-          {
-            favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }],
-          },
+          { favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }] },
           { status: 200 },
         ),
       ),
       http.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100))
         return HttpResponse.text('NOT_OK', { status: 500 })
       }),
     )
@@ -83,22 +74,16 @@ describe('useFavouritesListItemActions', () => {
   })
 
   it('Should update the state (optimistic update) if api call fails for errors with http 400', async () => {
-    const hook = renderHook(useFavouritesListItemActions, {
-      wrapper,
-      initialProps: 'PRODUCT_CODE_2',
-    })
+    const hook = renderHook(useFavouritesListItemActions, { wrapper, initialProps: 'PRODUCT_CODE_2' })
 
     server.use(
       http.get('*/cc/kulturapp/users/current/favourites', () =>
         HttpResponse.json(
-          {
-            favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }],
-          },
+          { favouritesItems: [{ product: { code: 'PRODUCT_CODE_2' }, cartId: 'D11242100021', entryNumber: 123 }] },
           { status: 200 },
         ),
       ),
       http.delete('*/cc/kulturapp/users/current/favourites/entry/PRODUCT_CODE_2', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100))
         return HttpResponse.text('NOT_OK', { status: 400 })
       }),
     )
@@ -113,10 +98,7 @@ describe('useFavouritesListItemActions', () => {
   it('Should remove a favorite item when there is a missing product', async () => {
     const productCode = 'D11242100021'
 
-    const hook = renderHook(useFavouritesListItemActions, {
-      wrapper,
-      initialProps: productCode,
-    })
+    const hook = renderHook(useFavouritesListItemActions, { wrapper, initialProps: productCode })
 
     server.use(
       http.get('*/cc/kulturapp/users/current/favourites', () =>
@@ -132,7 +114,6 @@ describe('useFavouritesListItemActions', () => {
         ),
       ),
       http.delete(`*/cc/kulturapp/users/current/favourites/entry/${productCode}`, async () => {
-        await new Promise(resolve => setTimeout(resolve, 100))
         return HttpResponse.text('OK', { status: 200 })
       }),
     )

@@ -10,6 +10,8 @@ import { authCommerceLogin } from './auth-commerce-login'
 import { authFinalizeRegistration } from './auth-finalize-registration'
 import { authLogout } from './auth-logout'
 
+jest.useFakeTimers()
+
 describe('authFinalizeRegistration', () => {
   const server = setupServer()
 

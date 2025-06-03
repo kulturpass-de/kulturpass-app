@@ -4,6 +4,8 @@ import { buildTestId } from '../../services/test-id/test-id'
 import { renderScreen } from '../../services/testing/test-utils'
 import { ReservationsScreen } from './reservations-screen'
 
+jest.useFakeTimers()
+
 const onReservationPressed = jest.fn()
 
 describe('ReservationsRoute', () => {

@@ -35,7 +35,7 @@ export const OfferSelectionFilterRoute: React.FC<OfferSelectionFilterProps> = ({
   const { productCode, offersByLocation, randomMode } = route.params
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   const onBack = useCallback(() => {
@@ -53,13 +53,7 @@ export const OfferSelectionFilterRoute: React.FC<OfferSelectionFilterProps> = ({
   const { visibleError, onDismissVisibleError } = useDismissableError(!isLoading ? error : undefined)
 
   const onSubmitLocation = useCallback(() => {
-    navigation.navigate('OfferSelection', {
-      productCode,
-      randomMode,
-      offersByLocation: {
-        provider: 'location',
-      },
-    })
+    navigation.navigate('OfferSelection', { productCode, randomMode, offersByLocation: { provider: 'location' } })
   }, [navigation, productCode, randomMode])
 
   const onSubmitPostalCode = useCallback(
@@ -70,19 +64,13 @@ export const OfferSelectionFilterRoute: React.FC<OfferSelectionFilterProps> = ({
         navigation.navigate('OfferSelection', {
           productCode,
           randomMode,
-          offersByLocation: {
-            provider: 'city',
-            location: selectedSuggestion,
-          },
+          offersByLocation: { provider: 'city', location: selectedSuggestion },
         })
       } else {
         navigation.navigate('OfferSelection', {
           productCode,
           randomMode,
-          offersByLocation: {
-            provider: 'postalCode',
-            postalCode: postalCodeOrCity,
-          },
+          offersByLocation: { provider: 'postalCode', postalCode: postalCodeOrCity },
         })
       }
     },

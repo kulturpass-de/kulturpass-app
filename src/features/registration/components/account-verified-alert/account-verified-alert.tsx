@@ -30,7 +30,7 @@ export const AccountVerifiedAlert: React.FC<AccountVerifiedAlertProps> = ({
 
   const onSubmit = useCallback(async () => {
     await dispatch(authLogoutWithoutErrors()).unwrap()
-    navigation.navigate('Tabs', {
+    navigation.popTo('Tabs', {
       screen: 'Settings',
     })
     onDismiss?.()

@@ -30,7 +30,7 @@ export const selectWebViewAuthSyncAction = createSelector(
     const isCommerceSessionValid = isUserLoggedInToCommerce(commerceSessionData)
     const isCdcSessionValid = isUserLoggedInToCdc(cdcSessionData)
 
-    const validCommerceAccessToken = isCommerceSessionValid ? commerceSessionData?.access_token ?? null : null
+    const validCommerceAccessToken = isCommerceSessionValid ? (commerceSessionData?.access_token ?? null) : null
 
     const isTokenDifferent = webViewState.lastAccessToken !== validCommerceAccessToken
 

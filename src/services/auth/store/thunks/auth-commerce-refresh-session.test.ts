@@ -7,6 +7,8 @@ import { authSlice } from '../auth-slice'
 import { authCommerceLogin } from './auth-commerce-login'
 import { authCommerceRefreshSession } from './auth-commerce-refresh-session'
 
+jest.useFakeTimers()
+
 describe('authValidateSession', () => {
   const server = setupServer()
 

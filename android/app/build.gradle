@@ -52,6 +52,9 @@ react {
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
+
+      /* Autolinking */
+    autolinkLibrariesWithApp()
 }
 
 /**
@@ -78,7 +81,7 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 /**
  * Private function to get the list of Native Architectures you want to build.
@@ -205,7 +208,7 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
     implementation platform('com.google.firebase:firebase-bom:32.2.3')
-    implementation("com.facebook.react:flipper-integration")
+    // implementation("com.facebook.react:flipper-integration")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -227,5 +230,3 @@ dependencies {
 def checkUnsigned ()  {
     return project.hasProperty("unsigned")
 }
-
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

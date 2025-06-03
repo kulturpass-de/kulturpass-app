@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDeltaPushNotificationsOnboardingShown } from '../../features/delta-onboarding/redux/delta-onboarding-selectors'
@@ -16,7 +15,7 @@ export const ReleaseNotesModalRouteName = 'ReleaseNotesModal'
 export type ReleaseNotesModalRouteParams = undefined
 
 export type ReleaseNotesModalRouteStackParams = {
-  ReleaseNotes: NavigatorScreenParams<ReleaseNotesModalRouteParams>
+  ReleaseNotes: undefined
 }
 
 const ReleaseNotesModalRoute: React.FC = () => {

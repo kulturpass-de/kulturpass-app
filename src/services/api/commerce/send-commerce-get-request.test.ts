@@ -16,7 +16,9 @@ describe('send-commerce-get-request', () => {
 
   it('should call given prepare with arg and api', async () => {
     const prepare = jest.fn(() => ({ path: '' }))
-    const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
+    const baseQuery = ((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    })) as AxiosBaseQueryFn<string>
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -26,7 +28,9 @@ describe('send-commerce-get-request', () => {
   it('should call baseQuery with queryParams returned by prepare', async () => {
     const queryParams = { my: { query: 'params' } }
     const prepare = () => ({ path: 'my_path', queryParams })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -37,7 +41,9 @@ describe('send-commerce-get-request', () => {
 
   it('should append language parameters to queryParams', async () => {
     const prepare = () => ({ path: 'my_path', appendLanguageQueryParams: true })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -48,7 +54,9 @@ describe('send-commerce-get-request', () => {
 
   it('should append location parameters to queryParams', async () => {
     const prepare = () => ({ path: 'my_path', appendLocationQueryParams: true })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -59,7 +67,9 @@ describe('send-commerce-get-request', () => {
 
   it('should call baseQuery with url returned by prepare', async () => {
     const prepare = () => ({ url: 'my_url' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -70,7 +80,9 @@ describe('send-commerce-get-request', () => {
 
   it('should create url from path returned by prepare and call baseQuery with it', async () => {
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -85,7 +97,9 @@ describe('send-commerce-get-request', () => {
     })
     const apiWithAccessToken = { getState: storeWithAccessToken.getState } as BaseQueryApi
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, apiWithAccessToken, extraOptions, baseQuery)
 
@@ -96,7 +110,9 @@ describe('send-commerce-get-request', () => {
 
   it('should call baseQuery with method GET', async () => {
     const prepare = () => ({ path: 'my_path' })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceGetRequest(prepare)(arg, api, extraOptions, baseQuery)
 

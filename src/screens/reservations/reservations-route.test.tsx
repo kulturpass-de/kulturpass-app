@@ -5,6 +5,8 @@ import { renderScreen } from '../../services/testing/test-utils'
 import { ReservationsScreen } from './reservations-screen'
 import { ReservationsUnauthorizedScreen } from './reservations-unauthorized-screen'
 
+jest.useFakeTimers()
+
 const onSignInRequested = jest.fn()
 const onReservationPressed = jest.fn()
 

@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useModalNavigation } from '../../../navigation/modal/hooks'
@@ -22,7 +21,7 @@ export const EditorialEmailConsentModalRouteName = 'EditorialEmailConsentModal'
 export type EditorialEmailConsentModalRouteParams = undefined
 
 export type EditorialEmailConsentModalRouteStackParams = {
-  EditorialEmailConsentModal: NavigatorScreenParams<EditorialEmailConsentModalRouteParams>
+  EditorialEmailConsentModal: undefined
 }
 
 const EditorialEmailConsentModalRoute: React.FC = () => {

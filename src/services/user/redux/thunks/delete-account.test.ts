@@ -10,6 +10,8 @@ import { RootState } from '../../../redux/configure-store'
 import { configureMockStore } from '../../../testing/configure-mock-store'
 import { deleteAccount } from './delete-account'
 
+jest.useFakeTimers()
+
 describe('deleteAccount', () => {
   const server = setupServer()
 

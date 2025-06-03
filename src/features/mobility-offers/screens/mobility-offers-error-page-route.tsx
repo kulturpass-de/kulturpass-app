@@ -23,7 +23,7 @@ export type MobilityOffersErrorPageRouteProps = ModalScreenProps<'MobilityOffers
 export const MobilityOffersErrorPageRoute: React.FC<MobilityOffersErrorPageRouteProps> = ({ route }) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams, 'Tabs'>>()
   const onClose = useCallback(() => {
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
   }, [navigation])
 
   const { params } = route

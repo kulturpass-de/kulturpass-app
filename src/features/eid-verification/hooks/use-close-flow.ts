@@ -14,7 +14,7 @@ export const useCloseFlow = (inEidFlow: boolean = true) => {
     }
     setLoading(true)
     await eidAusweisApp2Service.stopSDK()
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
     setLoading(false)
   }, [inEidFlow, navigation])
 

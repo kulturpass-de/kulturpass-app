@@ -8,21 +8,13 @@ import { sendCommerceRevokeOauthTokenRequest } from './send-commerce-revoke-oaut
 jest.mock('../../environment-configuration/utils', () => {
   return {
     getEnvironmentConfig: jest.fn(() => ({
-      commerce: {
-        auth: {
-          revocationEndpoint: 'http://my_token_revocation_endpoint',
-        },
-      },
+      commerce: { auth: { revocationEndpoint: 'http://my_token_revocation_endpoint' } },
     })),
   }
 })
 
 describe('send-commerce-revoke-oauth-token-request', () => {
-  const preloadedState = {
-    persisted: {
-      environmentConfiguration: { currentEnvironmentName: 'test' },
-    },
-  } as RootState
+  const preloadedState = { persisted: { environmentConfiguration: { currentEnvironmentName: 'test' } } } as RootState
   const store = configureMockStore({ preloadedState })
 
   const arg = { text: 'some_text_param' }
@@ -31,7 +23,9 @@ describe('send-commerce-revoke-oauth-token-request', () => {
 
   it('should call given prepare with arg and api', async () => {
     const prepare = jest.fn(() => ({ data: {} }))
-    const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
+    const baseQuery = ((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    })) as AxiosBaseQueryFn<string>
 
     sendCommerceRevokeOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -41,7 +35,9 @@ describe('send-commerce-revoke-oauth-token-request', () => {
   it('should call baseQuery with bodyPayload returned by prepare', async () => {
     const bodyPayloadWithEncodedValues = { some: 'values', will: 'be', put: 'here' }
     const prepare = () => ({ data: bodyPayloadWithEncodedValues })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceRevokeOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -52,7 +48,9 @@ describe('send-commerce-revoke-oauth-token-request', () => {
 
   it('should call baseQuery with url from commerce environment configuration', async () => {
     const prepare = () => ({ data: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceRevokeOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -63,7 +61,9 @@ describe('send-commerce-revoke-oauth-token-request', () => {
 
   it('should call baseQuery with header Content-Type set to application/x-www-form-urlencoded', async () => {
     const prepare = () => ({ data: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceRevokeOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -76,7 +76,9 @@ describe('send-commerce-revoke-oauth-token-request', () => {
 
   it('should call baseQuery with method POST', async () => {
     const prepare = () => ({ data: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceRevokeOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 

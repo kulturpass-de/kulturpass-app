@@ -11,7 +11,7 @@ export type RegistrationSuccessRouteParams = undefined
 export const RegistrationSuccessRoute: React.FC = () => {
   const tabsNavigation = useTabsNavigation()
   const onConfirmation: RegistrationSuccessScreenProps['onConfirmation'] = useCallback(() => {
-    tabsNavigation.navigate(HomeRouteConfig.name)
+    tabsNavigation.navigateDeprecated(HomeRouteConfig.name)
   }, [tabsNavigation])
 
   return <RegistrationSuccessScreen onConfirmation={onConfirmation} />

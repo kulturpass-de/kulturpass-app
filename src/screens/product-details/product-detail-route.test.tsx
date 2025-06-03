@@ -30,10 +30,7 @@ const PRODUCT_1 = {
       shopName: 'first shop name',
       shopId: 'first shop id',
       shopDistance: 2,
-      price: {
-        currencyIso: 'EUR',
-        value: 20,
-      },
+      price: { currencyIso: 'EUR', value: 20 },
     },
     {
       id: 'secondId',
@@ -41,20 +38,12 @@ const PRODUCT_1 = {
       shopName: 'second shop name',
       shopId: 'second shop id',
       shopDistance: 1,
-      price: {
-        currencyIso: 'EUR',
-        value: 10,
-      },
+      price: { currencyIso: 'EUR', value: 10 },
     },
   ] as Offer[],
 }
 
-const PRODUCT_2 = {
-  code: '0002',
-  name: 'Second Product',
-  description: '',
-  categories: [],
-}
+const PRODUCT_2 = { code: '0002', name: 'Second Product', description: '', categories: [] }
 
 const allOffersButtonTestId = buildTestId('productDetail_allOffers_button')
 const offerSelectionScreenTestId = buildTestId('offerSelection_screen')
@@ -104,11 +93,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 1
 
@@ -127,11 +112,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 1
 
@@ -171,11 +152,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 1
 
@@ -203,11 +180,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 1
 
@@ -247,11 +220,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 1
 
@@ -265,11 +234,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 1, but loading product 2
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: true,
-      isLoading: false,
-      data: PRODUCT_1,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: true, isLoading: false, data: PRODUCT_1 })
 
     // open screen with product 2, but product 1 is still being returned
 
@@ -283,11 +248,7 @@ describe('ProductDetailRoute', () => {
     // -----------------------------------------------------------------------
     // set hook to return product 2, not loading
 
-    useQueryProductDetailMock.mockReturnValue({
-      isFetching: false,
-      isLoading: false,
-      data: PRODUCT_2,
-    })
+    useQueryProductDetailMock.mockReturnValue({ isFetching: false, isLoading: false, data: PRODUCT_2 })
 
     // open screen with product 2
 

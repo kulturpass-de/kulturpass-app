@@ -7,6 +7,8 @@ import { CdcSessionData } from '../../../session/types'
 import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/configure-mock-store'
 import { getAccountInfo } from './get-account-info'
 
+jest.useFakeTimers()
+
 describe('getAccountInfo', () => {
   const server = setupServer()
 

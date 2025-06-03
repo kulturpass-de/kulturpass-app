@@ -1,4 +1,4 @@
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import { z, type RefinementCtx } from 'zod'
 import { commerceApi } from '../../services/api/commerce-api'
 import { ErrorAlertManager } from '../../services/errors/error-alert-provider'
@@ -9,7 +9,11 @@ import { type TranslationFunction } from '../../services/translation/translation
 export const validatePostalCodeField = async (
   ctx: RefinementCtx,
   t: TranslationFunction,
-  validatePostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>,
+  validatePostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >,
   postalCode: string,
 ) => {
   const result = await validatePostalCode({ postalCode })

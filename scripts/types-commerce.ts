@@ -19,7 +19,7 @@ if (!environmentConfiguration) {
 
 generateApi({
   output: path.resolve(process.cwd(), './src/services/api/types/commerce'),
-  name: 'api-types.ts',
+  fileName: 'api-types.ts',
   url: `${environmentConfiguration.commerce.baseUrl}/api-docs`,
   generateClient: false,
   generateRouteTypes: false,

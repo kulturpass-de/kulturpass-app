@@ -1,4 +1,4 @@
-import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { BaseQueryApi, QueryReturnValue } from '@reduxjs/toolkit/query/react'
 import { AxiosHeaders } from 'axios'
 import { authCommerceRefreshSession } from '../../auth/store/thunks/auth-commerce-refresh-session'
 import { authLogoutWithoutErrors } from '../../auth/store/thunks/auth-logout'
@@ -25,7 +25,7 @@ const hasInvalidTokenError = (response: QueryResponse): boolean => {
 }
 
 export const repeatRequestIfInvalidToken = <T>(baseQuery: () => AxiosBaseQueryFn<T>): AxiosBaseQueryFn<T> => {
-  return async (args, api, extraOptions) => {
+  return async (args: any, api: BaseQueryApi, extraOptions: {}) => {
     const response = await baseQuery()(args, api, extraOptions)
 
     if (!hasInvalidTokenError(response)) {

@@ -1,4 +1,4 @@
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import React, { useCallback, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,7 +26,11 @@ export type OfferSelectionFilterProps = {
   onBack: () => void
   onSubmitLocation: () => void
   onSubmitPostalCode: (postalCode: string) => void
-  getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
+  getIsValidPostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >
   fetchLocationSuggestions: ({ query }: { query: string }) => Promise<GetLocationSuggestionsResponse>
 }
 
