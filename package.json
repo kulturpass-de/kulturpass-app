@@ -1,7 +1,8 @@
 {
   "name": "cultureapp",
   "version": "1.23.0",
-  "buildNumber": "4",
+  "buildNumber": "5",
+
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -58,7 +59,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@sap/react-native-ausweisapp2-wrapper": "1.1.9",
     "async-mutex": "^0.4.0",
-    "axios": "^1.7.9",
+    "axios": "^1.8.3",
     "htmlparser2": "^9.0.0",
     "i18next": "^23.7.15",
     "i18next-react-native-async-storage": "^1.0.4",
@@ -107,7 +108,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
+    "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.23.7",
     "@babel/runtime": "^7.23.7",
     "@react-native-community/datetimepicker": "^7.7.0",
@@ -200,6 +201,7 @@
   },
   "resolutions": {
     "@babel/traverse": "^7.23.2",
+    "@babel/helpers": "^7.26.10",
     "yargs-parser": "^21.1.1",
     "yargs": "^17.7.2",
     "json5": "^2.2.2",
