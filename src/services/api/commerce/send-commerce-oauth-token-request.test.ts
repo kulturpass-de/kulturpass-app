@@ -10,22 +10,14 @@ jest.mock('../../environment-configuration/utils', () => {
     getEnvironmentConfig: jest.fn(() => ({
       commerce: {
         baseSiteId: 'my_base_site_id',
-        auth: {
-          clientId: 'my_client_id',
-          clientSecret: 'my_client_secret',
-          tokenEndpoint: 'http://my_token_endpoint',
-        },
+        auth: { clientId: 'my_client_id', clientSecret: 'my_client_secret', tokenEndpoint: 'http://my_token_endpoint' },
       },
     })),
   }
 })
 
 describe('send-commerce-oauth-token-request', () => {
-  const preloadedState = {
-    persisted: {
-      environmentConfiguration: { currentEnvironmentName: 'test' },
-    },
-  } as RootState
+  const preloadedState = { persisted: { environmentConfiguration: { currentEnvironmentName: 'test' } } } as RootState
   const store = configureMockStore({ preloadedState })
 
   const arg = { text: 'some_text_param' }
@@ -34,7 +26,9 @@ describe('send-commerce-oauth-token-request', () => {
 
   it('should call given prepare with arg and api', async () => {
     const prepare = jest.fn(() => ({ queryParams: {} }))
-    const baseQuery: AxiosBaseQueryFn<string> = (_args, _api, _extraOptions) => ({ data: '' })
+    const baseQuery = ((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    })) as AxiosBaseQueryFn<string>
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -42,13 +36,11 @@ describe('send-commerce-oauth-token-request', () => {
   })
 
   it('should call baseQuery with queryParams returned by prepare', async () => {
-    const queryParams = {
-      some: 'query_params',
-      and: ['some', 123, 'more', null],
-      evenWith: undefined,
-    }
+    const queryParams = { some: 'query_params', and: ['some', 123, 'more', null], evenWith: undefined }
     const prepare = () => ({ queryParams })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -59,7 +51,9 @@ describe('send-commerce-oauth-token-request', () => {
 
   it('should call baseQuery with extra properties from commerce envronment configuration in params', async () => {
     const prepare = () => ({ queryParams: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -77,7 +71,9 @@ describe('send-commerce-oauth-token-request', () => {
 
   it('should call baseQuery with url from commerce envronment configuration', async () => {
     const prepare = () => ({ queryParams: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -88,7 +84,9 @@ describe('send-commerce-oauth-token-request', () => {
 
   it('should call baseQuery with header Content-Type set to application/json', async () => {
     const prepare = () => ({ queryParams: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 
@@ -99,7 +97,9 @@ describe('send-commerce-oauth-token-request', () => {
 
   it('should call baseQuery with method POST', async () => {
     const prepare = () => ({ queryParams: {} })
-    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args, _api, _extraOptions) => ({ data: '' }))
+    const baseQuery = jestFn<AxiosBaseQueryFn<string>>((_args: any, _api: BaseQueryApi, _extraOptions: {}) => ({
+      data: '',
+    }))
 
     sendCommerceOauthTokenRequest(prepare)(arg, api, extraOptions, baseQuery)
 

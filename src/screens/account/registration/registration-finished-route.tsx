@@ -17,12 +17,12 @@ export const RegistrationFinishedRoute: React.FC = () => {
   const startVerification = useStartVerification()
 
   const onNext = useCallback(() => {
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
     startVerification()
   }, [navigation, startVerification])
 
   const onClose = useCallback(() => {
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
   }, [navigation])
 
   return <RegistrationFinishedScreen onNext={onNext} onClose={onClose} />

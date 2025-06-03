@@ -8,6 +8,8 @@ import { buildTestId } from '../../services/test-id/test-id'
 import { AppProviders, serverHandlersLoggedIn, setupServer, StoreProvider } from '../../services/testing/test-utils'
 import { HomeScreen } from './home-screen'
 
+jest.useFakeTimers()
+
 const server = setupServer(...serverHandlersLoggedIn)
 
 beforeAll(() => server.listen())

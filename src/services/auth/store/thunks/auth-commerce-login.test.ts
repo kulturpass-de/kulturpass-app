@@ -7,6 +7,8 @@ import { configureMockStore, mockedLoggedInAuthState } from '../../../testing/co
 import { authSlice } from '../auth-slice'
 import { authCommerceLogin } from './auth-commerce-login'
 
+jest.useFakeTimers()
+
 describe('authCommerceLogin', () => {
   const server = setupServer()
 

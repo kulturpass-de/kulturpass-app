@@ -1,4 +1,4 @@
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import { z } from 'zod'
 import { commerceApi } from '../../../services/api/commerce-api'
 import { GetLocationSuggestionsResponse } from '../../../services/api/types/commerce/commerce-get-location-suggestions'
@@ -14,7 +14,11 @@ import {
 
 export const POSTAL_CODE_OR_CITY_SCHEMA = (
   t: TranslationFunction,
-  validatePostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>,
+  validatePostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >,
   fetchLocationSuggestions: ({ query }: { query: string }) => Promise<GetLocationSuggestionsResponse>,
   isRequired?: boolean,
 ) => {

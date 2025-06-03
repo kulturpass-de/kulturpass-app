@@ -1,4 +1,5 @@
 import { createNavigationContainerRef, NavigationContainer as RNNNavigationContainer } from '@react-navigation/native'
+import { DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { AccountVerifiedAlertHandler } from '../features/registration/components/account-verified-alert/account-verified-alert-handler'
 import { ErrorAlertProvider } from '../services/errors/error-alert-provider'
@@ -21,21 +22,22 @@ export const NavigationContainer: React.FC<React.PropsWithChildren> = ({ childre
     resolveNavigationReady()
   }, [])
 
+  const customNavigationTheme = {
+    ...NavigationDefaultTheme,
+    dark: colorScheme === 'dark',
+    colors: {
+      ...NavigationDefaultTheme.colors,
+      primary: colors.primaryBackground,
+      background: colors.primaryBackground,
+      card: colors.secondaryBackground,
+      text: colors.labelColor,
+      border: colors.footerBorder,
+      notification: colors.secondaryBackground,
+    },
+  }
+
   return (
-    <RNNNavigationContainer
-      theme={{
-        dark: colorScheme === 'dark',
-        colors: {
-          primary: colors.primaryBackground,
-          background: colors.primaryBackground,
-          card: colors.secondaryBackground,
-          text: colors.labelColor,
-          border: colors.footerBorder,
-          notification: colors.secondaryBackground,
-        },
-      }}
-      ref={rootNavigationRef}
-      onReady={onReady}>
+    <RNNNavigationContainer theme={customNavigationTheme} ref={rootNavigationRef} onReady={onReady}>
       {children}
       <RootStackScreen />
       <AccountVerifiedAlertHandler />

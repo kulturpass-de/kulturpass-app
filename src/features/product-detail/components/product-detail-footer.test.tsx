@@ -9,6 +9,8 @@ import { buildTestId } from '../../../services/test-id/test-id'
 import { AppProviders, serverHandlersRequired, StoreProvider } from '../../../services/testing/test-utils'
 import { ProductDetailFooter } from './product-detail-footer'
 
+jest.useFakeTimers()
+
 const renderComponent = (children: React.ReactNode) => {
   render(
     <AppProviders>

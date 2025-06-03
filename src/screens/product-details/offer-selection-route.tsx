@@ -34,7 +34,7 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
   const { productCode, offersByLocation, randomMode } = route.params
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   const onBack = useCallback(() => {
@@ -43,22 +43,13 @@ export const OfferSelectionRoute: React.FC<OfferSelectionProps> = ({ route }) =>
 
   const selectOffer = useCallback(
     (offerId: Offer['id']) => {
-      navigation.navigate('ProductDetail', {
-        productCode,
-        offerId,
-        randomMode,
-        offersByLocation,
-      })
+      navigation.navigate('ProductDetail', { productCode, offerId, randomMode, offersByLocation })
     },
     [navigation, productCode, randomMode, offersByLocation],
   )
 
   const onPressFilter = useCallback(() => {
-    navigation.navigate('OfferSelectionFilter', {
-      productCode: productCode,
-      offersByLocation,
-      randomMode,
-    })
+    navigation.navigate('OfferSelectionFilter', { productCode: productCode, offersByLocation, randomMode })
   }, [navigation, productCode, offersByLocation, randomMode])
 
   const { data: productDetail, error, isLoading } = useQueryProductDetail(productCode, offersByLocation)

@@ -9,6 +9,8 @@ import { configureMockStore } from '../../../testing/configure-mock-store'
 import { userSlice } from '../user-slice'
 import { setAccountInfo } from './set-account-info'
 
+jest.useFakeTimers()
+
 describe('setAccountInfo', () => {
   const server = setupServer()
 

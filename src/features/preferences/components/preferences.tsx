@@ -1,4 +1,4 @@
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Switch, View } from 'react-native'
 import { Button } from '../../../components/button/button'
@@ -37,7 +37,11 @@ export type PreferencesProps = {
   userPreferences?: AccountInfoData | null
   onPressSubmit: (preferences: AccountInfoData) => Promise<void>
   submitButtonI18nKey: AvailableTranslations
-  getIsValidPostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>
+  getIsValidPostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >
   form: UsePreferencesReturnType
   setToggleSwitch?: (value: boolean) => void
   isEmailSubscribed?: boolean

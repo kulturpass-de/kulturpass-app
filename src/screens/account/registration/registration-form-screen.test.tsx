@@ -14,6 +14,8 @@ import t from '../../../services/translation/i18n/de.json'
 import { register } from '../../../services/user/redux/thunks/register'
 import { RegistrationFormScreen } from './registration-form-screen'
 
+jest.useFakeTimers()
+
 const server = setupServer()
 
 describe('registration-form-screen', () => {
@@ -45,7 +47,7 @@ describe('registration-form-screen', () => {
 
   beforeAll(() => server.listen())
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
     server.resetHandlers()
     store.clearActions()
   })

@@ -37,15 +37,12 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   const [randomProductQueryTrigger, randomProductResult] = commerceApi.useLazyGetRandomProductQuery()
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   const onRandomReroll = useCallback(async () => {
     const randomProduct = await randomProductQueryTrigger({}).unwrap()
-    navigation.setParams({
-      productCode: randomProduct.code,
-      randomMode: true,
-    })
+    navigation.setParams({ productCode: randomProduct.code, randomMode: true })
   }, [navigation, randomProductQueryTrigger])
 
   const defaultLocationProvider = useSelector(selectDefaultLocationProvider)
@@ -77,7 +74,7 @@ export const ProductDetailRoute: React.FC<ProfileScreenProps> = ({ route }) => {
   }, [productDetail, selectedOffer, navigation])
 
   const { visibleError, onDismissVisibleError } = useDismissableError(
-    !isFetching ? error ?? randomProductResult.error : undefined,
+    !isFetching ? (error ?? randomProductResult.error) : undefined,
   )
 
   const handleDismissErrorAndClose = useCallback(() => {

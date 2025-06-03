@@ -9,6 +9,8 @@ import { configureMockStore } from '../../../../services/testing/configure-mock-
 import { AA2AuthError, AA2BelowMinYearOfBirth } from '../../errors'
 import { startBankIdFlow } from './start-bank-id-flow-thunk'
 
+jest.useFakeTimers()
+
 describe('startBankIdFlow', () => {
   const id_token = 'test-id-token'
 

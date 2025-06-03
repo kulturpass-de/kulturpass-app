@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Platform, StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
@@ -69,6 +69,11 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
         }),
     ),
   })
+
+  useEffect(() => {
+    // Reset the form after it's mounted to avoid it being dirty
+    form.reset(form.getValues())
+  }, [form])
 
   useFocusErrors(form)
   const { setErrors } = useValidationErrors(form)
@@ -168,9 +173,4 @@ export const RegistrationFormScreen: React.FC<RegistrationFormScreenProps> = ({
   )
 }
 
-const styles = StyleSheet.create({
-  screenContent: {
-    marginTop: spacing[6],
-    paddingHorizontal: spacing[5],
-  },
-})
+const styles = StyleSheet.create({ screenContent: { marginTop: spacing[6], paddingHorizontal: spacing[5] } })

@@ -43,7 +43,11 @@ export const RootStackScreen: React.FC = () => {
     <>
       <StatusBar backgroundColor="#00000000" translucent />
       <LoadingIndicator loading={reservationOpenIsLoading} />
-      <Stack.Navigator id={NavigatorIds.ROOT_STACK} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        {...({
+          id: NavigatorIds.ROOT_STACK,
+          screenOptions: { headerShown: false },
+        } as any)}>
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen
           name="Modal"

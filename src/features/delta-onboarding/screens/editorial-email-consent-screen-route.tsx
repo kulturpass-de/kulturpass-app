@@ -1,4 +1,4 @@
-import { NavigatorScreenParams, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
 import { EditorialEmailConsentScreen } from './editorial-email-consent-screen'
@@ -8,7 +8,7 @@ export const EditorialEmailConsentScreenRouteName = 'EditorialEmailConsentScreen
 export type EditorialEmailConsentScreenRouteParams = undefined
 
 export type EditorialEmailConsentScreenRouteStackParams = {
-  EditorialEmailConsentScreen: NavigatorScreenParams<EditorialEmailConsentScreenRouteParams>
+  EditorialEmailConsentScreen: undefined
 }
 
 const EditorialEmailConsentScreenRoute: React.FC = () => {

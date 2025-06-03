@@ -18,8 +18,8 @@ export const Tabs: React.FC = () => {
     headerShown: false,
   }
 
-  const renderTabBar = useCallback<React.FC<BottomTabBarProps>>(
-    props => <BottomTabBar {...props} bottomSafeArea={bottom} />,
+  const renderTabBar = useCallback(
+    (props: BottomTabBarProps): React.ReactNode => <BottomTabBar {...props} bottomSafeArea={bottom} />,
     [bottom],
   )
 

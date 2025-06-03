@@ -22,7 +22,7 @@ export const EidChangePinCompletionRoute: React.FC = () => {
   }, [navigation])
 
   const onClose = useCallback(async () => {
-    navigation.navigate('Tabs')
+    navigation.popTo('Tabs')
     try {
       await AA2CommandService.stop({ msTimeout: AA2_TIMEOUTS.STOP })
     } catch (e) {

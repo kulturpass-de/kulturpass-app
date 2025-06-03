@@ -10,6 +10,8 @@ import { webviewsAuthLogin } from './webviews-auth-login'
 import { webviewsAuthLogout } from './webviews-auth-logout'
 import { webviewsValidateSession } from './webviews-validate-session'
 
+jest.useFakeTimers()
+
 jest.mock('../webviews-selectors', () => ({
   selectWebViewAuthSyncAction: jest.fn(),
 }))

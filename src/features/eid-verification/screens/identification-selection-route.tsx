@@ -27,7 +27,7 @@ export const IdentificationSelectionRoute: React.FC = () => {
   }, [navigation])
 
   const onClose = useCallback(() => {
-    rootNavigation.navigate('Tabs')
+    rootNavigation.popTo('Tabs')
   }, [rootNavigation])
 
   useHandleGestures(onClose)

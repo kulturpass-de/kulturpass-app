@@ -24,7 +24,7 @@ export const useModalNavigation = () => {
     }
 
     const closeModal = () => {
-      nav.navigate('Tabs')
+      nav.popTo('Tabs')
     }
 
     return { ...nav, navigate, push, replace, closeModal }

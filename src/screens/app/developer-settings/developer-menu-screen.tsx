@@ -43,7 +43,6 @@ export type DeveloperMenuScreenProps = {
   onPressAppConfig: () => void
   onPressNotifications: () => void
   onPressCardSimulationConfiguration: () => void
-  onPressStorybookConfiguration: () => void
   onPressDarkThemeConfiguration: () => void
 }
 
@@ -89,7 +88,6 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
   onPressAppConfig,
   onPressNotifications,
   onPressCardSimulationConfiguration,
-  onPressStorybookConfiguration,
   onPressDarkThemeConfiguration,
 }) => {
   const { colors } = useTheme()
@@ -176,12 +174,6 @@ export const DeveloperMenuScreen: React.FC<DeveloperMenuScreenProps> = ({
           testID={buildTestId('developerMenu_notifications_button')}
           type="navigation"
           onPress={onPressNotifications}
-        />
-        <ListItem
-          title="Show Storybook"
-          testID={buildTestId('developerMenu_storybook_button')}
-          type="navigation"
-          onPress={onPressStorybookConfiguration}
         />
         <View
           style={[

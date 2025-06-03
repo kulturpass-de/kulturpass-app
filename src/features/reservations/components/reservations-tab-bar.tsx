@@ -78,7 +78,7 @@ const ReservationsTabItem: React.FC<ReservationsTabItemProps> = ({
   )
 }
 
-export const ReservationsTabBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+export const ReservationsTabBar = ({ state, navigation }: MaterialTopTabBarProps): React.ReactNode => {
   const { t } = useTranslation()
 
   return (

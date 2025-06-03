@@ -1,4 +1,4 @@
-import { BaseQueryApi } from '@reduxjs/toolkit/dist/query'
+import { BaseQueryApi } from '@reduxjs/toolkit/query/react'
 import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import { HttpStatusUnauthorizedError } from '../../errors/errors'
@@ -8,6 +8,8 @@ import { configureMockStore } from '../../testing/configure-mock-store'
 import { axiosBaseQuery } from '../common/base-query'
 import { repeatRequestIfInvalidToken } from './repeat-request-if-invalid-token'
 
+jest.useFakeTimers()
+
 describe('repeatRequestIfInvalidToken', () => {
   const server = setupServer()
 
@@ -15,24 +17,14 @@ describe('repeatRequestIfInvalidToken', () => {
   afterEach(() => server.resetHandlers())
   afterAll(() => server.close())
 
-  const authCdcState = {
-    sessionToken: 'fakeit',
-    sessionSecret: 'untilyoumakeit',
-    sessionValidity: Date.now() + 10000,
-  }
+  const authCdcState = { sessionToken: 'fakeit', sessionSecret: 'untilyoumakeit', sessionValidity: Date.now() + 10000 }
 
   it('Should successfully obtain a new OAuth Token and repeat the request successfully', async () => {
     let obtainedNewToken = false
     let success = false
     let gotNewProfile = false
 
-    const store = configureMockStore({
-      preloadedState: {
-        auth: {
-          cdc: authCdcState,
-        },
-      } as RootState,
-    })
+    const store = configureMockStore({ preloadedState: { auth: { cdc: authCdcState } } as RootState })
 
     server.use(
       http.get('*/current/profile', () => {
@@ -62,10 +54,7 @@ describe('repeatRequestIfInvalidToken', () => {
     const queryWithHandlingInvalidToken = repeatRequestIfInvalidToken(axiosBaseQuery)
     const response = await queryWithHandlingInvalidToken(
       { url: 'http://localhost/current/profile' },
-      {
-        getState: store.getState,
-        dispatch: store.dispatch,
-      } as BaseQueryApi,
+      { getState: store.getState, dispatch: store.dispatch } as BaseQueryApi,
       {},
     )
 
@@ -79,13 +68,7 @@ describe('repeatRequestIfInvalidToken', () => {
     let requestProfileCounter = 0
     let requestLogout = false
 
-    const store = configureMockStore({
-      preloadedState: {
-        auth: {
-          cdc: authCdcState,
-        },
-      } as RootState,
-    })
+    const store = configureMockStore({ preloadedState: { auth: { cdc: authCdcState } } as RootState })
 
     server.use(
       http.get('*/current/profile', () => {
@@ -114,10 +97,7 @@ describe('repeatRequestIfInvalidToken', () => {
     const queryWithHandlingInvalidToken = repeatRequestIfInvalidToken(axiosBaseQuery)
     const response = await queryWithHandlingInvalidToken(
       { url: 'http://localhost/current/profile' },
-      {
-        getState: store.getState,
-        dispatch: store.dispatch,
-      } as BaseQueryApi,
+      { getState: store.getState, dispatch: store.dispatch } as BaseQueryApi,
       {},
     )
 

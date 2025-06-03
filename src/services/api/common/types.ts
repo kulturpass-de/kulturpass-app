@@ -1,4 +1,4 @@
-import { BaseQueryExtraOptions, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { BaseQueryExtraOptions, BaseQueryFn } from '@reduxjs/toolkit/query/react'
 import { BaseQueryApi as RtkBaseQueryApi } from '@reduxjs/toolkit/query/react'
 import { AxiosRequestConfig } from 'axios'
 import { ErrorWithCode } from '../../errors/errors'

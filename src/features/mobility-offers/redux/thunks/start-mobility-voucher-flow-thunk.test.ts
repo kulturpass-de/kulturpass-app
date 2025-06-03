@@ -10,6 +10,8 @@ import {
 } from '../../types/mobility-voucher-campaign-types'
 import { startMobilityVoucherFlow } from './start-mobility-voucher-flow-thunk'
 
+jest.useFakeTimers()
+
 describe('mobilityVoucherFlow Claim Thunk Test', () => {
   const server = setupServer()
 

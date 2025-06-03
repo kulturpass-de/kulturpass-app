@@ -1,4 +1,4 @@
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import { TypedLazyQueryTrigger } from '@reduxjs/toolkit/query/react'
 import { z } from 'zod'
 import { AvailableTranslations } from '../../../components/translated-text/types'
 import { commerceApi } from '../../../services/api/commerce-api'
@@ -47,7 +47,11 @@ export const POSTAL_CODE_PATTERN = /^\d{5}$/
 
 export const POSTAL_CODE_SCHEMA = (
   t: TranslationFunction,
-  validatePostalCode: LazyQueryTrigger<typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryDefinition>,
+  validatePostalCode: TypedLazyQueryTrigger<
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.QueryArg,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.ResultType,
+    typeof commerceApi.endpoints.getIsValidPostalCode.Types.BaseQuery
+  >,
   isRequired?: boolean,
 ) => {
   let schema = z.string().trim()

@@ -11,7 +11,6 @@ import { ErrorWithCode, UnknownError } from '../../services/errors/errors'
 import { logger } from '../../services/logger'
 import { useTestIdBuilder } from '../../services/test-id/test-id'
 import { useTranslation } from '../../services/translation/translation'
-import { useTheme } from '../../theme/hooks/use-theme'
 
 export type ReservationsTabsParamList = {
   PendingReservations: undefined
@@ -26,7 +25,6 @@ export type ReservationsScreenProps = {
 
 export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReservationPressed }) => {
   const { t } = useTranslation()
-  const { colors } = useTheme()
   const { buildTestId, addTestIdModifier } = useTestIdBuilder()
   const screenTestId = buildTestId('reservations')
 
@@ -61,7 +59,7 @@ export const ReservationsScreen: React.FC<ReservationsScreenProps> = ({ onReserv
     <Screen
       testID={screenTestId}
       header={<ScreenHeader testID={addTestIdModifier(screenTestId, 'headline')} title={t('reservations_headline')} />}>
-      <Tab.Navigator tabBar={ReservationsTabBar} sceneContainerStyle={{ backgroundColor: colors.primaryBackground }}>
+      <Tab.Navigator tabBar={ReservationsTabBar}>
         <Tab.Screen name="PendingReservations">
           {() => (
             <ReservationsListTabContent

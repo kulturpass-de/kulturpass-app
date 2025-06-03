@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
 import React, { useCallback, useState } from 'react'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
 import { createRouteConfig } from '../../../navigation/utils/create-route-config'
@@ -12,9 +11,7 @@ export const BudgetVoucherRouteName = 'BudgetVoucher'
 
 export type BudgetVoucherRouteParams = undefined
 
-export type BudgetVoucherRouteStackParams = {
-  BudgetVoucher: NavigatorScreenParams<BudgetVoucherRouteParams>
-}
+export type BudgetVoucherRouteStackParams = { BudgetVoucher: undefined }
 
 const BudgetVoucherRoute: React.FC = () => {
   const tabNavigation = useTabsNavigation()

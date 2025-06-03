@@ -7,6 +7,8 @@ import { AppConfig } from '../../../../services/redux/versions/current'
 import { configureMockStore } from '../../../../services/testing/configure-mock-store'
 import { createTcTokenUrl } from './create-tc-token-url'
 
+jest.useFakeTimers()
+
 describe('createTcTokenUrl', () => {
   const id_token = 'test-id-token'
 

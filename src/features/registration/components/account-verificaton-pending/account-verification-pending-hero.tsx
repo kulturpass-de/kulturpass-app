@@ -27,7 +27,7 @@ export const AccountVerificationHero: React.FC = () => {
   const isLoggedIn = useSelector(getIsUserLoggedIn)
   const { name } = useUserInfo()
   const regToken = useSelector(getRegistrationToken)
-  const timerRef = useRef<NodeJS.Timeout>()
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
   const [canResend, setCanResend] = useState(true)
   const [accountsResendVerificationCode, result] = cdcApi.endpoints.accountsResendVerificationCode.useLazyQuery()
 
@@ -36,7 +36,10 @@ export const AccountVerificationHero: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      clearTimeout(timerRef.current)
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current)
+        timerRef.current = null
+      }
     }
   }, [])
 
