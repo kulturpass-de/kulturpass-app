@@ -6,6 +6,8 @@ import {
   ReaderData,
   Simulator,
   WorkflowMessages,
+  isCardDeactivated,
+  isTimeoutError,
 } from '@sap/react-native-ausweisapp2-wrapper'
 import { Platform } from 'react-native'
 import { env } from '../../../env'
@@ -21,8 +23,6 @@ import {
   AA2SetPinTimeout,
   AA2Timeout,
   extractAuthResultUrlQueryError,
-  isCardDeactivated,
-  isTimeoutError,
 } from '../errors'
 import {
   getRandomLastName,
@@ -244,14 +244,17 @@ export class EidAusweisApp2Service {
     reader?: ReaderData,
   ): EidRetry {
     this.interruptNFCSystemDialog(simulateCard)
-    if (isCardDeactivated(reader?.card)) {
+    if (reader !== undefined && isCardDeactivated(reader.card)) {
       throw new AA2CardDeactivated()
     }
 
     if (msg === AA2Messages.EnterPin) {
       return {
         response: EidFlowResponse.RetryPin,
-        retryCounter: reader?.card?.retryCounter,
+        retryCounter:
+          reader !== undefined && reader.card !== null && 'retryCounter' in reader.card
+            ? reader.card.retryCounter
+            : undefined,
       }
     } else if (msg === AA2Messages.EnterCan) {
       return {

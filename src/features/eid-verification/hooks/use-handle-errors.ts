@@ -1,16 +1,10 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { AA2Messages, AA2WorkflowHelper } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2Messages, AA2WorkflowHelper, isCardDeactivated } from '@sap/react-native-ausweisapp2-wrapper'
 import { useEffect } from 'react'
 import { EidParamList } from '../../../navigation/eid/types'
 import { ErrorWithCode } from '../../../services/errors/errors'
-import {
-  AA2CardDeactivated,
-  createAA2ErrorFromMessage,
-  handleAuthError,
-  handleChangePinError,
-  isCardDeactivated,
-} from '../errors'
+import { AA2CardDeactivated, createAA2ErrorFromMessage, handleAuthError, handleChangePinError } from '../errors'
 import { EidPukInoperativeRouteName } from '../screens/eid-puk-inoperative-route'
 import { useCloseFlow } from './use-close-flow'
 

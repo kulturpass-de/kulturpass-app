@@ -1,4 +1,4 @@
-import { AA2Messages, Auth, Card, ChangePin, FailureCodes, TimeoutError } from '@sap/react-native-ausweisapp2-wrapper'
+import { AA2Messages, Auth, ChangePin, FailureCodes } from '@sap/react-native-ausweisapp2-wrapper'
 import { ErrorWithCode } from '../../services/errors/errors'
 
 export enum AA2ErrorCode {
@@ -212,10 +212,6 @@ export const extractDetailCode = (authMsg: Auth): string | undefined => {
   return authMsg.error
 }
 
-export const isTimeoutError = (error: unknown): boolean => {
-  return error instanceof TimeoutError
-}
-
 /**
  * Check if `Auth` AusweisApp2 SDK Message is a user cancellation error
  */
@@ -226,12 +222,8 @@ export const isErrorUserCancellation = (authMsg: Auth): boolean => {
   )
 }
 
-export const isCardDeactivated = (card?: Card | null): boolean => {
-  return card?.deactivated === true
-}
-
 /**
- * Extract error from AA2 Auth message url propertry, by checking for a errorCode query parameter.
+ * Extract error from AA2 Auth message url property, by checking for a errorCode query parameter.
  * @param authMsg The Auth message to be checked
  * @returns AA2Error if any error was found, else undefined
  */

@@ -5,6 +5,7 @@ import {
   AccessRights,
   Auth,
   BadState,
+  Card,
   Certificate,
   ChangePin,
   EnterCan,
@@ -424,7 +425,7 @@ describe('EidAusweisApp2Service', () => {
         .unwrap()
 
       expect(result.response).toBe(EidFlowResponse.RetryPin)
-      expect((result as any).retryCounter).toBe(mockEnterPin.reader?.card?.retryCounter)
+      expect((result as any).retryCounter).toBe((mockEnterPin.reader?.card as Card).retryCounter as number)
 
       expect(getStatusMock).toBeCalledTimes(1)
       expect(acceptMock).toBeCalledTimes(1)
@@ -781,7 +782,7 @@ describe('EidAusweisApp2Service', () => {
         .unwrap()
 
       expect(result.response).toBe(EidFlowResponse.RetryPin)
-      expect((result as any).retryCounter).toBe(mockEnterPin.reader?.card?.retryCounter)
+      expect((result as any).retryCounter).toBe((mockEnterPin.reader?.card as Card).retryCounter)
 
       expect(getStatusMock).toBeCalledTimes(1)
       expect(setCanMock).toBeCalledTimes(1)
@@ -820,7 +821,7 @@ describe('EidAusweisApp2Service', () => {
         .unwrap()
 
       expect(result.response).toBe(EidFlowResponse.RetryPin)
-      expect((result as any).retryCounter).toBe(mockEnterPin.reader?.card?.retryCounter)
+      expect((result as any).retryCounter).toBe((mockEnterPin.reader?.card as Card).retryCounter)
 
       expect(getStatusMock).toBeCalledTimes(1)
       expect(setPukMock).toBeCalledTimes(1)
@@ -858,7 +859,7 @@ describe('EidAusweisApp2Service', () => {
         .unwrap()
 
       expect(result.response).toBe(EidFlowResponse.RetryPin)
-      expect((result as any).retryCounter).toBe(mockEnterPin.reader?.card?.retryCounter)
+      expect((result as any).retryCounter).toBe((mockEnterPin.reader?.card as Card).retryCounter)
 
       expect(getStatusMock).toBeCalledTimes(1)
       expect(setPinMock).toBeCalledTimes(1)
@@ -974,7 +975,7 @@ describe('EidAusweisApp2Service', () => {
         .unwrap()
 
       expect(result.response).toBe(EidFlowResponse.RetryPin)
-      expect((result as any).retryCounter).toBe(mockEnterPin.reader?.card?.retryCounter)
+      expect((result as any).retryCounter).toBe((mockEnterPin.reader?.card as Card).retryCounter)
 
       expect(getStatusMock).toBeCalledTimes(1)
       expect(changePinMock).toBeCalledTimes(1)
