@@ -1,5 +1,193 @@
 $schema: https://kulturpass.sap.com/json-schema/environment-config.yml
 data:
+  - name: qa
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.qa.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.qa.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.qa.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.qa.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.qa.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: https://storefront.qa.kulturpass.de
+      searchUrl: https://storefront.qa.kulturpass.de/search
+      imageBaseUrl: https://storefront.qa.kulturpass.de
+    cdc:
+      baseUrl: https://accounts.eu1.gigya.com
+      apiKey: 4_jE2Ib4o6tead7E4YAt4sNQ
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.qa.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.qa.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.N7mJkZOzi5Fqyqdx-NotL34ZBCHABQrXDV_nOOICW32WOMpWFvwWrxUIZcALTpkkOTW4lZSrh2wmy-2hwVNevA
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4NwNLaUvL78Bo3bQ/VpADCrouTQhAko6VgfbWENmaIHm5UKfuTEPXgNTzl+iWZpaVA0DBogpEwYq0+LT5ENIwQ==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAER2Rr0Xg2Owu3sfdKNByiOPt8eJeWExNktaDOhRBwvjtskeFT/nfXKLL6psGefjDXtFqsgrWy4P6RbNKk/v7T5A==
+    bankId:
+      loginUrl: https://bankid-sp.qa.kulturpass.de/login
+  - name: dev
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.dev.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.dev.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.dev.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: https://storefront.dev.kulturpass.de
+      searchUrl: https://storefront.dev.kulturpass.de/search
+      imageBaseUrl: https://storefront.dev.kulturpass.de
+    cdc:
+      baseUrl: https://accounts.eu1.gigya.com
+      apiKey: 4_2g1jeuAFipNhVuN-xkILiw
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.dev.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.dev.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.bC21KLE1LppOWRS-QdMGWnUYwt31RijEluF1sPtbhotQ8Uy8L_MYrNitVkxTeCYmPpbRdnqJHGaguzAw0rvhqQ
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmD6JCY6tQHIsg+GTrq9y2kBf7F7YUIpTMAtQXzX2nAD7ifpB1jHifbuGrrVfYN2uLhVc0dpzbw7w+p2ZvxCE1g==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERZBJBAVsFNbWwFeYCwIBxR4HMXaHD8mC5Z/jYE/8F4YMC/0akAyXcbPr5sxWWLYELgBg65HCv2BkkudoJ7b1kA==
+    bankId:
+      loginUrl: https://bankid-sp.dev.kulturpass.de/login
+  - name: staging
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.staging.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.staging.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.staging.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.staging.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.staging.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: https://storefront.staging.kulturpass.de
+      searchUrl: https://storefront.staging.kulturpass.de/search
+      imageBaseUrl: https://storefront.staging.kulturpass.de
+    cdc:
+      baseUrl: https://users.staging.kulturpass.de
+      apiKey: 4_N2GgLoBUcqrpIB_n5SC4pQ
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.staging.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.staging.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.944WIFe06EFT5ONVuZXUxW1pRW7JiiVoO8VK9p1vsoptGQHe1oD_JcKY6XN7L0HkHdBFd4GAaacQx5NEdPO4Zg
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXp2c3h0v2FWKyu+e8JdrX/K+V5/DqC4K6Kc0dYGT4jEBjcDzZv1TRr5TVEZ3JrRjl5liwusSvhVxXFu2fB1qZQ==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdeMecctij7EXywiUOVPLhO1UO0sUUFPblLQ+dnIZmFufzYB0PtI8Lnwli1A5tBz/GP87UF9LogIbkT9Iz7VDGg==
+    bankId:
+      loginUrl: https://bankid-sp.staging.kulturpass.de/login
+  - name: perf
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.perf.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.perf.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.perf.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.perf.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.perf.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: https://storefront.perf.kulturpass.de
+      searchUrl: https://storefront.perf.kulturpass.de/search
+      imageBaseUrl: https://storefront.perf.kulturpass.de
+    cdc:
+      baseUrl: https://accounts.eu1.gigya.com
+      apiKey: 4_2aG_rW31LkJ75GPGOm9N5Q
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.perf.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.perf.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.3jS7H5lNjlIbFMkmR7-cy6tKUnHDr0pQv7OVwxg1w6viQORu2PlrI8VgTKvHJFI2LcM_gU-exFQ2LlV3YyyFXg
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+f0P5FJ46/EEdJkfCi6x6fh8W3uY3UTj+pobqkm/Poa2tQnADE/RHjtXNSI6XCwDan6/+qe5OM5XpshOjCtzQg==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3xUYb++gmqsJJT1cMXyd+Lmmb3aupYq5DFHM4Iu49v4hKV7BY5zQOsOMaY1gzjAFfWyzyfWBGICiftqaKN2SfQ==
+    bankId:
+      loginUrl: https://bankid-sp.perf.kulturpass.de/login
   - name: prod
     build: v1.0.1
     appInformation:
@@ -47,3 +235,100 @@ data:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEC8uDWPA8Z6su3gcxg1YcbQ+ew1QQzN6wTPi+eOKsEor+biKkDtRGYown7L6WwPGu5HXD3a0WtQqHJO/f6XJ4bg==
     bankId:
       loginUrl: https://bankid-sp.prod.kulturpass.de/login
+  - name: mock
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://kp-mockserver.cfapps.eu10-004.hana.ondemand.com/commerce/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: >-
+          https://api.cop6ymzsg9-bundesrep1-d1-public.model-t.cc.commerce.ondemand.com/authorizationserver/oauth/token
+        revocationEndpoint: https://api.cop6ymzsg9-bundesrep1-d1-public.model-t.cc.commerce.ondemand.com/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: >-
+        https://kp-mockserver.cfapps.eu10-004.hana.ondemand.com/spartacus/kulturapp
+      searchUrl: >-
+        https://jsapps.cop6ymzsg9-bundesrep1-d1-public.model-t.cc.commerce.ondemand.com/search
+      imageBaseUrl: https://storefront.dev.kulturpass.de
+    cdc:
+      baseUrl: https://accounts.eu1.gigya.com
+      apiKey: 4_2g1jeuAFipNhVuN-xkILiw
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.dev.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.dev.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.bC21KLE1LppOWRS-QdMGWnUYwt31RijEluF1sPtbhotQ8Uy8L_MYrNitVkxTeCYmPpbRdnqJHGaguzAw0rvhqQ
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmD6JCY6tQHIsg+GTrq9y2kBf7F7YUIpTMAtQXzX2nAD7ifpB1jHifbuGrrVfYN2uLhVc0dpzbw7w+p2ZvxCE1g==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERZBJBAVsFNbWwFeYCwIBxR4HMXaHD8mC5Z/jYE/8F4YMC/0akAyXcbPr5sxWWLYELgBg65HCv2BkkudoJ7b1kA==
+    bankId:
+      loginUrl: https://kp-mockserver.cfapps.eu10-004.hana.ondemand.com/bank-id/login
+  - name: localdev
+    build: v1.0.1
+    appInformation:
+      imprintUrl:
+        de: https://www.kulturpass.de/impressum
+        en: https://www.kulturpass.de/impressum
+      openSourceLegalNoticeUrl:
+        de: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+        en: https://storefront.dev.kulturpass.de/assets/app-osln-v1.pdf
+    commerce:
+      baseUrl: https://commerce.dev.kulturpass.de/occ/v2
+      baseSiteId: kulturapp
+      auth:
+        tokenEndpoint: https://commerce.dev.kulturpass.de/authorizationserver/oauth/token
+        revocationEndpoint: https://commerce.dev.kulturpass.de/authorizationserver/oauth/revoke
+        clientId: mobile_android
+        clientSecret: secret
+      homeUrl: http://localhost:4200
+      searchUrl: http://localhost:4200/search
+      imageBaseUrl: http://localhost:4200
+    cdc:
+      baseUrl: https://accounts.eu1.gigya.com
+      apiKey: 4_2g1jeuAFipNhVuN-xkILiw
+      consents:
+        dpsDocumentUrl:
+          de: https://www.kulturpass.de/datenschutz/jugendliche
+          en: https://www.kulturpass.de/datenschutz/jugendliche
+        eulaDocumentUrl:
+          de: https://www.kulturpass.de/agbs/nutzungsbedingungen
+          en: https://www.kulturpass.de/agbs/nutzungsbedingungen
+    eid:
+      tcTokenUrl: https://%s.dev.kulturpass.de/login
+      tcTokenUrlDefaultSubdomain: eid-sp
+    faq:
+      homeUrl:
+        de: https://service.kulturpass.de/help/de-de
+        en: https://service.kulturpass.de/help/de-de
+    appConfig:
+      url: https://storefront.dev.kulturpass.de/assets/app-config.jws
+      initialValue: >-
+        eyJhbGciOiJFUzI1NiJ9.eyJhcHBWZXJzaW9ucyI6eyJtaW4iOiIwLjUuMCJ9LCJlaWQiOnsidGNUb2tlblVybFN1YmRvbWFpbnMiOlsiZWlkLXNwIl19fQ.bC21KLE1LppOWRS-QdMGWnUYwt31RijEluF1sPtbhotQ8Uy8L_MYrNitVkxTeCYmPpbRdnqJHGaguzAw0rvhqQ
+      publicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmD6JCY6tQHIsg+GTrq9y2kBf7F7YUIpTMAtQXzX2nAD7ifpB1jHifbuGrrVfYN2uLhVc0dpzbw7w+p2ZvxCE1g==
+      backupPublicKey: >-
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERZBJBAVsFNbWwFeYCwIBxR4HMXaHD8mC5Z/jYE/8F4YMC/0akAyXcbPr5sxWWLYELgBg65HCv2BkkudoJ7b1kA==
+    bankId:
+      loginUrl: https://bankid-sp.dev.kulturpass.de/login

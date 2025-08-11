@@ -41,8 +41,38 @@
 	<string>KulturPass DE needs NFC to access the ID card.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict/>
 		<key>NSPinnedDomains</key>
 		<dict>
+			<key>commerce.dev.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>1fNn4vCSUZGIDPqwGcx8YxPrJAoeN6bPvlEwf4tYN14=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.perf.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>wY59k9m5gu2i71HWLp1XwRYTL57bD3BvGSYHU7+9Um8=</string>
+					</dict>
+				</array>
+			</dict>
 			<key>commerce.prod.kulturpass.de</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
@@ -52,6 +82,30 @@
 					<dict>
 						<key>SPKI-SHA256-BASE64</key>
 						<string>Lf3OQ78SvZ4/LxwO2+Z4BoSPLEpSVQzstrkE7wuEOxI=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.qa.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>TaUiArx6CmGD2JNQ9D0ZeWBAKpmGZnwKLJpQsPRZdaw=</string>
+					</dict>
+				</array>
+			</dict>
+			<key>commerce.staging.kulturpass.de</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSPinnedLeafIdentities</key>
+				<array>
+					<dict>
+						<key>SPKI-SHA256-BASE64</key>
+						<string>ODeLbphuP+i4bREDls44f9k0pomUunbcuBTmHrBJqUE=</string>
 					</dict>
 				</array>
 			</dict>
