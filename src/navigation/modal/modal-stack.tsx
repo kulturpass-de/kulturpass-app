@@ -22,6 +22,7 @@ import { DeveloperMenuRouteConfig } from '../../screens/app/developer-settings/d
 import { EnvironmentConfigRouteConfig } from '../../screens/app/developer-settings/environment-config-route'
 import { NotificationsRouteConfig } from '../../screens/app/developer-settings/notifications-route'
 import { SimulationCardConfigRouteConfig } from '../../screens/app/developer-settings/simulation-card-config-route'
+import { StorybookRouteConfig } from '../../screens/app/developer-settings/storybook-route'
 import { ForceUpdateRouteConfig } from '../../screens/app/force-update-route'
 import { OnboardingNotificationPermissionRouteConfig } from '../../screens/app/onboarding/onboarding-notification-permission-route'
 import { ReleaseNotesModalRouteConfig } from '../../screens/app/release-notes-modal-route'
@@ -71,6 +72,8 @@ export const ModalStack: React.FC = () => {
         <Stack.Screen {...AppConfigRouteConfig} />
         <Stack.Screen {...NotificationsRouteConfig} />
         <Stack.Screen {...SimulationCardConfigRouteConfig} />
+        <Stack.Screen {...StorybookRouteConfig} />
+
         <Stack.Screen {...DarkModePreviewRouteConfig} />
 
         <Stack.Screen {...ReleaseNotesModalRouteConfig} />

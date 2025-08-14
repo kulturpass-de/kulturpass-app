@@ -2,9 +2,30 @@
 <!-- build v1.0.1 -->
 <network-security-config>
   <domain-config>
+    <domain includeSubdomains="true">commerce.dev.kulturpass.de</domain>
+    <pin-set>
+      <pin digest="SHA-256">1fNn4vCSUZGIDPqwGcx8YxPrJAoeN6bPvlEwf4tYN14=</pin>
+    </pin-set>
+  </domain-config>
+  <domain-config>
+    <domain includeSubdomains="true">commerce.staging.kulturpass.de</domain>
+    <pin-set>
+      <pin digest="SHA-256">ODeLbphuP+i4bREDls44f9k0pomUunbcuBTmHrBJqUE=</pin>
+    </pin-set>
+  </domain-config>
+  <domain-config>
+    <domain includeSubdomains="true">commerce.perf.kulturpass.de</domain>
+    <pin-set>
+      <pin digest="SHA-256">wY59k9m5gu2i71HWLp1XwRYTL57bD3BvGSYHU7+9Um8=</pin>
+    </pin-set>
+  </domain-config>
+  <domain-config>
     <domain includeSubdomains="true">commerce.prod.kulturpass.de</domain>
     <pin-set>
       <pin digest="SHA-256">Lf3OQ78SvZ4/LxwO2+Z4BoSPLEpSVQzstrkE7wuEOxI=</pin>
     </pin-set>
+  </domain-config>
+  <domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">localhost</domain>
   </domain-config>
 </network-security-config>

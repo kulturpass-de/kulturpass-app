@@ -81,6 +81,7 @@ import {
   SimulationCardConfigRouteName,
   SimulationCardConfigRouteParams,
 } from '../../screens/app/developer-settings/simulation-card-config-route'
+import { StorybookRouteName, StorybookRouteParams } from '../../screens/app/developer-settings/storybook-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../screens/app/force-update-route'
 import {
   OnboardingNotificationPermissionRouteName,
@@ -106,6 +107,7 @@ export type ModalParamList = {
   [RegistrationFinishedRouteName]: RegistrationFinishedRouteParams
 
   [AccountDeletionConfirmRouteName]: AccountDeletionConfirmRouteParams
+  [StorybookRouteName]: StorybookRouteParams
   [AccountDeletionSuccessfulRouteName]: AccountDeletionSuccessfulRouteParams
 
   [DeveloperMenuRouteName]: DeveloperMenuRouteParams

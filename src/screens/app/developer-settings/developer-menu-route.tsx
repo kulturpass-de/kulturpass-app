@@ -8,6 +8,7 @@ import { DeveloperMenuScreen } from './developer-menu-screen'
 import { EnvironmentConfigRouteConfig } from './environment-config-route'
 import { NotificationsRouteConfig } from './notifications-route'
 import { SimulationCardConfigRouteConfig } from './simulation-card-config-route'
+import { StorybookRouteConfig } from './storybook-route'
 
 export const DeveloperMenuRouteName = 'DeveloperMenu'
 
@@ -36,6 +37,10 @@ export const DeveloperMenuRoute: React.FC = () => {
     modalNavigation.navigate({ screen: SimulationCardConfigRouteConfig.name })
   }, [modalNavigation])
 
+  const onPressStorybookConfiguration = useCallback(() => {
+    modalNavigation.navigate({ screen: StorybookRouteConfig.name })
+  }, [modalNavigation])
+
   const onPressDarkThemeConfiguration = useCallback(() => {
     modalNavigation.navigate({ screen: DarkModePreviewRouteConfig.name })
   }, [modalNavigation])
@@ -47,6 +52,7 @@ export const DeveloperMenuRoute: React.FC = () => {
       onPressAppConfig={onPressAppConfig}
       onPressNotifications={onPressNotifications}
       onPressCardSimulationConfiguration={onPressCardSimulationConfiguration}
+      onPressStorybookConfiguration={onPressStorybookConfiguration}
       onPressDarkThemeConfiguration={onPressDarkThemeConfiguration}
     />
   )
