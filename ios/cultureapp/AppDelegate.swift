@@ -11,7 +11,7 @@ class AppDelegate: RCTAppDelegate {
     self.moduleName = "cultureapp"
     self.dependencyProvider = RCTAppDependencyProvider()
 
-    #if DEBUG
+    #if JS_LOGGING
     // Enable console.log logging in macOS Console App for Release builds
     RCTSetLogThreshold(.trace)
     RCTSetLogFunction { level, source, fileName, lineNumber, message in

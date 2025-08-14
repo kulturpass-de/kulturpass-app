@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { Text, type StyleProp, type TextStyle, AccessibilityProps } from 'react-native'
 import { TestId } from '../../services/test-id/test-id'
 import { useTranslation, Trans } from '../../services/translation/translation'
@@ -26,12 +26,13 @@ export const TranslatedText = forwardRef<Text, TranslatedTextProps>(
     let accessibilityLabel = i18nParams ? t(i18nKey, i18nParams) : t(i18nKey)
     accessibilityLabel = applyAccessibilityReplacements(accessibilityLabel)
 
-    // 👉 Merge and assign keys to each component
-    const mergedComponents = { ...translatedTextComponents, ...customComponents }
-
-    const componentsWithKeys = Object.fromEntries(
-      Object.entries(mergedComponents).map(([key, component]) => [key, React.cloneElement(component, { key })]),
-    )
+    const componentsWithKeys = useMemo(() => {
+      // 👉 Merge and assign keys to each component
+      const mergedComponents = { ...translatedTextComponents, ...customComponents }
+      return Object.fromEntries(
+        Object.entries(mergedComponents).map(([key, component]) => [key, React.cloneElement(component, { key })]),
+      )
+    }, [customComponents, translatedTextComponents])
 
     return (
       <Text

@@ -1,11 +1,11 @@
 import type { PropsWithChildren } from 'react'
 import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { useTheme } from '../../theme/hooks/use-theme'
 import { spacing } from '../../theme/spacing'
 
 export type AlertContentProps = PropsWithChildren<{
-  style?: any
+  style?: StyleProp<ViewStyle>
 }>
 
 export const AlertContent = React.forwardRef<any, AlertContentProps>(({ style, children }, ref) => {
