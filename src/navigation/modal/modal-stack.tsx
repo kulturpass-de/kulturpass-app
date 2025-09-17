@@ -1,4 +1,9 @@
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  StackNavigationOptions,
+  TransitionPresets,
+} from '@react-navigation/stack'
 import React from 'react'
 import { StatusBar } from 'react-native'
 import { BudgetVoucherRouteConfig } from '../../features/budget-voucher/screens/budget-voucher-route'
@@ -23,6 +28,7 @@ import { EnvironmentConfigRouteConfig } from '../../screens/app/developer-settin
 import { NotificationsRouteConfig } from '../../screens/app/developer-settings/notifications-route'
 import { SimulationCardConfigRouteConfig } from '../../screens/app/developer-settings/simulation-card-config-route'
 import { StorybookRouteConfig } from '../../screens/app/developer-settings/storybook-route'
+import { EndOfLifeRouteConfig } from '../../screens/app/end-of-life-route'
 import { ForceUpdateRouteConfig } from '../../screens/app/force-update-route'
 import { OnboardingNotificationPermissionRouteConfig } from '../../screens/app/onboarding/onboarding-notification-permission-route'
 import { ReleaseNotesModalRouteConfig } from '../../screens/app/release-notes-modal-route'
@@ -30,6 +36,21 @@ import { LogInRouteConfig } from '../../screens/auth/log-in-route'
 import { LogOutRouteConfig } from '../../screens/auth/log-out-route'
 import { ModalStackWrapper } from './modal-stack-wrapper'
 import { ModalParamList } from './types'
+
+const NO_ANIMATION_CONFIG: StackNavigationOptions = {
+  animation: 'none',
+  cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,
+  transitionSpec: {
+    open: {
+      animation: 'timing',
+      config: { duration: 0 },
+    },
+    close: {
+      animation: 'timing',
+      config: { duration: 0 },
+    },
+  },
+}
 
 const Stack = createStackNavigator<ModalParamList>()
 
@@ -53,6 +74,17 @@ export const ModalStack: React.FC = () => {
 
         {/* Force Update Routes */}
         <Stack.Screen options={{ gestureEnabled: false }} {...ForceUpdateRouteConfig} />
+
+        {/* End Of Life Routes */}
+        <Stack.Screen
+          options={{
+            gestureEnabled: false,
+            cardOverlayEnabled: false,
+            headerShown: false,
+            ...NO_ANIMATION_CONFIG,
+          }}
+          {...EndOfLifeRouteConfig}
+        />
 
         {/* Registration Routes */}
         <Stack.Screen {...RegistrationConsentRouteConfig} />

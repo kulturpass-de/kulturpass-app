@@ -1,5 +1,4 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { Button } from '../../components/button/button'
 import { ModalScreen } from '../../components/modal-screen/modal-screen'
 import { ModalScreenFooter } from '../../components/modal-screen/modal-screen-footer'
@@ -35,14 +34,7 @@ export const ReleaseNotesModalScreen: React.FC<ReleaseNotesModalScreenProps> = (
           testID={buildTestId(acceptButtonI18nKey)}
           i18nKey={acceptButtonI18nKey}
         />
-        <View style={styles.buttonSpacer} />
       </ModalScreenFooter>
     </ModalScreen>
   )
 }
-
-export const styles = StyleSheet.create({
-  buttonSpacer: {
-    height: 48,
-  },
-})

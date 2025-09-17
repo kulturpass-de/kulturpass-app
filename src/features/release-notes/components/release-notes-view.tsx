@@ -38,8 +38,8 @@ export const ReleaseNotesView: React.FC<ReleaseNotesViewProps> = ({
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContainer}>
       <Illustration
         testID={buildTestId('release_notes_img_alt')}
-        type="release-notes"
-        i18nKey="release_notes_img_alt"
+        type="end-of-life-small"
+        i18nKey="endOfLife_image_alt"
       />
       <TranslatedText
         i18nKey={bodyTitleI18nKey}

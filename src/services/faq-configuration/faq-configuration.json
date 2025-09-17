@@ -81,6 +81,10 @@
       "VOUCHER_CAMPAIGN_FLIXTRAIN": {
         "de": "https://service.kulturpass.de/help/de-de/2/259",
         "en": "https://service.kulturpass.de/help/en-gb/2/259"
+      },
+      "ABOUT_END_OF_LIFE": {
+        "de": "https://service.kulturpass.de/help/de-de/91-infos-zum-projektende/265-das-kulturpass-projekt-endet-wichtige-informationen",
+        "en": "https://service.kulturpass.de/help/en-gb/91-infos-zum-projektende/265-das-kulturpass-projekt-endet-wichtige-informationen"
       }
     }
   }

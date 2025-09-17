@@ -46,6 +46,8 @@ export type IllustrationType =
   | 'ft-train-image'
   | 'mobility-offers-error-image'
   | 'empty-voucher-list-image'
+  | 'end-of-life'
+  | 'end-of-life-small'
 
 export type AnimatedIllustrationType =
   | 'onboarding'

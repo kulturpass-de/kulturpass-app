@@ -82,6 +82,7 @@ import {
   SimulationCardConfigRouteParams,
 } from '../../screens/app/developer-settings/simulation-card-config-route'
 import { StorybookRouteName, StorybookRouteParams } from '../../screens/app/developer-settings/storybook-route'
+import { EndOfLifeRouteName, EndOfLifeRouteParams } from '../../screens/app/end-of-life-route'
 import { ForceUpdateRouteName, ForceUpdateRouteParams } from '../../screens/app/force-update-route'
 import {
   OnboardingNotificationPermissionRouteName,
@@ -98,6 +99,8 @@ export type ModalParamList = {
   [ForgotPasswordRouteName]: ForgotPasswordRouteParams
 
   [ForceUpdateRouteName]: ForceUpdateRouteParams
+
+  [EndOfLifeRouteName]: EndOfLifeRouteParams
 
   [RegistrationConsentRouteName]: RegistrationConsentRouteParams
   [RegistrationDataPrivacyRouteName]: RegistrationDataPrivacyRouteParams

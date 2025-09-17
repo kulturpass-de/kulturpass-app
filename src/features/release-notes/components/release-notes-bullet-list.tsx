@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { BulletListItem } from '../../../components/bullet-list-item/bullet-list-item'
 import { LinkText } from '../../../components/link-text/link-text'
 import { AvailableTranslations } from '../../../components/translated-text/types'
+import { useFaqLink } from '../../../services/faq-configuration/hooks/use-faq-link'
 import { useTestIdBuilder } from '../../../services/test-id/test-id'
 import { useTranslation } from '../../../services/translation/translation'
 import { useTheme } from '../../../theme/hooks/use-theme'
@@ -16,8 +17,8 @@ import { getDisplayVersion } from '../utils/get-display-version'
 import { ReleaseNotesProps } from './release-notes-view'
 
 const BULLET_SIZE = 6
-const RELEASE_FEATURES_VERSION = '1.22'
-const RELEASE_FEATURE_COUNT = 1
+const RELEASE_FEATURES_VERSION = '1.27'
+const RELEASE_FEATURE_COUNT = 3
 const displayUrLFlag = false
 
 type ReleaseNotesBulletListProps = Pick<ReleaseNotesProps, 'bodyTextListBaseI18nKey'>
@@ -30,6 +31,7 @@ export const ReleaseNotesBulletList: React.FC<ReleaseNotesBulletListProps> = ({ 
   const displayVersion = getDisplayVersion()
 
   const dpsDocumentUrl = useLocalizedEnvironmentUrl(getCdcDpsDocumentUrl)
+  const aboutEndOfLifeUrl = useFaqLink('ABOUT_END_OF_LIFE')
 
   const i18nKeys = useMemo(() => {
     if (RELEASE_FEATURES_VERSION !== displayVersion) {
@@ -67,6 +69,14 @@ export const ReleaseNotesBulletList: React.FC<ReleaseNotesBulletListProps> = ({ 
           </BulletListItem>
         </View>
       ))}
+      {displayVersion === '1.27' ? (
+        <LinkText
+          style={styles.dpsLink}
+          link={aboutEndOfLifeUrl}
+          i18nKey="release_notes_screen_body_more_information_link_text"
+          testID={addTestIdModifier(testID, 'more_information_link_text')}
+        />
+      ) : null}
       {displayVersion === '1.22' && displayUrLFlag ? (
         <LinkText
           style={styles.dpsLink}

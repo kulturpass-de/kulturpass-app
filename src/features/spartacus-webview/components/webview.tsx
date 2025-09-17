@@ -3,7 +3,9 @@ import { Animated, BackHandler, Platform, StyleSheet } from 'react-native'
 import { WebView, WebViewProps } from 'react-native-webview'
 import { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
 import { useSelector } from 'react-redux'
+import { useModalNavigation } from '../../../navigation/modal/hooks'
 import { useTabsNavigation } from '../../../navigation/tabs/hooks'
+import { EndOfLifeRouteName } from '../../../screens/app/end-of-life-route'
 import { selectFiltersOrSortOpen } from '../../../services/webviews/redux/webviews-selectors'
 import { linkLogger, openLink } from '../../../utils/links/utils'
 import { userAgent } from '../../../utils/user-agent/utils'
@@ -56,6 +58,7 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   websiteTitle,
   ...props
 }) => {
+  const modalNavigation = useModalNavigation()
   const { onMessage, webViewRef, bridgeAdapterApi, webViewBridgeAdapter } = useWebViewBridgeAdapter(webViewId)
   // If there is an initial navigation URL we start the webview with it.
   // The alternative (waiting for a bridge ready event and navigating over the bridge is) is not stable,
@@ -100,6 +103,12 @@ export const SpartacusWebView: React.FC<SpartacusWebViewProps> = ({
   const renderLoading = useCallback(() => <WebviewLoadingIndicator contentOffset={contentOffset} />, [contentOffset])
 
   const { errorCode, resetError, handleError, handleHttpError } = useHandleWebviewErrors(bridgeAdapterApi)
+
+  useEffect(() => {
+    if (errorCode !== undefined && new Date() >= new Date('2026-03-01')) {
+      modalNavigation.navigate({ screen: EndOfLifeRouteName })
+    }
+  }, [errorCode, modalNavigation])
 
   const reload = useCallback(() => {
     resetError()

@@ -58,6 +58,10 @@ export function requireIllustrationImage(type: IllustrationType): ImageSourcePro
       return require('./illustrations/mobility-offers-error-image.png')
     case 'empty-voucher-list-image':
       return require('./illustrations/empty-voucher-list-image.png')
+    case 'end-of-life':
+      return require('./illustrations/end-of-life.png')
+    case 'end-of-life-small':
+      return require('./illustrations/end-of-life-small.png')
   }
 }
 
