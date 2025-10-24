@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAFesi6GAG8-P34tKbAoLNEqggLpWmb92M</string>
+	<string>AIzaSyB4_5NW8ot2fjDW_VgukO96rXi9Nm8b4OE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1035191590349</string>
+	<string>644412826416</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>de.bkm.kulturpass</string>
 	<key>PROJECT_ID</key>
-	<string>kulturpass-fcm-qa</string>
+	<string>kulturpass-fcm-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>kulturpass-fcm-qa.appspot.com</string>
+	<string>kulturpass-fcm-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1035191590349:ios:3da5485bf822010ee13884</string>
+	<string>1:644412826416:ios:511d18c0ec207733071ef5</string>
 </dict>
 </plist>

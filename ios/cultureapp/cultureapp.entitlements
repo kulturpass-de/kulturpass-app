@@ -3,15 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:kulturpass.de</string>
 		<string>applinks:storefront.prod.kulturpass.de</string>
-		<string>applinks:storefront.perf.kulturpass.de</string>
-		<string>applinks:storefront.staging.kulturpass.de</string>
-		<string>applinks:storefront.qa.kulturpass.de</string>
-		<string>applinks:storefront.dev.kulturpass.de</string>
 	</array>
 	<key>com.apple.developer.nfc.readersession.formats</key>
 	<array>
