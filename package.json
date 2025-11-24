@@ -1,6 +1,6 @@
 {
   "name": "cultureapp",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "buildNumber": "1",
   "private": true,
   "scripts": {
@@ -63,7 +63,7 @@
     "i18next": "^23.7.15",
     "i18next-react-native-async-storage": "^1.0.4",
     "intl-pluralrules": "^2.0.1",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
@@ -88,8 +88,8 @@
     "react-native-pager-view": "^6.7.0",
     "react-native-permissions": "^3.10.1",
     "react-native-qrcode-svg": "^6.2.0",
-    "react-native-quick-base64": "^2.0.8",
-    "react-native-quick-crypto": "0.7.12",
+    "react-native-quick-base64": "^2.2.2",
+    "react-native-quick-crypto": "0.7.17",
     "react-native-safe-area-context": "^5.2.0",
     "react-native-screens": "^4.9.2",
     "react-native-svg": "^15.11.2",
@@ -222,7 +222,8 @@
     "cross-spawn": "7.0.6",
     "micromatch": "4.0.8",
     "brace-expansion": "2.0.2",
-    "tmp": "^0.2.5"
+    "tmp": "^0.2.5",
+    "js-yaml": "^4.1.1"
     },
   "reactNativePermissionsIOS": [
     "LocationAccuracy",
